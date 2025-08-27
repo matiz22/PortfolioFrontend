@@ -3,7 +3,7 @@
 html, body { height: 100%; }
 
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: smooth !important;
   scroll-padding-top: var(--toolbar-height);
 }
 
