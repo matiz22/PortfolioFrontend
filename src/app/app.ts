@@ -1,17 +1,14 @@
-import { Component, signal, ViewChild } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import {Component, signal, ViewChild} from '@angular/core';
+import {RouterOutlet} from '@angular/router';
 import {MatToolbar} from '@angular/material/toolbar';
-import {
-  MatDrawer, MatDrawerContainer,
-  MatDrawerContent, MatSidenav, MatSidenavContainer, MatSidenavContent,
-} from '@angular/material/sidenav';
+import {MatSidenav, MatSidenavContainer, MatSidenavContent,} from '@angular/material/sidenav';
 import {MatListItem, MatNavList} from '@angular/material/list';
-import {MatButton, MatIconButton} from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
+import {MatIconButton} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, MatToolbar, MatToolbar, MatNavList, MatListItem, MatButton, MatDrawerContent, MatDrawer, MatDrawerContainer, MatIconButton, MatIconModule, MatSidenavContainer, MatSidenav, MatSidenavContent],
+  imports: [RouterOutlet, MatToolbar, MatToolbar, MatNavList, MatListItem, MatIconButton, MatIconModule, MatSidenavContainer, MatSidenav, MatSidenavContent],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
@@ -26,7 +23,7 @@ export class App {
     setTimeout(() => {
       const element = document.getElementById(sectionId);
       if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
+        element.scrollIntoView({behavior: 'smooth'});
       }
     }, 300);
   }
