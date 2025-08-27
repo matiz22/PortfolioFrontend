@@ -1,9 +1,23 @@
-<header class="app-header">
-  <mat-toolbar>
-    <span>My App</span>
-  </mat-toolbar>
-</header>
+<mat-sidenav-container>
+  <mat-sidenav #drawer class="example-sidenav" mode="over">
+    <mat-nav-list>
+      <a mat-list-item (click)="navigateToSection('home', drawer)">Home</a>
+      <a mat-list-item (click)="navigateToSection('about', drawer)">About</a>
+      <a mat-list-item (click)="navigateToSection('contact', drawer)">Contact</a>
+    </mat-nav-list>
+  </mat-sidenav>
 
-<main class="app-main">
-  <router-outlet></router-outlet>
-</main>
+  <mat-sidenav-content class="mat-sidenav-container">
+    <header class="app-header">
+      <mat-toolbar>
+        <button mat-icon-button (click)="toggleDrawer(drawer)">
+          <mat-icon style="fill: var(--mat-sys-primary)" >menu</mat-icon>
+        </button>
+      </mat-toolbar>
+    </header>
+
+    <main class="app-main">
+      <router-outlet></router-outlet>
+    </main>
+  </mat-sidenav-content>
+  </mat-sidenav-container>
