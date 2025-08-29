@@ -7,7 +7,7 @@ import {HeroCard} from '../hero-card/hero-card';
     HeroCard
   ],
   templateUrl: './hero-section.html',
-  styleUrl: './hero-section.css'
+  styleUrl: './hero-section.scss'
 })
 export class HeroSection {
   @Input() cardTitle!: string;

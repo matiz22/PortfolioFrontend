@@ -10,7 +10,7 @@ import {MatIconModule} from '@angular/material/icon';
   selector: 'app-root',
   imports: [RouterOutlet, MatToolbar, MatToolbar, MatNavList, MatListItem, MatIconButton, MatIconModule, MatSidenavContainer, MatSidenav, MatSidenavContent],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrl: './app.scss'
 })
 export class App {
   protected readonly title = signal('PortfolioFrontend');

@@ -9,7 +9,7 @@ import {MatCard, MatCardSubtitle, MatCardTitle} from '@angular/material/card';
     MatCardSubtitle,
   ],
   templateUrl: './hero-card.html',
-  styleUrl: './hero-card.css'
+  styleUrl: './hero-card.scss'
 })
 export class HeroCard {
   @Input() title!: string;
