@@ -2,14 +2,14 @@
   display: grid;
   place-items: center;
   position: relative;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  transition: margin 0.4s ease-in-out;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  transition: padding 0.4s ease-in-out;
 }
 
 @media (max-width: 1400px) {
   .page {
-    margin-top: 0;
-    margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
   }
 }
