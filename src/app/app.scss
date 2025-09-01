@@ -5,19 +5,9 @@
   box-shadow: 0 1px 2px grey;
 }
 
-.app-main {
+.header-margin {
   margin-top: var(--toolbar-height);
 }
-
-
-.mat-sidenav-container {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-}
-
 
 mat-sidenav-content {
   scroll-behavior: smooth;
