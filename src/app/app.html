@@ -1,14 +1,6 @@
-<main class="nav-animation">
-  <header class="app-header">
-    <mat-toolbar>
-      <button (click)="toggleDrawer(drawer)" mat-icon-button>
-        <mat-icon style="fill: var(--mat-sys-primary)">menu</mat-icon>
-      </button>
-    </mat-toolbar>
-  </header>
-
+<main class="nav-animation" xmlns="http://www.w3.org/1999/html">
   <mat-sidenav-container>
-    <mat-sidenav #drawer mode="over">
+    <mat-sidenav #drawer [fixedInViewport]="true" mode="over">
       <mat-nav-list>
         <a (click)="navigateToSection('home', drawer)" mat-list-item>Home</a>
         <a (click)="navigateToSection('about', drawer)" mat-list-item>About</a>
@@ -16,10 +8,17 @@
       </mat-nav-list>
     </mat-sidenav>
 
-    <mat-sidenav-content class="mat-sidenav-container app-main ">
-
-
-      <router-outlet></router-outlet>
+    <mat-sidenav-content>
+      <header class="app-header">
+        <mat-toolbar>
+          <button (click)="toggleDrawer(drawer)" mat-icon-button>
+            <mat-icon style="fill: var(--mat-sys-primary)">menu</mat-icon>
+          </button>
+        </mat-toolbar>
+      </header>
+      <div class="header-margin">
+        <router-outlet></router-outlet>
+      </div>
 
     </mat-sidenav-content>
   </mat-sidenav-container>
