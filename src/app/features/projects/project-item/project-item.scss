@@ -1,0 +1,20 @@
+@use '@angular/material' as mat;
+
+.clickable {
+  cursor: pointer;
+
+  &:hover {
+    @include mat.elevation(8);
+  }
+
+  transition: box-shadow 0.3s ease;
+}
+
+
+.technologies-footer {
+  padding: 16px;
+}
+
+.technologies-footer img {
+  border-radius: 0;
+}
