@@ -1,0 +1,23 @@
+<div class="showcase-section">
+  <h1 class style="font: var(--mat-sys-display-medium);">Projects</h1>
+  <p style="font: var(--mat-sys-title-large)">Projects that highlight my skills and interests</p>
+
+  @if (projects().length > 0) {
+    <div class="container">
+      @for (project of projects(); track project.id) {
+        <app-project-item class="flex-item" [project]="project"></app-project-item>
+        <app-project-item class="flex-item" [project]="project"></app-project-item>
+        <app-project-item class="flex-item" [project]="project"></app-project-item>
+        <app-project-item class="flex-item" [project]="project"></app-project-item>
+      }
+    </div>
+  } @else {
+    @if (projects().length === 0) {
+      <li>No items</li>
+    } @else {
+      <li>Loading…</li>
+    }
+  }
+</div>
+
+
