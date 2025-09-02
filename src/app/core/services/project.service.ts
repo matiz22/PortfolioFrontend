@@ -27,6 +27,16 @@ export class ProjectService {
     );
   }
 
+  getProjectById(id: string): Observable<Project | null> {
+    return this.http.get<ProjectDto>(`${this.url}/${id}`).pipe(
+      map(dto => mapProject(dto)),
+      catchError(err => {
+        this.handleError(err);
+        return of(null);
+      })
+    );
+  }
+
   private handleError(error: HttpErrorResponse) {
     console.error('Projects error', error);
   }
