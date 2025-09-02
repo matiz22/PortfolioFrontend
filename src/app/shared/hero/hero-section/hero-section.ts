@@ -12,4 +12,5 @@ import {HeroCard} from '../hero-card/hero-card';
 export class HeroSection {
   @Input() cardTitle!: string;
   @Input() cardSubtitle!: string;
+  @Input() cardImage!: string;
 }

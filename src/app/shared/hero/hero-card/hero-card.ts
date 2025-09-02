@@ -14,4 +14,5 @@ import {MatCard, MatCardSubtitle, MatCardTitle} from '@angular/material/card';
 export class HeroCard {
   @Input() title!: string;
   @Input() subtitle!: string;
+  @Input() image!: string;
 }
