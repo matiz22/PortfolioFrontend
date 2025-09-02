@@ -7,6 +7,7 @@ import {ProjectService} from './core/services/project.service';
 import {provideHttpClient, withFetch} from '@angular/common/http';
 import {MAT_RIPPLE_GLOBAL_OPTIONS} from '@angular/material/core';
 import {CustomRouteReuseStrategy} from './route.reuse.strategy';
+import {provideMarkdown} from 'ngx-markdown';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -32,6 +33,7 @@ export const appConfig: ApplicationConfig = {
     {provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy},
     provideClientHydration(withEventReplay()),
     provideHttpClient(withFetch()),
+    provideMarkdown(),
     ProjectService
   ]
 };
