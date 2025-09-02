@@ -9,7 +9,7 @@ export const routes: Routes = [
     data: {reuse: true}
   },
   {
-    path: 'projects/:id',
+    path: 'project/:id',
     component: ProjectDetailsPage
   }
 
