@@ -2,16 +2,16 @@
   <mat-sidenav-container>
     <mat-sidenav #drawer [fixedInViewport]="true" mode="over">
       <mat-nav-list>
-        <a (click)="navigateToSection('home', drawer)" mat-list-item>Home</a>
-        <a (click)="navigateToSection('about', drawer)" mat-list-item>About</a>
-        <a (click)="navigateToSection('contact', drawer)" mat-list-item>Contact</a>
+        <a (click)="navigateToSection('home')" mat-list-item>Home</a>
+        <a (click)="navigateToSection('about')" mat-list-item>About</a>
+        <a (click)="navigateToSection('contact')" mat-list-item>Contact</a>
       </mat-nav-list>
     </mat-sidenav>
 
     <mat-sidenav-content>
       <header class="app-header">
         <mat-toolbar>
-          <button (click)="toggleDrawer(drawer)" mat-icon-button>
+          <button (click)="toggleDrawer()" mat-icon-button>
             <mat-icon style="fill: var(--mat-sys-primary)">menu</mat-icon>
           </button>
         </mat-toolbar>
