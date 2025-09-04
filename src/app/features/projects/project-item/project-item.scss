@@ -1,8 +1,8 @@
 @use '@angular/material' as mat;
 
-.clickable {
+.item {
   cursor: pointer;
-
+  min-height: 600px;
   &:hover {
     @include mat.elevation(8);
   }
@@ -17,4 +17,22 @@
 
 .technologies-footer img {
   border-radius: 0;
+}
+
+mat-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+mat-card-content {
+  flex: 1 1 auto;
+}
+
+mat-card-footer {
+  margin-top: auto;
+}
+
+mat-chip-set {
+  min-height: 80px;
 }
