@@ -46,3 +46,22 @@
   flex-direction: column;
   gap: 20px;
 }
+
+
+.hero-title {
+  color: var(--mat-sys-surface);
+  font: var(--mat-sys-display-large);
+  text-shadow: -1px -1px 0 var(--mat-sys-on-background),
+  1px -1px 0 var(--mat-sys-on-background),
+  -1px 1px 0 var(--mat-sys-on-background),
+  1px 1px 0 var(--mat-sys-on-background);
+}
+
+.hero-subtitle {
+  color: var(--mat-sys-surface);
+  font: var(--mat-sys-display-small);
+  text-shadow: -1px -1px 0 var(--mat-sys-on-background),
+  1px -1px 0 var(--mat-sys-on-background),
+  -1px 1px 0 var(--mat-sys-on-background),
+  1px 1px 0 var(--mat-sys-on-background);
+}
