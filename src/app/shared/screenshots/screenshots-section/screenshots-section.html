@@ -1,0 +1,11 @@
+@if (screenshots) {
+  <h2>Screenshots</h2>
+
+  <div class="screenshots-container">
+    @for (img of screenshots; track img) {
+      <div class="screenshot-item" (click)="openDialog(img)" autofocus>
+        <img class="screenshot-image" [src]="img | imageUrl" alt=""/>
+      </div>
+    }
+  </div>
+}
