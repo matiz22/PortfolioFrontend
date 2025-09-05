@@ -3,7 +3,7 @@
 html, body { height: 100%; }
 
 html {
-  scroll-behavior: smooth !important;
+  scroll-behavior: smooth;
   scroll-padding-top: var(--toolbar-height);
   font-size: 20px
 }
@@ -54,7 +54,7 @@ body {
 
 .showcase-section {
   margin: 0 auto;
-  max-width: 1600px;
+  max-width: 1400px;
   padding: 16px;
   display: flex;
   flex-direction: column;
@@ -70,6 +70,8 @@ body {
 
 .container .flex-item {
   width: 450px;
+  min-height: 600px;
+  max-width: 600px;
   flex-shrink: 0;
   box-sizing: border-box;
 }

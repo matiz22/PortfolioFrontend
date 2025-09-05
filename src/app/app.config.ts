@@ -3,7 +3,7 @@ import {provideRouter, RouteReuseStrategy, withInMemoryScrolling, withViewTransi
 
 import {routes} from './app.routes';
 import {provideClientHydration, withEventReplay} from '@angular/platform-browser';
-import {ProjectService} from './core/services/project.service';
+import {ProjectsService} from './core/services/projects.service';
 import {provideHttpClient, withFetch} from '@angular/common/http';
 import {MAT_RIPPLE_GLOBAL_OPTIONS} from '@angular/material/core';
 import {CustomRouteReuseStrategy} from './route.reuse.strategy';
@@ -34,6 +34,6 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(withEventReplay()),
     provideHttpClient(withFetch()),
     provideMarkdown(),
-    ProjectService
+    ProjectsService
   ]
 };

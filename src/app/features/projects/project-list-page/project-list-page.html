@@ -1,9 +1,11 @@
-<div class="showcase-section">
-  <app-section-texts
-    subtitle="Projects that highlight my skills and interests"
-    title="Projects">
-  </app-section-texts>
+<app-hero-section
+  [cardImage]="'/images/projects/projectsHero.png'"
+  [cardSubtitle]="''"
+  [cardTitle]=cardTitle
+>
+</app-hero-section>
 
+<div class="showcase-section">
   @if (projects().length > 0) {
     <div class="container">
       @for (project of projects(); track project.id) {
@@ -17,12 +19,4 @@
       <li>Loading…</li>
     }
   }
-  <div class="button-margins">
-    <a extended matFab routerLink="projects">
-      <mat-icon>workspaces</mat-icon>
-      <p>View All Projects</p>
-    </a>
-  </div>
 </div>
-
-

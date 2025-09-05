@@ -1,6 +1,6 @@
 import {Component, inject} from '@angular/core';
 import {HeroSection} from '../../../shared/hero/hero-section/hero-section';
-import {ProjectService} from '../../../core/services/project.service';
+import {ProjectsService} from '../../../core/services/projects.service';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {ActivatedRoute} from '@angular/router';
 import {of, switchMap} from 'rxjs';
@@ -25,14 +25,14 @@ import {ScreenshotsSection} from '../../../shared/screenshots/screenshots-sectio
   styleUrl: './project-details-page.scss'
 })
 export class ProjectDetailsPage {
-  private projectService: ProjectService = inject(ProjectService);
+  private projectService: ProjectsService = inject(ProjectsService);
   private route: ActivatedRoute = inject(ActivatedRoute);
 
   project = toSignal(
     this.route.paramMap.pipe(
       switchMap(params => {
         const id = params.get('id');
-        return id ? this.projectService.getProjectById(id) : of(null);
+        return id ? this.projectService.getById(id) : of(null);
       })
     ),
     {initialValue: null}
