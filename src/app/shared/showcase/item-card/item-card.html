@@ -1,0 +1,29 @@
+<mat-card [routerLink]="routerLink" appearance="outlined" class="item" matRipple role="button">
+  <img [src]="thumbnail | imageUrl" alt="" mat-card-image>
+  <mat-card-header>
+    <mat-card-title>
+      {{ title }}
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <p>
+      {{ description }}
+    </p>
+  </mat-card-content>
+  <mat-card-footer class="technologies-footer">
+    @for (chipSet of chipSets; track chipSet.type) {
+      <mat-chip-set>
+        @for (chip of chipSet.chips; track chip.id) {
+          <mat-chip>
+            <img
+              matChipAvatar
+              [src]="chip.icon | imageUrl"
+              [alt]="chip.name"
+            />
+            {{ chip.name }}
+          </mat-chip>
+        }
+      </mat-chip-set>
+    }
+  </mat-card-footer>
+</mat-card>

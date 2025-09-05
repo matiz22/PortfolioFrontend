@@ -6,6 +6,7 @@ import {MatIconButton} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {ProjectsSection} from '../projects/projects-section/projects-section';
 import {NavigationService} from '../../core/services/navigation.service';
+import {RealizationsSection} from '../realizations/realizations-section/realizations-section';
 
 
 @Component({
@@ -16,7 +17,8 @@ import {NavigationService} from '../../core/services/navigation.service';
     MatDivider,
     MatIconButton,
     MatIconModule,
-    ProjectsSection
+    ProjectsSection,
+    RealizationsSection
   ],
   templateUrl: './home-page.html',
   styleUrl: './home-page.scss'

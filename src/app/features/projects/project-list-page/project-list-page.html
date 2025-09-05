@@ -9,7 +9,14 @@
   @if (projects().length > 0) {
     <div class="container">
       @for (project of projects(); track project.id) {
-        <app-project-item class="flex-item" [project]="project"></app-project-item>
+        <app-item-card class="flex-item"
+                       [title]="project.title"
+                       [description]="project.shortDesc"
+                       [thumbnail]="project.thumbnail"
+                       [routerLink]="['/realization', project.id]"
+                       [chipSets]="[{type:'technologies', chips: project.technologies.map(mapTechnologyToChip)}]"
+
+        ></app-item-card>
       }
     </div>
   } @else {
