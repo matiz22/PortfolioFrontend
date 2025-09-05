@@ -5,7 +5,7 @@ import {toSignal} from '@angular/core/rxjs-interop';
 import {Project} from '../../../core/models/project';
 import {MatIconModule} from '@angular/material/icon';
 import {ItemCard} from '../../../shared/showcase/item-card/item-card';
-import {mapTechnologyToChip} from '../../../shared/showcase/item-card/mappers/technologies.to.chips';
+import {mapTechnologyToChip} from '../../../shared/mappers/technologies.to.chips';
 
 @Component({
   selector: 'app-project-list-page',

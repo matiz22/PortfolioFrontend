@@ -7,8 +7,8 @@ import {RouterLink} from '@angular/router';
 import {MatIconModule} from '@angular/material/icon';
 import {SectionTexts} from '../../../shared/sections/section-texts/section-texts';
 import {ItemCard} from '../../../shared/showcase/item-card/item-card';
-import {mapTechnologyToChip} from '../../../shared/showcase/item-card/mappers/technologies.to.chips';
-import {mapSkillToChip} from '../../../shared/showcase/item-card/mappers/skills.to.chips';
+import {mapTechnologyToChip} from '../../../shared/mappers/technologies.to.chips';
+import {mapSkillToChip} from '../../../shared/mappers/skills.to.chips';
 
 @Component({
   selector: 'app-projects-section',

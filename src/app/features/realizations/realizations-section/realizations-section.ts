@@ -6,8 +6,8 @@ import {MatIconModule} from '@angular/material/icon';
 import {RouterLink} from '@angular/router';
 import {Realization} from '../../../core/models/realization';
 import {ItemCard} from '../../../shared/showcase/item-card/item-card';
-import {mapSkillToChip} from '../../../shared/showcase/item-card/mappers/skills.to.chips';
-import {mapTechnologyToChip} from '../../../shared/showcase/item-card/mappers/technologies.to.chips';
+import {mapSkillToChip} from '../../../shared/mappers/skills.to.chips';
+import {mapTechnologyToChip} from '../../../shared/mappers/technologies.to.chips';
 
 @Component({
   selector: 'app-realizations-section',

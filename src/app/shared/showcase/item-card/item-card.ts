@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {Chip} from './models/chip';
+import {Chip} from '../../models/chip';
 import {
   MatCard,
   MatCardContent,

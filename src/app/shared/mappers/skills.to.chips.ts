@@ -1,4 +1,4 @@
-import {Skill} from '../../../../core/models/skill';
+import {Skill} from '../../core/models/skill';
 import {Chip} from '../models/chip';
 
 export function mapSkillToChip(skill: Skill): Chip {
