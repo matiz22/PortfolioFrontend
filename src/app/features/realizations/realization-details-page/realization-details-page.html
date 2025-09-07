@@ -1,0 +1,9 @@
+@if (realization(); as realization) {
+  <app-item-details-page
+    [title]="realization.title"
+    [thumbnail]="realization.thumbnail"
+    [description]="realization.description"
+    [technologies]="technologies()"
+    [links]="links()"
+  />
+}

@@ -1,0 +1,31 @@
+@use '@angular/material' as mat;
+
+@include mat.core();
+
+.scaled-chip img {
+  border-radius: 0;
+}
+
+
+.project-details-container {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  max-width: 1400px;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.details-section-container {
+  max-width: 1400px;
+  width: 100%;
+}
+
+
+.project-column {
+  flex: 1 1 50%;
+  min-width: 320px;
+  max-width: 40%;
+  box-sizing: border-box;
+}
+
