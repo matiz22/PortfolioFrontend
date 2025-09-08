@@ -8,29 +8,48 @@
 
 <section class="showcase-section">
   <div class="project-details-container">
-    <!--      TODO add technologies and links as parameters to the component not checking if -->
+
     @if (technologies && technologies.length > 0) {
       <div class="project-column">
-        <h4 style="font: var(--mat-sys-headline-small);">
+        <h4 style="font: var(--mat-sys-title-large);">
           Technologies used:
         </h4>
         <mat-chip-set>
           @for (tech of technologies; track tech.id) {
             <mat-chip class="scaled-chip">
-              <img
-                matChipAvatar
-                [src]="tech.icon | imageUrl"
-                [alt]="tech.name"
-              />
+              @if (tech.icon) {
+                <img
+                  matChipAvatar
+                  [src]="tech.icon | imageUrl"
+                  [alt]="tech.name"
+                />
+              }
               {{ tech.name }}
             </mat-chip>
           }
         </mat-chip-set>
       </div>
     }
+
     @if (links && links.length > 0) {
       <div class="project-column">
-        <h4 style="font: var(--mat-sys-headline-small);">
+        <h4 style="font:  var(--mat-sys-title-large);">
+          Links:
+        </h4>
+        @for (link of links; track link.url) {
+          <a [href]="link.url" matFab extended>
+            @if (link.mat_icon) {
+              <mat-icon>{{ link.mat_icon }}</mat-icon>
+            }
+            {{ link.name }}
+          </a>
+        }
+      </div>
+    }
+
+    @if (skills && skills.length > 0) {
+      <div class="project-column">
+        <h4 style="font:  var(--mat-sys-title-large);">
           Links:
         </h4>
         @for (link of links; track link.url) {

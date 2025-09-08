@@ -59,6 +59,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-height: 600px;
 }
 
 .container {
@@ -87,4 +88,8 @@ body {
   .container .flex-item {
     width: calc(33.333% - 11px);
   }
+}
+
+.technologies-footer {
+  padding: 16px;
 }

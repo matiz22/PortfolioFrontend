@@ -3,11 +3,12 @@ import {HeroSection} from '../../hero/hero-section/hero-section';
 import {ImageUrlPipe} from '../../pipes/image-url-pipe';
 import {MarkdownComponent} from 'ngx-markdown';
 import {ScreenshotsSection} from '../../screenshots/screenshots-section/screenshots-section';
-import {Chip} from '../../models/chip';
 import {Link} from '../../models/link';
 import {MatChip, MatChipAvatar, MatChipSet} from '@angular/material/chips';
 import {MatFabButton} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
+import {Skill} from '../../../core/models/skill';
+import {Technology} from '../../../core/models/technology';
 
 @Component({
   selector: 'app-item-details-page',
@@ -30,7 +31,7 @@ export class ItemDetailsPage {
   @Input() thumbnail: string | undefined | null = null;
   @Input() description!: string;
   @Input() screenshots!: string[];
-  @Input() technologies: Chip[] = [];
-  @Input() skills: Chip[] = [];
+  @Input() technologies: Technology[] = [];
+  @Input() skills: Skill[] = [];
   @Input() links: Link[] = [];
 }

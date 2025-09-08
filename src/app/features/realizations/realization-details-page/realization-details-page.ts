@@ -5,7 +5,6 @@ import {toSignal} from '@angular/core/rxjs-interop';
 import {of, switchMap} from 'rxjs';
 import {RealizationsService} from '../../../core/services/realizations.service';
 import {MatIconModule} from '@angular/material/icon';
-import {mapTechnologyToChip} from '../../../shared/mappers/technologies.to.chips';
 import {Link} from '../../../shared/models/link';
 
 @Component({
@@ -18,11 +17,11 @@ import {Link} from '../../../shared/models/link';
   styleUrl: './realization-details-page.scss'
 })
 export class RealizationDetailsPage {
-  technologies = computed(
-    () => this.realization()?.technologies.map(mapTechnologyToChip) ?? []
-  );
+  private readonly clientButtonLabel = $localize`:@@clientButton:Client website`;
+
   private realizationsService: RealizationsService = inject(RealizationsService);
   private route: ActivatedRoute = inject(ActivatedRoute);
+
   realization = toSignal(
     this.route.paramMap.pipe(
       switchMap(params => {
@@ -32,7 +31,7 @@ export class RealizationDetailsPage {
     ),
     {initialValue: null}
   );
-  private readonly clientButtonLabel = $localize`:@@clientButton:Client website`;
+
   links = computed<Link[]>(() => {
     const realization = this.realization();
     if (!realization?.clientUrl) return [];

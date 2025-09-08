@@ -1,5 +1,4 @@
 import {Component, Input} from '@angular/core';
-import {Chip} from '../../models/chip';
 import {
   MatCard,
   MatCardContent,
@@ -10,7 +9,6 @@ import {
 } from '@angular/material/card';
 import {MatRippleModule} from '@angular/material/core';
 import {ImageUrlPipe} from '../../pipes/image-url-pipe';
-import {MatChip, MatChipAvatar, MatChipSet} from '@angular/material/chips';
 import {RouterLink} from '@angular/router';
 
 @Component({
@@ -23,9 +21,6 @@ import {RouterLink} from '@angular/router';
     MatCardContent,
     MatCardTitle,
     MatCardImage,
-    MatChipSet,
-    MatChip,
-    MatChipAvatar,
     MatCardFooter,
     RouterLink
   ],
@@ -34,9 +29,6 @@ import {RouterLink} from '@angular/router';
 })
 export class ItemCard {
   @Input() title!: string;
-  @Input() description?: string;
   @Input() thumbnail?: string | null;
   @Input() routerLink?: any[];
-
-  @Input() chipSets: { type: string, chips: Chip[]; }[] = [];
 }

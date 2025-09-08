@@ -5,10 +5,9 @@ import {toSignal} from '@angular/core/rxjs-interop';
 import {MatButtonModule} from '@angular/material/button';
 import {RouterLink} from '@angular/router';
 import {MatIconModule} from '@angular/material/icon';
-import {SectionTexts} from '../../../shared/sections/section-texts/section-texts';
 import {ItemCard} from '../../../shared/showcase/item-card/item-card';
-import {mapTechnologyToChip} from '../../../shared/mappers/technologies.to.chips';
-import {mapSkillToChip} from '../../../shared/mappers/skills.to.chips';
+import {ImageUrlPipe} from '../../../shared/pipes/image-url-pipe';
+import {MatChip, MatChipAvatar, MatChipSet} from '@angular/material/chips';
 
 @Component({
   selector: 'app-projects-section',
@@ -16,8 +15,11 @@ import {mapSkillToChip} from '../../../shared/mappers/skills.to.chips';
     MatIconModule,
     RouterLink,
     MatButtonModule,
-    SectionTexts,
     ItemCard,
+    ImageUrlPipe,
+    MatChip,
+    MatChipAvatar,
+    MatChipSet,
   ],
   templateUrl: './projects-section.html',
   styleUrl: './projects-section.scss'
@@ -25,7 +27,4 @@ import {mapSkillToChip} from '../../../shared/mappers/skills.to.chips';
 export class ProjectsSection {
   projectService: ProjectsService = inject(ProjectsService);
   projects = toSignal(this.projectService.getHomeItems(), {initialValue: [] as Project[]});
-
-  protected readonly mapTechnologyToChip = mapTechnologyToChip;
-  protected readonly mapSkillToChip = mapSkillToChip;
 }

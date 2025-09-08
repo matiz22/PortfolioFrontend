@@ -6,7 +6,6 @@ import {of, switchMap} from 'rxjs';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {ItemDetailsPage} from '../../../shared/showcase/item-details-page/item-details-page';
-import {mapTechnologyToChip} from '../../../shared/mappers/technologies.to.chips';
 import {Link} from '../../../shared/models/link';
 
 @Component({
@@ -22,9 +21,6 @@ import {Link} from '../../../shared/models/link';
 })
 
 export class ProjectDetailsPage {
-  technologies = computed(
-    () => this.project()?.technologies.map(mapTechnologyToChip) ?? []
-  );
   private readonly projectService = inject(ProjectsService);
   private readonly route = inject(ActivatedRoute);
   project = toSignal(

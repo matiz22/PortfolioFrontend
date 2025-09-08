@@ -1,21 +1,23 @@
 import {Component, inject} from '@angular/core';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {RealizationsService} from '../../../core/services/realizations.service';
-import {SectionTexts} from '../../../shared/sections/section-texts/section-texts';
 import {MatIconModule} from '@angular/material/icon';
 import {RouterLink} from '@angular/router';
 import {Realization} from '../../../core/models/realization';
 import {ItemCard} from '../../../shared/showcase/item-card/item-card';
-import {mapSkillToChip} from '../../../shared/mappers/skills.to.chips';
-import {mapTechnologyToChip} from '../../../shared/mappers/technologies.to.chips';
+import {ImageUrlPipe} from '../../../shared/pipes/image-url-pipe';
+import {MatChip, MatChipAvatar, MatChipSet} from '@angular/material/chips';
 
 @Component({
   selector: 'app-realizations-section',
   imports: [
-    SectionTexts,
     MatIconModule,
     RouterLink,
-    ItemCard
+    ItemCard,
+    ImageUrlPipe,
+    MatChip,
+    MatChipAvatar,
+    MatChipSet
   ],
   templateUrl: './realizations-section.html',
   styleUrl: './realizations-section.scss'
@@ -23,6 +25,4 @@ import {mapTechnologyToChip} from '../../../shared/mappers/technologies.to.chips
 export class RealizationsSection {
   realizationsService: RealizationsService = inject(RealizationsService);
   realizations = toSignal(this.realizationsService.getAll(), {initialValue: [] as Realization[]});
-  protected readonly mapSkillToChip = mapSkillToChip;
-  protected readonly mapTechnologyToChip = mapTechnologyToChip;
 }
