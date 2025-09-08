@@ -3,17 +3,18 @@ import {Skill} from './skill';
 
 export interface Job {
   id: number;
-  company_name: string;
+  companyName: string;
   title: string;
+  thumbnail: string;
   location: string;
-  start_date: Date;
-  end_date: Date | null;
-  is_current: boolean;
+  startDate: Date;
+  endDate: Date | null;
+  isCurrent: boolean;
   description: string | null;
   order: number;
-  created_at: Date;
-  updated_at: Date;
-  home_page: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  homePage: boolean;
   technologies: Technology[];
   skills: Skill[];
 }

@@ -6,11 +6,13 @@ import {mapTechnology} from './technology';
 export function mapJob(dto: JobDto): Job {
   return {
     ...dto,
-    start_date: new Date(dto.start_date),
-    end_date: dto.end_date ? new Date(dto.end_date) : null,
-    created_at: new Date(dto.created_at),
-    updated_at: new Date(dto.updated_at),
+    companyName: dto.company_name,
+    homePage: false, isCurrent: false,
+    startDate: new Date(dto.start_date),
+    endDate: dto.end_date ? new Date(dto.end_date) : null,
+    createdAt: new Date(dto.created_at),
+    updatedAt: new Date(dto.updated_at),
     technologies: dto.technologies.map(mapTechnology),
-    skills: dto.skills.map(mapSkill),
+    skills: dto.skills.map(mapSkill)
   };
 }

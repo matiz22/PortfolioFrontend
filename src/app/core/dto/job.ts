@@ -5,6 +5,7 @@ export interface JobDto {
   id: number;
   company_name: string;
   title: string;
+  thumbnail: string;
   location: string;
   start_date: string;
   end_date: string | null;
