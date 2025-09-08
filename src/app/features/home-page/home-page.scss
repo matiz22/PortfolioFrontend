@@ -19,3 +19,20 @@
 .icon-display {
   transform: scale(2);
 }
+
+.tabs {
+  width: 1400px;
+  min-height: 800px;
+}
+
+
+.tabs-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tab-icon-margin {
+  margin-right: 4px;
+}

@@ -8,8 +8,8 @@
 
 <div class="nav-link">
   <button (click)="scrollToAbout()" class="icon-display" mat-icon-button>
-      <mat-icon style="fill: var(--mat-sys-primary)">keyboard_arrow_down</mat-icon>
-    </button>
+    <mat-icon style="fill: var(--mat-sys-primary)">keyboard_arrow_down</mat-icon>
+  </button>
 </div>
 
 <app-about-me>
@@ -18,14 +18,36 @@
 
 <mat-divider class="section-divider"></mat-divider>
 
-<app-projects-section>
+<app-section-texts
+  [title]="'Watch out some of my work'"
+>
 
-</app-projects-section>
+</app-section-texts>
+
+<div class="tabs-container">
+  <mat-tab-group class="tabs" dynamicHeight>
+
+    <mat-tab label="First">
+      <app-projects-section>
+      </app-projects-section>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon-margin">code</mat-icon>
+        <p>Projects</p>
+      </ng-template>
+    </mat-tab>
+
+    <mat-tab label="Second">
+      <app-realizations-section>
+      </app-realizations-section>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon-margin">workspace_premium</mat-icon>
+        <p>Realization</p>
+      </ng-template>
+    </mat-tab>
+    <mat-tab label="Third"> Content 3</mat-tab>
+  </mat-tab-group>
+</div>
 
 <mat-divider class="section-divider"></mat-divider>
-
-<app-realizations-section>
-
-</app-realizations-section>
 
 

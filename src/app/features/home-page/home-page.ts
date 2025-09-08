@@ -7,6 +7,8 @@ import {MatIconModule} from '@angular/material/icon';
 import {ProjectsSection} from '../projects/projects-section/projects-section';
 import {NavigationService} from '../../core/services/navigation.service';
 import {RealizationsSection} from '../realizations/realizations-section/realizations-section';
+import {MatTab, MatTabGroup, MatTabLabel} from '@angular/material/tabs';
+import {SectionTexts} from '../../shared/sections/section-texts/section-texts';
 
 
 @Component({
@@ -18,7 +20,11 @@ import {RealizationsSection} from '../realizations/realizations-section/realizat
     MatIconButton,
     MatIconModule,
     ProjectsSection,
-    RealizationsSection
+    RealizationsSection,
+    MatTab,
+    MatTabGroup,
+    MatTabLabel,
+    SectionTexts
   ],
   templateUrl: './home-page.html',
   styleUrl: './home-page.scss'
