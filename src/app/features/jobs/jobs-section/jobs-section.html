@@ -9,10 +9,18 @@
                        [routerLink]="['/job', job.id]"
         >
           <div content>
-            <div class="job-dates">
-              <p>{{ job.startDate | date:"MMM yyyy" }} - {{ job.endDate  | date:"MMM yyyy" }}</p>
+            <div class="detail">
+              <mat-icon>location_on</mat-icon>
+              <p>{{ job.location }}</p>
             </div>
-            <p>{{ job.description }}</p>
+            <div class="detail">
+              <mat-icon>calendar_month</mat-icon>
+              @if (job.isCurrent) {
+                <p> {{ job.startDate | date:"MMM yyyy" }} </p> <p> - </p> <p> Present</p>
+              } @else {
+                <p>{{ job.startDate | date:"MMM yyyy" }}</p> <p> - </p> <p>{{ job.endDate  | date:"MMM yyyy" }}</p>
+              }
+            </div>
           </div>
           <div footer>
             @if (job.technologies.length > 0) {

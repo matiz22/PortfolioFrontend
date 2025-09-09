@@ -6,6 +6,7 @@ import {toSignal} from '@angular/core/rxjs-interop';
 import {JobsService} from '../../../core/services/jobs.service';
 import {Job} from '../../../core/models/job';
 import {DatePipe} from '@angular/common';
+import {MatIconModule} from '@angular/material/icon';
 
 @Component({
   selector: 'app-jobs-section',
@@ -15,7 +16,8 @@ import {DatePipe} from '@angular/common';
     MatChip,
     MatChipAvatar,
     MatChipSet,
-    DatePipe
+    DatePipe,
+    MatIconModule
   ],
   templateUrl: './jobs-section.html',
   styleUrl: './jobs-section.scss'
