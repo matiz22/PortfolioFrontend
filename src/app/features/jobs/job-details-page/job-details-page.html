@@ -1,0 +1,10 @@
+@if (job(); as job) {
+  <app-item-details-page
+    [title]="job.title"
+    [subtitle]="job.companyName"
+    [thumbnail]="job.thumbnail"
+    [description]="job.description"
+    [technologies]="job.technologies"
+    [skills]="job.skills"
+  />
+}
