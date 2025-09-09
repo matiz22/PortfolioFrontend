@@ -5,6 +5,7 @@ import {ItemCard} from "../../../shared/showcase/item-card/item-card";
 import {MatChip, MatChipAvatar, MatChipSet} from "@angular/material/chips";
 import {Job} from '../../../core/models/job';
 import {MatIconModule} from '@angular/material/icon';
+import {MatDivider} from '@angular/material/divider';
 
 @Component({
   selector: 'app-job-item',
@@ -15,7 +16,8 @@ import {MatIconModule} from '@angular/material/icon';
     MatChip,
     MatChipAvatar,
     MatChipSet,
-    MatIconModule
+    MatIconModule,
+    MatDivider
   ],
   templateUrl: './job-item.html',
   styleUrl: './job-item.scss'
