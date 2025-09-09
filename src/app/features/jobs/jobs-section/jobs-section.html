@@ -1,0 +1,55 @@
+<div class="showcase-section">
+  @if (jobs().length > 0) {
+    <div class="container">
+      @for (job of jobs(); track job.id) {
+        <app-item-card class="flex-item"
+                       [title]="job.title"
+                       [subtitle]="job.companyName"
+                       [thumbnail]="job.thumbnail"
+                       [routerLink]="['/job', job.id]"
+        >
+          <div content>
+            <div class="job-dates">
+              <p>{{ job.startDate | date:"MMM yyyy" }} - {{ job.endDate  | date:"MMM yyyy" }}</p>
+            </div>
+            <p>{{ job.description }}</p>
+          </div>
+          <div footer>
+            @if (job.technologies.length > 0) {
+              <div footer>
+                <mat-chip-set class="technologies-footer">
+                  @for (skill of job.skills; track skill.id) {
+                    <mat-chip>
+                      <img
+                        style="border-radius: 0"
+                        matChipAvatar
+                        [src]="skill.icon | imageUrl"
+                        [alt]="skill.name"
+                      />
+                      {{ skill.name }}
+                    </mat-chip>
+                  }
+                </mat-chip-set>
+              </div>
+            }
+          </div>
+        </app-item-card>
+      }
+    </div>
+  } @else {
+    @if (jobs().length === 0) {
+      <li>No items</li>
+    } @else {
+      <li>Loading…</li>
+    }
+  }
+
+  <!--  <div class="button-margins">-->
+  <!--    <a extended matFab routerLink="projects">-->
+  <!--      <mat-icon>workspaces</mat-icon>-->
+  <!--      <p>View All Realizations</p>-->
+  <!--    </a>-->
+  <!--  </div>-->
+
+</div>
+
