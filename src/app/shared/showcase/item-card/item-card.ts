@@ -5,6 +5,7 @@ import {
   MatCardFooter,
   MatCardHeader,
   MatCardImage,
+  MatCardSubtitle,
   MatCardTitle
 } from '@angular/material/card';
 import {MatRippleModule} from '@angular/material/core';
@@ -22,13 +23,15 @@ import {RouterLink} from '@angular/router';
     MatCardTitle,
     MatCardImage,
     MatCardFooter,
-    RouterLink
+    RouterLink,
+    MatCardSubtitle
   ],
   templateUrl: './item-card.html',
   styleUrl: './item-card.scss'
 })
 export class ItemCard {
   @Input() title!: string;
+  @Input() subtitle?: string;
   @Input() thumbnail?: string | null;
   @Input() routerLink?: any[];
 }
