@@ -25,7 +25,7 @@ export class EducationService implements ICrudService<Education>,
 
 
   constructor(private http: HttpClient) {
-    this.baseUrl = `${environment.apiUrl}/${environment.version}/jobs/translated`;
+    this.baseUrl = `${environment.apiUrl}/${environment.version}/education/translated`;
     this.homeUrl = `${this.baseUrl}/home-page`;
 
     this.crudOps = new CrudOperations(http, this.baseUrl, mapEducation, this.entityName);
