@@ -6,6 +6,7 @@ export interface Job {
   companyName: string;
   title: string;
   thumbnail: string;
+  published: boolean;
   location: string;
   startDate: Date;
   endDate: Date | null;

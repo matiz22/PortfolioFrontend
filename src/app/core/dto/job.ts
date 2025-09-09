@@ -6,6 +6,7 @@ export interface JobDto {
   company_name: string;
   title: string;
   thumbnail: string;
+  published: boolean;
   location: string;
   start_date: string;
   end_date: string | null;
