@@ -10,7 +10,7 @@ export interface Job {
   startDate: Date;
   endDate: Date | null;
   isCurrent: boolean;
-  description: string | null;
+  description: string;
   order: number;
   createdAt: Date;
   updatedAt: Date;

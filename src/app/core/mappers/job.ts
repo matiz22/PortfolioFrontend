@@ -7,7 +7,8 @@ export function mapJob(dto: JobDto): Job {
   return {
     ...dto,
     companyName: dto.company_name,
-    homePage: false, isCurrent: false,
+    homePage: dto.home_page,
+    isCurrent: dto.is_current,
     startDate: new Date(dto.start_date),
     endDate: dto.end_date ? new Date(dto.end_date) : null,
     createdAt: new Date(dto.created_at),
