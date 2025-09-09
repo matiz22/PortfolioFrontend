@@ -1,0 +1,28 @@
+<app-item-card
+  [routerLink]="['/realization', realization.id]"
+  [thumbnail]="realization.thumbnail"
+  [title]="realization.title"
+>
+  <div content>
+    <p>{{ realization.shortDesc }}</p>
+  </div>
+  <div footer>
+    @if (realization.technologies.length > 0) {
+      <div footer>
+        <mat-chip-set class="technologies-footer">
+          @for (skill of realization.skills; track skill.id) {
+            <mat-chip>
+              <img
+                style="border-radius: 0"
+                matChipAvatar
+                [src]="skill.icon | imageUrl"
+                [alt]="skill.name"
+              />
+              {{ skill.name }}
+            </mat-chip>
+          }
+        </mat-chip-set>
+      </div>
+    }
+  </div>
+</app-item-card>

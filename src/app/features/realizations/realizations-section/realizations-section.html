@@ -2,34 +2,7 @@
   @if (realizations().length > 0) {
     <div class="container">
       @for (realization of realizations(); track realization.id) {
-        <app-item-card class="flex-item"
-                       [title]="realization.title"
-                       [thumbnail]="realization.thumbnail"
-                       [routerLink]="['/realization', realization.id]"
-        >
-          <div content>
-            <p>{{ realization.shortDesc }}</p>
-          </div>
-          <div footer>
-            @if (realization.technologies.length > 0) {
-              <div footer>
-                <mat-chip-set class="technologies-footer">
-                  @for (skill of realization.skills; track skill.id) {
-                    <mat-chip>
-                      <img
-                        style="border-radius: 0"
-                        matChipAvatar
-                        [src]="skill.icon | imageUrl"
-                        [alt]="skill.name"
-                      />
-                      {{ skill.name }}
-                    </mat-chip>
-                  }
-                </mat-chip-set>
-              </div>
-            }
-          </div>
-        </app-item-card>
+        <app-realization-item class="flex-item" [realization]="realization"></app-realization-item>
       }
     </div>
   } @else {
