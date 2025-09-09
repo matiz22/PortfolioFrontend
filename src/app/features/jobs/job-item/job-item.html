@@ -13,9 +13,13 @@
     <div class="detail">
       <mat-icon>calendar_month</mat-icon>
       @if (job.isCurrent) {
-        <p> {{ job.startDate | date:"MMM yyyy" }} </p> <p> - </p> <p> Present</p>
+        <p> {{ job.startDate | date:"MMM yyyy" }} </p>
+        <p> - </p>
+        <p> Present</p>
       } @else {
-        <p>{{ job.startDate | date:"MMM yyyy" }}</p> <p> - </p> <p>{{ job.endDate  | date:"MMM yyyy" }}</p>
+        <p>{{ job.startDate | date:"MMM yyyy" }}</p>
+        <p> - </p>
+        <p>{{ job.endDate  | date:"MMM yyyy" }}</p>
       }
     </div>
   </div>
