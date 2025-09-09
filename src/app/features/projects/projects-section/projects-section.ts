@@ -5,9 +5,7 @@ import {toSignal} from '@angular/core/rxjs-interop';
 import {MatButtonModule} from '@angular/material/button';
 import {RouterLink} from '@angular/router';
 import {MatIconModule} from '@angular/material/icon';
-import {ItemCard} from '../../../shared/showcase/item-card/item-card';
-import {ImageUrlPipe} from '../../../shared/pipes/image-url-pipe';
-import {MatChip, MatChipAvatar, MatChipSet} from '@angular/material/chips';
+import {ProjectItem} from '../project-item/project-item';
 
 @Component({
   selector: 'app-projects-section',
@@ -15,11 +13,7 @@ import {MatChip, MatChipAvatar, MatChipSet} from '@angular/material/chips';
     MatIconModule,
     RouterLink,
     MatButtonModule,
-    ItemCard,
-    ImageUrlPipe,
-    MatChip,
-    MatChipAvatar,
-    MatChipSet,
+    ProjectItem,
   ],
   templateUrl: './projects-section.html',
   styleUrl: './projects-section.scss'

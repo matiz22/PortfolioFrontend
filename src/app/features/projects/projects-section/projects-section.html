@@ -2,33 +2,7 @@
   @if (projects().length > 0) {
     <div class="container">
       @for (project of projects(); track project.id) {
-        <app-item-card class="flex-item"
-                       [title]="project.title"
-                       [thumbnail]="project.thumbnail"
-                       [routerLink]="['/project', project.id]">
-
-          <div content>
-            <p>{{ project.shortDesc }}</p>
-          </div>
-
-          @if (project.technologies.length > 0) {
-            <div footer>
-              <mat-chip-set class="technologies-footer">
-                @for (technology of project.technologies; track technology.id) {
-                  <mat-chip>
-                    <img
-                      style="border-radius: 0"
-                      matChipAvatar
-                      [src]="technology.icon | imageUrl"
-                      [alt]="technology.name"
-                    />
-                    {{ technology.name }}
-                  </mat-chip>
-                }
-              </mat-chip-set>
-            </div>
-          }
-        </app-item-card>
+        <app-project-item class="flex-item" [project]="project"></app-project-item>
       }
     </div>
   } @else {
