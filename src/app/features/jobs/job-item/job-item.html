@@ -1,0 +1,40 @@
+<app-item-card
+  [routerLink]="['/job', job.id]"
+  [subtitle]="job.companyName"
+  [thumbnail]="job.thumbnail"
+  [title]="job.title"
+>
+  <div content>
+    <div class="detail">
+      <mat-icon>location_on</mat-icon>
+      <p>{{ job.location }}</p>
+    </div>
+    <div class="detail">
+      <mat-icon>calendar_month</mat-icon>
+      @if (job.isCurrent) {
+        <p> {{ job.startDate | date:"MMM yyyy" }} </p> <p> - </p> <p> Present</p>
+      } @else {
+        <p>{{ job.startDate | date:"MMM yyyy" }}</p> <p> - </p> <p>{{ job.endDate  | date:"MMM yyyy" }}</p>
+      }
+    </div>
+  </div>
+  <div footer>
+    @if (job.technologies.length > 0) {
+      <div footer>
+        <mat-chip-set class="technologies-footer">
+          @for (skill of job.skills; track skill.id) {
+            <mat-chip>
+              <img
+                style="border-radius: 0"
+                matChipAvatar
+                [src]="skill.icon | imageUrl"
+                [alt]="skill.name"
+              />
+              {{ skill.name }}
+            </mat-chip>
+          }
+        </mat-chip-set>
+      </div>
+    }
+  </div>
+</app-item-card>
