@@ -28,6 +28,7 @@ import {Technology} from '../../../core/models/technology';
 })
 export class ItemDetailsPage {
   @Input() title!: string;
+  @Input() subtitle?: string;
   @Input() thumbnail: string | undefined | null = null;
   @Input() description!: string;
   @Input() screenshots!: string[];

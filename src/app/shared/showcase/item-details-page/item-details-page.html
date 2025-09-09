@@ -1,6 +1,6 @@
 <app-hero-section
   [cardImage]="thumbnail | imageUrl"
-  [cardSubtitle]="''"
+  [cardSubtitle]="subtitle"
   [cardTitle]=title
 >
 
@@ -50,16 +50,22 @@
     @if (skills && skills.length > 0) {
       <div class="project-column">
         <h4 style="font:  var(--mat-sys-title-large);">
-          Links:
+          Skills:
         </h4>
-        @for (link of links; track link.url) {
-          <a [href]="link.url" matFab extended>
-            @if (link.mat_icon) {
-              <mat-icon>{{ link.mat_icon }}</mat-icon>
-            }
-            {{ link.name }}
-          </a>
-        }
+        <mat-chip-set>
+          @for (skill of skills; track skill.id) {
+            <mat-chip class="scaled-chip">
+              @if (skill.icon) {
+                <img
+                  matChipAvatar
+                  [src]="skill.icon | imageUrl"
+                  [alt]="skill.name"
+                />
+              }
+              {{ skill.name }}
+            </mat-chip>
+          }
+        </mat-chip-set>
       </div>
     }
   </div>
