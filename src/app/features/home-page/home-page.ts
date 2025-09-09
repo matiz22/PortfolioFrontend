@@ -9,6 +9,7 @@ import {NavigationService} from '../../core/services/navigation.service';
 import {RealizationsSection} from '../realizations/realizations-section/realizations-section';
 import {MatTab, MatTabGroup, MatTabLabel} from '@angular/material/tabs';
 import {SectionTexts} from '../../shared/sections/section-texts/section-texts';
+import {JobsSection} from '../jobs/jobs-section/jobs-section';
 
 
 @Component({
@@ -24,7 +25,8 @@ import {SectionTexts} from '../../shared/sections/section-texts/section-texts';
     MatTab,
     MatTabGroup,
     MatTabLabel,
-    SectionTexts
+    SectionTexts,
+    JobsSection
   ],
   templateUrl: './home-page.html',
   styleUrl: './home-page.scss'

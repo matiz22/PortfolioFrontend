@@ -16,8 +16,6 @@
 
 </app-about-me>
 
-<mat-divider class="section-divider"></mat-divider>
-
 <app-section-texts
   [title]="'Watch out some of my work'"
 >
@@ -25,29 +23,46 @@
 </app-section-texts>
 
 <div class="tabs-container">
-  <mat-tab-group class="tabs" dynamicHeight>
+  <mat-tab-group class="tabs" dynamicHeight mat-align-tabs="center" mat-stretch-tabs="false">
 
-    <mat-tab label="First">
+    <mat-tab>
       <app-projects-section>
       </app-projects-section>
       <ng-template mat-tab-label>
-        <mat-icon class="tab-icon-margin">code</mat-icon>
-        <p>Projects</p>
+        <div class="tabs-labels">
+          <mat-icon class="tab-icon-margin">code</mat-icon>
+          <p>Projects</p>
+        </div>
       </ng-template>
     </mat-tab>
 
-    <mat-tab label="Second">
+    <mat-tab>
       <app-realizations-section>
       </app-realizations-section>
       <ng-template mat-tab-label>
+        <div class="tabs-labels">
         <mat-icon class="tab-icon-margin">workspace_premium</mat-icon>
         <p>Realization</p>
+        </div>
       </ng-template>
     </mat-tab>
-    <mat-tab label="Third"> Content 3</mat-tab>
+    <mat-tab>
+      <app-jobs-section>
+      </app-jobs-section>
+      <ng-template mat-tab-label>
+        <div class="tabs-labels">
+          <mat-icon class="tab-icon-margin">work_history</mat-icon>
+          <p>Jobs</p>
+        </div>
+      </ng-template>
+    </mat-tab>
   </mat-tab-group>
 </div>
 
 <mat-divider class="section-divider"></mat-divider>
 
+<app-section-texts
+  [title]="'Learning Journey'"
+>
+</app-section-texts>
 

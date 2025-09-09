@@ -21,7 +21,7 @@
 }
 
 .tabs {
-  width: 1400px;
+  width: 100%;
   min-height: 800px;
 }
 
@@ -34,5 +34,17 @@
 }
 
 .tab-icon-margin {
-  margin-right: 4px;
+  margin-right: 8px;
+}
+
+.tabs-labels {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+  min-width: 180px;
+}
+
+.tabs-labels p {
+  margin-block-end: 12px;
 }
