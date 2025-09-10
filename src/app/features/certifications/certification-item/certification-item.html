@@ -1,0 +1,51 @@
+<app-item-card
+  [routerLink]="['/education', certification.id]"
+  [thumbnail]="certification.thumbnail"
+  [title]="certification.name"
+>
+  <div content>
+    <mat-divider style="margin: 20px 0"></mat-divider>
+    <div class="detail">
+      <mat-icon>account_balance</mat-icon>
+      <p>{{ certification.issuingOrganization }}</p>
+    </div>
+    <div class="detail">
+      <mat-icon>calendar_month</mat-icon>
+      <p>Issued date: {{ certification.issueDate | date:"MMM yyyy" }}</p>
+    </div>
+  </div>
+  <div footer>
+    <mat-chip-set class="technologies-footer">
+      @if (certification.skills.length > 0) {
+        @for (skill of certification.skills; track skill.id) {
+          <mat-chip>
+            @if (skill.icon) {
+              <img
+                style="border-radius: 0"
+                matChipAvatar
+                [src]="skill.icon | imageUrl"
+                [alt]="skill.name"
+              />
+            }
+            {{ skill.name }}
+          </mat-chip>
+        }
+      }
+      @if (certification.technologies.length > 0) {
+        @for (technology of certification.technologies; track technology.id) {
+          <mat-chip>
+            @if (technology.icon) {
+              <img
+                style="border-radius: 0"
+                matChipAvatar
+                [src]="technology.icon | imageUrl"
+                [alt]="technology.name"
+              />
+            }
+            {{ technology.name }}
+          </mat-chip>
+        }
+      }
+    </mat-chip-set>
+  </div>
+</app-item-card>
