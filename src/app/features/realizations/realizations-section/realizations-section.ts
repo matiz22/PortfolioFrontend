@@ -16,5 +16,5 @@ import {RealizationItem} from '../realization-item/realization-item';
 })
 export class RealizationsSection {
   realizationsService: RealizationsService = inject(RealizationsService);
-  realizations = toSignal(this.realizationsService.getAll(), {initialValue: [] as Realization[]});
+  realizations = toSignal(this.realizationsService.getHomeItems(), {initialValue: [] as Realization[]});
 }

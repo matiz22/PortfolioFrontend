@@ -16,5 +16,5 @@ import {JobItem} from '../job-item/job-item';
 })
 export class JobsSection {
   jobsService: JobsService = inject(JobsService);
-  jobs = toSignal(this.jobsService.getAll(), {initialValue: [] as Job[]});
+  jobs = toSignal(this.jobsService.getHomeItems(), {initialValue: [] as Job[]});
 }
