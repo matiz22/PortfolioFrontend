@@ -1,0 +1,23 @@
+<div class="showcase-section">
+  @if (educationList().length > 0) {
+    <div class="container">
+      @for (education of educationList(); track education.id) {
+        <app-education-item class="flex-item" [education]="education"></app-education-item>
+      }
+    </div>
+  } @else {
+    @if (educationList().length === 0) {
+      <li>No items</li>
+    } @else {
+      <li>Loading…</li>
+    }
+  }
+
+  <!--  <div class="button-margins">-->
+  <!--    <a extended matFab routerLink="projects">-->
+  <!--      <mat-icon>workspaces</mat-icon>-->
+  <!--      <p>View All Realizations</p>-->
+  <!--    </a>-->
+  <!--  </div>-->
+
+</div>
