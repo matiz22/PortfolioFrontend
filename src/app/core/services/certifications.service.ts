@@ -25,7 +25,7 @@ export class CertificationsService implements ICrudService<Certification>,
 
 
   constructor(private http: HttpClient) {
-    this.baseUrl = `${environment.apiUrl}/${environment.version}/certification/translated`;
+    this.baseUrl = `${environment.apiUrl}/${environment.version}/certifications/translated`;
     this.homeUrl = `${this.baseUrl}/home-page`;
 
     this.crudOps = new CrudOperations(http, this.baseUrl, mapCertification, this.entityName);
