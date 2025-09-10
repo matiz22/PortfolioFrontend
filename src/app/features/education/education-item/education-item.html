@@ -1,0 +1,69 @@
+<app-item-card
+  [routerLink]="['/education', education.id]"
+  [subtitle]="education.degree"
+  [thumbnail]="education.thumbnail"
+  [title]="education.fieldOfStudy"
+>
+  <div content>
+    <mat-divider style="margin: 20px 0"></mat-divider>
+    <div class="detail">
+      <mat-icon>location_on</mat-icon>
+      <p>{{ education.institution }}</p>
+    </div>
+    <div class="detail">
+      <mat-icon>calendar_month</mat-icon>
+      @if (education.isCurrent) {
+        <p> {{ education.startDate | date:"MMM yyyy" }} </p>
+        <p> - </p>
+        <p> Present</p>
+      } @else {
+        <p>{{ education.startDate | date:"MMM yyyy" }}</p>
+        <p> - </p>
+        <p>{{ education.endDate  | date:"MMM yyyy" }}</p>
+      }
+    </div>
+    @if (!education.isCurrent) {
+      <div class="detail">
+        <mat-icon>star</mat-icon>
+        <p>Grade: {{ education.grade }}</p>
+      </div>
+    }
+  </div>
+  <div footer>
+
+    <div>
+      <mat-chip-set class="technologies-footer">
+        @if (education.skills.length > 0) {
+          @for (skill of education.skills; track skill.id) {
+            <mat-chip>
+              @if (skill.icon) {
+                <img
+                  style="border-radius: 0"
+                  matChipAvatar
+                  [src]="skill.icon | imageUrl"
+                  [alt]="skill.name"
+                />
+              }
+              {{ skill.name }}
+            </mat-chip>
+          }
+        }
+        @if (education.technologies.length > 0) {
+          @for (technology of education.technologies; track technology.id) {
+            <mat-chip>
+              @if (technology.icon) {
+                <img
+                  style="border-radius: 0"
+                  matChipAvatar
+                  [src]="technology.icon | imageUrl"
+                  [alt]="technology.name"
+                />
+              }
+              {{ technology.name }}
+            </mat-chip>
+          }
+        }
+      </mat-chip-set>
+    </div>
+  </div>
+</app-item-card>
