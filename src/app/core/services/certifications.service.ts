@@ -13,7 +13,7 @@ import {CertificationDto} from '../dto/certification';
 @Injectable({
   providedIn: 'root'
 })
-export class CertificationService implements ICrudService<Certification>,
+export class CertificationsService implements ICrudService<Certification>,
   IHomeService<Certification> {
 
   private readonly baseUrl: string;
