@@ -41,7 +41,7 @@
       </app-realizations-section>
       <ng-template mat-tab-label>
         <div class="tabs-labels">
-        <mat-icon class="tab-icon-margin">workspace_premium</mat-icon>
+          <mat-icon class="tab-icon-margin">check_circle</mat-icon>
         <p>Realization</p>
         </div>
       </ng-template>
@@ -66,3 +66,30 @@
 >
 </app-section-texts>
 
+<div class="tabs-container">
+  <mat-tab-group class="tabs" dynamicHeight mat-align-tabs="center" mat-stretch-tabs="false">
+
+    <mat-tab>
+      <app-education-section>
+      </app-education-section>
+      <ng-template mat-tab-label>
+        <div class="tabs-labels">
+          <mat-icon class="tab-icon-margin">school</mat-icon>
+          <p>Education</p>
+        </div>
+      </ng-template>
+    </mat-tab>
+
+    <mat-tab>
+      <app-certification-section>
+      </app-certification-section>
+      <ng-template mat-tab-label>
+        <div class="tabs-labels">
+          <mat-icon class="tab-icon-margin">workspace_premium</mat-icon>
+          <p>Certifications</p>
+        </div>
+      </ng-template>
+    </mat-tab>
+
+  </mat-tab-group>
+</div>

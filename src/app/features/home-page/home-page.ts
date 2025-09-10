@@ -10,6 +10,8 @@ import {RealizationsSection} from '../realizations/realizations-section/realizat
 import {MatTab, MatTabGroup, MatTabLabel} from '@angular/material/tabs';
 import {SectionTexts} from '../../shared/sections/section-texts/section-texts';
 import {JobsSection} from '../jobs/jobs-section/jobs-section';
+import {EducationSection} from '../education/education-section/education-section';
+import {CertificationSection} from '../certifications/certification-section/certification-section';
 
 
 @Component({
@@ -26,7 +28,9 @@ import {JobsSection} from '../jobs/jobs-section/jobs-section';
     MatTabGroup,
     MatTabLabel,
     SectionTexts,
-    JobsSection
+    JobsSection,
+    EducationSection,
+    CertificationSection
   ],
   templateUrl: './home-page.html',
   styleUrl: './home-page.scss'
