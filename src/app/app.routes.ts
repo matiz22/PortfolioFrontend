@@ -5,6 +5,9 @@ import {ProjectListPage} from './features/projects/project-list-page/project-lis
 import {RealizationDetailsPage} from './features/realizations/realization-details-page/realization-details-page';
 import {JobDetailsPage} from './features/jobs/job-details-page/job-details-page';
 import {EducationDetailsPage} from './features/education/education-details-page/education-details-page';
+import {
+  CertificationDetailsPage
+} from './features/certifications/certification-details-page/certification-details-page';
 
 export const routes: Routes = [
   {
@@ -31,5 +34,9 @@ export const routes: Routes = [
   {
     path: 'education/:id',
     component: EducationDetailsPage,
+  },
+  {
+    path: 'certification/:id',
+    component: CertificationDetailsPage,
   },
 ];
