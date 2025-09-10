@@ -1,0 +1,11 @@
+@if (certification(); as certification) {
+  <app-item-details-page
+    [title]="certification.name"
+    [subtitle]="certification.issuingOrganization"
+    [thumbnail]="certification.thumbnail"
+    [description]="certification.description"
+    [technologies]="certification.technologies"
+    [skills]="certification.skills"
+    [links]="links()"
+  />
+}
