@@ -1,0 +1,24 @@
+<div class="showcase-section">
+  @if (certifications().length > 0) {
+    <div class="container">
+      @for (job of certifications(); track job.id) {
+        <app-certification-item class="flex-item" [certification]="job"></app-certification-item>
+      }
+    </div>
+  } @else {
+    @if (certifications().length === 0) {
+      <li>No items</li>
+    } @else {
+      <li>Loading…</li>
+    }
+  }
+
+  <!--  <div class="button-margins">-->
+  <!--    <a extended matFab routerLink="projects">-->
+  <!--      <mat-icon>workspaces</mat-icon>-->
+  <!--      <p>View All Realizations</p>-->
+  <!--    </a>-->
+  <!--  </div>-->
+
+</div>
+
