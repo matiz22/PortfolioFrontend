@@ -25,5 +25,4 @@ import {Education} from '../../../core/models/education';
 })
 export class EducationItem {
   @Input() education!: Education;
-  protected readonly console = console;
 }
