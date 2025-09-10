@@ -1,0 +1,28 @@
+import {Component, inject} from '@angular/core';
+import {ItemDetailsPage} from '../../../shared/showcase/item-details-page/item-details-page';
+import {ActivatedRoute} from '@angular/router';
+import {toSignal} from '@angular/core/rxjs-interop';
+import {of, switchMap} from 'rxjs';
+import {EducationService} from '../../../core/services/education.service';
+
+@Component({
+  selector: 'app-education-details-page',
+  imports: [
+    ItemDetailsPage
+  ],
+  templateUrl: './education-details-page.html',
+  styleUrl: './education-details-page.scss'
+})
+export class EducationDetailsPage {
+  private readonly educationService = inject(EducationService);
+  private readonly route = inject(ActivatedRoute);
+  education = toSignal(
+    this.route.paramMap.pipe(
+      switchMap(params => params.get('id')
+        ? this.educationService.getById(params.get('id')!)
+        : of(null)
+      )
+    ),
+    {initialValue: null}
+  );
+}

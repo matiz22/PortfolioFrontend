@@ -1,0 +1,10 @@
+@if (education(); as education) {
+  <app-item-details-page
+    [title]="education.fieldOfStudy"
+    [subtitle]="education.degree"
+    [thumbnail]="education.thumbnail"
+    [description]="education.description"
+    [technologies]="education.technologies"
+    [skills]="education.skills"
+  />
+}
