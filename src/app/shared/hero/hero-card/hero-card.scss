@@ -49,19 +49,19 @@
 
 
 .hero-title {
-  color: var(--mat-sys-surface);
+  color: white;
   font: var(--mat-sys-display-large);
-  text-shadow: -1px -1px 0 var(--mat-sys-on-background),
-  1px -1px 0 var(--mat-sys-on-background),
-  -1px 1px 0 var(--mat-sys-on-background),
-  1px 1px 0 var(--mat-sys-on-background);
+  text-shadow: -1px -1px 0 black,
+  1px -1px 0 black,
+  -1px 1px 0 black,
+  1px 1px 0 black;
 }
 
 .hero-subtitle {
-  color: var(--mat-sys-surface);
+  color: white;
   font: var(--mat-sys-display-small);
-  text-shadow: -1px -1px 0 var(--mat-sys-on-background),
-  1px -1px 0 var(--mat-sys-on-background),
-  -1px 1px 0 var(--mat-sys-on-background),
-  1px 1px 0 var(--mat-sys-on-background);
+  text-shadow: -1px -1px 0 black,
+  1px -1px 0 black,
+  -1px 1px 0 black,
+  1px 1px 0 black;
 }
