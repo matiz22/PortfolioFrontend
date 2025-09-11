@@ -6,10 +6,11 @@ import {MatListItem, MatNavList} from '@angular/material/list';
 import {MatIconButton} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {NavigationService} from './core/services/navigation.service';
+import {Footer} from './shared/footer/footer/footer';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, MatToolbar, MatToolbar, MatNavList, MatListItem, MatIconButton, MatIconModule, MatSidenavContainer, MatSidenav, MatSidenavContent],
+  imports: [RouterOutlet, MatToolbar, MatToolbar, MatNavList, MatListItem, MatIconButton, MatIconModule, MatSidenavContainer, MatSidenav, MatSidenavContent, Footer],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
