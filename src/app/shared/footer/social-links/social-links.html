@@ -1,0 +1,10 @@
+<div class="social-icon-container">
+  @if (socialLinks().length > 0) {
+    @for (socialLink of socialLinks(); track socialLink.id) {
+      <a class="btn-social" mat-icon-button [href]="socialLink.url">
+        <img [src]="socialLink.icon | imageUrl" [alt]="socialLink.name"/>
+      </a>
+    }
+  }
+</div>
+
