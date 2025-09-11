@@ -9,6 +9,7 @@ import {MatFabButton} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {Skill} from '../../../core/models/skill';
 import {Technology} from '../../../core/models/technology';
+import {ContactSection} from '../../contact/contact-section/contact-section';
 
 @Component({
   selector: 'app-item-details-page',
@@ -22,6 +23,7 @@ import {Technology} from '../../../core/models/technology';
     MatChipSet,
     MatFabButton,
     MatIconModule,
+    ContactSection,
   ],
   templateUrl: './item-details-page.html',
   styleUrl: './item-details-page.scss',
