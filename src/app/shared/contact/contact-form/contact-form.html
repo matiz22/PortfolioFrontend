@@ -1,74 +1,88 @@
-<form (ngSubmit)="onSubmit()" [formGroup]="contactForm">
-  <div class="form-container">
+@if (submitted() === null) {
+  <form (ngSubmit)="onSubmit()" [formGroup]="contactForm">
+    <div class="form-container">
 
-    <mat-form-field appearance="fill">
-      <mat-label i18n="@@nameLabel">Enter your name</mat-label>
-      <input
-        (blur)="onBlur('name')"
-        formControlName="name"
-        id="name"
-        matInput
-        placeholder="Andrew"
-      />
-      @if (touchedFields['name'] && contactForm.get('name')?.invalid) {
-        <mat-error i18n="@@nameError">{{ getErrorMessage('name') }}</mat-error>
-      }
-    </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label i18n="@@nameLabel">Enter your name</mat-label>
+        <input
+          (blur)="onBlur('name')"
+          formControlName="name"
+          id="name"
+          matInput
+          placeholder="Andrew"
+        />
+        @if (touchedFields['name'] && contactForm.get('name')?.invalid) {
+          <mat-error i18n="@@nameError">{{ getErrorMessage('name') }}</mat-error>
+        }
+      </mat-form-field>
 
-    <mat-form-field appearance="fill">
-      <mat-label i18n="@@emailLabel">Enter your email</mat-label>
-      <input
-        (blur)="onBlur('email')"
-        formControlName="email"
-        id="email"
-        matInput
-        placeholder="yourmail@example.com"
-      />
-      @if (touchedFields['email'] && contactForm.get('email')?.invalid) {
-        <mat-error i18n="@@emailError">{{ getErrorMessage('email') }}</mat-error>
-      }
-    </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label i18n="@@emailLabel">Enter your email</mat-label>
+        <input
+          (blur)="onBlur('email')"
+          formControlName="email"
+          id="email"
+          matInput
+          placeholder="yourmail@example.com"
+        />
+        @if (touchedFields['email'] && contactForm.get('email')?.invalid) {
+          <mat-error i18n="@@emailError">{{ getErrorMessage('email') }}</mat-error>
+        }
+      </mat-form-field>
 
-    <mat-form-field appearance="fill">
-      <mat-label i18n="@@subjectLabel">Enter your subject</mat-label>
-      <input
-        (blur)="onBlur('subject')"
-        formControlName="subject"
-        id="subject"
-        matInput
-        placeholder="Subject"
-      />
-      @if (touchedFields['subject'] && contactForm.get('subject')?.invalid) {
-        <mat-error i18n="@@subjectError">{{ getErrorMessage('subject') }}</mat-error>
-      }
-    </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label i18n="@@subjectLabel">Enter your subject</mat-label>
+        <input
+          (blur)="onBlur('subject')"
+          formControlName="subject"
+          id="subject"
+          matInput
+          placeholder="Subject"
+        />
+        @if (touchedFields['subject'] && contactForm.get('subject')?.invalid) {
+          <mat-error i18n="@@subjectError">{{ getErrorMessage('subject') }}</mat-error>
+        }
+      </mat-form-field>
 
-    <mat-form-field appearance="fill">
-      <mat-label i18n="@@messageLabel">Enter your message</mat-label>
-      <textarea
-        (blur)="onBlur('message')"
-        formControlName="message"
-        id="message"
-        matInput
-        placeholder="Your message..."
-      ></textarea>
-      @if (touchedFields['message'] && contactForm.get('message')?.invalid) {
-        <mat-error i18n="@@messageError">{{ getErrorMessage('message') }}</mat-error>
-      }
-    </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label i18n="@@messageLabel">Enter your message</mat-label>
+        <textarea
+          (blur)="onBlur('message')"
+          formControlName="message"
+          id="message"
+          matInput
+          placeholder="Your message..."
+        ></textarea>
+        @if (touchedFields['message'] && contactForm.get('message')?.invalid) {
+          <mat-error i18n="@@messageError">{{ getErrorMessage('message') }}</mat-error>
+        }
+      </mat-form-field>
 
-    <div style="display:none;">
-      <input autocomplete="off" formControlName="company" id="company" type="text"/>
+      <div style="display:none;">
+        <input autocomplete="off" formControlName="company" id="company" type="text"/>
+      </div>
+
+      <button
+        color="primary"
+        i18n="@@submitButton"
+        id="submitButton"
+        mat-flat-button
+        type="submit"
+        [disabled]="submitting()"
+      >
+        Contact
+      </button>
     </div>
+  </form>
 
-    <button
-      color="primary"
-      i18n="@@submitButton"
-      id="submitButton"
-      mat-flat-button
-      type="submit"
-    >
-      Contact
-    </button>
+} @else if (submitted() === false) {
+  <div class="text-message-container">
+    <p i18n="@@sendingEmailError">Reach me out using email</p>
   </div>
-</form>
+
+} @else {
+  <div class="text-message-container">
+    <p i18n="@@sendingEmailSuccess">Email sent successfully</p>
+  </div>
+}
+

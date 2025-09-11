@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, signal} from '@angular/core';
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatError, MatFormField, MatLabel} from '@angular/material/form-field';
 import {MatButton} from '@angular/material/button';
@@ -55,10 +55,16 @@ export class ContactForm {
     return '';
   }
 
+  submitted = signal<boolean | null>(null);
+  submitting = signal<boolean>(false);
+
   onSubmit() {
     if (this.contactForm.valid) {
       const contact = this.contactForm.value as Contact;
-      this.contactService.sendEmail(contact).subscribe(success => console.log('Email success:', success))
+      this.submitting.set(true);
+      this.contactService.sendEmail(contact).subscribe(success => {
+        this.submitted.set(success);
+      });
     } else {
       this.contactForm.markAllAsTouched();
     }
