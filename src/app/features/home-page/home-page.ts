@@ -12,6 +12,7 @@ import {SectionTexts} from '../../shared/sections/section-texts/section-texts';
 import {JobsSection} from '../jobs/jobs-section/jobs-section';
 import {EducationSection} from '../education/education-section/education-section';
 import {CertificationSection} from '../certifications/certification-section/certification-section';
+import {ContactSection} from '../../shared/contact/contact-section/contact-section';
 
 
 @Component({
@@ -30,7 +31,8 @@ import {CertificationSection} from '../certifications/certification-section/cert
     SectionTexts,
     JobsSection,
     EducationSection,
-    CertificationSection
+    CertificationSection,
+    ContactSection
   ],
   templateUrl: './home-page.html',
   styleUrl: './home-page.scss'
