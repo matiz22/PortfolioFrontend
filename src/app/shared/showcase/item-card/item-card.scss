@@ -27,3 +27,8 @@ mat-card-footer {
 mat-chip-set {
   min-height: 80px;
 }
+
+mat-card {
+  background-color: var(--mat-sys-secondary-container);
+  color: var(--mat-sys-on-secondary-container);
+}
