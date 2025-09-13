@@ -1,6 +1,5 @@
 import {Component, inject} from '@angular/core';
 import {HeroSection} from '../../shared/hero/hero-section/hero-section';
-import {AboutMe} from '../about-me/about-me';
 import {MatDivider} from '@angular/material/divider';
 import {MatIconButton} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
@@ -13,13 +12,13 @@ import {JobsSection} from '../jobs/jobs-section/jobs-section';
 import {EducationSection} from '../education/education-section/education-section';
 import {CertificationSection} from '../certifications/certification-section/certification-section';
 import {ContactSection} from '../../shared/contact/contact-section/contact-section';
+import {AboutMeSection} from '../about-me/about-me-section/about-me-section';
 
 
 @Component({
   selector: 'app-home-page',
   imports: [
     HeroSection,
-    AboutMe,
     MatDivider,
     MatIconButton,
     MatIconModule,
@@ -32,7 +31,8 @@ import {ContactSection} from '../../shared/contact/contact-section/contact-secti
     JobsSection,
     EducationSection,
     CertificationSection,
-    ContactSection
+    ContactSection,
+    AboutMeSection
   ],
   templateUrl: './home-page.html',
   styleUrl: './home-page.scss'

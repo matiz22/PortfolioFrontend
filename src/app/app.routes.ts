@@ -8,6 +8,7 @@ import {EducationDetailsPage} from './features/education/education-details-page/
 import {
   CertificationDetailsPage
 } from './features/certifications/certification-details-page/certification-details-page';
+import {AboutMePage} from './features/about-me/about-me-page/about-me-page';
 
 export const routes: Routes = [
   {
@@ -38,5 +39,9 @@ export const routes: Routes = [
   {
     path: 'certification/:id',
     component: CertificationDetailsPage,
+  },
+  {
+    path: 'about-me',
+    component: AboutMePage
   },
 ];
