@@ -28,7 +28,7 @@ export class CertificationDetailsPage {
   );
 
 
-  private readonly certLinkButtonLabel = $localize`:@@certLinkButton: Certificate link`;
+  private readonly certLinkButtonLabel = `:@@certLinkButton: Certificate link`;
 
   links = computed<Link[]>(() => {
     const certification = this.certification();

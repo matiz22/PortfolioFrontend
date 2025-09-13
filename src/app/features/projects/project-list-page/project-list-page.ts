@@ -17,7 +17,7 @@ import {ProjectItem} from '../project-item/project-item';
   styleUrl: './project-list-page.scss'
 })
 export class ProjectListPage {
-  cardTitle: string = $localize`:@@homeTitle:Projects`;
+  cardTitle: string = `:@@homeTitle:Projects`;
   projectService: ProjectsService = inject(ProjectsService);
   projects = toSignal(this.projectService.getAll(), {initialValue: [] as Project[]});
 }

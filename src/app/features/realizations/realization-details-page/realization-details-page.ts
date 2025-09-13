@@ -17,7 +17,7 @@ import {Link} from '../../../shared/models/link';
   styleUrl: './realization-details-page.scss'
 })
 export class RealizationDetailsPage {
-  private readonly clientButtonLabel = $localize`:@@clientButton:Client website`;
+  private readonly clientButtonLabel =`:@@clientButton:Client website`;
 
   private realizationsService: RealizationsService = inject(RealizationsService);
   private route: ActivatedRoute = inject(ActivatedRoute);

@@ -32,7 +32,7 @@ export class ProjectDetailsPage {
     ),
     {initialValue: null}
   );
-  private readonly repoButtonLabel = $localize`:@@projectRepoButton:Project repository`;
+  private readonly repoButtonLabel = `:@@projectRepoButton:Project repository`;
   links = computed<Link[]>(() => {
     const project = this.project();
     if (!project?.repoUrl) return [];
