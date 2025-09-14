@@ -8,7 +8,8 @@ import {provideHttpClient, withFetch} from '@angular/common/http';
 import {MAT_RIPPLE_GLOBAL_OPTIONS} from '@angular/material/core';
 import {CustomRouteReuseStrategy} from './route.reuse.strategy';
 import {provideMarkdown} from 'ngx-markdown';
-import {provideServerRendering} from '@angular/ssr';
+import {provideTranslateService} from '@ngx-translate/core';
+import {provideTranslateHttpLoader} from '@ngx-translate/http-loader';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -33,9 +34,11 @@ export const appConfig: ApplicationConfig = {
     ),
     {provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy},
     provideClientHydration(withEventReplay()),
-    provideServerRendering(), 
     provideHttpClient(withFetch()),
     provideMarkdown(),
-    ProjectsService
+    provideTranslateService({
+      loader: provideTranslateHttpLoader({prefix:'./i18n/', suffix:'.json'}),
+      fallbackLang: 'en'
+    })
   ]
 };
