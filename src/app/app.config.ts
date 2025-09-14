@@ -3,7 +3,6 @@ import {provideRouter, RouteReuseStrategy, withInMemoryScrolling, withViewTransi
 
 import {routes} from './app.routes';
 import {provideClientHydration, withEventReplay} from '@angular/platform-browser';
-import {ProjectsService} from './core/services/projects.service';
 import {provideHttpClient, withFetch} from '@angular/common/http';
 import {MAT_RIPPLE_GLOBAL_OPTIONS} from '@angular/material/core';
 import {CustomRouteReuseStrategy} from './route.reuse.strategy';

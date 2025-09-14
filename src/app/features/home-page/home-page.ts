@@ -40,9 +40,6 @@ import {TranslatePipe} from '@ngx-translate/core';
   styleUrl: './home-page.scss'
 })
 export class HomePage {
-  cardTitle: string = `:@@homeTitle:👋 Hi, I’m Mateusz — Mobile & Web Developer`;
-  cardSubtitle: string = `:@@homeSubtitle:Crafting simple, effective digital experiences.`;
-
   navigationService: NavigationService = inject(NavigationService);
 
   scrollToAbout(): void {

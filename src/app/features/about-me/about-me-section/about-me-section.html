@@ -1,10 +1,9 @@
 <div class="showcase-section">
-  <h1>About me</h1>
-  <p>
-    I’m a student and freelance developer who loves working with clients to bring their ideas to
-    life. My focus is on creating simple, effective solutions for complex problems — always using
-    the right tool for the job. Remote-first, client-centered, and ready to help you turn concepts
-    into working products. <a class="cta" href="/contact">Let’s build together</a>.
+  <h1 style="font: var(--mat-sys-display-medium);">
+    {{ 'about.section.title' | translate }}
+  </h1>
+  <p style="font: var(--mat-sys-title-large); text-align: center;">
+    {{ 'about.section.text' | translate }}
   </p>
   <a extended matFab routerLink="about-me">
     <mat-icon>workspaces</mat-icon>
