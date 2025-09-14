@@ -13,6 +13,7 @@ import {EducationSection} from '../education/education-section/education-section
 import {CertificationSection} from '../certifications/certification-section/certification-section';
 import {ContactSection} from '../../shared/contact/contact-section/contact-section';
 import {AboutMeSection} from '../about-me/about-me-section/about-me-section';
+import {TranslatePipe} from '@ngx-translate/core';
 
 
 @Component({
@@ -32,7 +33,8 @@ import {AboutMeSection} from '../about-me/about-me-section/about-me-section';
     EducationSection,
     CertificationSection,
     ContactSection,
-    AboutMeSection
+    AboutMeSection,
+    TranslatePipe
   ],
   templateUrl: './home-page.html',
   styleUrl: './home-page.scss'

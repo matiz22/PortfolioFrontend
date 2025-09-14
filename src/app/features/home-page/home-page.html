@@ -1,5 +1,5 @@
 <app-hero-section
-  [cardTitle]=cardTitle
+  [cardTitle]="'home.title' | translate"
   [cardSubtitle]=cardSubtitle
   [cardImage]="'/images/heroSection/siteHero.png'"
 >
@@ -40,7 +40,7 @@
       <ng-template mat-tab-label>
         <div class="tabs-labels">
           <mat-icon class="tab-icon-margin">check_circle</mat-icon>
-        <p>Realization</p>
+          <p>Realization</p>
         </div>
       </ng-template>
     </mat-tab>

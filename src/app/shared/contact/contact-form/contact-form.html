@@ -3,7 +3,7 @@
     <div class="form-container">
 
       <mat-form-field appearance="fill">
-        <mat-label i18n="@@nameLabel">Enter your name</mat-label>
+        <mat-label>Enter your name</mat-label>
         <input
           (blur)="onBlur('name')"
           formControlName="name"
@@ -12,12 +12,12 @@
           placeholder="Andrew"
         />
         @if (touchedFields['name'] && contactForm.get('name')?.invalid) {
-          <mat-error i18n="@@nameError">{{ getErrorMessage('name') }}</mat-error>
+          <mat-error>{{ getErrorMessage('name') }}</mat-error>
         }
       </mat-form-field>
 
       <mat-form-field appearance="fill">
-        <mat-label i18n="@@emailLabel">Enter your email</mat-label>
+        <mat-label>Enter your email</mat-label>
         <input
           (blur)="onBlur('email')"
           formControlName="email"
@@ -26,12 +26,12 @@
           placeholder="yourmail@example.com"
         />
         @if (touchedFields['email'] && contactForm.get('email')?.invalid) {
-          <mat-error i18n="@@emailError">{{ getErrorMessage('email') }}</mat-error>
+          <mat-error>{{ getErrorMessage('email') }}</mat-error>
         }
       </mat-form-field>
 
       <mat-form-field appearance="fill">
-        <mat-label i18n="@@subjectLabel">Enter your subject</mat-label>
+        <mat-label>Enter your subject</mat-label>
         <input
           (blur)="onBlur('subject')"
           formControlName="subject"
@@ -40,12 +40,12 @@
           placeholder="Subject"
         />
         @if (touchedFields['subject'] && contactForm.get('subject')?.invalid) {
-          <mat-error i18n="@@subjectError">{{ getErrorMessage('subject') }}</mat-error>
+          <mat-error>{{ getErrorMessage('subject') }}</mat-error>
         }
       </mat-form-field>
 
       <mat-form-field appearance="fill">
-        <mat-label i18n="@@messageLabel">Enter your message</mat-label>
+        <mat-label>Enter your message</mat-label>
         <textarea
           (blur)="onBlur('message')"
           formControlName="message"
@@ -54,7 +54,7 @@
           placeholder="Your message..."
         ></textarea>
         @if (touchedFields['message'] && contactForm.get('message')?.invalid) {
-          <mat-error i18n="@@messageError">{{ getErrorMessage('message') }}</mat-error>
+          <mat-error>{{ getErrorMessage('message') }}</mat-error>
         }
       </mat-form-field>
 
@@ -64,7 +64,6 @@
 
       <button
         color="primary"
-        i18n="@@submitButton"
         id="submitButton"
         mat-flat-button
         type="submit"
@@ -77,12 +76,12 @@
 
 } @else if (submitted() === false) {
   <div class="text-message-container">
-    <p i18n="@@sendingEmailError">Reach me out using email</p>
+    <p>Reach me out using email</p>
   </div>
 
 } @else {
   <div class="text-message-container">
-    <p i18n="@@sendingEmailSuccess">Email sent successfully</p>
+    <p>Email sent successfully</p>
   </div>
 }
 
