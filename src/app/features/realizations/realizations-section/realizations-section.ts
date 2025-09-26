@@ -4,6 +4,7 @@ import {RealizationsService} from '../../../core/services/realizations.service';
 import {MatIconModule} from '@angular/material/icon';
 import {Realization} from '../../../core/models/realization';
 import {RealizationItem} from '../realization-item/realization-item';
+import {ApiState} from '../../../core/models/api.state';
 
 @Component({
   selector: 'app-realizations-section',
@@ -16,5 +17,10 @@ import {RealizationItem} from '../realization-item/realization-item';
 })
 export class RealizationsSection {
   realizationsService: RealizationsService = inject(RealizationsService);
-  realizations = toSignal(this.realizationsService.getHomeItems(), {initialValue: [] as Realization[]});
+  realizations = toSignal(
+    this.realizationsService.getHomeItems(),
+    {
+      initialValue: ApiState.loading<Realization[]>()
+    }
+  );
 }

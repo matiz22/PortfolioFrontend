@@ -9,6 +9,7 @@ import {Observable} from 'rxjs';
 import {Certification} from '../models/certification';
 import {mapCertification} from '../mappers/certification';
 import {CertificationDto} from '../dto/certification';
+import {ApiState} from '../models/api.state';
 
 @Injectable({
   providedIn: 'root'
@@ -33,15 +34,15 @@ export class CertificationsService implements ICrudService<Certification>,
 
   }
 
-  getAll(): Observable<Certification[]> {
+  getAll(): Observable<ApiState<Certification[]>> {
     return this.crudOps.getAll();
   }
 
-  getById(id: string): Observable<Certification | null> {
+  getById(id: string): Observable<ApiState<Certification>> {
     return this.crudOps.getById(id);
   }
 
-  getHomeItems(): Observable<Certification[]> {
+  getHomeItems(): Observable<ApiState<Certification[]>> {
     return this.homeOps.getHomeItems();
   }
 

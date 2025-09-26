@@ -1,10 +1,22 @@
-@if (job(); as job) {
-  <app-item-details-page
-    [title]="job.title"
-    [subtitle]="job.companyName"
-    [thumbnail]="job.thumbnail"
-    [description]="job.description"
-    [technologies]="job.technologies"
-    [skills]="job.skills"
-  />
+@let item = job();
+
+@switch (item.status) {
+  @case ('loading') {
+    <!-- TODO add loading component -->
+  }
+  @case ('error') {
+    <!-- TODO add error component -->
+  }
+  @case ('success') {
+    @if (item.data; as job) {
+      <app-item-details-page
+        [title]="job.title"
+        [subtitle]="job.companyName"
+        [thumbnail]="job.thumbnail"
+        [description]="job.description"
+        [technologies]="job.technologies"
+        [skills]="job.skills"
+      />
+    }
+  }
 }

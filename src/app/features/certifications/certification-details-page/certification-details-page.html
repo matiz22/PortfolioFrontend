@@ -1,11 +1,23 @@
-@if (certification(); as certification) {
-  <app-item-details-page
-    [title]="certification.name"
-    [subtitle]="certification.issuingOrganization"
-    [thumbnail]="certification.thumbnail"
-    [description]="certification.description"
-    [technologies]="certification.technologies"
-    [skills]="certification.skills"
-    [links]="links()"
-  />
+@let cert = certification();
+@switch (cert.status) {
+  @case ('loading') {
+    <!-- TODO add loading component -->
+  }
+  @case ('error') {
+    <!-- TODO add error component -->
+  }
+  @case ('success') {
+    @if (cert.data; as certification) {
+      <app-item-details-page
+        [title]="certification.name"
+        [subtitle]="certification.issuingOrganization"
+        [thumbnail]="certification.thumbnail"
+        [description]="certification.description"
+        [technologies]="certification.technologies"
+        [skills]="certification.skills"
+        [links]="links()"
+      />
+    }
+  }
 }
+

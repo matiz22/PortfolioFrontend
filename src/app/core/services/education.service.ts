@@ -9,6 +9,7 @@ import {Observable} from 'rxjs';
 import {Education} from '../models/education';
 import {EducationDto} from '../dto/education';
 import {mapEducation} from '../mappers/education';
+import {ApiState} from '../models/api.state';
 
 @Injectable({
   providedIn: 'root'
@@ -33,15 +34,15 @@ export class EducationService implements ICrudService<Education>,
 
   }
 
-  getAll(): Observable<Education[]> {
+  getAll(): Observable<ApiState<Education[]>> {
     return this.crudOps.getAll();
   }
 
-  getById(id: string): Observable<Education | null> {
+  getById(id: string): Observable<ApiState<Education>> {
     return this.crudOps.getById(id);
   }
 
-  getHomeItems(): Observable<Education[]> {
+  getHomeItems(): Observable<ApiState<Education[]>> {
     return this.homeOps.getHomeItems();
   }
 

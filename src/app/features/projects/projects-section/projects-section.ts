@@ -6,6 +6,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {RouterLink} from '@angular/router';
 import {MatIconModule} from '@angular/material/icon';
 import {ProjectItem} from '../project-item/project-item';
+import {ApiState} from '../../../core/models/api.state';
 
 @Component({
   selector: 'app-projects-section',
@@ -20,5 +21,10 @@ import {ProjectItem} from '../project-item/project-item';
 })
 export class ProjectsSection {
   projectService: ProjectsService = inject(ProjectsService);
-  projects = toSignal(this.projectService.getHomeItems(), {initialValue: [] as Project[]});
+  projects = toSignal(
+    this.projectService.getHomeItems(),
+    {
+      initialValue: ApiState.loading<Project[]>()
+    }
+  );
 }

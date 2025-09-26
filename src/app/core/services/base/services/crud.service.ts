@@ -1,7 +1,8 @@
 import {Observable} from 'rxjs';
+import {ApiState} from '../../../models/api.state';
 
 export interface ICrudService<TModel> {
-  getAll(): Observable<TModel[]>;
+  getAll(): Observable<ApiState<TModel[]>>;
 
-  getById(id: string): Observable<TModel | null>;
+  getById(id: string): Observable<ApiState<TModel>>;
 }

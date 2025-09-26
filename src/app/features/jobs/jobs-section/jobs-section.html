@@ -1,24 +1,31 @@
-<div class="showcase-section">
-  @if (jobs().length > 0) {
-    <div class="container">
-      @for (job of jobs(); track job.id) {
-        <app-job-item class="flex-item" [job]="job"></app-job-item>
-      }
-    </div>
-  } @else {
-    @if (jobs().length === 0) {
-      <li>No items</li>
-    } @else {
-      <li>Loading…</li>
-    }
+@let items = jobs();
+
+@switch (items.status) {
+  @case ('loading') {
+    <!--TODO add loading component-->
   }
+  @case ('error') {
+    <!--TODO add error component-->
+  }
+  @case ('success') {
+    <div class="showcase-section">
+      @if (items.data.length > 0) {
+        <div class="container">
+          @for (job of items.data; track job.id) {
+            <app-job-item class="flex-item" [job]="job"></app-job-item>
+          }
+        </div>
+      } @else {
+        <!--TODO add no items component-->
+      }
 
-  <!--  <div class="button-margins">-->
-  <!--    <a extended matFab routerLink="projects">-->
-  <!--      <mat-icon>workspaces</mat-icon>-->
-  <!--      <p>View All Realizations</p>-->
-  <!--    </a>-->
-  <!--  </div>-->
+      <!--  <div class="button-margins">-->
+      <!--    <a extended matFab routerLink="projects">-->
+      <!--      <mat-icon>workspaces</mat-icon>-->
+      <!--      <p>View All Realizations</p>-->
+      <!--    </a>-->
+      <!--  </div>-->
 
-</div>
-
+    </div>
+  }
+}

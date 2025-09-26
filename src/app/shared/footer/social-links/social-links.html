@@ -1,10 +1,21 @@
-<div class="social-icon-container">
-  @if (socialLinks().length > 0) {
-    @for (socialLink of socialLinks(); track socialLink.id) {
-      <a class="btn-social" mat-icon-button [href]="socialLink.url">
-        <img [src]="socialLink.icon | imageUrl" [alt]="socialLink.name"/>
-      </a>
-    }
+@let links = socialLinks();
+
+@switch (links.status) {
+  @case ('loading') {
+    <!--TODO add loading component-->
   }
-</div>
+  @case ('success') {
+    <div class="social-icon-container">
+      @if (links.data.length > 0) {
+        @for (link of links.data; track link.id) {
+          <a class="btn-social" mat-icon-button [href]="link.url">
+            <img [src]="link.icon | imageUrl" [alt]="link.name"/>
+          </a>
+        }
+      }
+    </div>
+  }
+}
+
+
 

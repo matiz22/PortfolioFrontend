@@ -1,24 +1,31 @@
-<div class="showcase-section">
-  @if (certifications().length > 0) {
-    <div class="container">
-      @for (job of certifications(); track job.id) {
-        <app-certification-item class="flex-item" [certification]="job"></app-certification-item>
-      }
-    </div>
-  } @else {
-    @if (certifications().length === 0) {
-      <li>No items</li>
-    } @else {
-      <li>Loading…</li>
-    }
+@let certs = certifications();
+
+@switch (certs.status) {
+  @case ('loading') {
+    <!--TODO add loading component-->
   }
+  @case ('success') {
+    <div class="showcase-section">
+      @if (certs.data.length > 0) {
+        <div class="container">
+          @for (cert of certs.data; track cert.id) {
+            <app-certification-item class="flex-item" [certification]="cert"></app-certification-item>
+          }
+        </div>
+      } @else {
+        <!--TODO add no items component-->
+      }
 
-  <!--  <div class="button-margins">-->
-  <!--    <a extended matFab routerLink="projects">-->
-  <!--      <mat-icon>workspaces</mat-icon>-->
-  <!--      <p>View All Realizations</p>-->
-  <!--    </a>-->
-  <!--  </div>-->
+      <!--  <div class="button-margins">-->
+      <!--    <a extended matFab routerLink="projects">-->
+      <!--      <mat-icon>workspaces</mat-icon>-->
+      <!--      <p>View All Realizations</p>-->
+      <!--    </a>-->
+      <!--  </div>-->
 
-</div>
-
+    </div>
+  }
+  @case ('error') {
+    <!--TODO add loading component-->
+  }
+}

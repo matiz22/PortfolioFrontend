@@ -9,6 +9,7 @@ import {HomeOperations} from './base/operations/home.operations';
 import {Realization} from '../models/realization';
 import {RealizationDto} from '../dto/realization';
 import {mapRealization} from '../mappers/realization';
+import {ApiState} from '../models/api.state';
 
 @Injectable({
   providedIn: 'root'
@@ -33,15 +34,15 @@ export class RealizationsService implements ICrudService<Realization>,
 
   }
 
-  getAll(): Observable<Realization[]> {
+  getAll(): Observable<ApiState<Realization[]>> {
     return this.crudOps.getAll();
   }
 
-  getById(id: string): Observable<Realization | null> {
+  getById(id: string): Observable<ApiState<Realization>> {
     return this.crudOps.getById(id);
   }
 
-  getHomeItems(): Observable<Realization[]> {
+  getHomeItems(): Observable<ApiState<Realization[]>> {
     return this.homeOps.getHomeItems();
   }
 

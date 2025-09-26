@@ -9,6 +9,7 @@ import {Observable} from 'rxjs';
 import {Job} from '../models/job';
 import {mapJob} from '../mappers/job';
 import {JobDto} from '../dto/job';
+import {ApiState} from '../models/api.state';
 
 @Injectable({
   providedIn: 'root'
@@ -33,15 +34,15 @@ export class JobsService implements ICrudService<Job>,
 
   }
 
-  getAll(): Observable<Job[]> {
+  getAll(): Observable<ApiState<Job[]>> {
     return this.crudOps.getAll();
   }
 
-  getById(id: string): Observable<Job | null> {
+  getById(id: string): Observable<ApiState<Job>> {
     return this.crudOps.getById(id);
   }
 
-  getHomeItems(): Observable<Job[]> {
+  getHomeItems(): Observable<ApiState<Job[]>> {
     return this.homeOps.getHomeItems();
   }
 

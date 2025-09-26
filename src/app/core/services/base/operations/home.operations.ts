@@ -1,5 +1,6 @@
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {catchError, map, Observable, of} from 'rxjs';
+import {catchError, map, Observable, of, startWith} from 'rxjs';
+import {ApiState} from '../../../models/api.state';
 
 export class HomeOperations<TDto, TModel> {
   constructor(
@@ -10,15 +11,26 @@ export class HomeOperations<TDto, TModel> {
   ) {
   }
 
-  getHomeItems(): Observable<TModel[]> {
+  getHomeItems(): Observable<ApiState<TModel[]>> {
     return this.http.get<TDto[]>(this.homeUrl).pipe(
-      map(dtos => dtos.map(dto => this.mapper(dto))),
-      catchError(err => this.handleError(err, 'getHomeItems', []))
+      map(dtos => ApiState.success(dtos.map(dto => this.mapper(dto)))),
+      startWith(ApiState.loading<TModel[]>()),
+      catchError(err => of(ApiState.error<TModel[]>(this.getErrorMessage(err))))
     );
   }
 
-  private handleError<T>(error: HttpErrorResponse, operation: string, fallback: T): Observable<T> {
-    console.error(`${this.entityName} home ${operation} error:`, error);
-    return of(fallback);
+  private getErrorMessage(error: HttpErrorResponse): string {
+    console.error(`${this.entityName} home getHomeItems error:`, error);
+
+    if (error.status === 0) {
+      return 'Network error. Please check your connection.';
+    }
+    if (error.status >= 400 && error.status < 500) {
+      return error.error?.message || `${this.entityName} not found or access denied.`;
+    }
+    if (error.status >= 500) {
+      return 'Server error. Please try again later.';
+    }
+    return error.error?.message || `Failed to load ${this.entityName.toLowerCase()}.`;
   }
 }

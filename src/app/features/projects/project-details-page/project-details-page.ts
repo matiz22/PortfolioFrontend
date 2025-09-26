@@ -7,6 +7,8 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {ItemDetailsPage} from '../../../shared/showcase/item-details-page/item-details-page';
 import {Link} from '../../../shared/models/link';
+import {Project} from '../../../core/models/project';
+import {ApiState} from '../../../core/models/api.state';
 
 @Component({
   selector: 'app-project-details-page',
@@ -23,24 +25,33 @@ import {Link} from '../../../shared/models/link';
 export class ProjectDetailsPage {
   private readonly projectService = inject(ProjectsService);
   private readonly route = inject(ActivatedRoute);
+
   project = toSignal(
     this.route.paramMap.pipe(
-      switchMap(params => params.get('id')
-        ? this.projectService.getById(params.get('id')!)
-        : of(null)
-      )
+      switchMap(params => {
+        const id = params.get('id');
+        if (!id) {
+          return of(ApiState.error<Project>('No project ID provided'));
+        }
+        return this.projectService.getById(id);
+      })
     ),
-    {initialValue: null}
+    {initialValue: ApiState.loading<Project>()}
   );
-  private readonly repoButtonLabel = `:@@projectRepoButton:Project repository`;
-  links = computed<Link[]>(() => {
-    const project = this.project();
-    if (!project?.repoUrl) return [];
-    return [{
-      name: this.repoButtonLabel,
-      url: project.repoUrl,
-      mat_icon: 'commit'
-    }];
-  });
 
+  private readonly repoButtonLabel = `:@@projectRepoButton:Project repository`;
+
+  links = computed<Link[]>(() => {
+    const projectState = this.project();
+
+    if (projectState.status === 'success' && projectState.data.repoUrl) {
+      return [{
+        name: this.repoButtonLabel,
+        url: projectState.data.repoUrl,
+        mat_icon: 'commit'
+      }];
+    }
+
+    return [];
+  });
 }

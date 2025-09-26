@@ -1,24 +1,31 @@
-<div class="showcase-section">
-  @if (realizations().length > 0) {
-    <div class="container">
-      @for (realization of realizations(); track realization.id) {
-        <app-realization-item class="flex-item" [realization]="realization"></app-realization-item>
-      }
-    </div>
-  } @else {
-    @if (realizations().length === 0) {
-      <li>No items</li>
-    } @else {
-      <li>Loading…</li>
-    }
+@let items = realizations();
+
+@switch (items.status) {
+  @case ('loading') {
+    <!--TODO add loading component-->
   }
+  @case ('success') {
+    <div class="showcase-section">
+      @if (items.data.length > 0) {
+        <div class="container">
+          @for (realization of items.data; track realization.id) {
+            <app-realization-item class="flex-item" [realization]="realization"></app-realization-item>
+          }
+        </div>
+      } @else {
+        <!--TODO add no items component-->
+      }
 
-  <!--  <div class="button-margins">-->
-  <!--    <a extended matFab routerLink="projects">-->
-  <!--      <mat-icon>workspaces</mat-icon>-->
-  <!--      <p>View All Realizations</p>-->
-  <!--    </a>-->
-  <!--  </div>-->
+      <!--  <div class="button-margins">-->
+      <!--    <a extended matFab routerLink="projects">-->
+      <!--      <mat-icon>workspaces</mat-icon>-->
+      <!--      <p>View All Realizations</p>-->
+      <!--    </a>-->
+      <!--  </div>-->
 
-</div>
-
+    </div>
+  }
+  @case ('error') {
+    <!--TODO add loading component-->
+  }
+}

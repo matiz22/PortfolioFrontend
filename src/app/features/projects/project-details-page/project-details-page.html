@@ -1,10 +1,22 @@
-@if (project(); as project) {
-  <app-item-details-page
-    [title]="project.title"
-    [thumbnail]="project.thumbnail"
-    [description]="project.description"
-    [screenshots]="project.screenshots"
-    [technologies]="project.technologies"
-    [links]="links()"
-  />
+@let item = project();
+
+@switch (item.status) {
+  @case ('loading') {
+    <!-- TODO add loading component -->
+  }
+  @case ('error') {
+    <!-- TODO add error component -->
+  }
+  @case ('success') {
+    @if (item.data; as project) {
+      <app-item-details-page
+        [title]="project.title"
+        [thumbnail]="project.thumbnail"
+        [description]="project.description"
+        [screenshots]="project.screenshots"
+        [technologies]="project.technologies"
+        [links]="links()"
+      />
+    }
+  }
 }

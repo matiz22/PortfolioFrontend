@@ -6,6 +6,8 @@ import {of, switchMap} from 'rxjs';
 import {RealizationsService} from '../../../core/services/realizations.service';
 import {MatIconModule} from '@angular/material/icon';
 import {Link} from '../../../shared/models/link';
+import {ApiState} from '../../../core/models/api.state';
+import {Realization} from '../../../core/models/realization';
 
 @Component({
   selector: 'app-realization-details-page',
@@ -17,29 +19,35 @@ import {Link} from '../../../shared/models/link';
   styleUrl: './realization-details-page.scss'
 })
 export class RealizationDetailsPage {
-  private readonly clientButtonLabel =`:@@clientButton:Client website`;
-
-  private realizationsService: RealizationsService = inject(RealizationsService);
   private route: ActivatedRoute = inject(ActivatedRoute);
 
   realization = toSignal(
     this.route.paramMap.pipe(
       switchMap(params => {
         const id = params.get('id');
-        return id ? this.realizationsService.getById(id) : of(null);
+        if (!id) {
+          return of(ApiState.error<Realization>('No realization ID provided'));
+        }
+        return this.realizationsService.getById(id);
       })
     ),
-    {initialValue: null}
+    {initialValue: ApiState.loading<Realization>()}
   );
 
-  links = computed<Link[]>(() => {
-    const realization = this.realization();
-    if (!realization?.clientUrl) return [];
-    return [{
-      name: this.clientButtonLabel,
-      url: realization.clientUrl,
-      mat_icon: 'contacts_product'
-    }];
-  });
+  private realizationsService: RealizationsService = inject(RealizationsService);
 
+  private readonly clientButtonLabel = `:@@clientButton:Client website`;
+  links = computed<Link[]>(() => {
+    const realizationState = this.realization();
+
+    if (realizationState.status === 'success' && realizationState.data.clientUrl) {
+      return [{
+        name: this.clientButtonLabel,
+        url: realizationState.data.clientUrl,
+        mat_icon: 'contacts_product'
+      }];
+    }
+
+    return [];
+  });
 }

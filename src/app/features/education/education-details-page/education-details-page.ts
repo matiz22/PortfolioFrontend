@@ -4,6 +4,8 @@ import {ActivatedRoute} from '@angular/router';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {of, switchMap} from 'rxjs';
 import {EducationService} from '../../../core/services/education.service';
+import {ApiState} from '../../../core/models/api.state';
+import {Education} from '../../../core/models/education';
 
 @Component({
   selector: 'app-education-details-page',
@@ -18,11 +20,14 @@ export class EducationDetailsPage {
   private readonly route = inject(ActivatedRoute);
   education = toSignal(
     this.route.paramMap.pipe(
-      switchMap(params => params.get('id')
-        ? this.educationService.getById(params.get('id')!)
-        : of(null)
-      )
+      switchMap(params => {
+        const id = params.get('id');
+        if (!id) {
+          return of(ApiState.error<Education>('No certification ID provided'));
+        }
+        return this.educationService.getById(id);
+      })
     ),
-    {initialValue: null}
+    {initialValue: ApiState.loading<Education>()}
   );
 }

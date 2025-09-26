@@ -1,10 +1,22 @@
-@if (education(); as education) {
-  <app-item-details-page
-    [title]="education.fieldOfStudy"
-    [subtitle]="education.degree"
-    [thumbnail]="education.thumbnail"
-    [description]="education.description"
-    [technologies]="education.technologies"
-    [skills]="education.skills"
-  />
+@let item = education();
+
+@switch (item.status) {
+  @case ('loading') {
+    <!-- TODO add loading component -->
+  }
+  @case ('error') {
+    <!-- TODO add error component -->
+  }
+  @case ('success') {
+    @if (item.data; as education) {
+      <app-item-details-page
+        [title]="education.fieldOfStudy"
+        [subtitle]="education.degree"
+        [thumbnail]="education.thumbnail"
+        [description]="education.description"
+        [technologies]="education.technologies"
+        [skills]="education.skills"
+      />
+    }
+  }
 }

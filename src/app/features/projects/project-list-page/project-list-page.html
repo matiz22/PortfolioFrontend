@@ -5,18 +5,27 @@
 >
 </app-hero-section>
 
-<div class="showcase-section">
-  @if (projects().length > 0) {
-    <div class="container">
-      @for (project of projects(); track project.id) {
-        <app-project-item class="flex-item" [project]="project"></app-project-item>
+@let items = projects();
+
+@switch (items.status) {
+  @case ('loading') {
+    <!--TODO add loading component-->
+  }
+  @case ('success') {
+    <div class="showcase-section">
+      @if (items.data.length > 0) {
+        <div class="container">
+          @for (project of items.data; track project.id) {
+            <app-project-item class="flex-item" [project]="project"></app-project-item>
+          }
+        </div>
+      } @else {
+        <!--TODO add no items component-->
       }
     </div>
-  } @else {
-    @if (projects().length === 0) {
-      <li>No items</li>
-    } @else {
-      <li>Loading…</li>
-    }
+
   }
-</div>
+  @case ('error') {
+    <!--TODO add error component-->
+  }
+}

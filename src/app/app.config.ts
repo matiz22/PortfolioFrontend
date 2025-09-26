@@ -35,9 +35,14 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(withEventReplay()),
     provideHttpClient(withFetch()),
     provideMarkdown(),
+    provideZoneChangeDetection({eventCoalescing: true}),
     provideTranslateService({
-      loader: provideTranslateHttpLoader({prefix:'./i18n/', suffix:'.json'}),
-      fallbackLang: 'en'
+      loader: provideTranslateHttpLoader({
+        prefix: './i18n/',
+        suffix: '.json'
+      }),
+      fallbackLang: 'en',
+      lang: 'en'
     })
   ]
 };

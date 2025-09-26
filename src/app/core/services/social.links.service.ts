@@ -7,6 +7,7 @@ import {Observable} from 'rxjs';
 import {SocialLink} from '../models/social.link';
 import {SocialLinkDto} from '../dto/social.link';
 import {mapSocialLink} from '../mappers/social.link';
+import {ApiState} from '../models/api.state';
 
 @Injectable({
   providedIn: 'root'
@@ -26,11 +27,11 @@ export class SocialLinksService implements ICrudService<SocialLink> {
 
   }
 
-  getAll(): Observable<SocialLink[]> {
+  getAll(): Observable<ApiState<SocialLink[]>> {
     return this.crudOps.getAll();
   }
 
-  getById(id: string): Observable<SocialLink | null> {
+  getById(id: string): Observable<ApiState<SocialLink>> {
     return this.crudOps.getById(id);
   }
 

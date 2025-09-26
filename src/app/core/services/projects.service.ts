@@ -9,6 +9,7 @@ import {HomeOperations} from './base/operations/home.operations';
 import {CrudOperations} from './base/operations/crud.operations';
 import {IHomeService} from './base/services/home.service';
 import {ICrudService} from './base/services/crud.service';
+import {ApiState} from '../models/api.state';
 
 
 @Injectable({
@@ -34,15 +35,15 @@ export class ProjectsService implements ICrudService<Project>,
 
   }
 
-  getAll(): Observable<Project[]> {
+  getAll(): Observable<ApiState<Project[]>> {
     return this.crudOps.getAll();
   }
 
-  getById(id: string): Observable<Project | null> {
+  getById(id: string): Observable<ApiState<Project>> {
     return this.crudOps.getById(id);
   }
 
-  getHomeItems(): Observable<Project[]> {
+  getHomeItems(): Observable<ApiState<Project[]>> {
     return this.homeOps.getHomeItems();
   }
 }

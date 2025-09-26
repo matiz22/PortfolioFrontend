@@ -4,6 +4,7 @@ import {JobsService} from '../../../core/services/jobs.service';
 import {Job} from '../../../core/models/job';
 import {MatIconModule} from '@angular/material/icon';
 import {JobItem} from '../job-item/job-item';
+import {ApiState} from '../../../core/models/api.state';
 
 @Component({
   selector: 'app-jobs-section',
@@ -16,5 +17,10 @@ import {JobItem} from '../job-item/job-item';
 })
 export class JobsSection {
   jobsService: JobsService = inject(JobsService);
-  jobs = toSignal(this.jobsService.getHomeItems(), {initialValue: [] as Job[]});
+  jobs = toSignal(
+    this.jobsService.getHomeItems(),
+    {
+      initialValue: ApiState.loading<Job[]>()
+    }
+  );
 }

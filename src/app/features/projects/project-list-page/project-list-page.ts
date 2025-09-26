@@ -5,6 +5,7 @@ import {toSignal} from '@angular/core/rxjs-interop';
 import {Project} from '../../../core/models/project';
 import {MatIconModule} from '@angular/material/icon';
 import {ProjectItem} from '../project-item/project-item';
+import {ApiState} from '../../../core/models/api.state';
 
 @Component({
   selector: 'app-project-list-page',
@@ -19,5 +20,10 @@ import {ProjectItem} from '../project-item/project-item';
 export class ProjectListPage {
   cardTitle: string = `:@@homeTitle:Projects`;
   projectService: ProjectsService = inject(ProjectsService);
-  projects = toSignal(this.projectService.getAll(), {initialValue: [] as Project[]});
+  projects = toSignal(
+    this.projectService.getAll(),
+    {
+      initialValue: ApiState.loading<Project[]>()
+    }
+  );
 }

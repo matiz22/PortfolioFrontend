@@ -1,9 +1,20 @@
-@if (realization(); as realization) {
-  <app-item-details-page
-    [title]="realization.title"
-    [thumbnail]="realization.thumbnail"
-    [description]="realization.description"
-    [technologies]="realization.technologies"
-    [links]="links()"
-  />
+@let item = realization();
+@switch (item.status) {
+  @case ('loading') {
+    <!-- TODO add loading component -->
+  }
+  @case ('error') {
+    <!-- TODO add error component -->
+  }
+  @case ('success') {
+    @if (item.data; as realization) {
+      <app-item-details-page
+        [title]="realization.title"
+        [thumbnail]="realization.thumbnail"
+        [description]="realization.description"
+        [technologies]="realization.technologies"
+        [links]="links()"
+      />
+    }
+  }
 }

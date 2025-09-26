@@ -1,23 +1,32 @@
-<div class="showcase-section">
-  @if (projects().length > 0) {
-    <div class="container">
-      @for (project of projects(); track project.id) {
-        <app-project-item class="flex-item" [project]="project"></app-project-item>
-      }
-    </div>
-  } @else {
-    @if (projects().length === 0) {
-      <li>No items</li>
-    } @else {
-      <li>Loading…</li>
-    }
+@let items = projects();
+
+@switch (items.status) {
+  @case ('loading') {
+    <!--TODO add loading component-->
   }
-  <div class="button-margins">
-    <a extended matFab routerLink="projects">
-      <mat-icon>workspaces</mat-icon>
-      <p>View All Projects</p>
-    </a>
-  </div>
-</div>
+  @case ('success') {
+    <div class="showcase-section">
+      @if (items.data.length > 0) {
+        <div class="container">
+          @for (project of items.data; track project.id) {
+            <app-project-item class="flex-item" [project]="project"></app-project-item>
+          }
+        </div>
+      } @else {
+        <!--TODO add no items component-->
+      }
+      <div class="button-margins">
+        <a extended matFab routerLink="projects">
+          <mat-icon>workspaces</mat-icon>
+          <p>View All Projects</p>
+        </a>
+      </div>
+    </div>
+  }
+  @case ('error') {
+    <!--TODO add loading component-->
+  }
+}
+
 
 
