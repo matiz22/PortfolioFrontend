@@ -42,14 +42,14 @@ export class ContactForm {
     if (!control) return '';
 
     if (control.hasError('required')) {
-      return `${fieldName} is required`;
+      return $localize`:@@requiredFieldError:Field is required`;
     }
     if (control.hasError('email')) {
-      return `Please enter a valid email address`;
+      return $localize`:@@emailFieldError:Enter a valid email address`;
     }
     if (control.hasError('maxlength')) {
       const maxLength = control.getError('maxlength').requiredLength;
-      return `${fieldName} cannot be longer than ${maxLength} characters`;
+      return $localize`:@@lengthFieldError: Field cannot be longer than ${maxLength} characters`;
     }
 
     return '';

@@ -1,21 +1,22 @@
 <app-hero-section
-  [cardTitle]="'home.title' | translate"
-  [cardSubtitle]="'home.subtitle' | translate"
-  [cardImage]="'/images/heroSection/siteHero.png'"
+  [cardSubtitle]="cardSubtitle"
+  [cardTitle]="cardTitle"
+  cardImage="images/heroSection/siteHero.png"
 >
 </app-hero-section>
 
 
 <div class="nav-link">
-  <button (click)="scrollToAbout()" class="icon-display" mat-icon-button>
+  <a class="icon-display" href="#about" mat-icon-button>
     <mat-icon style="fill: var(--mat-sys-primary)">keyboard_arrow_down</mat-icon>
-  </button>
+  </a>
 </div>
 
 <app-about-me-section></app-about-me-section>
 <mat-divider class="section-divider"></mat-divider>
 <app-section-texts
-  [title]="'Watch out some of my work'"
+  i18n-title="@@titleWorkSection"
+  title="Watch out some of my work"
 >
 
 </app-section-texts>
@@ -29,7 +30,7 @@
       <ng-template mat-tab-label>
         <div class="tabs-labels">
           <mat-icon class="tab-icon-margin">code</mat-icon>
-          <p>Projects</p>
+          <p i18n="@@projectsTab">Projects</p>
         </div>
       </ng-template>
     </mat-tab>
@@ -40,7 +41,7 @@
       <ng-template mat-tab-label>
         <div class="tabs-labels">
           <mat-icon class="tab-icon-margin">check_circle</mat-icon>
-          <p>Realization</p>
+          <p i18n="@@realizationsTab">Realization</p>
         </div>
       </ng-template>
     </mat-tab>
@@ -50,7 +51,7 @@
       <ng-template mat-tab-label>
         <div class="tabs-labels">
           <mat-icon class="tab-icon-margin">work_history</mat-icon>
-          <p>Jobs</p>
+          <p i18n="@@jobsTab">Jobs</p>
         </div>
       </ng-template>
     </mat-tab>
@@ -60,7 +61,8 @@
 <mat-divider class="section-divider"></mat-divider>
 
 <app-section-texts
-  [title]="'Learning Journey'"
+  i18n-title="@@titleEducatinSection"
+  title="Learning Journey"
 >
 </app-section-texts>
 
@@ -73,7 +75,7 @@
       <ng-template mat-tab-label>
         <div class="tabs-labels">
           <mat-icon class="tab-icon-margin">school</mat-icon>
-          <p>Education</p>
+          <p i18n="@@educationTab">Education</p>
         </div>
       </ng-template>
     </mat-tab>
@@ -84,7 +86,7 @@
       <ng-template mat-tab-label>
         <div class="tabs-labels">
           <mat-icon class="tab-icon-margin">workspace_premium</mat-icon>
-          <p>Certifications</p>
+          <p i18n="@@certificationsTab">Certifications</p>
         </div>
       </ng-template>
     </mat-tab>

@@ -11,7 +11,7 @@
 
     @if (technologies && technologies.length > 0) {
       <div class="project-column">
-        <h4 style="font: var(--mat-sys-title-large);">
+        <h4 style="font: var(--mat-sys-title-large);" i18n="@@technologiesUsed">
           Technologies used:
         </h4>
         <mat-chip-set>
@@ -33,7 +33,7 @@
 
     @if (links && links.length > 0) {
       <div class="project-column">
-        <h4 style="font:  var(--mat-sys-title-large);">
+        <h4 style="font:  var(--mat-sys-title-large);" i18n="@@links">
           Links:
         </h4>
         @for (link of links; track link.url) {
@@ -49,7 +49,7 @@
 
     @if (skills && skills.length > 0) {
       <div class="project-column">
-        <h4 style="font:  var(--mat-sys-title-large);">
+        <h4 style="font:  var(--mat-sys-title-large);" i18n="@@skills">
           Skills:
         </h4>
         <mat-chip-set>

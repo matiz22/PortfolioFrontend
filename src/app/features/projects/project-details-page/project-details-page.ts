@@ -39,7 +39,7 @@ export class ProjectDetailsPage {
     {initialValue: ApiState.loading<Project>()}
   );
 
-  private readonly repoButtonLabel = `:@@projectRepoButton:Project repository`;
+  private readonly repoButtonLabel = $localize`:@@projectRepoButton:Project repository`;
 
   links = computed<Link[]>(() => {
     const projectState = this.project();

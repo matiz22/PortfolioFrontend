@@ -7,8 +7,7 @@ import {provideHttpClient, withFetch} from '@angular/common/http';
 import {MAT_RIPPLE_GLOBAL_OPTIONS} from '@angular/material/core';
 import {CustomRouteReuseStrategy} from './route.reuse.strategy';
 import {provideMarkdown} from 'ngx-markdown';
-import {provideTranslateService} from '@ngx-translate/core';
-import {provideTranslateHttpLoader} from '@ngx-translate/http-loader';
+
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -36,13 +35,5 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withFetch()),
     provideMarkdown(),
     provideZoneChangeDetection({eventCoalescing: true}),
-    provideTranslateService({
-      loader: provideTranslateHttpLoader({
-        prefix: './i18n/',
-        suffix: '.json'
-      }),
-      fallbackLang: 'en',
-      lang: 'en'
-    })
   ]
 };

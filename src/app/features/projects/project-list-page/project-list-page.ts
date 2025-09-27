@@ -18,7 +18,7 @@ import {ApiState} from '../../../core/models/api.state';
   styleUrl: './project-list-page.scss'
 })
 export class ProjectListPage {
-  cardTitle: string = `:@@homeTitle:Projects`;
+  cardTitle: string = $localize`:@@projectTitleListPage:Projects`;
   projectService: ProjectsService = inject(ProjectsService);
   projects = toSignal(
     this.projectService.getAll(),

@@ -27,7 +27,6 @@ export class ContactService {
   }
 
   private handleError(error: HttpErrorResponse): Observable<boolean> {
-    console.error(error);
     return of(false);
   }
 }

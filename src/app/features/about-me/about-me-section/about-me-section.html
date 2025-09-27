@@ -1,12 +1,15 @@
 <div class="showcase-section">
-  <h1 style="font: var(--mat-sys-display-medium);">
-    {{ 'about.section.title' | translate }}
+  <h1 i18n="@@aboutSectionTitle" id="about" style="font: var(--mat-sys-display-medium);">
+    About me
   </h1>
-  <p style="font: var(--mat-sys-headline-large); text-align: center;">
-    {{ 'about.section.text' | translate }}
+  <p i18n="@@aboutSectionText" style="font: var(--mat-sys-headline-large); text-align: center;">
+    I’m a student and freelance developer who loves working with clients to bring their ideas to life. My focus is on
+    creating simple, effective solutions for complex problems — always using the right tool for the job. I build apps,
+    websites, and automations, and I’m also passionate about artificial intelligence, from traditional machine learning
+    to generative AI. Client-centered and ready to help you turn concepts into working products.
   </p>
   <a extended matFab routerLink="about-me">
-    <mat-icon>workspaces</mat-icon>
-    <p>View All Projects</p>
+    <mat-icon>person_book</mat-icon>
+    <p>Find out more about me</p>
   </a>
 </div>
