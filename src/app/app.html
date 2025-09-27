@@ -1,27 +1,25 @@
-<main class="nav-animation" xmlns="http://www.w3.org/1999/html">
-  <mat-sidenav-container>
-    <mat-sidenav #drawer [fixedInViewport]="true" mode="over">
-      <mat-nav-list>
-        <a (click)="navigateToSection('home')" mat-list-item>Home</a>
-        <a (click)="navigateToSection('about')" mat-list-item>About</a>
-        <a (click)="navigateToSection('contact')" mat-list-item>Contact</a>
-      </mat-nav-list>
-    </mat-sidenav>
+<mat-sidenav-container class="nav-animation">
+  <mat-sidenav #drawer [fixedInViewport]="true" mode="over">
+    <mat-nav-list>
+      <a (click)="navigateToSection('home')" mat-list-item>Home</a>
+      <a (click)="navigateToSection('about')" mat-list-item>About</a>
+      <a (click)="navigateToSection('contact')" mat-list-item>Contact</a>
+    </mat-nav-list>
+  </mat-sidenav>
 
-    <mat-sidenav-content>
-      <header class="app-header">
-        <mat-toolbar>
-          <button (click)="toggleDrawer()" mat-icon-button>
-            <mat-icon style="fill: var(--mat-sys-primary)">menu</mat-icon>
-          </button>
-        </mat-toolbar>
-        <!--        <app-languages-switcher></app-languages-switcher>-->
-      </header>
-      <div class="header-margin">
-        <router-outlet></router-outlet>
-      </div>
+  <mat-sidenav-content>
+    <header class="app-header">
+      <mat-toolbar>
+        <button (click)="toggleDrawer()" mat-icon-button>
+          <mat-icon style="fill: var(--mat-sys-primary)">menu</mat-icon>
+        </button>
+      </mat-toolbar>
+      <!--        <app-languages-switcher></app-languages-switcher>-->
+    </header>
+    <main class="header-margin">
+      <router-outlet></router-outlet>
+    </main>
 
-    </mat-sidenav-content>
-  </mat-sidenav-container>
-</main>
+  </mat-sidenav-content>
+</mat-sidenav-container>
 <app-footer></app-footer>
