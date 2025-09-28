@@ -1,7 +1,6 @@
 import {Component, inject} from '@angular/core';
 import {HeroSection} from '../../shared/hero/hero-section/hero-section';
 import {MatDivider} from '@angular/material/divider';
-import {MatIconButton} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {ProjectsSection} from '../projects/projects-section/projects-section';
 import {NavigationService} from '../../core/services/navigation.service';
@@ -20,7 +19,6 @@ import {AboutMeSection} from '../about-me/about-me-section/about-me-section';
   imports: [
     HeroSection,
     MatDivider,
-    MatIconButton,
     MatIconModule,
     ProjectsSection,
     RealizationsSection,
