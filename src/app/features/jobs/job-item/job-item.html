@@ -15,7 +15,7 @@
       @if (job.isCurrent) {
         <p> {{ job.startDate | date:"MMM yyyy" }} </p>
         <p> - </p>
-        <p> Present</p>
+        <p i18n="@@jobPresent"> Present</p>
       } @else {
         <p>{{ job.startDate | date:"MMM yyyy" }}</p>
         <p> - </p>

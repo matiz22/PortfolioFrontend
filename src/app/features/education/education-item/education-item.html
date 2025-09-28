@@ -15,7 +15,7 @@
       @if (education.isCurrent) {
         <p> {{ education.startDate | date:"MMM yyyy" }} </p>
         <p> - </p>
-        <p> Present</p>
+        <p i18n="@@educationPresent"> Present</p>
       } @else {
         <p>{{ education.startDate | date:"MMM yyyy" }}</p>
         <p> - </p>
@@ -25,7 +25,7 @@
     @if (!education.isCurrent) {
       <div class="detail">
         <mat-icon>star</mat-icon>
-        <p>Grade: {{ education.grade }}</p>
+        <p i18n="@@educationGradeField">Grade: {{ education.grade }}</p>
       </div>
     }
   </div>
