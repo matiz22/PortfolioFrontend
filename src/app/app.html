@@ -1,9 +1,9 @@
 <mat-sidenav-container class="nav-animation">
   <mat-sidenav #drawer [fixedInViewport]="true" mode="over">
     <mat-nav-list>
-      <a (click)="navigateToSection('home')" mat-list-item>Home</a>
-      <a (click)="navigateToSection('about')" mat-list-item>About</a>
-      <a (click)="navigateToSection('contact')" mat-list-item>Contact</a>
+      <a (click)="drawer.toggle()" i18n="@@homeNav" mat-list-item routerLink="">Home</a>
+      <a (click)="drawer.toggle()" i18n="@@aboutNav" mat-list-item routerLink="about-me">About Me</a>
+      <a (click)="drawer.toggle()" i18n="@@contactNav" mat-list-item routerLink="contact">Contact Me</a>
     </mat-nav-list>
   </mat-sidenav>
 
