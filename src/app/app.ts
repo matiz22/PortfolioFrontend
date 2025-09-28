@@ -5,7 +5,6 @@ import {MatSidenav, MatSidenavContainer, MatSidenavContent,} from '@angular/mate
 import {MatListItem, MatNavList} from '@angular/material/list';
 import {MatIconButton} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
-import {NavigationService} from './core/services/navigation.service';
 import {Footer} from './shared/footer/footer/footer';
 
 @Component({
@@ -19,16 +18,14 @@ export class App {
 
   @ViewChild('drawer') drawer!: MatSidenav;
 
-  constructor(private navigationService: NavigationService) {
+  constructor() {
 
   }
 
-  navigateToSection(sectionId: string): void {
-    this.navigationService.navigateToSection(sectionId, this.drawer);
-  }
 
   toggleDrawer(): void {
     this.navigationService.toggleDrawer(this.drawer);
   }
+  
 
 }
