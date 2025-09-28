@@ -13,3 +13,9 @@ mat-sidenav-content {
   scroll-behavior: smooth;
   scroll-padding-top: var(--toolbar-height);
 }
+
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
