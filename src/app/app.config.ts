@@ -3,10 +3,11 @@ import {provideRouter, RouteReuseStrategy, withInMemoryScrolling, withViewTransi
 
 import {routes} from './app.routes';
 import {provideClientHydration, withEventReplay} from '@angular/platform-browser';
-import {provideHttpClient, withFetch} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, provideHttpClient, withFetch, withInterceptorsFromDi} from '@angular/common/http';
 import {MAT_RIPPLE_GLOBAL_OPTIONS} from '@angular/material/core';
 import {CustomRouteReuseStrategy} from './route.reuse.strategy';
 import {provideMarkdown} from 'ngx-markdown';
+import {LocaleInterceptor} from './core/interceptors/locale.interceptor';
 
 
 export const appConfig: ApplicationConfig = {
@@ -25,15 +26,16 @@ export const appConfig: ApplicationConfig = {
     provideRouter(
       routes,
       withViewTransitions(),
-      withInMemoryScrolling({
-          scrollPositionRestoration: 'enabled',
-        }
-      ),
+      withInMemoryScrolling({scrollPositionRestoration: 'enabled'}),
     ),
     {provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy},
     provideClientHydration(withEventReplay()),
-    provideHttpClient(withFetch()),
+    provideHttpClient(
+      withFetch(),
+      withInterceptorsFromDi()
+    ),
+    {provide: HTTP_INTERCEPTORS, useClass: LocaleInterceptor, multi: true},
+
     provideMarkdown(),
-    provideZoneChangeDetection({eventCoalescing: true}),
   ]
 };
