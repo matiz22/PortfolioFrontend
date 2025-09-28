@@ -9,6 +9,7 @@ import {
   CertificationDetailsPage
 } from './features/certifications/certification-details-page/certification-details-page';
 import {AboutMePage} from './features/about-me/about-me-page/about-me-page';
+import {ContactPage} from './shared/contact/contact-page/contact-page';
 
 export const routes: Routes = [
   {
@@ -43,5 +44,9 @@ export const routes: Routes = [
   {
     path: 'about-me',
     component: AboutMePage
+  },
+  {
+    path: 'contact',
+    component: ContactPage
   },
 ];
