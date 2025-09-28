@@ -6,6 +6,7 @@ import {Project} from '../../../core/models/project';
 import {MatIconModule} from '@angular/material/icon';
 import {ProjectItem} from '../project-item/project-item';
 import {ApiState} from '../../../core/models/api.state';
+import {ContactSection} from '../../../shared/contact/contact-section/contact-section';
 
 @Component({
   selector: 'app-project-list-page',
@@ -13,6 +14,7 @@ import {ApiState} from '../../../core/models/api.state';
     HeroSection,
     MatIconModule,
     ProjectItem,
+    ContactSection,
   ],
   templateUrl: './project-list-page.html',
   styleUrl: './project-list-page.scss'
