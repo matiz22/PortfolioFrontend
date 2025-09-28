@@ -10,6 +10,7 @@ import {
 } from './features/certifications/certification-details-page/certification-details-page';
 import {AboutMePage} from './features/about-me/about-me-page/about-me-page';
 import {ContactPage} from './shared/contact/contact-page/contact-page';
+import {PrivacyPolicy} from './shared/privacy-policy/privacy-policy';
 
 export const routes: Routes = [
   {
@@ -49,4 +50,8 @@ export const routes: Routes = [
     path: 'contact',
     component: ContactPage
   },
+  {
+    path: "privacy-policy",
+    component: PrivacyPolicy
+  }
 ];
