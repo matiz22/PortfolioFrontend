@@ -22,10 +22,8 @@ export class App {
 
   }
 
-
   toggleDrawer(): void {
-    this.navigationService.toggleDrawer(this.drawer);
+    this.drawer.toggle();
   }
-  
 
 }

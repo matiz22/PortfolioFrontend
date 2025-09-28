@@ -1,4 +1,4 @@
-<mat-sidenav-container class="nav-animation">
+<mat-sidenav-container>
   <mat-sidenav #drawer [fixedInViewport]="true" mode="over">
     <mat-nav-list>
       <a (click)="drawer.toggle()" i18n="@@homeNav" mat-list-item routerLink="">Home</a>
@@ -19,7 +19,6 @@
     <main class="header-margin">
       <router-outlet></router-outlet>
     </main>
-
+    <app-footer></app-footer>
   </mat-sidenav-content>
 </mat-sidenav-container>
-<app-footer></app-footer>
