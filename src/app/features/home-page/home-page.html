@@ -5,92 +5,94 @@
 >
 </app-hero-section>
 
-
-<div class="nav-link">
-  <a class="icon-display" href="#about" mat-icon-button>
-    <mat-icon style="fill: var(--mat-sys-primary)">keyboard_arrow_down</mat-icon>
-  </a>
-</div>
-
-<app-about-me-section></app-about-me-section>
+<section>
+  <app-about-me-section></app-about-me-section>
+</section>
 <mat-divider class="section-divider"></mat-divider>
-<app-section-texts
-  i18n-title="@@titleWorkSection"
-  title="Watch out some of my work"
->
+<section>
+  <app-section-texts
+    i18n-title="@@titleWorkSection"
+    title="Watch out some of my work"
+  >
 
-</app-section-texts>
+  </app-section-texts>
 
-<div class="tabs-container">
-  <mat-tab-group class="tabs" dynamicHeight mat-align-tabs="center" mat-stretch-tabs="false">
+  <div class="tabs-container">
+    <mat-tab-group class="tabs" dynamicHeight mat-align-tabs="center" mat-stretch-tabs="false">
 
-    <mat-tab>
-      <app-projects-section>
-      </app-projects-section>
-      <ng-template mat-tab-label>
-        <div class="tabs-labels">
-          <mat-icon class="tab-icon-margin">code</mat-icon>
-          <p i18n="@@projectsTab">Projects</p>
-        </div>
-      </ng-template>
-    </mat-tab>
+      <mat-tab>
+        <app-projects-section>
+        </app-projects-section>
+        <ng-template mat-tab-label>
+          <div class="tabs-labels">
+            <mat-icon class="tab-icon-margin">code</mat-icon>
+            <p i18n="@@projectsTab">Projects</p>
+          </div>
+        </ng-template>
+      </mat-tab>
 
-    <mat-tab>
-      <app-realizations-section>
-      </app-realizations-section>
-      <ng-template mat-tab-label>
-        <div class="tabs-labels">
-          <mat-icon class="tab-icon-margin">check_circle</mat-icon>
-          <p i18n="@@realizationsTab">Realization</p>
-        </div>
-      </ng-template>
-    </mat-tab>
-    <mat-tab>
-      <app-jobs-section>
-      </app-jobs-section>
-      <ng-template mat-tab-label>
-        <div class="tabs-labels">
-          <mat-icon class="tab-icon-margin">work_history</mat-icon>
-          <p i18n="@@jobsTab">Jobs</p>
-        </div>
-      </ng-template>
-    </mat-tab>
-  </mat-tab-group>
-</div>
+      <mat-tab>
+        <app-realizations-section>
+        </app-realizations-section>
+        <ng-template mat-tab-label>
+          <div class="tabs-labels">
+            <mat-icon class="tab-icon-margin">check_circle</mat-icon>
+            <p i18n="@@realizationsTab">Realization</p>
+          </div>
+        </ng-template>
+      </mat-tab>
+      <mat-tab>
+        <app-jobs-section>
+        </app-jobs-section>
+        <ng-template mat-tab-label>
+          <div class="tabs-labels">
+            <mat-icon class="tab-icon-margin">work_history</mat-icon>
+            <p i18n="@@jobsTab">Jobs</p>
+          </div>
+        </ng-template>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
 
+</section>
 <mat-divider class="section-divider"></mat-divider>
+<section>
+  <app-section-texts
+    i18n-title="@@titleEducatinSection"
+    title="Learning Journey"
+  >
+  </app-section-texts>
 
-<app-section-texts
-  i18n-title="@@titleEducatinSection"
-  title="Learning Journey"
->
-</app-section-texts>
+  <div class="tabs-container">
+    <mat-tab-group class="tabs" dynamicHeight mat-align-tabs="center" mat-stretch-tabs="false">
 
-<div class="tabs-container">
-  <mat-tab-group class="tabs" dynamicHeight mat-align-tabs="center" mat-stretch-tabs="false">
+      <mat-tab>
+        <app-education-section>
+        </app-education-section>
+        <ng-template mat-tab-label>
+          <div class="tabs-labels">
+            <mat-icon class="tab-icon-margin">school</mat-icon>
+            <p i18n="@@educationTab">Education</p>
+          </div>
+        </ng-template>
+      </mat-tab>
 
-    <mat-tab>
-      <app-education-section>
-      </app-education-section>
-      <ng-template mat-tab-label>
-        <div class="tabs-labels">
-          <mat-icon class="tab-icon-margin">school</mat-icon>
-          <p i18n="@@educationTab">Education</p>
-        </div>
-      </ng-template>
-    </mat-tab>
+      <mat-tab>
+        <app-certification-section>
+        </app-certification-section>
+        <ng-template mat-tab-label>
+          <div class="tabs-labels">
+            <mat-icon class="tab-icon-margin">workspace_premium</mat-icon>
+            <p i18n="@@certificationsTab">Certifications</p>
+          </div>
+        </ng-template>
+      </mat-tab>
 
-    <mat-tab>
-      <app-certification-section>
-      </app-certification-section>
-      <ng-template mat-tab-label>
-        <div class="tabs-labels">
-          <mat-icon class="tab-icon-margin">workspace_premium</mat-icon>
-          <p i18n="@@certificationsTab">Certifications</p>
-        </div>
-      </ng-template>
-    </mat-tab>
+    </mat-tab-group>
+  </div>
+</section>
 
-  </mat-tab-group>
-</div>
-<app-contact-section></app-contact-section>
+<section id="contact">
+  <app-contact-section></app-contact-section>
+</section>
+
