@@ -24,12 +24,12 @@ section {
 }
 
 img {
-  padding: 20px;
+  margin: 20px;
   object-fit: cover;
   border-radius: 50%;
 }
 
-@media (max-width: 800px) {
+@media (max-width: 1000px) {
   .flex-section {
     flex-direction: column;
   }
