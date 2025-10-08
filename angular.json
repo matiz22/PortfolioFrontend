@@ -9,7 +9,8 @@
         "sourceLocale": "en",
         "locales": {
           "pl": {
-            "translation": "src/locale/pl.json"
+            "translation": "src/locale/pl.json",
+            "subPath": ""
           }
         }
       },
