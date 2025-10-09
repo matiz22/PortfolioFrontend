@@ -4,6 +4,11 @@ on:
   push:
     branches:
       - test
+  pull_request:
+    types:
+      - closed
+    branches:
+      - test
 
 jobs:
   deploy:
