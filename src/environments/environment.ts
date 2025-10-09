@@ -7,14 +7,14 @@ export const environment = {
   version: 'v1',
   languagesOptions: [
     {
+      code: 'pl',
+      label: 'Polski',
+      url: 'http://localhost:4000/'
+    },
+    {
       code: 'en',
       label: 'English',
       url: 'http://localhost:4000/en/'
-    },
-    {
-      code: 'pl',
-      label: 'Polski',
-      url: 'http://localhost:4000/pl/'
     },
   ] as LanguageOption[]
 };

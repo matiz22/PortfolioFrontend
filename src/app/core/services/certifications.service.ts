@@ -4,7 +4,7 @@ import {IHomeService} from './base/services/home.service';
 import {CrudOperations} from './base/operations/crud.operations';
 import {HomeOperations} from './base/operations/home.operations';
 import {HttpClient} from '@angular/common/http';
-import {environment} from '../../../enviroments/enviroment';
+import {environment} from '../../../environments/environment';
 import {Observable} from 'rxjs';
 import {Certification} from '../models/certification';
 import {mapCertification} from '../mappers/certification';

@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
-import {environment} from '../../../enviroments/enviroment';
+import {environment} from '../../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {ICrudService} from './base/services/crud.service';
 import {IHomeService} from './base/services/home.service';

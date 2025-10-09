@@ -14,16 +14,7 @@
           <mat-icon style="fill: var(--mat-sys-primary)">menu</mat-icon>
         </button>
         <span class="spacer"></span>
-        <button [matMenuTriggerFor]="afterMenu" matButton>
-          {{ getCurrentLanguage() }}
-        </button>
-        <mat-menu #afterMenu="matMenu" xPosition="after">
-          @for (lang of environment.languagesOptions; track lang.code) {
-            <a mat-menu-item href="{{lang.url}}">
-              {{ lang.label }}
-            </a>
-          }
-        </mat-menu>
+        <app-languages-switcher></app-languages-switcher>
       </mat-toolbar>
     </header>
     <main class="header-margin">
