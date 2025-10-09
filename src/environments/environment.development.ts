@@ -2,7 +2,7 @@ import {LanguageOption} from '../app/core/models/languages';
 
 export const environment = {
   production: false,
-  apiUrl: 'http://127.0.0.1:8081/api',
+  apiUrl: 'https://admintest.matiz22.pl/api',
   storageUrl: 'https://admintest.matiz22.pl/storage',
   version: 'v1',
   languagesOptions: [

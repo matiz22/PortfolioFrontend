@@ -2,7 +2,7 @@ import {LanguageOption} from '../app/core/models/languages';
 
 export const environment = {
   production: true,
-  apiUrl: 'http://127.0.0.1:8081/api',
+  apiUrl: 'http://admin.malich.dev/api',
   storageUrl: 'https://admin.malich.dev/storage',
   version: 'v1',
   languagesOptions: [
