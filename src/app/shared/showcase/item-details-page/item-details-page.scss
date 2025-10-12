@@ -6,6 +6,14 @@
   border-radius: 0;
 }
 
+.mat-mdc-chip-avatar img,
+.mat-mdc-standard-chip img[matChipAvatar] {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* or cover, depending on your design */
+  aspect-ratio: 1 / 1; /* critical for Safari */
+  border-radius: 0; /* your existing style */
+}
 
 .project-details-container {
   display: flex;

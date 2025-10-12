@@ -2,7 +2,6 @@
 
 .item {
   cursor: pointer;
-  min-height: 600px;
   &:hover {
     @include mat.elevation(8);
   }
@@ -13,7 +12,16 @@
 mat-card {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  min-height: 100%;
+  flex-shrink: 1;
+  width: 100%;
+  max-width: 500px;
+}
+
+@media (max-width: 500px) {
+  mat-card {
+    width: 300px;
+  }
 }
 
 mat-card-content {
