@@ -18,7 +18,6 @@ export class LanguagesSwitcher {
   languagesOptions = environment.languagesOptions
 
   constructor(@Inject(LOCALE_ID) public locale: string) {
-    console.log(environment)
   }
 
   getCurrentLanguage(): string {
