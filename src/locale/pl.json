@@ -19,6 +19,7 @@
     "helpItem4": "Małe i średnie projekty, gdzie liczy się przejrzystość i szybkość",
     "aboutSectionTitle": "O mnie",
     "aboutSectionText": "Jestem studentem i freelance developerem, który uwielbia współpracować z klientami, by wcielać ich pomysły w życie. Skupiam się na tworzeniu prostych, skutecznych rozwiązań dla złożonych problemów — zawsze używam odpowiednich narzędzi do danego zadania. Tworzę aplikacje, strony internetowe i automatyzacje, a także pasjuję się sztuczną inteligencją — od tradycyjnego uczenia maszynowego po generatywne AI. Nastawiony na klienta i gotowy pomóc Ci przekształcić koncepcje w działające produkty.",
+    "aboutMeButton": "Dowiedz się więcej o mnie",
     "educationPresent": "Obecnie",
     "educationGradeField": "Ocena: {$INTERPOLATION}",
     "titleWorkSection": "Zobacz moje realizacje",
