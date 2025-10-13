@@ -37,7 +37,13 @@
   flex-direction: row;
   align-items: center;
   min-width: 70px;
+
+  //> * {
+  //  flex: 1;
+  //  text-align: center;
+  //}
 }
+
 
 .tabs-labels p {
   margin-block-end: 18px;
