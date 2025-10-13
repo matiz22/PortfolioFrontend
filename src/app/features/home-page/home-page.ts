@@ -36,8 +36,6 @@ import {AboutMeSection} from '../about-me/about-me-section/about-me-section';
   styleUrl: './home-page.scss'
 })
 export class HomePage {
-  cardTitle: string = $localize`:@@homeTitle:👋 Hi, I’m Mateusz — Mobile & Web Developer`;
-  cardSubtitle: string = $localize`:@@homeSubtitle:Crafting simple, effective digital experiences.`;
 
   navigationService: NavigationService = inject(NavigationService);
 
