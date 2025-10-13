@@ -1,5 +1,5 @@
 .cover-card {
-  height: 700px;
+  height: 600px;
   overflow: hidden;
   background-size: cover;
   width: 1400px;
@@ -8,6 +8,7 @@
   background-repeat: no-repeat;
   position: relative;
   transition: border-radius 0.4s ease-in-out;
+  display: block;
 }
 
 .cover-card-img {
@@ -33,11 +34,10 @@
 
 @media (max-width: 1400px) {
   .cover-card {
-    max-width: 100%;
-    width: 100%;
     border-radius: 0;
     transition: border-radius 0.4s ease-in-out;
   }
+
 }
 
 .hero-card-titles {
