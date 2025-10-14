@@ -4,7 +4,7 @@ html, body { height: 100%; }
 
 html {
   scroll-padding-top: var(--toolbar-height);
-  font-size: clamp(16px, 1.5vw, 18px); /* Reduced scaling for smaller phones */
+  font-size: clamp(17px, 1.5vw, 18px); /* Reduced scaling for smaller phones */
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
 }
