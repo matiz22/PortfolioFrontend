@@ -76,3 +76,10 @@
     align-content: center;
   }
 }
+
+@media (max-width: 768px) {
+  .cover-card {
+    height: 400px;
+  }
+}
+
