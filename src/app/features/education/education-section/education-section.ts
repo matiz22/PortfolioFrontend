@@ -4,11 +4,17 @@ import {EducationService} from '../../../core/services/education.service';
 import {Education} from '../../../core/models/education';
 import {EducationItem} from '../education-item/education-item';
 import {ApiState} from '../../../core/models/api.state';
+import {NetworkError} from '../../../shared/errors/network-error/network-error';
+import {LoadingCircle} from '../../../shared/loading/loading-circle/loading-circle';
+import {NotFound} from '../../../shared/errors/not-found/not-found';
 
 @Component({
   selector: 'app-education-section',
   imports: [
-    EducationItem
+    EducationItem,
+    NetworkError,
+    LoadingCircle,
+    NotFound
   ],
   templateUrl: './education-section.html',
   styleUrl: './education-section.scss'

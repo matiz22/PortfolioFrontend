@@ -5,12 +5,18 @@ import {MatIconModule} from '@angular/material/icon';
 import {Realization} from '../../../core/models/realization';
 import {RealizationItem} from '../realization-item/realization-item';
 import {ApiState} from '../../../core/models/api.state';
+import {LoadingCircle} from '../../../shared/loading/loading-circle/loading-circle';
+import {NotFound} from '../../../shared/errors/not-found/not-found';
+import {NetworkError} from '../../../shared/errors/network-error/network-error';
 
 @Component({
   selector: 'app-realizations-section',
   imports: [
     MatIconModule,
-    RealizationItem
+    RealizationItem,
+    LoadingCircle,
+    NotFound,
+    NetworkError
   ],
   templateUrl: './realizations-section.html',
   styleUrl: './realizations-section.scss'

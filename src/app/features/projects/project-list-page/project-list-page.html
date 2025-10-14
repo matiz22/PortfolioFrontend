@@ -9,7 +9,7 @@
 
 @switch (items.status) {
   @case ('loading') {
-    <!--TODO add loading component-->
+    <app-loading-circle></app-loading-circle>
   }
   @case ('success') {
     <div class="showcase-section">
@@ -20,13 +20,13 @@
           }
         </div>
       } @else {
-        <!--TODO add no items component-->
+        <app-not-found></app-not-found>
       }
     </div>
 
   }
   @case ('error') {
-    <!--TODO add error component-->
+    <app-not-found></app-not-found>
   }
 }
 

@@ -2,7 +2,7 @@
 
 @switch (certs.status) {
   @case ('loading') {
-    <!--TODO add loading component-->
+    <app-loading-circle></app-loading-circle>
   }
   @case ('success') {
     <div class="showcase-section">
@@ -13,7 +13,7 @@
           }
         </div>
       } @else {
-        <!--TODO add no items component-->
+       <app-not-found></app-not-found>
       }
 
       <!--  <div class="button-margins">-->
@@ -26,6 +26,6 @@
     </div>
   }
   @case ('error') {
-    <!--TODO add loading component-->
+    <app-network-error></app-network-error>
   }
 }

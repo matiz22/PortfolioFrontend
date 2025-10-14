@@ -1,14 +1,20 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, signal} from '@angular/core';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {CertificationItem} from '../certification-item/certification-item';
 import {CertificationsService} from '../../../core/services/certifications.service';
 import {Certification} from '../../../core/models/certification';
 import {ApiState} from '../../../core/models/api.state';
+import {NotFound} from '../../../shared/errors/not-found/not-found';
+import {NetworkError} from '../../../shared/errors/network-error/network-error';
+import {LoadingCircle} from '../../../shared/loading/loading-circle/loading-circle';
 
 @Component({
   selector: 'app-certification-section',
   imports: [
-    CertificationItem
+    CertificationItem,
+    NotFound,
+    NetworkError,
+    LoadingCircle
   ],
   templateUrl: './certification-section.html',
   styleUrl: './certification-section.scss'
