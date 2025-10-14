@@ -8,12 +8,16 @@ import {MatIconModule} from '@angular/material/icon';
 import {Link} from '../../../shared/models/link';
 import {ApiState} from '../../../core/models/api.state';
 import {Realization} from '../../../core/models/realization';
+import {NetworkError} from '../../../shared/errors/network-error/network-error';
+import {LoadingCircle} from '../../../shared/loading/loading-circle/loading-circle';
 
 @Component({
   selector: 'app-realization-details-page',
   imports: [
     ItemDetailsPage,
-    MatIconModule
+    MatIconModule,
+    NetworkError,
+    LoadingCircle
   ],
   templateUrl: './realization-details-page.html',
   styleUrl: './realization-details-page.scss'

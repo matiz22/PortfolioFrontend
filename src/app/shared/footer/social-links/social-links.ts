@@ -5,12 +5,14 @@ import {SocialLink} from '../../../core/models/social.link';
 import {MatIconButton} from '@angular/material/button';
 import {ImageUrlPipe} from '../../pipes/image-url-pipe';
 import {ApiState} from '../../../core/models/api.state';
+import {LoadingCircle} from '../../loading/loading-circle/loading-circle';
 
 @Component({
   selector: 'app-social-links',
   imports: [
     MatIconButton,
-    ImageUrlPipe
+    ImageUrlPipe,
+    LoadingCircle
   ],
   templateUrl: './social-links.html',
   styleUrl: './social-links.scss'

@@ -1,10 +1,10 @@
 @let cert = certification();
 @switch (cert.status) {
   @case ('loading') {
-    <!-- TODO add loading component -->
+    <app-loading-circle></app-loading-circle>
   }
   @case ('error') {
-    <!-- TODO add error component -->
+    <app-network-error></app-network-error>
   }
   @case ('success') {
     @if (cert.data; as certification) {

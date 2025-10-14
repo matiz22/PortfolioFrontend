@@ -6,11 +6,15 @@ import {of, switchMap} from 'rxjs';
 import {JobsService} from '../../../core/services/jobs.service';
 import {ApiState} from '../../../core/models/api.state';
 import {Job} from '../../../core/models/job';
+import {NetworkError} from '../../../shared/errors/network-error/network-error';
+import {LoadingCircle} from '../../../shared/loading/loading-circle/loading-circle';
 
 @Component({
   selector: 'app-job-details-page',
   imports: [
-    ItemDetailsPage
+    ItemDetailsPage,
+    NetworkError,
+    LoadingCircle
   ],
   templateUrl: './job-details-page.html',
   styleUrl: './job-details-page.scss'
