@@ -1,4 +1,4 @@
-import {Component, inject, signal} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {CertificationItem} from '../certification-item/certification-item';
 import {CertificationsService} from '../../../core/services/certifications.service';
