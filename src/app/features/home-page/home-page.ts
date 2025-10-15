@@ -37,9 +37,4 @@ import {AboutMeSection} from '../about-me/about-me-section/about-me-section';
 })
 export class HomePage {
 
-  navigationService: NavigationService = inject(NavigationService);
-
-  scrollToAbout(): void {
-    this.navigationService.navigateToSection('about')
-  }
 }
