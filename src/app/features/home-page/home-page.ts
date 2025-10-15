@@ -1,9 +1,8 @@
-import {Component, Inject, inject, LOCALE_ID} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {HeroSection} from '../../shared/hero/hero-section/hero-section';
 import {MatDivider} from '@angular/material/divider';
 import {MatIconModule} from '@angular/material/icon';
 import {ProjectsSection} from '../projects/projects-section/projects-section';
-import {NavigationService} from '../../core/services/navigation.service';
 import {RealizationsSection} from '../realizations/realizations-section/realizations-section';
 import {MatTab, MatTabGroup, MatTabLabel} from '@angular/material/tabs';
 import {SectionTexts} from '../../shared/sections/section-texts/section-texts';
@@ -36,7 +35,7 @@ import {Meta, Title} from '@angular/platform-browser';
   templateUrl: './home-page.html',
   styleUrl: './home-page.scss'
 })
-export class HomePage {
+export class HomePage implements OnInit{
   constructor(
     private title: Title,
     private meta: Meta,
