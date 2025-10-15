@@ -15,7 +15,7 @@ import {LanguagesSwitcher} from './shared/languages/languages-switcher/languages
   styleUrl: './app.scss'
 })
 export class App {
-  protected readonly title = signal('PortfolioFrontend');
+  protected readonly title = signal('Mateusz | Freelance Developer & AI Enthusiast');
 
   @ViewChild('drawer') drawer!: MatSidenav;
 

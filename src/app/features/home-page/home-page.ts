@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, Inject, inject, LOCALE_ID} from '@angular/core';
 import {HeroSection} from '../../shared/hero/hero-section/hero-section';
 import {MatDivider} from '@angular/material/divider';
 import {MatIconModule} from '@angular/material/icon';
@@ -12,6 +12,7 @@ import {EducationSection} from '../education/education-section/education-section
 import {CertificationSection} from '../certifications/certification-section/certification-section';
 import {ContactSection} from '../../shared/contact/contact-section/contact-section';
 import {AboutMeSection} from '../about-me/about-me-section/about-me-section';
+import {Meta, Title} from '@angular/platform-browser';
 
 
 @Component({
@@ -36,5 +37,18 @@ import {AboutMeSection} from '../about-me/about-me-section/about-me-section';
   styleUrl: './home-page.scss'
 })
 export class HomePage {
+  constructor(
+    private title: Title,
+    private meta: Meta,
+  ) {}
 
+  ngOnInit(): void {
+    const title = $localize`:@@homeTitleMeta:Mateusz | Freelance Developer & AI Enthusiast`;
+    const description = $localize`:@@homeDescriptionMeta:Freelance developer and student crafting simple, effective digital experiences. I build apps, websites, and AI solutions tailored to your goals.`;
+
+    this.title.setTitle(title);
+    this.meta.updateTag({ name: 'description', content: description });
+    this.meta.updateTag({ property: 'og:title', content: title });
+    this.meta.updateTag({ property: 'og:description', content: description });
+  }
 }
