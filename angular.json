@@ -44,7 +44,8 @@
             ],
             "styles": [
               "src/custom-theme.scss",
-              "src/styles.scss"
+              "src/styles.scss",
+              "src/animations.scss"
             ],
             "server": "src/main.server.ts",
             "outputMode": "server",
