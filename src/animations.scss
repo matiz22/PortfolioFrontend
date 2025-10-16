@@ -1,7 +1,7 @@
 .slide-in {
   opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 1s ease 0.5s, transform 1s ease;
+  transform: translateY(50px);
+  transition: opacity 0.5s ease 0.5s, transform 2s ease;
 }
 
 .slide-in.visible {
@@ -11,7 +11,7 @@
 
 @media (max-width: 768px) {
   .slide-in {
-    transform: translateX(100px);
+    transform: translateX(150px);
   }
 
   .slide-in.visible {
