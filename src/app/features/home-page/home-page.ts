@@ -12,6 +12,7 @@ import {CertificationSection} from '../certifications/certification-section/cert
 import {ContactSection} from '../../shared/contact/contact-section/contact-section';
 import {AboutMeSection} from '../about-me/about-me-section/about-me-section';
 import {Meta, Title} from '@angular/platform-browser';
+import {AosAnimations} from '../../shared/animations/aos-animations';
 
 
 @Component({
@@ -31,6 +32,7 @@ import {Meta, Title} from '@angular/platform-browser';
     CertificationSection,
     ContactSection,
     AboutMeSection,
+    AosAnimations,
   ],
   templateUrl: './home-page.html',
   styleUrl: './home-page.scss'
