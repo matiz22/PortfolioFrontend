@@ -13,7 +13,7 @@
         @for (technology of project.technologies; track technology.id) {
           <mat-chip>
             <img
-              style="border-radius: 0"
+              style="border-radius: 0;  display: block;"
               matChipAvatar
               [src]="technology.icon | imageUrl"
               [alt]="technology.name"

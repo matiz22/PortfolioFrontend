@@ -1,15 +1,17 @@
 <app-hero-section
-  [cardSubtitle]="cardSubtitle"
-  [cardTitle]="cardTitle"
+  cardSubtitle="Crafting simple, effective digital experiences."
+  cardTitle="👋 Hi, I’m Mateusz."
   cardImage="images/heroSection/siteHero.png"
+  i18n-cardTitle="@@homeTitle"
+  i18n-cardSubtitle="@@homeSubtitle"
 >
 </app-hero-section>
 
-<section>
+<section appAosAnimations>
   <app-about-me-section></app-about-me-section>
 </section>
 <mat-divider class="section-divider"></mat-divider>
-<section>
+<section appAosAnimations>
   <app-section-texts
     i18n-title="@@titleWorkSection"
     title="Watch out some of my work"
@@ -56,9 +58,9 @@
 
 </section>
 <mat-divider class="section-divider"></mat-divider>
-<section>
+<section appAosAnimations>
   <app-section-texts
-    i18n-title="@@titleEducatinSection"
+    i18n-title="@@titleEducationSection"
     title="Learning Journey"
   >
   </app-section-texts>

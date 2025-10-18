@@ -7,11 +7,15 @@ import {CertificationsService} from '../../../core/services/certifications.servi
 import {Link} from '../../../shared/models/link';
 import {ApiState} from '../../../core/models/api.state';
 import {Certification} from '../../../core/models/certification';
+import {LoadingCircle} from '../../../shared/loading/loading-circle/loading-circle';
+import {NetworkError} from '../../../shared/errors/network-error/network-error';
 
 @Component({
   selector: 'app-certification-details-page',
   imports: [
-    ItemDetailsPage
+    ItemDetailsPage,
+    LoadingCircle,
+    NetworkError
   ],
   templateUrl: './certification-details-page.html',
   styleUrl: './certification-details-page.scss'

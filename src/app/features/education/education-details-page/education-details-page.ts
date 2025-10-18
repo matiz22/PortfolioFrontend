@@ -6,11 +6,15 @@ import {of, switchMap} from 'rxjs';
 import {EducationService} from '../../../core/services/education.service';
 import {ApiState} from '../../../core/models/api.state';
 import {Education} from '../../../core/models/education';
+import {LoadingCircle} from '../../../shared/loading/loading-circle/loading-circle';
+import {NetworkError} from '../../../shared/errors/network-error/network-error';
 
 @Component({
   selector: 'app-education-details-page',
   imports: [
-    ItemDetailsPage
+    ItemDetailsPage,
+    LoadingCircle,
+    NetworkError
   ],
   templateUrl: './education-details-page.html',
   styleUrl: './education-details-page.scss'

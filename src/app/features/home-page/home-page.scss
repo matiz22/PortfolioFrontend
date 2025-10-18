@@ -16,7 +16,7 @@
 
 .tabs {
   width: 100%;
-  min-height: 800px;
+  //min-height: 800px;
 }
 
 
@@ -36,8 +36,13 @@
   justify-content: center;
   flex-direction: row;
   align-items: center;
-  min-width: 100px;
+
+  //> * {
+  //  flex: 1;
+  //  text-align: center;
+  //}
 }
+
 
 .tabs-labels p {
   margin-block-end: 18px;

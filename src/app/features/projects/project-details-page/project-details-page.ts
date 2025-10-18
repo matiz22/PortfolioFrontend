@@ -9,6 +9,8 @@ import {ItemDetailsPage} from '../../../shared/showcase/item-details-page/item-d
 import {Link} from '../../../shared/models/link';
 import {Project} from '../../../core/models/project';
 import {ApiState} from '../../../core/models/api.state';
+import {NetworkError} from '../../../shared/errors/network-error/network-error';
+import {LoadingCircle} from '../../../shared/loading/loading-circle/loading-circle';
 
 @Component({
   selector: 'app-project-details-page',
@@ -16,7 +18,9 @@ import {ApiState} from '../../../core/models/api.state';
   imports: [
     MatButtonModule,
     MatIconModule,
-    ItemDetailsPage
+    ItemDetailsPage,
+    NetworkError,
+    LoadingCircle
   ],
   templateUrl: './project-details-page.html',
   styleUrl: './project-details-page.scss'

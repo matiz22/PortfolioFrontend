@@ -1,1 +1,10 @@
-<p>languages-switcher works!</p>
+<button [matMenuTriggerFor]="afterMenu" matButton>
+  {{ getCurrentLanguage() }}
+</button>
+<mat-menu #afterMenu="matMenu" xPosition="after">
+  @for (lang of languagesOptions; track lang.code) {
+    <a [href]="lang.url" mat-menu-item>
+      {{ lang.label }}
+    </a>
+  }
+</mat-menu>

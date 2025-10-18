@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <!-- Polish homepage -->
+  <url>
+    <loc>https://malich.dev/</loc>
+    <xhtml:link
+      rel="alternate"
+      hreflang="pl"
+      href="https://malich.dev/"/>
+    <xhtml:link
+      rel="alternate"
+      hreflang="en"
+      href="https://malich.dev/en"/>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- English homepage -->
+  <url>
+    <loc>https://malich.dev/en</loc>
+    <xhtml:link
+      rel="alternate"
+      hreflang="pl"
+      href="https://malich.dev/"/>
+    <xhtml:link
+      rel="alternate"
+      hreflang="en"
+      href="https://malich.dev/en"/>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>

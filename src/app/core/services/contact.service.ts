@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {environment} from '../../../enviroments/enviroment';
+import {environment} from '../../../environments/environment';
 import {Contact} from '../models/contact';
 import {catchError, map, Observable, of} from 'rxjs';
 import {mapContactDto} from '../mappers/contact.dto';

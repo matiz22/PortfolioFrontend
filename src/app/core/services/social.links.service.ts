@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {ICrudService} from './base/services/crud.service';
 import {CrudOperations} from './base/operations/crud.operations';
 import {HttpClient} from '@angular/common/http';
-import {environment} from '../../../enviroments/enviroment';
+import {environment} from '../../../environments/environment';
 import {Observable} from 'rxjs';
 import {SocialLink} from '../models/social.link';
 import {SocialLinkDto} from '../dto/social.link';
