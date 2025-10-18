@@ -5,7 +5,7 @@ import {MatButton} from '@angular/material/button';
 import {MatInput} from '@angular/material/input';
 import {Contact} from '../../../core/models/contact';
 import {ContactService} from '../../../core/services/contact.service';
-import {EmaiSent} from '../emai-sent/emai-sent';
+import {EmailSent} from '../emai-sent/email-sent.component';
 
 @Component({
   selector: 'app-contact-form',
@@ -17,7 +17,7 @@ import {EmaiSent} from '../emai-sent/emai-sent';
     ReactiveFormsModule,
     MatButton,
     MatInput,
-    EmaiSent
+    EmailSent
   ],
   styleUrls: ['./contact-form.scss']
 })

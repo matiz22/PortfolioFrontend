@@ -6,9 +6,9 @@ import {MatIconModule} from '@angular/material/icon';
   imports: [
     MatIconModule
   ],
-  templateUrl: './emai-sent.html',
-  styleUrl: './emai-sent.scss'
+  templateUrl: './email-sent.component.html',
+  styleUrl: './email-sent.component.scss'
 })
-export class EmaiSent {
+export class EmailSent {
 
 }
