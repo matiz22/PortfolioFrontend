@@ -14,7 +14,7 @@ export const environment = {
     {
       code: 'en',
       label: 'English',
-      url: 'https:///plfront.matiz22.pl/en/'
+      url: 'https://plfront.matiz22.pl/en/'
     },
   ] as LanguageOption[]
 };
