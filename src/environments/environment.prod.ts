@@ -9,7 +9,7 @@ export const environment = {
     {
       code: 'pl',
       label: 'Polski',
-      url: 'https:///malich.dev/'
+      url: 'https://malich.dev/'
     },
     {
       code: 'en',
