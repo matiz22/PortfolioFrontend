@@ -89,7 +89,7 @@
     "privacyPolicySection8Text2": "To exercise any of these rights, please contact me at the address below. I will respond to requests in accordance with applicable law.",
     "privacyPolicySection9Title": "9. Changes to This Policy",
     "privacyPolicySection9Text": "I may update this Privacy Policy from time to time. If I make material changes I will update the Effective Date at the top of this page. Continued use of the Site after such changes constitutes acceptance of the updated policy.",
-    "privacyPolicySection10Title": "11. Contact",
+    "privacyPolicySection10Title": "10. Contact",
     "privacyPolicySection10Text1": "If you have questions about this Privacy Policy or want to make a request regarding your data, contact:",
     "privacyPolicySection10Text2": "{$START_TAG_STRONG}Mateusz Malich{$CLOSE_TAG_STRONG}{$LINE_BREAK} Email: {$START_LINK}mateuszmalich@gmail.com{$CLOSE_LINK}{$LINE_BREAK} Site: {$START_LINK_1}malich.dev{$CLOSE_LINK}",
     "privacyPolicyNote": "{$START_EMPHASISED_TEXT}Note: This document is a template and does not constitute legal advice. If you need a policy tailored to specific legal obligations (for example under GDPR, CCPA, or other local laws) consider consulting a qualified attorney.{$CLOSE_EMPHASISED_TEXT}",
