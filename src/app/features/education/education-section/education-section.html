@@ -12,7 +12,7 @@
       @if (items.data.length > 0) {
         <div class="container">
           @for (education of items.data; track education.id) {
-            <app-education-item class="flex-item" [education]="education"></app-education-item>
+            <app-education-item class="flex-item" [education]="education" appAosAnimations></app-education-item>
           }
         </div>
       } @else {

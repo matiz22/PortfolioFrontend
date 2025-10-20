@@ -9,7 +9,7 @@
       @if (items.data.length > 0) {
         <div class="container">
           @for (realization of items.data; track realization.id) {
-            <app-realization-item class="flex-item" [realization]="realization"></app-realization-item>
+            <app-realization-item class="flex-item" [realization]="realization" appAosAnimations></app-realization-item>
           }
         </div>
       } @else {

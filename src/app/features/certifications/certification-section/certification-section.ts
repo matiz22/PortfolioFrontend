@@ -7,6 +7,7 @@ import {ApiState} from '../../../core/models/api.state';
 import {NotFound} from '../../../shared/errors/not-found/not-found';
 import {NetworkError} from '../../../shared/errors/network-error/network-error';
 import {LoadingCircle} from '../../../shared/loading/loading-circle/loading-circle';
+import {AosAnimations} from '../../../shared/animations/aos-animations';
 
 @Component({
   selector: 'app-certification-section',
@@ -14,7 +15,8 @@ import {LoadingCircle} from '../../../shared/loading/loading-circle/loading-circ
     CertificationItem,
     NotFound,
     NetworkError,
-    LoadingCircle
+    LoadingCircle,
+    AosAnimations
   ],
   templateUrl: './certification-section.html',
   styleUrl: './certification-section.scss'

@@ -9,7 +9,7 @@
       @if (certs.data.length > 0) {
         <div class="container">
           @for (cert of certs.data; track cert.id) {
-            <app-certification-item class="flex-item" [certification]="cert"></app-certification-item>
+            <app-certification-item class="flex-item" [certification]="cert" appAosAnimations></app-certification-item>
           }
         </div>
       } @else {

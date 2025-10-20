@@ -9,15 +9,15 @@
   transform: translateY(0);
 }
 
-@media (max-width: 768px) {
-  .slide-in {
-    transform: translateX(150px);
-  }
-
-  .slide-in.visible {
-    transform: translateX(0);
-  }
-}
+//@media (max-width: 768px) {
+//  .slide-in {
+//    transform: translateX(150px);
+//  }
+//
+//  .slide-in.visible {
+//    transform: translateX(0);
+//  }
+//}
 
 .zoom-in {
   opacity: 0;
