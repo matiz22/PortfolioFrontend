@@ -9,7 +9,7 @@
       @if (items.data.length > 0) {
         <div class="container">
           @for (project of items.data; track project.id) {
-            <app-project-item class="flex-item" [project]="project"></app-project-item>
+            <app-project-item class="flex-item" [project]="project" appAosAnimations></app-project-item>
           }
         </div>
       } @else {

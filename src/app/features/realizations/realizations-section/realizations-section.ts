@@ -8,6 +8,7 @@ import {ApiState} from '../../../core/models/api.state';
 import {LoadingCircle} from '../../../shared/loading/loading-circle/loading-circle';
 import {NotFound} from '../../../shared/errors/not-found/not-found';
 import {NetworkError} from '../../../shared/errors/network-error/network-error';
+import {AosAnimations} from '../../../shared/animations/aos-animations';
 
 @Component({
   selector: 'app-realizations-section',
@@ -16,7 +17,8 @@ import {NetworkError} from '../../../shared/errors/network-error/network-error';
     RealizationItem,
     LoadingCircle,
     NotFound,
-    NetworkError
+    NetworkError,
+    AosAnimations
   ],
   templateUrl: './realizations-section.html',
   styleUrl: './realizations-section.scss'

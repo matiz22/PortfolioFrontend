@@ -10,6 +10,7 @@ import {ApiState} from '../../../core/models/api.state';
 import {LoadingCircle} from '../../../shared/loading/loading-circle/loading-circle';
 import {NetworkError} from '../../../shared/errors/network-error/network-error';
 import {NotFound} from '../../../shared/errors/not-found/not-found';
+import {AosAnimations} from '../../../shared/animations/aos-animations';
 
 @Component({
   selector: 'app-projects-section',
@@ -21,6 +22,7 @@ import {NotFound} from '../../../shared/errors/not-found/not-found';
     LoadingCircle,
     NetworkError,
     NotFound,
+    AosAnimations,
   ],
   templateUrl: './projects-section.html',
   styleUrl: './projects-section.scss'

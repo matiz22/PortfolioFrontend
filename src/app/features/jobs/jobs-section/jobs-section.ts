@@ -8,6 +8,7 @@ import {ApiState} from '../../../core/models/api.state';
 import {NotFound} from '../../../shared/errors/not-found/not-found';
 import {NetworkError} from '../../../shared/errors/network-error/network-error';
 import {LoadingCircle} from '../../../shared/loading/loading-circle/loading-circle';
+import {AosAnimations} from '../../../shared/animations/aos-animations';
 
 @Component({
   selector: 'app-jobs-section',
@@ -16,7 +17,8 @@ import {LoadingCircle} from '../../../shared/loading/loading-circle/loading-circ
     JobItem,
     NotFound,
     NetworkError,
-    LoadingCircle
+    LoadingCircle,
+    AosAnimations
   ],
   templateUrl: './jobs-section.html',
   styleUrl: './jobs-section.scss'

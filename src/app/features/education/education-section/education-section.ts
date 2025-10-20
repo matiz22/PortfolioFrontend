@@ -7,6 +7,7 @@ import {ApiState} from '../../../core/models/api.state';
 import {NetworkError} from '../../../shared/errors/network-error/network-error';
 import {LoadingCircle} from '../../../shared/loading/loading-circle/loading-circle';
 import {NotFound} from '../../../shared/errors/not-found/not-found';
+import {AosAnimations} from '../../../shared/animations/aos-animations';
 
 @Component({
   selector: 'app-education-section',
@@ -14,7 +15,8 @@ import {NotFound} from '../../../shared/errors/not-found/not-found';
     EducationItem,
     NetworkError,
     LoadingCircle,
-    NotFound
+    NotFound,
+    AosAnimations
   ],
   templateUrl: './education-section.html',
   styleUrl: './education-section.scss'
