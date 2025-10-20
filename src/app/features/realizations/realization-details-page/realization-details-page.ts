@@ -24,6 +24,7 @@ import {LoadingCircle} from '../../../shared/loading/loading-circle/loading-circ
 })
 export class RealizationDetailsPage {
   private route: ActivatedRoute = inject(ActivatedRoute);
+  private realizationsService: RealizationsService = inject(RealizationsService);
 
   realization = toSignal(
     this.route.paramMap.pipe(
