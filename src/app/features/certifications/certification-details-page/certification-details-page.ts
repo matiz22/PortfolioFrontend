@@ -38,7 +38,7 @@ export class CertificationDetailsPage {
   );
 
 
-  private readonly certLinkButtonLabel = `:@@certLinkButton: Certificate link`;
+  private readonly certLinkButtonLabel = $localize`:@@certLinkButton:Certificate link`;
 
 
   links = computed<Link[]>(() => {
