@@ -10,6 +10,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {Skill} from '../../../core/models/skill';
 import {Technology} from '../../../core/models/technology';
 import {ContactSection} from '../../contact/contact-section/contact-section';
+import {MatDivider} from '@angular/material/divider';
 
 @Component({
   selector: 'app-item-details-page',
@@ -24,6 +25,7 @@ import {ContactSection} from '../../contact/contact-section/contact-section';
     MatFabButton,
     MatIconModule,
     ContactSection,
+    MatDivider,
   ],
   templateUrl: './item-details-page.html',
   styleUrl: './item-details-page.scss',
