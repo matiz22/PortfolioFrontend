@@ -24,6 +24,7 @@ import {LoadingCircle} from '../../../shared/loading/loading-circle/loading-circ
 })
 export class RealizationDetailsPage {
   private route: ActivatedRoute = inject(ActivatedRoute);
+  private realizationsService: RealizationsService = inject(RealizationsService);
 
   realization = toSignal(
     this.route.paramMap.pipe(
@@ -38,9 +39,7 @@ export class RealizationDetailsPage {
     {initialValue: ApiState.loading<Realization>()}
   );
 
-  private realizationsService: RealizationsService = inject(RealizationsService);
-
-  private readonly clientButtonLabel = `:@@clientButton:Client website`;
+  private readonly clientButtonLabel = $localize`:@@clientButton:Client website`;
   links = computed<Link[]>(() => {
     const realizationState = this.realization();
 
