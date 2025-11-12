@@ -1,6 +1,5 @@
 User-agent: *
-Disallow: /*?*utm_source=
-Disallow: /*?*ref=
-Allow: /
-
+Disallow: /
+Allow: /$
+Allow: /en$
 Sitemap: https://malich.dev/sitemap.xml
