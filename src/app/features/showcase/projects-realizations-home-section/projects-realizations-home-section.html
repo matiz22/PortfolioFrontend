@@ -1,0 +1,64 @@
+<section class="py-20" id="work">
+  <div class="container mx-auto px-6">
+    <h2 class="text-4xl font-bold text-center mb-12">My Work</h2>
+
+    <div class="tabs tabs-lifted tabs-lg justify-center mb-8" role="tablist">
+      <input aria-label="Projects" checked class="tab" name="work_tabs" role="tab" type="radio"/>
+      <div class="tab-content bg-base-100 border-base-300 rounded-box p-6" role="tabpanel">
+        <!-- Use flex wrap so items wrap into centered rows, max 3 per row via lg:w-1/3 on wrappers -->
+        <div class="flex flex-wrap justify-center gap-8 items-stretch">
+          @let projectItems = projects();
+          @switch (projectItems.status) {
+            @case ('loading') {
+              <!--              TODO: Show loading indicator-->
+            }
+            @case ('success') {
+              @if (projectItems.data.length > 0) {
+                @for (project of projectItems.data; track project.id) {
+                  <!-- wrapper enforces responsive equal widths. max-w caps visual size so rows center when fewer items -->
+                  <div class="w-full sm:w-1/2 lg:w-1/3 max-w-[380px] flex items-stretch">
+                    <app-project-item [project]="project" class="flex-1"></app-project-item>
+                  </div>
+                }
+              } @else {
+                <!--                  TODO: Show no projects message-->
+              }
+            }
+            @case ('error') {
+              <!--              TODO: Show error message-->
+            }
+          }
+        </div>
+      </div>
+
+
+      <input aria-label="Realizations" class="tab" name="work_tabs" role="tab" type="radio"/>
+      <div class="tab-content bg-base-100 border-base-300 rounded-box p-6" role="tabpanel">
+        <!-- dynamic realizations list: use flex-wrap + justify-center so rows center when < 3 items; max 3 per row on lg -->
+        <div class="w-full flex flex-wrap justify-center gap-8 items-stretch">
+          @let realizationsItems = realizations();
+          @switch (realizationsItems.status) {
+            @case ('loading') {
+              <!-- TODO: show loading state -->
+            }
+            @case ('success') {
+              @if (realizationsItems.data.length > 0) {
+                @for (realization of realizationsItems.data; track realization.id) {
+                  <!-- responsive wrapper: full -> 1/2 -> 1/3 and cap visual width so items equal and rows center -->
+                  <div class="w-full sm:w-1/2 lg:w-1/3 max-w-[520px] flex items-stretch px-2">
+                    <app-realization-item [realization]="realization" class="w-full flex-1"></app-realization-item>
+                  </div>
+                }
+              } @else {
+                <!-- TODO: show no realizations message -->
+              }
+            }
+            @case ('error') {
+              <!-- TODO: show error message -->
+            }
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
