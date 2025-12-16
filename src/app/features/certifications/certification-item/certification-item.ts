@@ -1,11 +1,14 @@
-import {Component} from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { DatePipe } from '@angular/common';
+import { Certification } from '../../../core/models/certification';
+import { ImageUrlPipe } from '../../../shared/pipes/image-url-pipe';
 
 @Component({
   selector: 'app-certification-item',
-  imports: [],
+  imports: [DatePipe, ImageUrlPipe],
   templateUrl: './certification-item.html',
   styleUrl: './certification-item.scss',
 })
 export class CertificationItem {
-
+  @Input({ required: true }) certification!: Certification;
 }

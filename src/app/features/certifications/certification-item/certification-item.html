@@ -1,20 +1,41 @@
-<div class="card bg-base-100 shadow-sm hover:shadow-xl transition-all">
-  <figure>
-    <img
-      alt="AWS Certificate"
-      src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"/>
+<div class="card bg-base-100 shadow-sm hover:shadow-xl transition-all h-full flex flex-col">
+  <figure class="h-48 bg-base-200">
+    @if (certification.thumbnail) {
+    <img [alt]="certification.name" [src]="certification.thumbnail | imageUrl" class="w-full h-full object-cover" />
+    } @else {
+    <div class="flex items-center justify-center h-full w-full bg-base-300 text-base-content/50">
+      <span class="text-4xl font-bold">{{ certification.name.charAt(0) }}</span>
+    </div>
+    }
   </figure>
-  <div class="card-body">
-    <h2 class="card-title">
-      AWS Certified Solutions Architect
-      <div class="badge badge-secondary">2023</div>
-    </h2>
-    <p class="text-sm opacity-70">Amazon Web Services</p>
-    <p>Professional level certification for designing distributed systems on AWS.</p>
-    <div class="card-actions justify-end mt-4">
-      <div class="badge badge-outline">Cloud</div>
-      <div class="badge badge-outline">AWS</div>
-      <div class="badge badge-outline">Architecture</div>
+  <div class="card-body flex-1 flex flex-col">
+    <div>
+      <h2 class="card-title text-lg leading-tight mb-2">
+        {{ certification.name }}
+        <div class="badge badge-secondary shrink-0">{{ certification.issueDate | date:'yyyy' }}</div>
+      </h2>
+      <p class="text-sm opacity-70 mb-2 font-semibold">{{ certification.issuingOrganization }}</p>
+
+    </div>
+
+    <div class="mt-auto pt-4">
+      @if (certification.technologies.length || certification.skills.length) {
+      <div class="card-actions justify-end">
+        @for (tech of certification.technologies; track tech.id) {
+        <div class="badge badge-outline badge-sm">{{ tech.name }}</div>
+        }
+        @for (skill of certification.skills; track skill.id) {
+        <div class="badge badge-outline badge-sm">{{ skill.name }}</div>
+        }
+      </div>
+      }
+
+      @if(certification.credentialUrl) {
+      <div class="card-actions justify-end mt-4">
+        <a [href]="certification.credentialUrl" target="_blank" class="btn btn-primary btn-sm btn-outline">Show
+          Credential</a>
+      </div>
+      }
     </div>
   </div>
 </div>

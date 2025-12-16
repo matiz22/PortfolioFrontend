@@ -1,0 +1,25 @@
+<section class="py-20" id="certifications">
+    <div class="container mx-auto px-6">
+        <h2 class="text-4xl font-bold text-center mb-12">Certifications</h2>
+
+        <div class="flex flex-wrap justify-center gap-8 items-stretch">
+            @if (certifications(); as state) {
+            @if (state.status === 'loading') {
+            <div class="text-center w-full">
+                <span class="loading loading-spinner loading-lg"></span>
+            </div>
+            } @else if (state.status === 'success') {
+            @for (item of state.data; track item.id) {
+            <div class="w-full sm:w-1/2 lg:w-1/3 max-w-[380px] flex items-stretch">
+                <app-certification-item [certification]="item" class="flex-1"></app-certification-item>
+            </div>
+            }
+            } @else if (state.status === 'error') {
+            <div class="alert alert-error w-full">
+                <span>{{ state.error }}</span>
+            </div>
+            }
+            }
+        </div>
+    </div>
+</section>
