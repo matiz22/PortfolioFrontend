@@ -2,10 +2,11 @@
 @import "tailwindcss";
 
 @plugin "daisyui";
+
 @plugin "daisyui/theme" {
   name: "dark";
   default: true;
-  prefersdark: dark;
+  prefersdark: true;
   color-scheme: "dark";
   --color-base-100: oklch(0% 0 0);
   --color-base-200: oklch(23.26% 0.014 253.1);
@@ -32,7 +33,72 @@
   --radius-box: 2rem;
   --size-selector: 0.25rem;
   --size-field: 0.25rem;
-  --border: 1px;
+  --border: 2px;
   --depth: 1;
-  --noise: 0;
+  --noise: 1;
+}
+
+
+/* Global font size increases (moderate) */
+html {
+  font-size: 17px;
+  /* Slight increase from default 16px */
+}
+
+body {
+  font-size: 1.0625rem;
+  /* 18px - moderately larger body text */
+  line-height: 1.6;
+  /* Improved line height for readability */
+}
+
+/* Moderately scale up heading sizes */
+h1 {
+  font-size: 2.5rem;
+  /* 42.5px */
+}
+
+h2 {
+  font-size: 2rem;
+  /* 34px */
+}
+
+h3 {
+  font-size: 1.75rem;
+  /* 29.75px */
+}
+
+h4 {
+  font-size: 1.5rem;
+  /* 25.5px */
+}
+
+h5 {
+  font-size: 1.25rem;
+  /* 21.25px */
+}
+
+h6 {
+  font-size: 1.125rem;
+  /* 19.125px */
+}
+
+/* Moderate increase for paragraph and text sizes */
+p,
+li,
+span,
+a,
+label,
+input,
+textarea,
+select,
+button {
+  font-size: 1.0625rem;
+  /* 18px */
+}
+
+/* Slightly increase small text */
+small {
+  font-size: 0.9375rem;
+  /* 16px */
 }

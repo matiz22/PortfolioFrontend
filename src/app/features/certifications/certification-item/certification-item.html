@@ -22,10 +22,10 @@
       @if (certification.technologies.length || certification.skills.length) {
       <div class="card-actions justify-end">
         @for (tech of certification.technologies; track tech.id) {
-        <div class="badge badge-outline badge-sm">{{ tech.name }}</div>
+        <div class="badge badge-outline">{{ tech.name }}</div>
         }
         @for (skill of certification.skills; track skill.id) {
-        <div class="badge badge-outline badge-sm">{{ skill.name }}</div>
+        <div class="badge badge-outline">{{ skill.name }}</div>
         }
       </div>
       }
