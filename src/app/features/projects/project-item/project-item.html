@@ -1,10 +1,9 @@
-<div class="card bg-neutral text-neutral-content shadow-xl hover:shadow-2xl transition-all h-full flex flex-col"
-     routerLink="/projects/{{ project.id }}"
->
+<div class="card bg-base-100 shadow-xl border border-base-300 h-full flex flex-col"
+  routerLink="/projects/{{ project.id }}">
   @if (project.thumbnail) {
-    <figure>
-      <img [alt]="project.title" [src]="project.thumbnail | imageUrl" class="w-full h-48 object-cover">
-    </figure>
+  <figure>
+    <img [alt]="project.title" [src]="project.thumbnail | imageUrl" class="w-full h-48 object-cover">
+  </figure>
   }
   <!-- make card body flexible so content grows and actions stay at bottom -->
   <div class="card-body items-center text-center flex flex-col flex-1">
@@ -12,15 +11,15 @@
     <p>{{ project.shortDesc }}</p>
     <div class="flex gap-2 flex-wrap mt-4 justify-center">
       @for (technology of project.technologies; track technology.id) {
-        <div class="badge badge-accent badge-outline">{{ technology.name }}</div>
+      <div class="badge badge-accent badge-outline">{{ technology.name }}</div>
       }
     </div>
     <div class="card-actions justify-center mt-4">
       @if (project.liveUrl) {
-        <a [href]="project.liveUrl" class="btn btn-primary" rel="noopener noreferrer" target="_blank">View Live</a>
+      <a [href]="project.liveUrl" class="btn btn-primary" rel="noopener noreferrer" target="_blank">View Live</a>
       }
       @if (project.repoUrl) {
-        <a [href]="project.repoUrl" class="btn btn-ghost" rel="noopener noreferrer" target="_blank">GitHub</a>
+      <a [href]="project.repoUrl" class="btn btn-ghost" rel="noopener noreferrer" target="_blank">GitHub</a>
       }
     </div>
   </div>
