@@ -1,19 +1,18 @@
-<div class="card bg-neutral text-neutral-content shadow-xl w-full h-full flex flex-col">
+<div class="card bg-neutral text-neutral-content shadow-xl hover:shadow-2xl transition-all h-full flex flex-col">
   <!-- thumbnail (if available) -->
-  @if (realization?.thumbnail) {
-    <figure>
-      <img [alt]="realization.title" [src]="realization.thumbnail | imageUrl" class="w-full h-48 object-cover">
-    </figure>
+  @if (realization.thumbnail) {
+  <figure>
+    <img [alt]="realization.title" [src]="realization.thumbnail | imageUrl" class="w-full h-48 object-cover">
+  </figure>
   }
 
   <div class="card-body items-center text-center flex flex-col flex-1">
-    <h3 class="card-title">{{ realization?.title || 'Untitled' }}</h3>
+    <h3 class="card-title">{{ realization.title || 'Untitled' }}</h3>
 
     <p class="text-sm opacity-70">
-      @if (realization?.clientName) {
-        <a [href]="clientUrl" class="underline" rel="noopener noreferrer"
-           target="_blank">{{ realization.clientName }}</a>
-        •
+      @if (realization.clientName) {
+      <a [href]="clientUrl" class="underline" rel="noopener noreferrer" target="_blank">{{ realization.clientName }}</a>
+      •
       }
       {{ year || '' }}
     </p>
@@ -22,15 +21,15 @@
 
     <div class="flex gap-2 flex-wrap mt-4 justify-center">
       @for (tech of techList; track tech.id) {
-        <div class="badge badge-accent badge-outline">{{ tech.name }}</div>
+      <div class="badge badge-accent badge-outline">{{ tech.name }}</div>
       }
     </div>
 
     <div class="card-actions justify-center mt-4">
       @if (clientUrl) {
-        <a [href]="clientUrl" class="btn btn-primary" rel="noopener noreferrer" target="_blank">Visit Client</a>
+      <a [href]="clientUrl" class="btn btn-primary" rel="noopener noreferrer" target="_blank">Visit Client</a>
       } @else {
-        <button class="btn btn-primary">Learn More</button>
+      <button class="btn btn-primary">Learn More</button>
       }
     </div>
   </div>
