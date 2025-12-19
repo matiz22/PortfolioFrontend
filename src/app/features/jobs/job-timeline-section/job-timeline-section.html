@@ -12,13 +12,14 @@
       }
       @case ('success') {
       @if (jobItems.data.length > 0) {
-      <ul class="timeline">
+      <ul class="timeline timeline-vertical">
         @for (job of jobItems.data; track job.id; let isLast = $last; let index = $index) {
         <li>
           @if (index > 0) {
           <hr [class.bg-primary]="job.isCurrent" />
           }
-          <div [class]="index % 2 === 0 ? 'timeline-start timeline-box' : 'timeline-end timeline-box'">
+          <div
+            [class]="index % 2 === 0 ? 'timeline-start timeline-box max-w-md p-6' : 'timeline-end timeline-box max-w-md p-6'">
             <div class="text-2xl font-bold">{{ job.title }}</div>
             <div class="text-xl opacity-70">{{ job.companyName }}</div>
             <div class="text-lg opacity-50">{{ job.location }}</div>
@@ -26,6 +27,28 @@
               {{ job.startDate | date:'MMM yyyy' }} -
               {{ job.isCurrent ? 'Present' : (job.endDate | date:'MMM yyyy') }}
             </time>
+
+            @if (job.skills && job.skills.length > 0) {
+            <div class="mt-3">
+              <div class="text-sm font-semibold opacity-60 mb-1">Skills:</div>
+              <div class="flex flex-wrap gap-2">
+                @for (skill of job.skills; track skill.id) {
+                <span class="badge badge-primary badge-sm min-w-0 shrink">{{ skill.name }}</span>
+                }
+              </div>
+            </div>
+            }
+
+            @if (job.technologies && job.technologies.length > 0) {
+            <div class="mt-3">
+              <div class="text-sm font-semibold opacity-60 mb-1">Technologies:</div>
+              <div class="flex flex-wrap gap-2">
+                @for (tech of job.technologies; track tech.id) {
+                <span class="badge badge-secondary badge-sm min-w-0 shrink">{{ tech.name }}</span>
+                }
+              </div>
+            </div>
+            }
           </div>
           <div class="timeline-middle">
             <svg [class]="job.isCurrent ? 'text-primary h-5 w-5' : 'h-5 w-5'" fill="currentColor" viewBox="0 0 20 20"
