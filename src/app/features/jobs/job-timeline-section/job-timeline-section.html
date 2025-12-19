@@ -33,7 +33,8 @@
               <div class="text-sm font-semibold opacity-60 mb-1">Skills:</div>
               <div class="flex flex-wrap gap-2">
                 @for (skill of job.skills; track skill.id) {
-                <span class="badge badge-primary badge-sm min-w-0 shrink">{{ skill.name }}</span>
+                <span class="badge badge-primary badge-sm min-w-0 shrink whitespace-normal h-auto">{{ skill.name
+                  }}</span>
                 }
               </div>
             </div>
@@ -44,7 +45,8 @@
               <div class="text-sm font-semibold opacity-60 mb-1">Technologies:</div>
               <div class="flex flex-wrap gap-2">
                 @for (tech of job.technologies; track tech.id) {
-                <span class="badge badge-secondary badge-sm min-w-0 shrink">{{ tech.name }}</span>
+                <span class="badge badge-secondary badge-sm min-w-0 shrink whitespace-normal h-auto">{{ tech.name
+                  }}</span>
                 }
               </div>
             </div>
