@@ -1,7 +1,7 @@
-import {Component, Input} from '@angular/core';
-import {Project} from '../../../core/models/project';
-import {ImageUrlPipe} from '../../../shared/pipes/image-url-pipe';
-import {RouterLink} from '@angular/router';
+import { Component, Input } from '@angular/core';
+import { Project } from '../../../core/models/project';
+import { ImageUrlPipe } from '../../../shared/pipes/image-url-pipe';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-project-item',
@@ -13,5 +13,5 @@ import {RouterLink} from '@angular/router';
   styleUrl: './project-item.scss',
 })
 export class ProjectItem {
-  @Input({required: true}) project!: Project;
+  @Input({ required: true }) project!: Project;
 }

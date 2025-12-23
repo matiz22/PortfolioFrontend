@@ -34,6 +34,8 @@
     "@omnedia/ngx-aurora": "^3.0.0",
     "@omnedia/ngx-background-beams": "^3.0.0",
     "express": "^5.1.0",
+    "marked": "^17.0.0",
+    "ngx-markdown": "^21.0.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"

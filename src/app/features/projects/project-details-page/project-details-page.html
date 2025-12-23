@@ -69,13 +69,24 @@
         </div>
     </div>
 
-    <!-- Description Section -->
+    <!-- Screenshots Section -->
+    @if (data.screenshots && data.screenshots.length > 0) {
     <div class="card bg-base-100 shadow-xl border border-base-300 mb-8">
         <div class="card-body">
-            <h2 class="card-title text-2xl">About This Project</h2>
-            <p class="text-base leading-relaxed">{{ data.description }}</p>
+            <h2 class="card-title text-2xl mb-4">Screenshots</h2>
+            <div #carouselEl class="carousel rounded-box cursor-grab select-none overflow-x-auto"
+                (mousedown)="onMouseDown($event, carouselEl)" (mousemove)="onMouseMove($event, carouselEl)"
+                (mouseup)="onMouseUp(carouselEl)" (mouseleave)="onMouseLeave(carouselEl)">
+                @for (screenshot of data.screenshots; track screenshot; let i = $index) {
+                <div class="carousel-item">
+                    <img [alt]="data.title + ' screenshot ' + (i + 1)" [src]="screenshot | imageUrl"
+                        class="h-[600px] pointer-events-none" />
+                </div>
+                }
+            </div>
         </div>
     </div>
+    }
 
     <!-- Technologies Section -->
     @if (data.technologies && data.technologies.length > 0) {
@@ -96,22 +107,14 @@
     </div>
     }
 
-    <!-- Screenshots Section -->
-    @if (data.screenshots && data.screenshots.length > 0) {
-    <div class="card bg-base-100 shadow-xl border border-base-300">
+    <!-- Description Section -->
+    <div class="card bg-base-100 shadow-xl border border-base-300 mb-8">
         <div class="card-body">
-            <h2 class="card-title text-2xl mb-4">Screenshots</h2>
-            <div class="carousel rounded-box">
-                @for (screenshot of data.screenshots; track screenshot; let i = $index) {
-                <div class="carousel-item">
-                    <img [alt]="data.title + ' screenshot ' + (i + 1)" [src]="screenshot | imageUrl"
-                        class="h-[600px]" />
-                </div>
-                }
-            </div>
+            <h2 class="card-title text-2xl">About This Project</h2>
+            <markdown [data]="data.description" class="prose prose-lg max-w-none"></markdown>
         </div>
     </div>
-    }
+
 
     <!-- Back Button -->
     <div class="mt-8 flex justify-center">

@@ -9,10 +9,11 @@ import { of, switchMap } from 'rxjs';
 import { Project } from '../../../core/models/project';
 import { ApiState } from '../../../core/models/api.state';
 import { Link } from '../../../shared/models/link';
+import { MarkdownComponent } from 'ngx-markdown';
 
 @Component({
   selector: 'app-project-details-page',
-  imports: [ImageUrlPipe, RouterLink, Header, Footer],
+  imports: [ImageUrlPipe, RouterLink, Header, Footer, MarkdownComponent],
   templateUrl: './project-details-page.html',
   styleUrl: './project-details-page.scss',
 })
@@ -54,4 +55,34 @@ export class ProjectDetailsPage {
 
     return [];
   });
+
+  // Carousel drag functionality
+  private isDragging = false;
+  private startX = 0;
+  private scrollLeft = 0;
+
+  onMouseDown(event: MouseEvent, carousel: HTMLElement): void {
+    this.isDragging = true;
+    carousel.classList.add('cursor-grabbing');
+    this.startX = event.pageX - carousel.offsetLeft;
+    this.scrollLeft = carousel.scrollLeft;
+  }
+
+  onMouseMove(event: MouseEvent, carousel: HTMLElement): void {
+    if (!this.isDragging) return;
+    event.preventDefault();
+    const x = event.pageX - carousel.offsetLeft;
+    const walk = (x - this.startX) * 2; // Scroll speed multiplier
+    carousel.scrollLeft = this.scrollLeft - walk;
+  }
+
+  onMouseUp(carousel: HTMLElement): void {
+    this.isDragging = false;
+    carousel.classList.remove('cursor-grabbing');
+  }
+
+  onMouseLeave(carousel: HTMLElement): void {
+    this.isDragging = false;
+    carousel.classList.remove('cursor-grabbing');
+  }
 }
