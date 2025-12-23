@@ -1,4 +1,5 @@
-<div class="card bg-base-100 shadow-2xl hover:bg-base-200 border border-base-300 h-full flex flex-col transition-all">
+<div class="card bg-base-100 shadow-2xl hover:bg-base-200 border border-base-300 h-full flex flex-col transition-all"
+  routerLink="/realization/{{ realization.id }}">
   <!-- thumbnail (if available) -->
   @if (realization.thumbnail) {
   <figure>
@@ -22,14 +23,6 @@
     <div class="flex gap-2 flex-wrap mt-4 justify-center">
       @for (tech of techList; track tech.id) {
       <div class="badge badge-accent badge-outline">{{ tech.name }}</div>
-      }
-    </div>
-
-    <div class="card-actions justify-center mt-4">
-      @if (clientUrl) {
-      <a [href]="clientUrl" class="btn btn-primary" rel="noopener noreferrer" target="_blank">Visit Client</a>
-      } @else {
-      <button class="btn btn-primary">Learn More</button>
       }
     </div>
   </div>
