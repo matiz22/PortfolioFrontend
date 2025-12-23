@@ -4,8 +4,8 @@
     <img [alt]="education.institution" [src]="education.thumbnail | imageUrl" class="w-full h-48 object-cover">
   </figure>
   }
-  <div class="card-body flex-1">
-    <div class="flex flex-col md:flex-row md:items-start md:justify-between">
+  <div class="card-body">
+    <div class="flex flex-row items-start justify-between">
       <div class="flex-1">
         <h3 class="card-title">{{ education.degree }}</h3>
         <p class="text-sm opacity-70 mt-1">{{ education.institution }}</p>
@@ -24,7 +24,7 @@
         }
       </div>
       <div class="mt-4 md:mt-0 md:ml-6 text-right">
-        <div class="badge badge-lg badge-primary">
+        <div class="badge badge-sm badge-primary">
           {{ education.startDate | date:'yyyy' }} - {{ education.isCurrent ? 'Present' : (education.endDate |
           date:'yyyy') }}
         </div>
