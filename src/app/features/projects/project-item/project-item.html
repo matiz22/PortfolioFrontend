@@ -1,4 +1,5 @@
-<div class="card shadow-xl hover:shadow-2xl transition-all h-full flex flex-col" routerLink="/project/{{ project.id }}">
+<div class="card shadow-2xl hover:shadow-2xl hover:bg-base-200 transition-all h-full flex flex-col"
+  routerLink="/project/{{ project.id }}">
   @if (project.thumbnail) {
   <figure>
     <img [alt]="project.title" [src]="project.thumbnail | imageUrl" class="w-full h-48 object-cover">
