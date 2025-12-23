@@ -1,132 +1,131 @@
 <app-header></app-header>
 
-<!-- Loading State -->
-@if (project().status === 'loading') {
-<div class="flex justify-center items-center min-h-[60vh] pt-32">
-    <span class="loading loading-spinner loading-lg text-primary"></span>
-</div>
-}
-
-<!-- Error State -->
-@if (project().status === 'error') {
-<div class="container mx-auto px-4 py-12 pt-36">
-    @if (project(); as state) {
-    @if (state.status === 'error') {
-    <div role="alert" class="alert alert-error">
-        <svg class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round"
-                stroke-linejoin="round" stroke-width="2" />
-        </svg>
-        <span>{{ state.error }}</span>
+<main class="pt-24">
+    @let projectState = project();
+    @switch (projectState.status) {
+    @case ('loading') {
+    <div class="flex justify-center items-center min-h-[60vh]">
+        <span class="loading loading-spinner loading-lg text-primary"></span>
     </div>
     }
-    }
-</div>
-}
-
-<!-- Success State -->
-@if (projectData(); as data) {
-<div class="container mx-auto px-4 py-8 pt-36">
-    <!-- Hero Section with Title and Image -->
-    <div class="hero bg-base-200 rounded-box mb-8">
-        <div class="hero-content flex-col lg:flex-row-reverse gap-8 py-12">
-            @if (data.thumbnail) {
-            <img [alt]="data.title" [src]="data.thumbnail | imageUrl"
-                class="max-w-sm rounded-lg shadow-2xl w-full object-cover" />
-            }
-            <div>
-                <h1 class="text-5xl font-bold">{{ data.title }}</h1>
-                <p class="py-6 text-lg">{{ data.shortDesc }}</p>
-                <div class="flex gap-3 flex-wrap">
-                    @if (data.liveUrl) {
-                    <a [href]="data.liveUrl" class="btn btn-primary" rel="noopener noreferrer" target="_blank">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                                stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
-                        </svg>
-                        View Live
-                    </a>
-                    }
-                    @if (data.repoUrl) {
-                    <a [href]="data.repoUrl" class="btn btn-ghost" rel="noopener noreferrer" target="_blank">
-                        <svg class="w-5 h-5" viewBox="0 0 92 92" xmlns="http://www.w3.org/2000/svg">
-                            <defs>
-                                <clipPath id="a">
-                                    <path d="M0 .113h91.887V92H0Zm0 0" />
-                                </clipPath>
-                            </defs>
-                            <g clip-path="url(#a)">
-                                <path style="stroke:none;fill-rule:nonzero;fill:#f03c2e;fill-opacity:1"
-                                    d="M90.156 41.965 50.036 1.848a5.918 5.918 0 0 0-8.372 0l-8.328 8.332 10.566 10.566a7.03 7.03 0 0 1 7.23 1.684 7.034 7.034 0 0 1 1.669 7.277l10.187 10.184a7.028 7.028 0 0 1 7.278 1.672 7.04 7.04 0 0 1 0 9.957 7.05 7.05 0 0 1-9.965 0 7.044 7.044 0 0 1-1.528-7.66l-9.5-9.497V59.36a7.04 7.04 0 0 1 1.86 11.29 7.04 7.04 0 0 1-9.957 0 7.04 7.04 0 0 1 0-9.958 7.06 7.06 0 0 1 2.304-1.539V33.926a7.049 7.049 0 0 1-3.82-9.234L29.242 14.272 1.73 41.777a5.925 5.925 0 0 0 0 8.371L41.852 90.27a5.925 5.925 0 0 0 8.37 0l39.934-39.934a5.925 5.925 0 0 0 0-8.371" />
-                            </g>
-                        </svg>
-                        Repository
-                    </a>
-                    }
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Screenshots Section -->
-    @if (data.screenshots && data.screenshots.length > 0) {
-    <div class="card bg-base-100 shadow-xl border border-base-300 mb-8">
-        <div class="card-body">
-            <h2 class="card-title text-2xl mb-4">Screenshots</h2>
-            <div #carouselEl class="carousel rounded-box cursor-grab select-none overflow-x-auto"
-                (mousedown)="onMouseDown($event, carouselEl)" (mousemove)="onMouseMove($event, carouselEl)"
-                (mouseup)="onMouseUp(carouselEl)" (mouseleave)="onMouseLeave(carouselEl)">
-                @for (screenshot of data.screenshots; track screenshot; let i = $index) {
-                <div class="carousel-item">
-                    <img [alt]="data.title + ' screenshot ' + (i + 1)" [src]="screenshot | imageUrl"
-                        class="h-[600px] pointer-events-none" />
-                </div>
+    @case ('success') {
+    @let data = projectState.data;
+    <div class="container mx-auto px-4 py-8">
+        <!-- Hero Section with Title and Image -->
+        <div class="hero bg-base-200 rounded-box mb-8">
+            <div class="hero-content flex-col lg:flex-row-reverse gap-8 py-12">
+                @if (data.thumbnail) {
+                <img [alt]="data.title" [src]="data.thumbnail | imageUrl"
+                    class="max-w-sm rounded-lg shadow-2xl w-full object-cover" />
                 }
-            </div>
-        </div>
-    </div>
-    }
-
-    <!-- Technologies Section -->
-    @if (data.technologies && data.technologies.length > 0) {
-    <div class="card bg-base-100 shadow-xl border border-base-300 mb-8">
-        <div class="card-body">
-            <h2 class="card-title text-2xl">Technologies Used</h2>
-            <div class="flex gap-2 flex-wrap mt-4">
-                @for (technology of data.technologies; track technology.id) {
-                <div class="badge badge-accent badge-lg gap-2">
-                    @if (technology.icon) {
-                    <img [alt]="technology.name" [src]="technology.icon | imageUrl" class="w-4 h-4" />
-                    }
-                    {{ technology.name }}
+                <div>
+                    <h1 class="text-5xl font-bold">{{ data.title }}</h1>
+                    <p class="py-6 text-lg">{{ data.shortDesc }}</p>
+                    <div class="flex gap-3 flex-wrap">
+                        @if (data.liveUrl) {
+                        <a [href]="data.liveUrl" class="btn btn-primary" rel="noopener noreferrer" target="_blank">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                                    stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+                            </svg>
+                            View Live
+                        </a>
+                        }
+                        @if (data.repoUrl) {
+                        <a [href]="data.repoUrl" class="btn btn-ghost" rel="noopener noreferrer" target="_blank">
+                            <svg class="w-5 h-5" viewBox="0 0 92 92" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <clipPath id="a">
+                                        <path d="M0 .113h91.887V92H0Zm0 0" />
+                                    </clipPath>
+                                </defs>
+                                <g clip-path="url(#a)">
+                                    <path style="stroke:none;fill-rule:nonzero;fill:#f03c2e;fill-opacity:1"
+                                        d="M90.156 41.965 50.036 1.848a5.918 5.918 0 0 0-8.372 0l-8.328 8.332 10.566 10.566a7.03 7.03 0 0 1 7.23 1.684 7.034 7.034 0 0 1 1.669 7.277l10.187 10.184a7.028 7.028 0 0 1 7.278 1.672 7.04 7.04 0 0 1 0 9.957 7.05 7.05 0 0 1-9.965 0 7.044 7.044 0 0 1-1.528-7.66l-9.5-9.497V59.36a7.04 7.04 0 0 1 1.86 11.29 7.04 7.04 0 0 1-9.957 0 7.04 7.04 0 0 1 0-9.958 7.06 7.06 0 0 1 2.304-1.539V33.926a7.049 7.049 0 0 1-3.82-9.234L29.242 14.272 1.73 41.777a5.925 5.925 0 0 0 0 8.371L41.852 90.27a5.925 5.925 0 0 0 8.37 0l39.934-39.934a5.925 5.925 0 0 0 0-8.371" />
+                                </g>
+                            </svg>
+                            Repository
+                        </a>
+                        }
+                    </div>
                 </div>
-                }
             </div>
+        </div>
+
+        <!-- Screenshots Section -->
+        @if (data.screenshots && data.screenshots.length > 0) {
+        <div class="card bg-base-100 shadow-xl border border-base-300 mb-8">
+            <div class="card-body">
+                <h2 class="card-title text-2xl mb-4">Screenshots</h2>
+                <div #carouselEl class="carousel rounded-box cursor-grab select-none overflow-x-auto"
+                    (mousedown)="onMouseDown($event, carouselEl)" (mousemove)="onMouseMove($event, carouselEl)"
+                    (mouseup)="onMouseUp(carouselEl)" (mouseleave)="onMouseLeave(carouselEl)">
+                    @for (screenshot of data.screenshots; track screenshot; let i = $index) {
+                    <div class="carousel-item">
+                        <img [alt]="data.title + ' screenshot ' + (i + 1)" [src]="screenshot | imageUrl"
+                            class="h-[600px] pointer-events-none" />
+                    </div>
+                    }
+                </div>
+            </div>
+        </div>
+        }
+
+        <!-- Technologies Section -->
+        @if (data.technologies && data.technologies.length > 0) {
+        <div class="card bg-base-100 shadow-xl border border-base-300 mb-8">
+            <div class="card-body">
+                <h2 class="card-title text-2xl">Technologies Used</h2>
+                <div class="flex gap-2 flex-wrap mt-4">
+                    @for (technology of data.technologies; track technology.id) {
+                    <div class="badge badge-accent badge-lg gap-2">
+                        @if (technology.icon) {
+                        <img [alt]="technology.name" [src]="technology.icon | imageUrl" class="w-4 h-4" />
+                        }
+                        {{ technology.name }}
+                    </div>
+                    }
+                </div>
+            </div>
+        </div>
+        }
+
+        <!-- Description Section -->
+        <div class="card bg-base-100 shadow-xl border border-base-300 mb-8">
+            <div class="card-body">
+                <h2 class="card-title text-2xl">About This Project</h2>
+                <markdown [data]="data.description" class="prose prose-lg max-w-none"></markdown>
+            </div>
+        </div>
+
+
+        <!-- Back Button -->
+        <div class="mt-8 flex justify-center">
+            <a class="btn btn-outline" routerLink="/projects">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10 19l-7-7m0 0l7-7m-7 7h18" stroke-linecap="round" stroke-linejoin="round"
+                        stroke-width="2" />
+                </svg>
+                Back to Projects
+            </a>
         </div>
     </div>
     }
-
-    <!-- Description Section -->
-    <div class="card bg-base-100 shadow-xl border border-base-300 mb-8">
-        <div class="card-body">
-            <h2 class="card-title text-2xl">About This Project</h2>
-            <markdown [data]="data.description" class="prose prose-lg max-w-none"></markdown>
-        </div>
-    </div>
-
-
-    <!-- Back Button -->
-    <div class="mt-8 flex justify-center">
-        <a class="btn btn-outline" routerLink="/projects">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+    @case ('error') {
+    <div class="container mx-auto px-4 py-12">
+        <div role="alert" class="alert alert-error">
+            <svg class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 19l-7-7m0 0l7-7m-7 7h18" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+                <path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round"
+                    stroke-linejoin="round" stroke-width="2" />
             </svg>
-            Back to Projects
-        </a>
+            <span>{{ projectState.error }}</span>
+        </div>
     </div>
-</div>
-}
+    }
+    }
+</main>
 
 <app-footer></app-footer>
