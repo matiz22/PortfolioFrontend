@@ -1,18 +1,19 @@
-import {Component, Input} from '@angular/core';
-import {Realization} from '../../../core/models/realization';
-import {ImageUrlPipe} from '../../../shared/pipes/image-url-pipe';
-
+import { Component, Input } from '@angular/core';
+import { Realization } from '../../../core/models/realization';
+import { ImageUrlPipe } from '../../../shared/pipes/image-url-pipe';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-realization-item',
   imports: [
-    ImageUrlPipe
+    ImageUrlPipe,
+    RouterLink
   ],
   templateUrl: './realization-item.html',
   styleUrl: './realization-item.scss',
 })
 export class RealizationItem {
-  @Input({required: true}) realization!: Realization;
+  @Input({ required: true }) realization!: Realization;
 
   // derived helpers for template
   get year(): number | null {

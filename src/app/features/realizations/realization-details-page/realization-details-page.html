@@ -1,0 +1,143 @@
+<app-header></app-header>
+
+<main class="pt-24">
+    @let realizationState = realization();
+    @switch (realizationState.status) {
+    @case ('loading') {
+    <div class="flex justify-center items-center min-h-[60vh]">
+        <span class="loading loading-spinner loading-lg text-primary"></span>
+    </div>
+    }
+    @case ('success') {
+    @let data = realizationState.data;
+    <div class="container mx-auto px-4 py-8">
+        <!-- Hero Section with Title, Client Logo and Thumbnail -->
+        <div class="hero bg-base-200 rounded-box mb-8">
+            <div class="hero-content flex-col lg:flex-row-reverse gap-8 py-12">
+                @if (data.thumbnail) {
+                <img [alt]="data.title" [src]="data.thumbnail | imageUrl"
+                    class="max-w-sm rounded-lg shadow-2xl w-full object-cover" />
+                }
+                <div>
+                    <h1 class="text-5xl font-bold">{{ data.title }}</h1>
+
+                    <!-- Client Information -->
+                    <div class="mt-4 mb-6">
+                        <div class="flex items-center gap-4">
+                            @if (data.clientLogo) {
+                            <img [alt]="data.clientName" [src]="data.clientLogo | imageUrl"
+                                class="w-16 h-16 rounded-lg object-contain bg-base-100 p-2" />
+                            }
+                            <div>
+                                <p class="text-sm opacity-70">Client</p>
+                                <p class="text-2xl font-semibold">{{ data.clientName }}</p>
+                                @if (data.location) {
+                                <p class="text-sm opacity-70 flex items-center gap-1">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                                            stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+                                        <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round"
+                                            stroke-linejoin="round" stroke-width="2" />
+                                    </svg>
+                                    {{ data.location }}
+                                </p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="py-6 text-lg">{{ data.shortDesc }}</p>
+
+                    <div class="flex gap-3 flex-wrap">
+                        @if (data.clientUrl) {
+                        <a [href]="data.clientUrl" class="btn btn-primary" rel="noopener noreferrer" target="_blank">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                                    stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+                            </svg>
+                            Visit Client Website
+                        </a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Technologies Section -->
+        @if (data.technologies && data.technologies.length > 0) {
+        <div class="card bg-base-100 shadow-xl border border-base-300 mb-8">
+            <div class="card-body">
+                <h2 class="card-title text-2xl">Technologies Used</h2>
+                <div class="flex gap-2 flex-wrap mt-4">
+                    @for (technology of data.technologies; track technology.id) {
+                    <div class="badge badge-accent badge-lg gap-2">
+                        @if (technology.icon) {
+                        <img [alt]="technology.name" [src]="technology.icon | imageUrl" class="w-4 h-4" />
+                        }
+                        {{ technology.name }}
+                    </div>
+                    }
+                </div>
+            </div>
+        </div>
+        }
+
+        <!-- Skills Section -->
+        @if (data.skills && data.skills.length > 0) {
+        <div class="card bg-base-100 shadow-xl border border-base-300 mb-8">
+            <div class="card-body">
+                <h2 class="card-title text-2xl">Skills Applied</h2>
+                <div class="flex gap-2 flex-wrap mt-4">
+                    @for (skill of data.skills; track skill.id) {
+                    <div class="badge badge-secondary badge-lg gap-2">
+                        @if (skill.icon) {
+                        <img [alt]="skill.name" [src]="skill.icon | imageUrl" class="w-4 h-4" />
+                        }
+                        {{ skill.name }}
+                    </div>
+                    }
+                </div>
+            </div>
+        </div>
+        }
+
+        <!-- Description Section -->
+        <div class="card bg-base-100 shadow-xl border border-base-300 mb-8">
+            <div class="card-body">
+                <h2 class="card-title text-2xl">About This Realization</h2>
+                <markdown [data]="data.description" class="prose prose-lg max-w-none"></markdown>
+            </div>
+        </div>
+
+        <!-- Back Button -->
+        <div class="mt-8 flex justify-center">
+            <a class="btn btn-outline" routerLink="/realizations">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10 19l-7-7m0 0l7-7m-7 7h18" stroke-linecap="round" stroke-linejoin="round"
+                        stroke-width="2" />
+                </svg>
+                Back to Realizations
+            </a>
+        </div>
+    </div>
+    }
+    @case ('error') {
+    <div class="container mx-auto px-4 py-12">
+        <div role="alert" class="alert alert-error">
+            <svg class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round"
+                    stroke-linejoin="round" stroke-width="2" />
+            </svg>
+            <span>{{ realizationState.error }}</span>
+        </div>
+    </div>
+    }
+    }
+</main>
+
+<app-footer></app-footer>
