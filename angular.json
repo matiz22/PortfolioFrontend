@@ -52,6 +52,11 @@
             }
           },
           "configurations": {
+            "pl": {
+              "localize": [
+                "pl"
+              ]
+            },
             "production": {
               "budgets": [
                 {
@@ -106,6 +111,9 @@
             },
             "local": {
               "buildTarget": "PortfolioFrontend:build:local"
+            },
+            "pl": {
+              "buildTarget": "PortfolioFrontend:build:local,pl"
             }
           },
           "defaultConfiguration": "local"
