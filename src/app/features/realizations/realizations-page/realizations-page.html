@@ -1,0 +1,42 @@
+<app-header></app-header>
+
+<main class="pt-24">
+    <section class="py-20">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold text-center mb-12">All Realizations</h2>
+
+            <div class="flex flex-wrap justify-center gap-8">
+                @let realizationItems = realizations();
+                @switch (realizationItems.status) {
+                @case ('loading') {
+                <div class="text-center w-full">
+                    <span class="loading loading-spinner loading-lg"></span>
+                </div>
+                }
+                @case ('success') {
+                @if (realizationItems.data.length > 0) {
+                @for (realization of realizationItems.data; track realization.id) {
+                <app-realization-item [realization]="realization"
+                    class="w-full md:flex-[0_0_calc(50%-1rem)] lg:flex-[0_0_calc(33.333%-1.33rem)] max-w-md">
+                </app-realization-item>
+                }
+                } @else {
+                <div class="text-center w-full">
+                    <p class="text-lg">No realizations available at the moment.</p>
+                </div>
+                }
+                }
+                @case ('error') {
+                <div class="text-center w-full">
+                    <p class="text-lg text-error">Error loading realizations. Please try again later.</p>
+                </div>
+                }
+                }
+            </div>
+        </div>
+    </section>
+
+    <app-contact-section></app-contact-section>
+</main>
+
+<app-footer></app-footer>
