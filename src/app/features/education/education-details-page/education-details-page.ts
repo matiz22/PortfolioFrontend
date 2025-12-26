@@ -9,7 +9,7 @@ import { Header } from '../../../shared/header/header';
 import { Footer } from '../../../shared/footer/footer';
 import { ImageUrlPipe } from '../../../shared/pipes/image-url-pipe';
 import { DatePipe } from '@angular/common';
-import { MarkdownComponent } from 'ngx-markdown';
+import { DescriptionMd } from '../../../shared/description/description-md/description-md';
 import { SkillsDetailsSection } from '../../skills/skills-details-section/skills-details-section';
 import { TechnologiesDetailsSection } from '../../technologies/technologies-details-section/technologies-details-section';
 
@@ -22,7 +22,7 @@ import { TechnologiesDetailsSection } from '../../technologies/technologies-deta
     RouterLink,
     ImageUrlPipe,
     DatePipe,
-    MarkdownComponent,
+    DescriptionMd,
     SkillsDetailsSection,
     TechnologiesDetailsSection
   ],
