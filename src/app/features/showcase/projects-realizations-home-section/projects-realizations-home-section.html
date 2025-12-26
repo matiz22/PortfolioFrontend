@@ -6,7 +6,7 @@
       <input aria-label="Projects" checked class="tab" name="work_tabs" role="tab" type="radio" />
       <div class="tab-content bg-base-100 rounded-box p-6" role="tabpanel">
         <!-- Flex layout with centering: orphan items center nicely -->
-        <div class="flex flex-wrap justify-center gap-8">
+        <div class="flex flex-row flex-wrap justify-center gap-4">
           @let projectItems = projects();
           @switch (projectItems.status) {
           @case ('loading') {
@@ -16,7 +16,7 @@
           @if (projectItems.data.length > 0) {
           @for (project of projectItems.data; track project.id) {
           <app-project-item [project]="project"
-            class="w-full md:flex-[0_0_calc(50%-1rem)] lg:flex-[0_0_calc(33.333%-1.33rem)] max-w-md"></app-project-item>
+            class="flex-1 min-w-full md:min-w-[calc(50%-0.5rem)] lg:min-w-[calc(33.333%-0.67rem)] md:max-w-[calc(50%-0.5rem)] lg:max-w-[calc(33.333%-0.67rem)]"></app-project-item>
           }
           } @else {
           <!--                  TODO: Show no projects message-->
@@ -33,7 +33,7 @@
       <input aria-label="Realizations" class="tab" name="work_tabs" role="tab" type="radio" />
       <div class="tab-content bg-base-100 rounded-box p-6" role="tabpanel">
         <!-- Flex layout with centering: orphan items center nicely -->
-        <div class="flex flex-wrap justify-center gap-8">
+        <div class="flex flex-row flex-wrap justify-center gap-4">
           @let realizationsItems = realizations();
           @switch (realizationsItems.status) {
           @case ('loading') {
@@ -43,7 +43,7 @@
           @if (realizationsItems.data.length > 0) {
           @for (realization of realizationsItems.data; track realization.id) {
           <app-realization-item [realization]="realization"
-            class="w-full md:flex-[0_0_calc(50%-1rem)] lg:flex-[0_0_calc(33.333%-1.33rem)] max-w-md"></app-realization-item>
+            class="flex-1 min-w-full md:min-w-[calc(50%-0.5rem)] lg:min-w-[calc(33.333%-0.67rem)] md:max-w-[calc(50%-0.5rem)] lg:max-w-[calc(33.333%-0.67rem)]"></app-realization-item>
           }
           } @else {
           <!-- TODO: show no realizations message -->
