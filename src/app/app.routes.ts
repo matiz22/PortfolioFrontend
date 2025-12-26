@@ -6,6 +6,8 @@ import { RealizationsPage } from './features/realizations/realizations-page/real
 import { RealizationDetailsPage } from './features/realizations/realization-details-page/realization-details-page';
 import { EducationPage } from './features/education/education-page/education-page';
 import { EducationDetailsPage } from './features/education/education-details-page/education-details-page';
+import { CertificationsPage } from './features/certifications/certifications-page/certifications-page';
+import { CertificationDetailPage } from './features/certifications/certification-detail-page/certification-detail-page';
 
 export const routes: Routes = [
     {
@@ -40,4 +42,13 @@ export const routes: Routes = [
         path: 'education/:id',
         component: EducationDetailsPage
     },
+    {
+        path: 'certifications',
+        component: CertificationsPage,
+        data: { reuse: true }
+    },
+    {
+        path: 'certification/:id',
+        component: CertificationDetailPage
+    }
 ];
