@@ -11,6 +11,7 @@ import { ImageUrlPipe } from '../../../shared/pipes/image-url-pipe';
 import { DatePipe } from '@angular/common';
 import { MarkdownComponent } from 'ngx-markdown';
 import { SkillsDetailsSection } from '../../skills/skills-details-section/skills-details-section';
+import { TechnologiesDetailsSection } from '../../technologies/technologies-details-section/technologies-details-section';
 
 
 @Component({
@@ -22,7 +23,8 @@ import { SkillsDetailsSection } from '../../skills/skills-details-section/skills
     ImageUrlPipe,
     DatePipe,
     MarkdownComponent,
-    SkillsDetailsSection
+    SkillsDetailsSection,
+    TechnologiesDetailsSection
   ],
   templateUrl: './education-details-page.html',
   styleUrl: './education-details-page.scss'

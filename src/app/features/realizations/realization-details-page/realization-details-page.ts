@@ -12,10 +12,11 @@ import { Header } from '../../../shared/header/header';
 import { Footer } from '../../../shared/footer/footer';
 import { MarkdownComponent } from 'ngx-markdown';
 import { SkillsDetailsSection } from '../../skills/skills-details-section/skills-details-section';
+import { TechnologiesDetailsSection } from '../../technologies/technologies-details-section/technologies-details-section';
 
 @Component({
   selector: 'app-realization-details-page',
-  imports: [ImageUrlPipe, RouterLink, Header, Footer, MarkdownComponent, SkillsDetailsSection],
+  imports: [ImageUrlPipe, RouterLink, Header, Footer, MarkdownComponent, SkillsDetailsSection, TechnologiesDetailsSection],
   templateUrl: './realization-details-page.html',
   styleUrl: './realization-details-page.scss',
 })

@@ -10,10 +10,11 @@ import { Project } from '../../../core/models/project';
 import { ApiState } from '../../../core/models/api.state';
 import { Link } from '../../../shared/models/link';
 import { MarkdownComponent } from 'ngx-markdown';
+import { TechnologiesDetailsSection } from '../../technologies/technologies-details-section/technologies-details-section';
 
 @Component({
   selector: 'app-project-details-page',
-  imports: [ImageUrlPipe, RouterLink, Header, Footer, MarkdownComponent],
+  imports: [ImageUrlPipe, RouterLink, Header, Footer, MarkdownComponent, TechnologiesDetailsSection],
   templateUrl: './project-details-page.html',
   styleUrl: './project-details-page.scss',
 })
