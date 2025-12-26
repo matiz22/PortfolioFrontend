@@ -1,0 +1,39 @@
+import { Component, inject } from '@angular/core';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { JobsService } from '../../../core/services/jobs.service';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { ApiState } from '../../../core/models/api.state';
+import { Job } from '../../../core/models/job';
+import { switchMap } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { ImageUrlPipe } from '../../../shared/pipes/image-url-pipe';
+import { Header } from '../../../shared/header/header';
+import { Footer } from '../../../shared/footer/footer';
+import { DescriptionMd } from '../../../shared/description/description-md/description-md';
+import { SkillsDetailsSection } from '../../skills/skills-details-section/skills-details-section';
+import { TechnologiesDetailsSection } from '../../technologies/technologies-details-section/technologies-details-section';
+import { DatePipe } from '@angular/common';
+
+@Component({
+  selector: 'app-job-details-page',
+  imports: [ImageUrlPipe, RouterLink, Header, Footer, DescriptionMd, SkillsDetailsSection, TechnologiesDetailsSection, DatePipe],
+  templateUrl: './job-details-page.html',
+  styleUrl: './job-details-page.scss',
+})
+export class JobDetailsPage {
+  private route: ActivatedRoute = inject(ActivatedRoute);
+  private jobsService: JobsService = inject(JobsService);
+
+  job = toSignal(
+    this.route.paramMap.pipe(
+      switchMap(params => {
+        const id = params.get('id');
+        if (!id) {
+          return of(ApiState.error<Job>('No job ID provided'));
+        }
+        return this.jobsService.getById(id);
+      })
+    ),
+    { initialValue: ApiState.loading<Job>() }
+  );
+}

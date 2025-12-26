@@ -1,0 +1,21 @@
+<div class="card shadow-2xl hover:shadow-2xl hover:bg-base-200 transition-all h-full flex flex-col"
+    routerLink="/job/{{ job.id }}">
+    @if (job.thumbnail) {
+    <figure>
+        <img [alt]="job.title" [src]="job.thumbnail | imageUrl" class="w-full h-48 object-cover">
+    </figure>
+    }
+    <div class="card-body items-center text-center flex flex-col flex-1">
+        <h3 class="card-title">{{ job.title }}</h3>
+        <p class="text-sm opacity-70">{{ job.companyName }}</p>
+        <p class="text-xs opacity-50">{{ job.location }}</p>
+        <div class="badge badge-primary badge-sm mt-2">
+            {{ job.startDate | date:'MMM yyyy' }} - {{ job.isCurrent ? 'Present' : (job.endDate | date:'MMM yyyy') }}
+        </div>
+        <div class="flex gap-2 flex-wrap mt-4 justify-center">
+            @for (technology of job.technologies; track technology.id) {
+            <div class="badge badge-accent badge-outline">{{ technology.name }}</div>
+            }
+        </div>
+    </div>
+</div>

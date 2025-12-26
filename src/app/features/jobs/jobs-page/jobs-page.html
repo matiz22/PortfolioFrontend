@@ -1,0 +1,42 @@
+<app-header></app-header>
+
+<main class="pt-24">
+    <section class="py-20">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold text-center mb-12">All Jobs</h2>
+
+            <div class="flex flex-row flex-wrap justify-center gap-4">
+                @let jobItems = jobs();
+                @switch (jobItems.status) {
+                @case ('loading') {
+                <div class="text-center w-full">
+                    <span class="loading loading-spinner loading-lg"></span>
+                </div>
+                }
+                @case ('success') {
+                @if (jobItems.data.length > 0) {
+                @for (job of jobItems.data; track job.id) {
+                <app-job-item [job]="job"
+                    class="flex-1 min-w-full md:min-w-[calc(50%-0.5rem)] lg:min-w-[calc(33.333%-0.67rem)] md:max-w-[calc(50%-0.5rem)] lg:max-w-[calc(33.333%-0.67rem)]">
+                </app-job-item>
+                }
+                } @else {
+                <div class="text-center w-full">
+                    <p class="text-lg">No jobs available at the moment.</p>
+                </div>
+                }
+                }
+                @case ('error') {
+                <div class="text-center w-full">
+                    <p class="text-lg text-error">Error loading jobs. Please try again later.</p>
+                </div>
+                }
+                }
+            </div>
+        </div>
+    </section>
+
+    <app-contact-section></app-contact-section>
+</main>
+
+<app-footer></app-footer>

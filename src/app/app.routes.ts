@@ -8,6 +8,8 @@ import { EducationPage } from './features/education/education-page/education-pag
 import { EducationDetailsPage } from './features/education/education-details-page/education-details-page';
 import { CertificationsPage } from './features/certifications/certifications-page/certifications-page';
 import { CertificationDetailPage } from './features/certifications/certification-detail-page/certification-detail-page';
+import { JobsPage } from './features/jobs/jobs-page/jobs-page';
+import { JobDetailsPage } from './features/jobs/job-details-page/job-details-page';
 
 export const routes: Routes = [
     {
@@ -50,5 +52,14 @@ export const routes: Routes = [
     {
         path: 'certification/:id',
         component: CertificationDetailPage
+    },
+    {
+        path: 'jobs',
+        component: JobsPage,
+        data: { reuse: true }
+    },
+    {
+        path: 'job/:id',
+        component: JobDetailsPage
     }
 ];
