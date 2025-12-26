@@ -1,0 +1,116 @@
+<app-header></app-header>
+
+<main class="pt-24">
+    @let educationState = education();
+    @switch (educationState.status) {
+    @case ('loading') {
+    <div class="flex justify-center items-center min-h-[60vh]">
+        <span class="loading loading-spinner loading-lg text-primary"></span>
+    </div>
+    }
+    @case ('success') {
+    @let data = educationState.data;
+    <div class="container mx-auto px-4 py-8">
+        <!-- Hero Section with Title and Image -->
+        <div class="hero bg-base-200 rounded-box mb-8">
+            <div class="hero-content flex-col lg:flex-row-reverse gap-8 py-12">
+                @if (data.thumbnail) {
+                <img [alt]="data.institution" [src]="data.thumbnail | imageUrl"
+                    class="max-w-sm rounded-lg shadow-2xl w-full object-cover" />
+                }
+                <div>
+                    <h1 class="text-5xl font-bold">{{ data.degree }}</h1>
+                    <p class="text-2xl mt-4 opacity-90">{{ data.institution }}</p>
+                    @if (data.fieldOfStudy) {
+                    <p class="text-xl mt-2 opacity-70">{{ data.fieldOfStudy }}</p>
+                    }
+                    <div class="mt-6 flex items-center gap-4">
+                        <div class="badge badge-primary badge-lg">
+                            {{ data.startDate | date:'yyyy' }} - {{ data.isCurrent ? 'Present' : (data.endDate |
+                            date:'yyyy') }}
+                        </div>
+                        @if (data.grade) {
+                        <div class="badge badge-secondary badge-lg">
+                            Grade: {{ data.grade }}
+                        </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Technologies Section -->
+        @if (data.technologies && data.technologies.length > 0) {
+        <div class="card bg-base-100 shadow-xl border border-base-300 mb-8">
+            <div class="card-body">
+                <h2 class="card-title text-2xl">Technologies Learned</h2>
+                <div class="flex gap-2 flex-wrap mt-4">
+                    @for (technology of data.technologies; track technology.id) {
+                    <div class="badge badge-accent badge-lg gap-2">
+                        @if (technology.icon) {
+                        <img [alt]="technology.name" [src]="technology.icon | imageUrl" class="w-4 h-4" />
+                        }
+                        {{ technology.name }}
+                    </div>
+                    }
+                </div>
+            </div>
+        </div>
+        }
+
+        <!-- Skills Section -->
+        @if (data.skills && data.skills.length > 0) {
+        <div class="card bg-base-100 shadow-xl border border-base-300 mb-8">
+            <div class="card-body">
+                <h2 class="card-title text-2xl">Skills Acquired</h2>
+                <div class="flex gap-2 flex-wrap mt-4">
+                    @for (skill of data.skills; track skill.id) {
+                    <div class="badge badge-secondary badge-lg gap-2">
+                        @if (skill.icon) {
+                        <img [alt]="skill.name" [src]="skill.icon | imageUrl" class="w-4 h-4" />
+                        }
+                        {{ skill.name }}
+                    </div>
+                    }
+                </div>
+            </div>
+        </div>
+        }
+
+        <!-- Description Section -->
+        <div class="card bg-base-100 shadow-xl border border-base-300 mb-8">
+            <div class="card-body">
+                <h2 class="card-title text-2xl">About This Education</h2>
+                <markdown [data]="data.description" class="prose prose-lg max-w-none"></markdown>
+            </div>
+        </div>
+
+        <!-- Back Button -->
+        <div class="mt-8 flex justify-center">
+            <a class="btn btn-outline" routerLink="/education">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10 19l-7-7m0 0l7-7m-7 7h18" stroke-linecap="round" stroke-linejoin="round"
+                        stroke-width="2" />
+                </svg>
+                Back to Education
+            </a>
+        </div>
+    </div>
+    }
+    @case ('error') {
+    <div class="container mx-auto px-4 py-12">
+        <div role="alert" class="alert alert-error">
+            <svg class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round"
+                    stroke-linejoin="round" stroke-width="2" />
+            </svg>
+            <span>{{ educationState.error }}</span>
+        </div>
+    </div>
+    }
+    }
+</main>
+
+<app-footer></app-footer>

@@ -1,0 +1,42 @@
+<app-header></app-header>
+
+<main class="pt-24">
+    <section class="py-20">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold text-center mb-12">My Education</h2>
+
+            <div class="flex flex-wrap justify-center gap-8">
+                @let educationItems = education();
+                @switch (educationItems.status) {
+                @case ('loading') {
+                <div class="text-center w-full">
+                    <span class="loading loading-spinner loading-lg"></span>
+                </div>
+                }
+                @case ('success') {
+                @if (educationItems.data.length > 0) {
+                @for (edu of educationItems.data; track edu.id) {
+                <app-education-item [education]="edu"
+                    class="w-full md:flex-[0_0_calc(50%-1rem)] lg:flex-[0_0_calc(33.333%-1.33rem)] max-w-md">
+                </app-education-item>
+                }
+                } @else {
+                <div class="text-center w-full">
+                    <p class="text-lg">No education entries available at the moment.</p>
+                </div>
+                }
+                }
+                @case ('error') {
+                <div class="text-center w-full">
+                    <p class="text-lg text-error">Error loading education. Please try again later.</p>
+                </div>
+                }
+                }
+            </div>
+        </div>
+    </section>
+
+    <app-contact-section></app-contact-section>
+</main>
+
+<app-footer></app-footer>
