@@ -1,1 +1,119 @@
-<p>certification-detail-page works!</p>
+<app-header></app-header>
+
+<main class="pt-24">
+    @let certificationState = certification();
+    @switch (certificationState.status) {
+    @case ('loading') {
+    <div class="flex justify-center items-center min-h-[60vh]">
+        <span class="loading loading-spinner loading-lg text-primary"></span>
+    </div>
+    }
+    @case ('success') {
+    @let data = certificationState.data;
+    <div class="container mx-auto px-4 py-8">
+        <!-- Hero Section with Title and Thumbnail -->
+        <div class="hero bg-base-200 rounded-box mb-8">
+            <div class="hero-content flex-col lg:flex-row-reverse gap-8 py-12">
+                @if (data.thumbnail) {
+                <img [alt]="data.name" [src]="data.thumbnail | imageUrl"
+                    class="max-w-sm rounded-lg shadow-2xl w-full object-cover" />
+                }
+                <div>
+                    <h1 class="text-5xl font-bold">{{ data.name }}</h1>
+
+                    <!-- Issuing Organization -->
+                    <div class="mt-4 mb-6">
+                        <p class="text-sm opacity-70">Issued by</p>
+                        <p class="text-2xl font-semibold">{{ data.issuingOrganization }}</p>
+                    </div>
+
+                    <!-- Dates -->
+                    <div class="flex flex-wrap gap-4 mb-6">
+                        <div class="badge badge-lg badge-primary gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                                    stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+                            </svg>
+                            Issued: {{ data.issueDate | date:'MMMM yyyy' }}
+                        </div>
+                        @if (data.expirationDate) {
+                        <div class="badge badge-lg badge-secondary gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round"
+                                    stroke-linejoin="round" stroke-width="2" />
+                            </svg>
+                            Expires: {{ data.expirationDate | date:'MMMM yyyy' }}
+                        </div>
+                        }
+                    </div>
+
+                    @if (data.credentialId) {
+                    <p class="text-sm opacity-70 mb-4">Credential ID: {{ data.credentialId }}</p>
+                    }
+
+                    <div class="flex gap-3 flex-wrap">
+                        @if (data.credentialUrl) {
+                        <a [href]="data.credentialUrl" class="btn btn-primary" rel="noopener noreferrer"
+                            target="_blank">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                                    stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+                            </svg>
+                            View Credential
+                        </a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Technologies Section -->
+        <app-technologies-details-section [technologies]="data.technologies"
+            [title]="'Technologies'"></app-technologies-details-section>
+
+        <!-- Skills Section -->
+        <app-skills-details-section [skills]="data.skills" [title]="'Skills'"></app-skills-details-section>
+
+        <!-- Description Section -->
+        @if (data.description) {
+        <div class="card bg-base-100 shadow-xl border border-base-300 mb-8">
+            <div class="card-body">
+                <h2 class="card-title text-2xl">About This Certification</h2>
+                <markdown [data]="data.description" class="prose prose-lg max-w-none"></markdown>
+            </div>
+        </div>
+        }
+
+        <!-- Back Button -->
+        <div class="mt-8 flex justify-center">
+            <a class="btn btn-outline" routerLink="/certifications">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10 19l-7-7m0 0l7-7m-7 7h18" stroke-linecap="round" stroke-linejoin="round"
+                        stroke-width="2" />
+                </svg>
+                Back to Certifications
+            </a>
+        </div>
+    </div>
+    }
+    @case ('error') {
+    <div class="container mx-auto px-4 py-12">
+        <div role="alert" class="alert alert-error">
+            <svg class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round"
+                    stroke-linejoin="round" stroke-width="2" />
+            </svg>
+            <span>{{ certificationState.error }}</span>
+        </div>
+    </div>
+    }
+    }
+</main>
+
+<app-footer></app-footer>
