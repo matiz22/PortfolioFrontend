@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -10,5 +10,10 @@ import { RouterLink } from '@angular/router';
   styleUrl: './header.scss',
 })
 export class Header {
+  @ViewChild('menuDetails') menuDetails!: ElementRef<HTMLDetailsElement>;
 
+  @HostListener('document:click')
+  closeOnAnyClick() {
+    this.menuDetails?.nativeElement.removeAttribute('open');
+  }
 }
