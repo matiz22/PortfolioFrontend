@@ -1,0 +1,18 @@
+<!-- Skills Section -->
+@if (skills() && skills().length > 0) {
+<div class="card bg-base-100 shadow-xl border border-base-300 mb-8">
+    <div class="card-body">
+        <h2 class="card-title text-2xl">{{ title() }}</h2>
+        <div class="flex gap-2 flex-wrap mt-4">
+            @for (skill of skills(); track skill.id) {
+            <div class="badge badge-secondary badge-lg gap-2">
+                <!-- @if (skill.icon) {
+                <img [alt]="skill.name" [src]="skill.icon | imageUrl" class="w-4 h-4" />
+                } -->
+                {{ skill.name }}
+            </div>
+            }
+        </div>
+    </div>
+</div>
+}

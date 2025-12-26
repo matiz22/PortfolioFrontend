@@ -10,6 +10,7 @@ import { Footer } from '../../../shared/footer/footer';
 import { ImageUrlPipe } from '../../../shared/pipes/image-url-pipe';
 import { DatePipe } from '@angular/common';
 import { MarkdownComponent } from 'ngx-markdown';
+import { SkillsDetailsSection } from '../../skills/skills-details-section/skills-details-section';
 
 
 @Component({
@@ -20,7 +21,8 @@ import { MarkdownComponent } from 'ngx-markdown';
     RouterLink,
     ImageUrlPipe,
     DatePipe,
-    MarkdownComponent
+    MarkdownComponent,
+    SkillsDetailsSection
   ],
   templateUrl: './education-details-page.html',
   styleUrl: './education-details-page.scss'

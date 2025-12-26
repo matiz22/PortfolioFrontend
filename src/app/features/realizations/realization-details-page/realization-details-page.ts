@@ -11,10 +11,11 @@ import { ImageUrlPipe } from '../../../shared/pipes/image-url-pipe';
 import { Header } from '../../../shared/header/header';
 import { Footer } from '../../../shared/footer/footer';
 import { MarkdownComponent } from 'ngx-markdown';
+import { SkillsDetailsSection } from '../../skills/skills-details-section/skills-details-section';
 
 @Component({
   selector: 'app-realization-details-page',
-  imports: [ImageUrlPipe, RouterLink, Header, Footer, MarkdownComponent],
+  imports: [ImageUrlPipe, RouterLink, Header, Footer, MarkdownComponent, SkillsDetailsSection],
   templateUrl: './realization-details-page.html',
   styleUrl: './realization-details-page.scss',
 })
