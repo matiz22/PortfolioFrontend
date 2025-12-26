@@ -31,8 +31,6 @@
     "@angular/platform-server": "^20.2.0",
     "@angular/router": "^20.2.0",
     "@angular/ssr": "^20.2.0",
-    "@omnedia/ngx-aurora": "^3.0.0",
-    "@omnedia/ngx-background-beams": "^3.0.0",
     "express": "^5.1.0",
     "marked": "^17.0.0",
     "ngx-markdown": "^21.0.1",

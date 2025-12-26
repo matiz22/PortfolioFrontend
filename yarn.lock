@@ -1350,20 +1350,6 @@
     proc-log "^5.0.0"
     which "^5.0.0"
 
-"@omnedia/ngx-aurora@^3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@omnedia/ngx-aurora/-/ngx-aurora-3.0.0.tgz#49bf9006bfa3b1b9f4b26afdf5dd8b5296bc0511"
-  integrity sha512-vaeKE9J/t8xOHBMQ1jDI70IhUCUAVpOGVrz/MshLFiXKh/TAY8YoHfQ/OlWKbI8imX3HsTbTCytRUAXcrEryTg==
-  dependencies:
-    tslib "^2.3.0"
-
-"@omnedia/ngx-background-beams@^3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@omnedia/ngx-background-beams/-/ngx-background-beams-3.0.0.tgz#61de58615d847684a953a28936fb6eafb9022628"
-  integrity sha512-67kU2acYTr31JGGh48PQHEllZS+TcsZmFC4zN3Ssg9txSnkwklh/n2NaqkKlVSFJa94rkvL32BysbGTQ3mpLvQ==
-  dependencies:
-    tslib "^2.3.0"
-
 "@parcel/watcher-android-arm64@2.5.1":
   version "2.5.1"
   resolved "https://registry.yarnpkg.com/@parcel/watcher-android-arm64/-/watcher-android-arm64-2.5.1.tgz#507f836d7e2042f798c7d07ad19c3546f9848ac1"
