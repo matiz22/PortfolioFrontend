@@ -27,13 +27,14 @@
               {{ job.startDate | date:'MMM yyyy' }} -
               {{ job.isCurrent ? 'Present' : (job.endDate | date:'MMM yyyy') }}
             </time>
-
             @if (job.skills && job.skills.length > 0) {
             <div class="mt-3">
               <div class="text-sm font-semibold opacity-60 mb-1">Skills:</div>
               <div class="flex flex-wrap gap-2">
                 @for (skill of job.skills; track skill.id) {
-                <span class="badge badge-primary badge-sm min-w-0 shrink whitespace-normal h-auto">{{ skill.name
+                <span
+                  class="badge badge-primary badge-sm min-w-0 shrink whitespace-normal h-auto text-center leading-tight">{{
+                  skill.name
                   }}</span>
                 }
               </div>
@@ -45,7 +46,9 @@
               <div class="text-sm font-semibold opacity-60 mb-1">Technologies:</div>
               <div class="flex flex-wrap gap-2">
                 @for (tech of job.technologies; track tech.id) {
-                <span class="badge badge-secondary badge-sm min-w-0 shrink whitespace-normal h-auto">{{ tech.name
+                <span
+                  class="badge badge-secondary badge-sm min-w-0 shrink whitespace-normal h-auto text-center leading-tight">{{
+                  tech.name
                   }}</span>
                 }
               </div>
