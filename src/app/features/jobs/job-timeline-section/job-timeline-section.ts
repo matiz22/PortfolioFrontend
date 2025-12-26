@@ -1,13 +1,14 @@
-import {Component, inject} from '@angular/core';
-import {toSignal} from '@angular/core/rxjs-interop';
-import {DatePipe} from '@angular/common';
-import {ApiState} from '../../../core/models/api.state';
-import {JobsService} from '../../../core/services/jobs.service';
-import {Job} from '../../../core/models/job';
+import { Component, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { DatePipe } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { ApiState } from '../../../core/models/api.state';
+import { JobsService } from '../../../core/services/jobs.service';
+import { Job } from '../../../core/models/job';
 
 @Component({
   selector: 'app-job-timeline-section',
-  imports: [DatePipe],
+  imports: [DatePipe, RouterLink],
   templateUrl: './job-timeline-section.html',
   styleUrl: './job-timeline-section.scss',
 })
