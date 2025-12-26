@@ -3,7 +3,7 @@
     <h2 class="text-4xl font-bold text-center mb-12">Education</h2>
 
     <!-- Flex layout with centering: orphan items center nicely -->
-    <div class="flex flex-wrap justify-center gap-8">
+    <div class="flex flex-row flex-wrap justify-center gap-4">
       @if (education(); as state) {
       @if (state.status === 'loading') {
       <div class="text-center w-full">
@@ -13,7 +13,7 @@
       @else if (state.status === 'success') {
       @for (item of state.data; track item.id) {
       <app-education-item [education]="item"
-        class="w-full md:flex-[0_0_calc(50%-1rem)] lg:flex-[0_0_calc(33.333%-1.33rem)] max-w-md"></app-education-item>
+        class="flex-1 min-w-full md:min-w-[calc(50%-0.5rem)] lg:min-w-[calc(33.333%-0.67rem)] md:max-w-[calc(50%-0.5rem)] lg:max-w-[calc(33.333%-0.67rem)]"></app-education-item>
       }
       }
       @else if (state.status === 'error') {
