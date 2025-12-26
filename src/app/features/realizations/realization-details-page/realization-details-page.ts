@@ -10,13 +10,13 @@ import { Link } from '../../../shared/models/link';
 import { ImageUrlPipe } from '../../../shared/pipes/image-url-pipe';
 import { Header } from '../../../shared/header/header';
 import { Footer } from '../../../shared/footer/footer';
-import { MarkdownComponent } from 'ngx-markdown';
+import { DescriptionMd } from '../../../shared/description/description-md/description-md';
 import { SkillsDetailsSection } from '../../skills/skills-details-section/skills-details-section';
 import { TechnologiesDetailsSection } from '../../technologies/technologies-details-section/technologies-details-section';
 
 @Component({
   selector: 'app-realization-details-page',
-  imports: [ImageUrlPipe, RouterLink, Header, Footer, MarkdownComponent, SkillsDetailsSection, TechnologiesDetailsSection],
+  imports: [ImageUrlPipe, RouterLink, Header, Footer, DescriptionMd, SkillsDetailsSection, TechnologiesDetailsSection],
   templateUrl: './realization-details-page.html',
   styleUrl: './realization-details-page.scss',
 })
