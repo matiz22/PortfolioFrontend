@@ -9,12 +9,12 @@ import { of, switchMap } from 'rxjs';
 import { Project } from '../../../core/models/project';
 import { ApiState } from '../../../core/models/api.state';
 import { Link } from '../../../shared/models/link';
-import { MarkdownComponent } from 'ngx-markdown';
+import { DescriptionMd } from '../../../shared/description/description-md/description-md';
 import { TechnologiesDetailsSection } from '../../technologies/technologies-details-section/technologies-details-section';
 
 @Component({
   selector: 'app-project-details-page',
-  imports: [ImageUrlPipe, RouterLink, Header, Footer, MarkdownComponent, TechnologiesDetailsSection],
+  imports: [ImageUrlPipe, RouterLink, Header, Footer, DescriptionMd, TechnologiesDetailsSection],
   templateUrl: './project-details-page.html',
   styleUrl: './project-details-page.scss',
 })

@@ -77,12 +77,7 @@
             [title]="'Technologies Used'"></app-technologies-details-section>
 
         <!-- Description Section -->
-        <div class="card bg-base-100 shadow-xl border border-base-300 mb-8">
-            <div class="card-body">
-                <h2 class="card-title text-2xl">About This Project</h2>
-                <markdown [data]="data.description" class="prose prose-lg max-w-none"></markdown>
-            </div>
-        </div>
+        <app-description-md [description]="data.description"></app-description-md>
 
 
         <!-- Back Button -->
