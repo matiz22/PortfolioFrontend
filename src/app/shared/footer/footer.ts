@@ -1,24 +1,21 @@
-import { Component, inject } from '@angular/core';
-import { SocialLinksService } from '../../core/services/social.links.service';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { ApiState } from '../../core/models/api.state';
-import { SocialLink } from '../../core/models/social.link';
+import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { ImageUrlPipe } from '../pipes/image-url-pipe';
+import { SocialLinksRow } from '../../features/social-links/social-links-row/social-links-row';
 
 
 @Component({
   selector: 'app-footer',
-  imports: [RouterLink, ImageUrlPipe],
+  imports: [RouterLink, SocialLinksRow],
   templateUrl: './footer.html',
   styleUrl: './footer.scss',
 })
 export class Footer {
-  socialLinksService: SocialLinksService = inject(SocialLinksService);
-  socialLinks = toSignal(
-    this.socialLinksService.getAll(),
-    {
-      initialValue: ApiState.loading<SocialLink[]>()
-    }
-  );
+}
+socialLinksService: SocialLinksService = inject(SocialLinksService);
+socialLinks = toSignal(
+  this.socialLinksService.getAll(),
+  {
+    initialValue: ApiState.loading<SocialLink[]>()
+  }
+);
 }
