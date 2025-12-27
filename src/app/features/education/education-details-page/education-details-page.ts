@@ -12,6 +12,7 @@ import { DatePipe } from '@angular/common';
 import { DescriptionMd } from '../../../shared/description/description-md/description-md';
 import { SkillsDetailsSection } from '../../skills/skills-details-section/skills-details-section';
 import { TechnologiesDetailsSection } from '../../technologies/technologies-details-section/technologies-details-section';
+import { ContactSection } from '../../../shared/contact/contact-section/contact-section';
 
 
 @Component({
@@ -24,7 +25,8 @@ import { TechnologiesDetailsSection } from '../../technologies/technologies-deta
     DatePipe,
     DescriptionMd,
     SkillsDetailsSection,
-    TechnologiesDetailsSection
+    TechnologiesDetailsSection,
+    ContactSection
   ],
   templateUrl: './education-details-page.html',
   styleUrl: './education-details-page.scss'

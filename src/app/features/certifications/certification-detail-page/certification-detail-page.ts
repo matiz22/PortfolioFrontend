@@ -13,6 +13,7 @@ import { DescriptionMd } from '../../../shared/description/description-md/descri
 import { SkillsDetailsSection } from '../../skills/skills-details-section/skills-details-section';
 import { TechnologiesDetailsSection } from '../../technologies/technologies-details-section/technologies-details-section';
 import { DatePipe } from '@angular/common';
+import { ContactSection } from '../../../shared/contact/contact-section/contact-section';
 
 @Component({
   selector: 'app-certification-detail-page',
@@ -24,7 +25,8 @@ import { DatePipe } from '@angular/common';
     DescriptionMd,
     SkillsDetailsSection,
     TechnologiesDetailsSection,
-    DatePipe
+    DatePipe,
+    ContactSection
   ],
   templateUrl: './certification-detail-page.html',
   styleUrl: './certification-detail-page.scss',

@@ -11,10 +11,11 @@ import { ApiState } from '../../../core/models/api.state';
 import { Link } from '../../../shared/models/link';
 import { DescriptionMd } from '../../../shared/description/description-md/description-md';
 import { TechnologiesDetailsSection } from '../../technologies/technologies-details-section/technologies-details-section';
+import { ContactSection } from '../../../shared/contact/contact-section/contact-section';
 
 @Component({
   selector: 'app-project-details-page',
-  imports: [ImageUrlPipe, RouterLink, Header, Footer, DescriptionMd, TechnologiesDetailsSection],
+  imports: [ImageUrlPipe, RouterLink, Header, Footer, DescriptionMd, TechnologiesDetailsSection, ContactSection],
   templateUrl: './project-details-page.html',
   styleUrl: './project-details-page.scss',
 })
