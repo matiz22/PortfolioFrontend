@@ -11,11 +11,3 @@ import { SocialLinksRow } from '../../features/social-links/social-links-row/soc
 })
 export class Footer {
 }
-socialLinksService: SocialLinksService = inject(SocialLinksService);
-socialLinks = toSignal(
-  this.socialLinksService.getAll(),
-  {
-    initialValue: ApiState.loading<SocialLink[]>()
-  }
-);
-}
