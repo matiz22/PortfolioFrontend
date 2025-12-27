@@ -53,6 +53,7 @@ export class ContactForm {
       const contact = this.contactForm.value as Contact;
       this.submitting.set(true);
       this.contactService.sendEmail(contact).subscribe(success => {
+        this.submitting.set(false);
         this.submitted.set(success);
       });
     } else {
