@@ -10,6 +10,7 @@ import { CertificationsPage } from './features/certifications/certifications-pag
 import { CertificationDetailPage } from './features/certifications/certification-detail-page/certification-detail-page';
 import { JobsPage } from './features/jobs/jobs-page/jobs-page';
 import { JobDetailsPage } from './features/jobs/job-details-page/job-details-page';
+import { PrivacyPolicy } from './shared/privacy-policy/privacy-policy';
 
 export const routes: Routes = [
     {
@@ -61,5 +62,9 @@ export const routes: Routes = [
     {
         path: 'job/:id',
         component: JobDetailsPage
+    },
+    {
+        path: 'privacy-policy',
+        component: PrivacyPolicy
     }
 ];
