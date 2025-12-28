@@ -49,6 +49,8 @@ export class ContactForm {
   submitting = signal<boolean>(false);
 
   onSubmit() {
+    if (this.submitting()) return;
+
     if (this.contactForm.valid) {
       const contact = this.contactForm.value as Contact;
       this.submitting.set(true);
