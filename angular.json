@@ -58,7 +58,12 @@
               ]
             },
             "production": {
-              "optimization": true,
+              "optimization": {
+                "styles": {
+                  "minify": true,
+                  "inlineCritical": true
+                }
+              },
               "sourceMap": false,
               "namedChunks": false,
               "aot": true,
