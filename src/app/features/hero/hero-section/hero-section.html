@@ -21,7 +21,8 @@
       <div class="max-w-3xl mx-auto">
         <!-- Badge -->
         <div
-          class="inline-flex items-center gap-2 px-4 py-2 mb-8 rounded-full bg-base-200/50 border border-base-300/50 backdrop-blur-sm animate-fade-in-up">
+          class="inline-flex items-center gap-2 px-4 py-2 mb-8 rounded-full bg-base-200/50 border border-base-300/50 backdrop-blur-sm"
+          [ngClass]="{'animate-fade-in-up': isHydrated()}">
           <span class="relative flex h-3 w-3">
             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
             <span class="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
@@ -32,13 +33,14 @@
 
         <!-- Main heading with gradient text -->
         <h1
-          class="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black mb-6 leading-tight animate-fade-in-up animation-delay-100 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent animate-gradient-text bg-[length:200%_auto]"
-          i18n="@@hero.heading">
+          class="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black mb-6 leading-tight bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent animate-gradient-text bg-[length:200%_auto]"
+          [ngClass]="{'animate-fade-in-up animation-delay-100': isHydrated()}" i18n="@@hero.heading">
           Hi, I'm Mateusz
         </h1>
 
         <!-- Subtitle with animated typing effect look -->
-        <div class="flex flex-wrap items-center justify-center gap-2 mb-8 animate-fade-in-up animation-delay-200">
+        <div class="flex flex-wrap items-center justify-center gap-2 mb-8"
+          [ngClass]="{'animate-fade-in-up animation-delay-200': isHydrated()}">
           <span class="badge badge-lg badge-primary badge-outline gap-2 min-w-[250px] justify-center">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
               stroke="currentColor" class="w-4 h-4">
@@ -66,14 +68,15 @@
         </div>
 
         <!-- Description -->
-        <p class="text-base-content/70 text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed animate-fade-in-up animation-delay-300"
-          i18n="@@hero.description">
+        <p class="text-base-content/70 text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed"
+          [ngClass]="{'animate-fade-in-up animation-delay-300': isHydrated()}" i18n="@@hero.description">
           Crafting elegant solutions and building exceptional digital experiences.
           Focused on simple, effective solutions, modern technologies, and continuous learning.
         </p>
 
         <!-- CTA Buttons -->
-        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up animation-delay-400">
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4"
+          [ngClass]="{'animate-fade-in-up animation-delay-400': isHydrated()}">
           <a [routerLink]="[]" fragment="about"
             class="btn btn-primary btn-lg gap-2 group shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/40 transition-all duration-300">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"

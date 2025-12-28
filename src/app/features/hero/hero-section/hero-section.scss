@@ -113,9 +113,13 @@
     animation-delay: 4s;
 }
 
+/* 
+ * SSR-safe fade-in animation: 
+ * Content starts visible to prevent flash during SSR hydration.
+ * Animation uses 'both' fill-mode to handle the animation naturally.
+ */
 .animate-fade-in-up {
-    animation: fade-in-up 0.8s ease-out forwards;
-    opacity: 0;
+    animation: fade-in-up 0.8s ease-out both;
 }
 
 /* Animation delays */
