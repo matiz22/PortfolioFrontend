@@ -1,6 +1,7 @@
 <section class="py-20 px-4 sm:px-6 lg:px-8" id="experience">
   <div class="container mx-auto px-6">
-    <h2 class="text-4xl font-bold text-center mb-12" i18n="@@jobs.heading">Work Experience</h2>
+    <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-center mb-8 sm:mb-12" i18n="@@jobs.heading">Work
+      Experience</h2>
 
     <div class="max-w-4xl mx-auto">
       @let jobItems = jobs();
@@ -19,11 +20,11 @@
           <hr [class.bg-primary]="job.isCurrent" />
           }
           <a routerLink="/job/{{ job.id }}"
-            [class]="index % 2 === 0 ? 'timeline-start timeline-box max-w-md p-6 cursor-pointer hover:bg-base-200 transition-colors' : 'timeline-end timeline-box max-w-md p-6 cursor-pointer hover:bg-base-200 transition-colors'">
-            <div class="text-2xl font-bold">{{ job.title }}</div>
-            <div class="text-lg opacity-70">{{ job.companyName }}</div>
-            <div class="text-lg opacity-50">{{ job.location }}</div>
-            <time class="text-base opacity-50">
+            [class]="index % 2 === 0 ? 'timeline-start timeline-box max-w-md p-3 sm:p-4 lg:p-6 cursor-pointer hover:bg-base-200 transition-colors' : 'timeline-end timeline-box max-w-md p-3 sm:p-4 lg:p-6 cursor-pointer hover:bg-base-200 transition-colors'">
+            <div class="text-base sm:text-lg lg:text-2xl font-bold">{{ job.title }}</div>
+            <div class="text-sm sm:text-base lg:text-lg opacity-70">{{ job.companyName }}</div>
+            <div class="text-sm sm:text-base lg:text-lg opacity-50">{{ job.location }}</div>
+            <time class="text-xs sm:text-sm lg:text-base opacity-50">
               {{ job.startDate | date:'MMM yyyy' }} -
               {{ job.isCurrent ? ('Present') : (job.endDate | date:'MMM yyyy') }}
             </time>
@@ -33,7 +34,7 @@
               <div class="flex flex-wrap gap-2">
                 @for (skill of job.skills; track skill.id) {
                 <span
-                  class="badge badge-primary badge-md min-w-0 shrink whitespace-normal h-auto text-center leading-tight">{{
+                  class="badge badge-primary badge-xs sm:badge-sm lg:badge-md min-w-0 shrink whitespace-normal h-auto text-center leading-tight">{{
                   skill.name
                   }}</span>
                 }
@@ -47,7 +48,7 @@
               <div class="flex flex-wrap gap-2">
                 @for (tech of job.technologies; track tech.id) {
                 <span
-                  class="badge badge-secondary badge-md min-w-0 shrink whitespace-normal h-auto text-center leading-tight">{{
+                  class="badge badge-secondary badge-xs sm:badge-sm lg:badge-md min-w-0 shrink whitespace-normal h-auto text-center leading-tight">{{
                   tech.name
                   }}</span>
                 }
