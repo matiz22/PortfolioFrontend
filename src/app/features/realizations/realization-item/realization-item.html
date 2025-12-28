@@ -1,6 +1,5 @@
-<div
-  class="card bg-base-200 shadow-2xl hover:bg-base-300 hover:-translate-y-2 border border-base-300 h-full flex flex-col transition-all"
-  routerLink="/realization/{{ realization.id }}">
+<a [routerLink]="['/realization', realization.id]"
+  class="card bg-base-200 shadow-2xl hover:bg-base-300 hover:-translate-y-2 border border-base-300 h-full flex flex-col transition-all">
   <!-- thumbnail (if available) -->
   @if (realization.thumbnail) {
   <figure>
@@ -27,4 +26,4 @@
       }
     </div>
   </div>
-</div>
+</a>

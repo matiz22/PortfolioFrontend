@@ -1,6 +1,5 @@
-<div
-  class="card bg-base-200 shadow-2xl hover:bg-base-300 hover:-translate-y-2 border border-base-300 h-full flex flex-col transition-all cursor-pointer"
-  routerLink="/education/{{ education.id }}">
+<a [routerLink]="['/education', education.id]"
+  class="card bg-base-200 shadow-2xl hover:bg-base-300 hover:-translate-y-2 border border-base-300 h-full flex flex-col transition-all">
   @if (education.thumbnail) {
   <figure>
     <img [alt]="education.institution" [src]="education.thumbnail | imageUrl" class="w-full h-48 object-cover">
@@ -36,4 +35,4 @@
       </div>
     </div>
   </div>
-</div>
+</a>
