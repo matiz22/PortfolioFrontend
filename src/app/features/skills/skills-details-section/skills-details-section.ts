@@ -10,5 +10,5 @@ import { Skill } from '../../../core/models/skill';
 })
 export class SkillsDetailsSection {
   skills = input<Skill[]>([]);
-  title = input<string>('Skills');
+  title = input<string>($localize`:@@skills.section.title:Skills`);
 }

@@ -10,5 +10,5 @@ import { Technology } from '../../../core/models/technology';
 })
 export class TechnologiesDetailsSection {
   technologies = input<Technology[]>([]);
-  title = input<string>('Technologies');
+  title = input<string>($localize`:@@technologies.section.title:Technologies`);
 }

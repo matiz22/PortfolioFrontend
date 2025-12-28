@@ -3,7 +3,7 @@
 <main class="pt-24">
     <section class="py-20">
         <div class="container mx-auto px-6">
-            <h2 class="text-4xl font-bold text-center mb-12">All Jobs</h2>
+            <h2 class="text-4xl font-bold text-center mb-12" i18n="@@jobsPage.heading">All Jobs</h2>
 
             <div class="flex flex-row flex-wrap justify-center gap-4">
                 @let jobItems = jobs();
@@ -22,13 +22,14 @@
                 }
                 } @else {
                 <div class="text-center w-full">
-                    <p class="text-lg">No jobs available at the moment.</p>
+                    <p class="text-lg" i18n="@@jobsPage.empty">No jobs available at the moment.</p>
                 </div>
                 }
                 }
                 @case ('error') {
                 <div class="text-center w-full">
-                    <p class="text-lg text-error">Error loading jobs. Please try again later.</p>
+                    <p class="text-lg text-error" i18n="@@jobsPage.error">Error loading jobs. Please try again later.
+                    </p>
                 </div>
                 }
                 }

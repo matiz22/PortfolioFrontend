@@ -31,7 +31,7 @@
                         </div>
                         @if (data.grade) {
                         <div class="badge badge-secondary badge-lg">
-                            Grade: {{ data.grade }}
+                            <ng-container i18n="@@educationDetails.label.grade">Grade:</ng-container> {{ data.grade }}
                         </div>
                         }
                     </div>
@@ -60,7 +60,7 @@
                     <path d="M10 19l-7-7m0 0l7-7m-7 7h18" stroke-linecap="round" stroke-linejoin="round"
                         stroke-width="2" />
                 </svg>
-                Back to Education
+                <ng-container i18n="@@educationDetails.btn.back">Back to Education</ng-container>
             </a>
         </div>
     </div>

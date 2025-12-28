@@ -3,7 +3,7 @@
 <main class="pt-24">
     <section class="py-20">
         <div class="container mx-auto px-6">
-            <h2 class="text-4xl font-bold text-center mb-12">All Certifications</h2>
+            <h2 class="text-4xl font-bold text-center mb-12" i18n="@@certificationsPage.heading">All Certifications</h2>
 
             <div class="flex flex-row flex-wrap justify-center gap-4">
                 @let certificationItems = certifications();
@@ -22,13 +22,14 @@
                 }
                 } @else {
                 <div class="text-center w-full">
-                    <p class="text-lg">No certifications available at the moment.</p>
+                    <p class="text-lg" i18n="@@certificationsPage.empty">No certifications available at the moment.</p>
                 </div>
                 }
                 }
                 @case ('error') {
                 <div class="text-center w-full">
-                    <p class="text-lg text-error">Error loading certifications. Please try again later.</p>
+                    <p class="text-lg text-error" i18n="@@certificationsPage.error">Error loading certifications. Please
+                        try again later.</p>
                 </div>
                 }
                 }

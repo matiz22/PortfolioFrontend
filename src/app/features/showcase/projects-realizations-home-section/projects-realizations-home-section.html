@@ -1,9 +1,10 @@
 <section class="py-20" id="work">
   <div class="container mx-auto px-6">
-    <h2 class="text-4xl font-bold text-center mb-12">My Work</h2>
+    <h2 class="text-4xl font-bold text-center mb-12" i18n="@@showcase.heading">My Work</h2>
 
     <div class="tabs tabs-lifted tabs-lg justify-center mb-8" role="tablist">
-      <input aria-label="Projects" checked class="tab" name="work_tabs" role="tab" type="radio" />
+      <input aria-label="Projects" i18n-aria-label="@@showcase.tab.projects" checked class="tab" name="work_tabs"
+        role="tab" type="radio" />
       <div class="tab-content bg-base-100 rounded-box p-6" role="tabpanel">
         <!-- Flex layout with centering: orphan items center nicely -->
         <div class="flex flex-row flex-wrap justify-center gap-4">
@@ -31,7 +32,7 @@
         <!-- View All Link -->
         <div class="text-center mt-8">
           <a routerLink="/projects" class="btn btn-outline btn-primary">
-            View All Projects
+            <ng-container i18n="@@showcase.viewall.projects">View All Projects</ng-container>
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" fill="none" viewBox="0 0 24 24"
               stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
@@ -41,7 +42,8 @@
       </div>
 
 
-      <input aria-label="Realizations" class="tab" name="work_tabs" role="tab" type="radio" />
+      <input aria-label="Realizations" i18n-aria-label="@@showcase.tab.realizations" class="tab" name="work_tabs"
+        role="tab" type="radio" />
       <div class="tab-content bg-base-100 rounded-box p-6" role="tabpanel">
         <!-- Flex layout with centering: orphan items center nicely -->
         <div class="flex flex-row flex-wrap justify-center gap-4">
@@ -69,7 +71,7 @@
         <!-- View All Link -->
         <div class="text-center mt-8">
           <a routerLink="/realizations" class="btn btn-outline btn-primary">
-            View All Realizations
+            <ng-container i18n="@@showcase.viewall.realizations">View All Realizations</ng-container>
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" fill="none" viewBox="0 0 24 24"
               stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
