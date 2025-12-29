@@ -16,7 +16,7 @@
 <form class="space-y-6" [formGroup]="contactForm" (ngSubmit)="onSubmit()">
     <!-- Name Field -->
     <div class="form-control">
-        <label class="label pb-2">
+        <label class="label pb-2" for="contact-name">
             <span class="label-text font-semibold flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-primary" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor">
@@ -26,7 +26,7 @@
                 <ng-container i18n="@@contactForm.label.name">Name</ng-container>
             </span>
         </label>
-        <input
+        <input id="contact-name"
             class="input input-bordered w-full bg-base-200/50 focus:bg-base-100 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300"
             [class.input-error]="contactForm.get('name')?.invalid && contactForm.get('name')?.touched"
             placeholder="Your Name" i18n-placeholder="@@contactForm.placeholder.name" type="text" formControlName="name"
@@ -40,7 +40,7 @@
 
     <!-- Email Field -->
     <div class="form-control">
-        <label class="label pb-2">
+        <label class="label pb-2" for="contact-email">
             <span class="label-text font-semibold flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-primary" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor">
@@ -50,7 +50,7 @@
                 <ng-container i18n="@@contactForm.label.email">Email</ng-container>
             </span>
         </label>
-        <input
+        <input id="contact-email"
             class="input input-bordered w-full bg-base-200/50 focus:bg-base-100 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300"
             [class.input-error]="contactForm.get('email')?.invalid && contactForm.get('email')?.touched"
             placeholder="your@email.com" i18n-placeholder="@@contactForm.placeholder.email" type="email"
@@ -64,7 +64,7 @@
 
     <!-- Subject Field -->
     <div class="form-control">
-        <label class="label pb-2">
+        <label class="label pb-2" for="contact-subject">
             <span class="label-text font-semibold flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-primary" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor">
@@ -74,7 +74,7 @@
                 <ng-container i18n="@@contactForm.label.subject">Subject</ng-container>
             </span>
         </label>
-        <input
+        <input id="contact-subject"
             class="input input-bordered w-full bg-base-200/50 focus:bg-base-100 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300"
             [class.input-error]="contactForm.get('subject')?.invalid && contactForm.get('subject')?.touched"
             placeholder="What's this about?" i18n-placeholder="@@contactForm.placeholder.subject" type="text"
@@ -86,15 +86,14 @@
         }
     </div>
 
-    <!-- Honeypot Field (Hidden) -->
     <div class="absolute left-[-9999px] w-0 h-0 overflow-hidden" aria-hidden="true">
-        <label>Company</label>
-        <input type="text" formControlName="company" tabindex="-1" autocomplete="off">
+        <label for="contact-company">Company</label>
+        <input id="contact-company" type="text" formControlName="company" tabindex="-1" autocomplete="off">
     </div>
 
     <!-- Message Field -->
     <div class="form-control">
-        <label class="label pb-2">
+        <label class="label pb-2" for="contact-message">
             <span class="label-text font-semibold flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-primary" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor">
@@ -104,7 +103,7 @@
                 <ng-container i18n="@@contactForm.label.message">Message</ng-container>
             </span>
         </label>
-        <textarea
+        <textarea id="contact-message"
             class="textarea textarea-bordered w-full bg-base-200/50 focus:bg-base-100 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 min-h-32"
             [class.textarea-error]="contactForm.get('message')?.invalid && contactForm.get('message')?.touched"
             placeholder="Tell me about your project..." i18n-placeholder="@@contactForm.placeholder.message" rows="5"
