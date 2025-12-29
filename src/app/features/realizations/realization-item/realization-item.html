@@ -12,7 +12,7 @@
 
     <p class="text-sm opacity-70">
       @if (realization.clientName) {
-      <a [href]="clientUrl" class="underline" rel="noopener noreferrer" target="_blank">{{ realization.clientName }}</a>
+      {{ realization.clientName }}
       •
       }
       {{ year || '' }}
