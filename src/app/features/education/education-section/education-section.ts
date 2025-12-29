@@ -1,13 +1,15 @@
-import {Component, inject} from '@angular/core';
-import {EducationItem} from '../education-item/education-item';
-import {toSignal} from '@angular/core/rxjs-interop';
-import {ApiState} from '../../../core/models/api.state';
-import {Education} from '../../../core/models/education';
-import {EducationService} from '../../../core/services/education.service';
+import { Component, inject } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { EducationItem } from '../education-item/education-item';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { ApiState } from '../../../core/models/api.state';
+import { Education } from '../../../core/models/education';
+import { EducationService } from '../../../core/services/education.service';
 
 @Component({
   selector: 'app-education-section',
   imports: [
+    RouterLink,
     EducationItem
   ],
   templateUrl: './education-section.html',
