@@ -2,11 +2,12 @@ import { Component, computed, inject, LOCALE_ID } from '@angular/core';
 import { Header } from "../header/header";
 import { ContactSection } from "../contact/contact-section/contact-section";
 import { Footer } from "../footer/footer";
-import { MarkdownComponent } from "ngx-markdown";
+import { MarkdownComponent, provideMarkdown } from "ngx-markdown";
 
 @Component({
   selector: 'app-privacy-policy',
   imports: [Header, ContactSection, Footer, MarkdownComponent],
+  providers: [provideMarkdown()],
   templateUrl: './privacy-policy.html',
   styleUrl: './privacy-policy.scss',
 })

@@ -1,28 +1,65 @@
 <div class="min-h-screen flex flex-col">
-    <!-- Header -->
+    <!-- Header - loads immediately -->
     <app-header></app-header>
 
     <!-- Main Content -->
     <main class="flex-grow">
-        <!-- Hero Section -->
+        <!-- Hero Section - loads immediately (above the fold) -->
         <app-hero-section></app-hero-section>
-        <!-- About Section -->
+
+        <!-- About Section - deferred until visible -->
+        @defer (on viewport) {
         <app-about-me-section></app-about-me-section>
+        } @placeholder {
+        <div class="h-96 flex items-center justify-center">
+            <span class="loading loading-spinner loading-lg"></span>
+        </div>
+        }
 
-        <!-- Projects & Realizations Section with Tabs -->
+        <!-- Projects & Realizations Section - deferred until visible -->
+        @defer (on viewport) {
         <app-projects-realizations-home-section></app-projects-realizations-home-section>
+        } @placeholder {
+        <div class="h-96 flex items-center justify-center">
+            <span class="loading loading-spinner loading-lg"></span>
+        </div>
+        }
 
-        <!-- Experience Section (Jobs Timeline) -->
+        <!-- Experience Section (Jobs Timeline) - deferred until visible -->
+        @defer (on viewport) {
         <app-job-timeline-section></app-job-timeline-section>
+        } @placeholder {
+        <div class="h-96 flex items-center justify-center">
+            <span class="loading loading-spinner loading-lg"></span>
+        </div>
+        }
 
-        <!-- Education Section -->
+        <!-- Education Section - deferred until visible -->
+        @defer (on viewport) {
         <app-education-section></app-education-section>
+        } @placeholder {
+        <div class="h-96 flex items-center justify-center">
+            <span class="loading loading-spinner loading-lg"></span>
+        </div>
+        }
 
-        <!-- Certificates Section -->
+        <!-- Certificates Section - deferred until visible -->
+        @defer (on viewport) {
         <app-certifications-section></app-certifications-section>
+        } @placeholder {
+        <div class="h-96 flex items-center justify-center">
+            <span class="loading loading-spinner loading-lg"></span>
+        </div>
+        }
 
-        <!-- Contact Section -->
+        <!-- Contact Section - deferred until visible -->
+        @defer (on viewport) {
         <app-contact-section></app-contact-section>
+        } @placeholder {
+        <div class="h-96 flex items-center justify-center">
+            <span class="loading loading-spinner loading-lg"></span>
+        </div>
+        }
     </main>
     <app-footer></app-footer>
 </div>

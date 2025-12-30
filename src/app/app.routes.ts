@@ -1,70 +1,78 @@
 import { Routes } from '@angular/router';
 import { HomePage } from './features/home-page/home-page';
-import { ProjectsPage } from './features/projects/projects-page/projects-page';
-import { ProjectDetailsPage } from './features/projects/project-details-page/project-details-page';
-import { RealizationsPage } from './features/realizations/realizations-page/realizations-page';
-import { RealizationDetailsPage } from './features/realizations/realization-details-page/realization-details-page';
-import { EducationPage } from './features/education/education-page/education-page';
-import { EducationDetailsPage } from './features/education/education-details-page/education-details-page';
-import { CertificationsPage } from './features/certifications/certifications-page/certifications-page';
-import { CertificationDetailPage } from './features/certifications/certification-detail-page/certification-detail-page';
-import { JobsPage } from './features/jobs/jobs-page/jobs-page';
-import { JobDetailsPage } from './features/jobs/job-details-page/job-details-page';
-import { PrivacyPolicy } from './shared/privacy-policy/privacy-policy';
 
 export const routes: Routes = [
+    // HomePage loads eagerly for fast initial load
     {
         path: '',
         component: HomePage,
-        data: { reuse: true }
+        data: { reuse: true },
     },
+    // All other features are lazy loaded
     {
         path: 'projects',
-        component: ProjectsPage,
-        data: { reuse: true }
+        loadChildren: () =>
+            import('./features/projects/projects.routes').then(
+                (m) => m.PROJECTS_ROUTES
+            ),
     },
     {
-        path: 'project/:id',
-        component: ProjectDetailsPage
+        path: 'project',
+        loadChildren: () =>
+            import('./features/projects/projects.routes').then(
+                (m) => m.PROJECTS_ROUTES
+            ),
     },
     {
         path: 'realizations',
-        component: RealizationsPage,
-        data: { reuse: true }
+        loadChildren: () =>
+            import('./features/realizations/realizations.routes').then(
+                (m) => m.REALIZATIONS_ROUTES
+            ),
     },
     {
-        path: 'realization/:id',
-        component: RealizationDetailsPage
+        path: 'realization',
+        loadChildren: () =>
+            import('./features/realizations/realizations.routes').then(
+                (m) => m.REALIZATIONS_ROUTES
+            ),
     },
     {
         path: 'education',
-        component: EducationPage,
-        data: { reuse: true }
-    },
-    {
-        path: 'education/:id',
-        component: EducationDetailsPage
+        loadChildren: () =>
+            import('./features/education/education.routes').then(
+                (m) => m.EDUCATION_ROUTES
+            ),
     },
     {
         path: 'certifications',
-        component: CertificationsPage,
-        data: { reuse: true }
+        loadChildren: () =>
+            import('./features/certifications/certifications.routes').then(
+                (m) => m.CERTIFICATIONS_ROUTES
+            ),
     },
     {
-        path: 'certification/:id',
-        component: CertificationDetailPage
+        path: 'certification',
+        loadChildren: () =>
+            import('./features/certifications/certifications.routes').then(
+                (m) => m.CERTIFICATIONS_ROUTES
+            ),
     },
     {
         path: 'jobs',
-        component: JobsPage,
-        data: { reuse: true }
+        loadChildren: () =>
+            import('./features/jobs/jobs.routes').then((m) => m.JOBS_ROUTES),
     },
     {
-        path: 'job/:id',
-        component: JobDetailsPage
+        path: 'job',
+        loadChildren: () =>
+            import('./features/jobs/jobs.routes').then((m) => m.JOBS_ROUTES),
     },
     {
         path: 'privacy-policy',
-        component: PrivacyPolicy
-    }
+        loadComponent: () =>
+            import('./shared/privacy-policy/privacy-policy').then(
+                (m) => m.PrivacyPolicy
+            ),
+    },
 ];
