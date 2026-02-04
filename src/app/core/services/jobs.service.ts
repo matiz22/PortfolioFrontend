@@ -10,6 +10,7 @@ import {Job} from '../models/job';
 import {mapJob} from '../mappers/job';
 import {JobDto} from '../dto/job';
 import {ApiState} from '../models/api.state';
+import {PaginationMeta} from '../models/pagination-meta';
 
 @Injectable({
   providedIn: 'root'
@@ -44,6 +45,10 @@ export class JobsService implements ICrudService<Job>,
 
   getHomeItems(): Observable<ApiState<Job[]>> {
     return this.homeOps.getHomeItems();
+  }
+
+  getAllPaginated(page: number = 1): Observable<ApiState<{ data: Job[], meta: PaginationMeta }>> {
+    return this.crudOps.getAllPaginated(page, 9);
   }
 
 }
