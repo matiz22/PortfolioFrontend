@@ -10,6 +10,7 @@ import {Realization} from '../models/realization';
 import {RealizationDto} from '../dto/realization';
 import {mapRealization} from '../mappers/realization';
 import {ApiState} from '../models/api.state';
+import {PaginationMeta} from '../models/pagination-meta';
 
 @Injectable({
   providedIn: 'root'
@@ -44,6 +45,10 @@ export class RealizationsService implements ICrudService<Realization>,
 
   getHomeItems(): Observable<ApiState<Realization[]>> {
     return this.homeOps.getHomeItems();
+  }
+
+  getAllPaginated(page: number = 1): Observable<ApiState<{ data: Realization[], meta: PaginationMeta }>> {
+    return this.crudOps.getAllPaginated(page, 9);
   }
 
 }
