@@ -10,6 +10,7 @@ import {CrudOperations} from './base/operations/crud.operations';
 import {IHomeService} from './base/services/home.service';
 import {ICrudService} from './base/services/crud.service';
 import {ApiState} from '../models/api.state';
+import {PaginationMeta} from '../models/pagination-meta';
 
 
 @Injectable({
@@ -45,5 +46,9 @@ export class ProjectsService implements ICrudService<Project>,
 
   getHomeItems(): Observable<ApiState<Project[]>> {
     return this.homeOps.getHomeItems();
+  }
+
+  getAllPaginated(page: number = 1): Observable<ApiState<{ data: Project[], meta: PaginationMeta }>> {
+    return this.crudOps.getAllPaginated(page, 9);
   }
 }
