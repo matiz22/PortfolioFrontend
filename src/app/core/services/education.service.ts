@@ -10,6 +10,7 @@ import {Education} from '../models/education';
 import {EducationDto} from '../dto/education';
 import {mapEducation} from '../mappers/education';
 import {ApiState} from '../models/api.state';
+import {PaginationMeta} from '../models/pagination-meta';
 
 @Injectable({
   providedIn: 'root'
@@ -44,6 +45,10 @@ export class EducationService implements ICrudService<Education>,
 
   getHomeItems(): Observable<ApiState<Education[]>> {
     return this.homeOps.getHomeItems();
+  }
+
+  getAllPaginated(page: number = 1): Observable<ApiState<{ data: Education[], meta: PaginationMeta }>> {
+    return this.crudOps.getAllPaginated(page, 9);
   }
 
 }
