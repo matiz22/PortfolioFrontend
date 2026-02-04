@@ -10,6 +10,7 @@ import {Certification} from '../models/certification';
 import {mapCertification} from '../mappers/certification';
 import {CertificationDto} from '../dto/certification';
 import {ApiState} from '../models/api.state';
+import {PaginationMeta} from '../models/pagination-meta';
 
 @Injectable({
   providedIn: 'root'
@@ -44,6 +45,10 @@ export class CertificationsService implements ICrudService<Certification>,
 
   getHomeItems(): Observable<ApiState<Certification[]>> {
     return this.homeOps.getHomeItems();
+  }
+
+  getAllPaginated(page: number = 1): Observable<ApiState<{ data: Certification[], meta: PaginationMeta }>> {
+    return this.crudOps.getAllPaginated(page, 9);
   }
 
 }
