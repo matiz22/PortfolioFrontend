@@ -1,15 +1,16 @@
-import {Component, computed, inject, OnInit, signal} from '@angular/core';
-import {RealizationsService} from '../../../core/services/realizations.service';
-import {toObservable, toSignal} from '@angular/core/rxjs-interop';
-import {switchMap} from 'rxjs/operators';
-import {ActivatedRoute, Router} from '@angular/router';
-import {ApiState} from '../../../core/models/api.state';
-import {Realization} from '../../../core/models/realization';
-import {PaginationMeta} from '../../../core/models/pagination-meta';
-import {RealizationItem} from '../realization-item/realization-item';
-import {Header} from '../../../shared/header/header';
-import {ContactSection} from '../../../shared/contact/contact-section/contact-section';
-import {Footer} from '../../../shared/footer/footer';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { RealizationsService } from '../../../core/services/realizations.service';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { switchMap } from 'rxjs/operators';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ApiState } from '../../../core/models/api.state';
+import { Realization } from '../../../core/models/realization';
+import { PaginationMeta } from '../../../core/models/pagination-meta';
+import { RealizationItem } from '../realization-item/realization-item';
+import { Header } from '../../../shared/header/header';
+import { ContactSection } from '../../../shared/contact/contact-section/contact-section';
+import { Footer } from '../../../shared/footer/footer';
+import { LoadingCard } from '../../../shared/loading/loading-card/loading-card';
 
 @Component({
   selector: 'app-realizations-page',
@@ -17,7 +18,8 @@ import {Footer} from '../../../shared/footer/footer';
     RealizationItem,
     Header,
     ContactSection,
-    Footer
+    Footer,
+    LoadingCard
   ],
   templateUrl: './realizations-page.html',
   styleUrl: './realizations-page.scss',
