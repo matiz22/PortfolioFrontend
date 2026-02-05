@@ -1,5 +1,5 @@
 <a [routerLink]="['/education', education.id]"
-  class="card bg-base-100 image-full shadow-2xl hover:shadow-2xl hover:-translate-y-2 h-full min-h-64 overflow-hidden">
+  class="card bg-base-100 image-full shadow-2xl hover:shadow-2xl hover:-translate-y-2 transition ease-in-out h-full min-h-64 overflow-hidden">
   @if (education.thumbnail) {
   <figure>
     <img [alt]="education.institution" [src]="education.thumbnail | imageUrl" />

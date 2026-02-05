@@ -1,5 +1,5 @@
 <a [routerLink]="['/project', project.id]"
-  class="card bg-base-100 image-full shadow-2xl hover:shadow-2xl hover:-translate-y-2 h-full min-h-64 overflow-hidden">
+  class="card bg-base-100 image-full shadow-2xl hover:shadow-2xl hover:-translate-y-2 transition ease-in-out h-full min-h-64 overflow-hidden">
   @if (project.thumbnail) {
   <figure>
     <img [alt]="project.title" [src]="project.thumbnail | imageUrl" />
