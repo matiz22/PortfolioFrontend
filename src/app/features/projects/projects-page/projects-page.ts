@@ -1,15 +1,16 @@
-import {Component, computed, inject, OnInit, signal} from '@angular/core';
-import {ProjectsService} from '../../../core/services/projects.service';
-import {toObservable, toSignal} from '@angular/core/rxjs-interop';
-import {switchMap} from 'rxjs/operators';
-import {ActivatedRoute, Router} from '@angular/router';
-import {ApiState} from '../../../core/models/api.state';
-import {Project} from '../../../core/models/project';
-import {PaginationMeta} from '../../../core/models/pagination-meta';
-import {ProjectItem} from '../project-item/project-item';
-import {Header} from '../../../shared/header/header';
-import {ContactSection} from '../../../shared/contact/contact-section/contact-section';
-import {Footer} from '../../../shared/footer/footer';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { ProjectsService } from '../../../core/services/projects.service';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { switchMap } from 'rxjs/operators';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ApiState } from '../../../core/models/api.state';
+import { Project } from '../../../core/models/project';
+import { PaginationMeta } from '../../../core/models/pagination-meta';
+import { ProjectItem } from '../project-item/project-item';
+import { Header } from '../../../shared/header/header';
+import { ContactSection } from '../../../shared/contact/contact-section/contact-section';
+import { Footer } from '../../../shared/footer/footer';
+import { LoadingCard } from '../../../shared/loading/loading-card/loading-card';
 
 @Component({
   selector: 'app-projects-page',
@@ -17,7 +18,8 @@ import {Footer} from '../../../shared/footer/footer';
     ProjectItem,
     Header,
     ContactSection,
-    Footer
+    Footer,
+    LoadingCard
   ],
   templateUrl: './projects-page.html',
   styleUrl: './projects-page.scss',
