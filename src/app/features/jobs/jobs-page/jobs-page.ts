@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { JobsService } from '../../../core/services/jobs.service';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { switchMap } from 'rxjs/operators';
@@ -24,24 +24,26 @@ import { LoadingItems } from '../../../shared/loading/loading-items/loading-item
   templateUrl: './jobs-page.html',
   styleUrl: './jobs-page.scss',
 })
-export class JobsPage implements OnInit {
+export class JobsPage {
   jobsService: JobsService = inject(JobsService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 
-  // Current page state
-  currentPage = signal(1);
+  // Reactive query param map that updates when route changes (even when component is reused)
+  private queryParamMap = toSignal(this.route.queryParamMap);
 
-  ngOnInit(): void {
-    // Read page from URL query params on initialization
-    const pageParam = this.route.snapshot.queryParamMap.get('page');
+  // Current page state derived from query params
+  currentPage = computed(() => {
+    const paramMap = this.queryParamMap();
+    const pageParam = paramMap?.get('page');
     if (pageParam) {
       const page = parseInt(pageParam, 10);
       if (!isNaN(page) && page > 0) {
-        this.currentPage.set(page);
+        return page;
       }
     }
-  }
+    return 1;
+  });
 
   // Fetch paginated response based on current page
   jobsResponse = toSignal(
@@ -80,8 +82,7 @@ export class JobsPage implements OnInit {
 
   // Navigate to a specific page
   goToPage(page: number): void {
-    this.currentPage.set(page);
-    // Update URL query params
+    // Update URL query params - the currentPage computed signal will update automatically
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: { page },
