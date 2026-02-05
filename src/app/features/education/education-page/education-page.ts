@@ -10,11 +10,11 @@ import { Header } from '../../../shared/header/header';
 import { Footer } from '../../../shared/footer/footer';
 import { ContactSection } from '../../../shared/contact/contact-section/contact-section';
 import { EducationItem } from '../education-item/education-item';
-import { LoadingCard } from '../../../shared/loading/loading-card/loading-card';
+import { LoadingItems } from '../../../shared/loading/loading-items/loading-items';
 
 @Component({
   selector: 'app-education-page',
-  imports: [Header, Footer, ContactSection, EducationItem, LoadingCard],
+  imports: [Header, Footer, ContactSection, EducationItem, LoadingItems],
   templateUrl: './education-page.html',
   styleUrl: './education-page.scss',
 })

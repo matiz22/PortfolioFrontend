@@ -10,11 +10,11 @@ import { Header } from '../../../shared/header/header';
 import { Footer } from '../../../shared/footer/footer';
 import { ContactSection } from '../../../shared/contact/contact-section/contact-section';
 import { CertificationItem } from '../certification-item/certification-item';
-import { LoadingCard } from '../../../shared/loading/loading-card/loading-card';
+import { LoadingItems } from '../../../shared/loading/loading-items/loading-items';
 
 @Component({
   selector: 'app-certifications-page',
-  imports: [Header, Footer, ContactSection, CertificationItem, LoadingCard],
+  imports: [Header, Footer, ContactSection, CertificationItem, LoadingItems],
   templateUrl: './certifications-page.html',
   styleUrl: './certifications-page.scss',
 })

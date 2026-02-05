@@ -10,7 +10,7 @@ import { JobItem } from '../job-item/job-item';
 import { Header } from '../../../shared/header/header';
 import { ContactSection } from '../../../shared/contact/contact-section/contact-section';
 import { Footer } from '../../../shared/footer/footer';
-import { LoadingCard } from '../../../shared/loading/loading-card/loading-card';
+import { LoadingItems } from '../../../shared/loading/loading-items/loading-items';
 
 @Component({
   selector: 'app-jobs-page',
@@ -19,7 +19,7 @@ import { LoadingCard } from '../../../shared/loading/loading-card/loading-card';
     Header,
     ContactSection,
     Footer,
-    LoadingCard
+    LoadingItems
   ],
   templateUrl: './jobs-page.html',
   styleUrl: './jobs-page.scss',

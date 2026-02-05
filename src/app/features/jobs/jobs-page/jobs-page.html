@@ -49,13 +49,7 @@
             </div>
             }
             } @placeholder {
-            <div class="flex flex-row flex-wrap justify-center gap-4">
-                @for (i of [1, 2, 3]; track i) {
-                <app-loading-card
-                    class="flex-1 min-w-full md:min-w-[calc(50%-0.5rem)] lg:min-w-[calc(33.333%-0.67rem)] md:max-w-[calc(50%-0.5rem)] lg:max-w-[calc(33.333%-0.67rem)]">
-                </app-loading-card>
-                }
-            </div>
+            <app-loading-items [count]="3" variant="cover"></app-loading-items>
             }
         </div>
     </section>
