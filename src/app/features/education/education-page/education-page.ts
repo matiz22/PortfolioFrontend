@@ -1,19 +1,20 @@
-import {Component, computed, inject, OnInit, signal} from '@angular/core';
-import {EducationService} from '../../../core/services/education.service';
-import {toObservable, toSignal} from '@angular/core/rxjs-interop';
-import {switchMap} from 'rxjs/operators';
-import {ActivatedRoute, Router} from '@angular/router';
-import {ApiState} from '../../../core/models/api.state';
-import {Education} from '../../../core/models/education';
-import {PaginationMeta} from '../../../core/models/pagination-meta';
-import {Header} from '../../../shared/header/header';
-import {Footer} from '../../../shared/footer/footer';
-import {ContactSection} from '../../../shared/contact/contact-section/contact-section';
-import {EducationItem} from '../education-item/education-item';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { EducationService } from '../../../core/services/education.service';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { switchMap } from 'rxjs/operators';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ApiState } from '../../../core/models/api.state';
+import { Education } from '../../../core/models/education';
+import { PaginationMeta } from '../../../core/models/pagination-meta';
+import { Header } from '../../../shared/header/header';
+import { Footer } from '../../../shared/footer/footer';
+import { ContactSection } from '../../../shared/contact/contact-section/contact-section';
+import { EducationItem } from '../education-item/education-item';
+import { LoadingCard } from '../../../shared/loading/loading-card/loading-card';
 
 @Component({
   selector: 'app-education-page',
-  imports: [Header, Footer, ContactSection, EducationItem],
+  imports: [Header, Footer, ContactSection, EducationItem, LoadingCard],
   templateUrl: './education-page.html',
   styleUrl: './education-page.scss',
 })
