@@ -43,7 +43,8 @@
               }
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "src/animations.scss"
             ],
             "server": "src/main.server.ts",
             "outputMode": "server",
@@ -153,7 +154,8 @@
               }
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "src/animations.scss"
             ]
           }
         }

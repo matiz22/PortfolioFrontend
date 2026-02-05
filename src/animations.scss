@@ -1,0 +1,53 @@
+// Global animations
+
+@keyframes fadeSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-slide-in {
+    animation: fadeSlideIn 0.5s ease-out both;
+    will-change: transform, opacity;
+}
+
+// AOS Animations
+.slide-in {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    will-change: opacity, transform;
+
+    &.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    opacity: 0;
+    transition: opacity 1s ease-out;
+    will-change: opacity;
+
+    &.visible {
+        opacity: 1;
+    }
+}
+
+.scale-up {
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    will-change: opacity, transform;
+
+    &.visible {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
