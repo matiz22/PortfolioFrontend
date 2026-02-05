@@ -5,12 +5,14 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { ApiState } from '../../../core/models/api.state';
 import { Education } from '../../../core/models/education';
 import { EducationService } from '../../../core/services/education.service';
+import { AosAnimations } from '../../../shared/animations/aos-animation';
 
 @Component({
   selector: 'app-education-section',
   imports: [
     RouterLink,
-    EducationItem
+    EducationItem,
+    AosAnimations
   ],
   templateUrl: './education-section.html',
   styleUrl: './education-section.scss'

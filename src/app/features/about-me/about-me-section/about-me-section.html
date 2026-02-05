@@ -1,6 +1,7 @@
 <section class="py-20" id="about">
   <div class="container mx-auto px-6">
-    <h2 class="text-4xl font-bold text-center mb-12" i18n="@@about.heading">How Can I Help You?</h2>
+    <h2 class="text-4xl font-bold text-center mb-12" i18n="@@about.heading">How Can I Help
+      You?</h2>
     <p class="text-lg text-center max-w-2xl mx-auto mb-12 opacity-80" i18n="@@about.intro">
       I'm a passionate developer ready to bring your ideas to life.
       Here's how I can help transform your business:
@@ -8,7 +9,7 @@
 
     <div class="flex flex-row flex-wrap justify-center gap-4 max-w-5xl mx-auto">
       <!-- Web Development -->
-      <div
+      <div appAosAnimations="slide-in" [delay]="0"
         class="flex-1 min-w-full md:min-w-[calc(50%-0.5rem)] lg:min-w-[calc(33.333%-0.67rem)] md:max-w-[calc(50%-0.5rem)] lg:max-w-[calc(33.333%-0.67rem)] card bg-base-200 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
         <div class="card-body items-center text-center">
           <div class="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center mb-4">
@@ -27,7 +28,7 @@
       </div>
 
       <!-- Desktop & Mobile Apps -->
-      <div
+      <div appAosAnimations="slide-in" [delay]="100"
         class="flex-1 min-w-full md:min-w-[calc(50%-0.5rem)] lg:min-w-[calc(33.333%-0.67rem)] md:max-w-[calc(50%-0.5rem)] lg:max-w-[calc(33.333%-0.67rem)] card bg-base-200 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
         <div class="card-body items-center text-center">
           <div class="w-16 h-16 rounded-full bg-secondary/20 flex items-center justify-center mb-4">
@@ -46,7 +47,7 @@
       </div>
 
       <!-- AI Implementation -->
-      <div
+      <div appAosAnimations="slide-in" [delay]="200"
         class="flex-1 min-w-full md:min-w-[calc(50%-0.5rem)] lg:min-w-[calc(33.333%-0.67rem)] md:max-w-[calc(50%-0.5rem)] lg:max-w-[calc(33.333%-0.67rem)] card bg-base-200 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
         <div class="card-body items-center text-center">
           <div class="w-16 h-16 rounded-full bg-accent/20 flex items-center justify-center mb-4">

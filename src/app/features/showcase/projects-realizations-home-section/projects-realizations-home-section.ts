@@ -1,4 +1,5 @@
 import { Component, inject } from '@angular/core';
+import { AosAnimations } from '../../../shared/animations/aos-animation';
 import { RouterLink } from '@angular/router';
 import { RealizationItem } from '../../realizations/realization-item/realization-item';
 import { ProjectItem } from '../../projects/project-item/project-item';
@@ -14,7 +15,8 @@ import { Realization } from '../../../core/models/realization';
   imports: [
     RouterLink,
     RealizationItem,
-    ProjectItem
+    ProjectItem,
+    AosAnimations
   ],
   templateUrl: './projects-realizations-home-section.html',
   styleUrl: './projects-realizations-home-section.scss',

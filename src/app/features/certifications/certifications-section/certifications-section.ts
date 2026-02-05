@@ -1,4 +1,5 @@
 import { Component, inject } from '@angular/core';
+import { AosAnimations } from '../../../shared/animations/aos-animation';
 import { CertificationsService } from '../../../core/services/certifications.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ApiState } from '../../../core/models/api.state';
@@ -8,7 +9,7 @@ import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-certifications-section',
-  imports: [CertificationItem, RouterLink],
+  imports: [CertificationItem, RouterLink, AosAnimations],
   templateUrl: './certifications-section.html',
   styleUrl: './certifications-section.scss',
 })

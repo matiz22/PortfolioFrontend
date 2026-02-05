@@ -11,8 +11,8 @@
       </div>
       }
       @else if (state.status === 'success') {
-      @for (item of state.data; track item.id) {
-      <app-education-item [education]="item"
+      @for (item of state.data; track item.id; let i = $index) {
+      <app-education-item [education]="item" appAosAnimations="slide-in" [delay]="i * 100"
         class="flex-1 min-w-full md:min-w-[calc(50%-0.5rem)] lg:min-w-[calc(33.333%-0.67rem)] md:max-w-[calc(50%-0.5rem)] lg:max-w-[calc(33.333%-0.67rem)]"></app-education-item>
       }
       }

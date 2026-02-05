@@ -15,8 +15,8 @@
           }
           @case ('success') {
           @if (projectItems.data.length > 0) {
-          @for (project of projectItems.data; track project.id) {
-          <app-project-item [project]="project"
+          @for (project of projectItems.data; track project.id; let i = $index) {
+          <app-project-item [project]="project" appAosAnimations="slide-in" [delay]="i * 100"
             class="flex-1 min-w-full md:min-w-[calc(50%-0.5rem)] lg:min-w-[calc(33.333%-0.67rem)] md:max-w-[calc(50%-0.5rem)] lg:max-w-[calc(33.333%-0.67rem)]"></app-project-item>
           }
           } @else {
@@ -54,8 +54,8 @@
           }
           @case ('success') {
           @if (realizationsItems.data.length > 0) {
-          @for (realization of realizationsItems.data; track realization.id) {
-          <app-realization-item [realization]="realization"
+          @for (realization of realizationsItems.data; track realization.id; let i = $index) {
+          <app-realization-item [realization]="realization" appAosAnimations="slide-in" [delay]="i * 100"
             class="flex-1 min-w-full md:min-w-[calc(50%-0.5rem)] lg:min-w-[calc(33.333%-0.67rem)] md:max-w-[calc(50%-0.5rem)] lg:max-w-[calc(33.333%-0.67rem)]"></app-realization-item>
           }
           } @else {
