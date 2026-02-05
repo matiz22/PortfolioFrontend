@@ -1,15 +1,16 @@
-import {Component, computed, inject, OnInit, signal} from '@angular/core';
-import {JobsService} from '../../../core/services/jobs.service';
-import {toObservable, toSignal} from '@angular/core/rxjs-interop';
-import {switchMap} from 'rxjs/operators';
-import {ActivatedRoute, Router} from '@angular/router';
-import {ApiState} from '../../../core/models/api.state';
-import {Job} from '../../../core/models/job';
-import {PaginationMeta} from '../../../core/models/pagination-meta';
-import {JobItem} from '../job-item/job-item';
-import {Header} from '../../../shared/header/header';
-import {ContactSection} from '../../../shared/contact/contact-section/contact-section';
-import {Footer} from '../../../shared/footer/footer';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { JobsService } from '../../../core/services/jobs.service';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { switchMap } from 'rxjs/operators';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ApiState } from '../../../core/models/api.state';
+import { Job } from '../../../core/models/job';
+import { PaginationMeta } from '../../../core/models/pagination-meta';
+import { JobItem } from '../job-item/job-item';
+import { Header } from '../../../shared/header/header';
+import { ContactSection } from '../../../shared/contact/contact-section/contact-section';
+import { Footer } from '../../../shared/footer/footer';
+import { LoadingCard } from '../../../shared/loading/loading-card/loading-card';
 
 @Component({
   selector: 'app-jobs-page',
@@ -17,7 +18,8 @@ import {Footer} from '../../../shared/footer/footer';
     JobItem,
     Header,
     ContactSection,
-    Footer
+    Footer,
+    LoadingCard
   ],
   templateUrl: './jobs-page.html',
   styleUrl: './jobs-page.scss',
