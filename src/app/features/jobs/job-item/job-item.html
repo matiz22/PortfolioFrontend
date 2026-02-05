@@ -1,21 +1,24 @@
 <a [routerLink]="['/job', job.id]"
-    class="card bg-base-200 shadow-2xl hover:shadow-2xl hover:bg-base-300 hover:-translate-y-2 transition-all h-full flex flex-col">
+    class="card bg-base-100 image-full shadow-2xl hover:shadow-2xl hover:-translate-y-2 transition-all h-full min-h-64 overflow-hidden">
     @if (job.thumbnail) {
     <figure>
-        <img [alt]="job.title" [src]="job.thumbnail | imageUrl" class="w-full h-64 object-cover">
+        <img [alt]="job.title" [src]="job.thumbnail | imageUrl" />
     </figure>
     }
-    <div class="card-body items-center text-center flex flex-col flex-1">
+    <div class="card-body before:absolute before:inset-0 before:bg-black/60 before:-z-10">
         <h3 class="card-title">{{ job.title }}</h3>
-        <p class="text-sm opacity-70">{{ job.companyName }}</p>
-        <p class="text-xs opacity-50">{{ job.location }}</p>
-        <div class="badge badge-primary badge-sm mt-2">
-            {{ job.startDate | date:'MMM yyyy' }} - {{ job.isCurrent ? 'Present' : (job.endDate | date:'MMM yyyy') }}
-        </div>
-        <div class="flex gap-2 flex-wrap mt-4 justify-center">
+        <p class="text-lg">{{ job.companyName }}</p>
+        <p class="text-base opacity-90">{{ job.location }}</p>
+        <div class="flex gap-2 flex-wrap mt-4">
             @for (technology of job.technologies; track technology.id) {
             <div class="badge badge-accent badge-outline">{{ technology.name }}</div>
             }
+        </div>
+        <div class="card-actions justify-end mt-auto">
+            <div class="badge badge-primary badge-sm">
+                {{ job.startDate | date:'MMM yyyy' }} - {{ job.isCurrent ? 'Present' : (job.endDate | date:'MMM yyyy')
+                }}
+            </div>
         </div>
     </div>
 </a>

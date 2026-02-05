@@ -1,38 +1,35 @@
 <a [routerLink]="['/education', education.id]"
-  class="card bg-base-200 shadow-2xl hover:bg-base-300 hover:-translate-y-2 border border-base-300 h-full flex flex-col transition-all">
+  class="card bg-base-100 image-full shadow-2xl hover:shadow-2xl hover:-translate-y-2 transition-all h-full min-h-64 overflow-hidden">
   @if (education.thumbnail) {
   <figure>
-    <img [alt]="education.institution" [src]="education.thumbnail | imageUrl" class="w-full h-64 object-cover">
+    <img [alt]="education.institution" [src]="education.thumbnail | imageUrl" />
   </figure>
   }
-  <div class="card-body">
-    <div class="flex flex-row items-start justify-between">
-      <div class="flex-1">
-        <h3 class="card-title">{{ education.degree }}</h3>
-        <p class="text-sm opacity-70 mt-1">{{ education.institution }}</p>
-        @if (education.fieldOfStudy) {
-        <p class="text-sm opacity-70">{{ education.fieldOfStudy }}</p>
-        }
-        @if (education.technologies.length > 0) {
-        <div class="mt-3">
-          <p class="text-sm font-semibold" i18n="@@educationItem.label.technologies">Technologies:</p>
-          <div class="flex gap-2 flex-wrap mt-2">
-            @for (tech of education.technologies; track tech.id) {
-            <div class="badge badge-primary badge-outline">{{ tech.name }}</div>
-            }
-          </div>
-        </div>
+  <div class="card-body before:absolute before:inset-0 before:bg-black/60 before:-z-10">
+    <div class="flex flex-col">
+      <h3 class="card-title">{{ education.degree }}</h3>
+      <p class="text-lg mt-1">{{ education.institution }}</p>
+      @if (education.fieldOfStudy) {
+      <p class="text-base opacity-90">{{ education.fieldOfStudy }}</p>
+      }
+    </div>
+    @if (education.technologies.length > 0) {
+    <div class="mt-4">
+      <div class="flex gap-2 flex-wrap">
+        @for (tech of education.technologies; track tech.id) {
+        <div class="badge badge-primary badge-outline">{{ tech.name }}</div>
         }
       </div>
-      <div class="mt-4 md:mt-0 md:ml-6 text-right">
-        <div class="badge badge-sm badge-primary text-xs">
-          {{ education.startDate | date:'yyyy' }} - {{ education.isCurrent ? 'Present' : (education.endDate |
-          date:'yyyy') }}
-        </div>
-        @if (education.grade) {
-        <p class="mt-2 font-semibold">{{ education.grade }}</p>
-        }
+    </div>
+    }
+    <div class="card-actions justify-between items-center mt-auto">
+      <div class="badge badge-sm badge-primary">
+        {{ education.startDate | date:'yyyy' }} - {{ education.isCurrent ? 'Present' : (education.endDate |
+        date:'yyyy') }}
       </div>
+      @if (education.grade) {
+      <p class="font-semibold">{{ education.grade }}</p>
+      }
     </div>
   </div>
 </a>

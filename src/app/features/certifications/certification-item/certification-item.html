@@ -1,27 +1,27 @@
 <a [routerLink]="['/certification', certification.id]"
-  class="card bg-base-200 shadow-2xl hover:bg-base-300 hover:-translate-y-2 border border-base-300 h-full flex flex-col transition-all">
-  <figure class="h-64 bg-base-200">
-    @if (certification.thumbnail) {
-    <img [alt]="certification.name" [src]="certification.thumbnail | imageUrl" class="w-full h-full object-cover" />
-    } @else {
-    <div class="flex items-center justify-center h-full w-full bg-base-300 text-base-content/50">
-      <span class="text-4xl font-bold">{{ certification.name.charAt(0) }}</span>
-    </div>
-    }
+  class="card bg-base-100 image-full shadow-2xl hover:shadow-2xl hover:-translate-y-2 transition-all h-full min-h-64 overflow-hidden">
+  @if (certification.thumbnail) {
+  <figure>
+    <img [alt]="certification.name" [src]="certification.thumbnail | imageUrl" />
   </figure>
-  <div class="card-body flex-1 flex flex-col">
+  } @else {
+  <figure>
+    <div class="flex items-center justify-center h-full w-full bg-base-300 text-base-content/50">
+      <span class="text-6xl font-bold">{{ certification.name.charAt(0) }}</span>
+    </div>
+  </figure>
+  }
+  <div class="card-body before:absolute before:inset-0 before:bg-black/60 before:-z-10">
     <div>
       <h2 class="card-title text-lg leading-tight mb-2">
         {{ certification.name }}
-        <div class="badge badge-secondary shrink-0">{{ certification.issueDate | date:'yyyy' }}</div>
       </h2>
-      <p class="text-sm opacity-70 mb-2 font-semibold">{{ certification.issuingOrganization }}</p>
-
+      <p class="text-lg font-semibold mb-2">{{ certification.issuingOrganization }}</p>
     </div>
 
-    <div class="mt-auto pt-4">
-      @if (certification.technologies.length || certification.skills.length) {
-      <div class="card-actions justify-end">
+    @if (certification.technologies.length || certification.skills.length) {
+    <div class="mt-4">
+      <div class="card-actions justify-start flex-wrap">
         @for (tech of certification.technologies; track tech.id) {
         <div class="badge badge-outline">{{ tech.name }}</div>
         }
@@ -29,15 +29,11 @@
         <div class="badge badge-outline">{{ skill.name }}</div>
         }
       </div>
-      }
+    </div>
+    }
 
-      <!-- @if(certification.credentialUrl) {
-      <div class="card-actions justify-end mt-4">
-        <a [href]="certification.credentialUrl" target="_blank" class="btn btn-primary btn-sm btn-outline"
-          (click)="$event.stopPropagation()" i18n="@@certificationItem.btn.showCredential">Show
-          Credential</a>
-      </div>
-      } -->
+    <div class="card-actions justify-end mt-auto">
+      <div class="badge badge-secondary">{{ certification.issueDate | date:'yyyy' }}</div>
     </div>
   </div>
 </a>
