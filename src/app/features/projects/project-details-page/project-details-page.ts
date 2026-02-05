@@ -12,10 +12,11 @@ import { Link } from '../../../shared/models/link';
 import { DescriptionMd } from '../../../shared/description/description-md/description-md';
 import { TechnologiesDetailsSection } from '../../technologies/technologies-details-section/technologies-details-section';
 import { ContactSection } from '../../../shared/contact/contact-section/contact-section';
+import { LoadingDetailsPage } from '../../../shared/loading/loading-details-page/loading-details-page';
 
 @Component({
   selector: 'app-project-details-page',
-  imports: [ImageUrlPipe, RouterLink, Header, Footer, DescriptionMd, TechnologiesDetailsSection, ContactSection],
+  imports: [ImageUrlPipe, RouterLink, Header, Footer, DescriptionMd, TechnologiesDetailsSection, ContactSection, LoadingDetailsPage],
   templateUrl: './project-details-page.html',
   styleUrl: './project-details-page.scss',
 })

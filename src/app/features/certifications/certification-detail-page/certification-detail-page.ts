@@ -14,6 +14,7 @@ import { SkillsDetailsSection } from '../../skills/skills-details-section/skills
 import { TechnologiesDetailsSection } from '../../technologies/technologies-details-section/technologies-details-section';
 import { DatePipe } from '@angular/common';
 import { ContactSection } from '../../../shared/contact/contact-section/contact-section';
+import { LoadingDetailsPage } from '../../../shared/loading/loading-details-page/loading-details-page';
 
 @Component({
   selector: 'app-certification-detail-page',
@@ -26,7 +27,8 @@ import { ContactSection } from '../../../shared/contact/contact-section/contact-
     SkillsDetailsSection,
     TechnologiesDetailsSection,
     DatePipe,
-    ContactSection
+    ContactSection,
+    LoadingDetailsPage
   ],
   templateUrl: './certification-detail-page.html',
   styleUrl: './certification-detail-page.scss',

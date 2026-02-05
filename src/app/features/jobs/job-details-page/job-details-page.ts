@@ -14,10 +14,11 @@ import { SkillsDetailsSection } from '../../skills/skills-details-section/skills
 import { TechnologiesDetailsSection } from '../../technologies/technologies-details-section/technologies-details-section';
 import { DatePipe } from '@angular/common';
 import { ContactSection } from '../../../shared/contact/contact-section/contact-section';
+import { LoadingDetailsPage } from "../../../shared/loading/loading-details-page/loading-details-page";
 
 @Component({
   selector: 'app-job-details-page',
-  imports: [ImageUrlPipe, RouterLink, Header, Footer, DescriptionMd, SkillsDetailsSection, TechnologiesDetailsSection, DatePipe, ContactSection],
+  imports: [ImageUrlPipe, RouterLink, Header, Footer, DescriptionMd, SkillsDetailsSection, TechnologiesDetailsSection, DatePipe, ContactSection, LoadingDetailsPage],
   templateUrl: './job-details-page.html',
   styleUrl: './job-details-page.scss',
 })

@@ -13,6 +13,7 @@ import { DescriptionMd } from '../../../shared/description/description-md/descri
 import { SkillsDetailsSection } from '../../skills/skills-details-section/skills-details-section';
 import { TechnologiesDetailsSection } from '../../technologies/technologies-details-section/technologies-details-section';
 import { ContactSection } from '../../../shared/contact/contact-section/contact-section';
+import { LoadingDetailsPage } from '../../../shared/loading/loading-details-page/loading-details-page';
 
 
 @Component({
@@ -26,7 +27,8 @@ import { ContactSection } from '../../../shared/contact/contact-section/contact-
     DescriptionMd,
     SkillsDetailsSection,
     TechnologiesDetailsSection,
-    ContactSection
+    ContactSection,
+    LoadingDetailsPage
   ],
   templateUrl: './education-details-page.html',
   styleUrl: './education-details-page.scss'

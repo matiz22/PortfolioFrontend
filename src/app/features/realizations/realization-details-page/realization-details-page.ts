@@ -14,10 +14,11 @@ import { DescriptionMd } from '../../../shared/description/description-md/descri
 import { SkillsDetailsSection } from '../../skills/skills-details-section/skills-details-section';
 import { TechnologiesDetailsSection } from '../../technologies/technologies-details-section/technologies-details-section';
 import { ContactSection } from '../../../shared/contact/contact-section/contact-section';
+import { LoadingDetailsPage } from '../../../shared/loading/loading-details-page/loading-details-page';
 
 @Component({
   selector: 'app-realization-details-page',
-  imports: [ImageUrlPipe, RouterLink, Header, Footer, DescriptionMd, SkillsDetailsSection, TechnologiesDetailsSection, ContactSection],
+  imports: [ImageUrlPipe, RouterLink, Header, Footer, DescriptionMd, SkillsDetailsSection, TechnologiesDetailsSection, ContactSection, LoadingDetailsPage],
   templateUrl: './realization-details-page.html',
   styleUrl: './realization-details-page.scss',
 })

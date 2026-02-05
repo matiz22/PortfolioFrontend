@@ -1,16 +1,18 @@
 <app-header></app-header>
 
 <main class="pt-24">
+    @defer {
+
+
+
     @let projectState = project();
     @switch (projectState.status) {
     @case ('loading') {
-    <div class="flex justify-center items-center min-h-[60vh]">
-        <span class="loading loading-spinner loading-lg text-primary"></span>
-    </div>
+    <app-loading-details-page></app-loading-details-page>
     }
     @case ('success') {
     @let data = projectState.data;
-    <div class="container mx-auto px-4 py-8 animate-fade-in-scale">
+    <div class="container mx-auto px-4 py-8">
         <!-- Hero Section with Title and Image -->
         <div class="hero bg-base-200 rounded-box mb-8">
             <div class="hero-content flex-col lg:flex-row-reverse gap-8 py-12">
@@ -108,6 +110,9 @@
         </div>
     </div>
     }
+    }
+    } @placeholder {
+    <app-loading-details-page></app-loading-details-page>
     }
 </main>
 
