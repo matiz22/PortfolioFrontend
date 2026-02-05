@@ -10,9 +10,7 @@
                 @let certificationItems = certifications();
                 @switch (certificationItems.status) {
                 @case ('loading') {
-                <div class="text-center w-full">
-                    <span class="loading loading-spinner loading-lg"></span>
-                </div>
+                <app-loading-items [count]="3" variant="cover"></app-loading-items>
                 }
                 @case ('success') {
                 @if (certificationItems.data.length > 0) {

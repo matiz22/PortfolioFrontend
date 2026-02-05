@@ -10,9 +10,7 @@
                 @let projectItems = projects();
                 @switch (projectItems.status) {
                 @case ('loading') {
-                <div class="text-center w-full">
-                    <span class="loading loading-spinner loading-lg"></span>
-                </div>
+                <app-loading-items [count]="9" variant="cover"></app-loading-items>
                 }
                 @case ('success') {
                 @if (projectItems.data.length > 0) {

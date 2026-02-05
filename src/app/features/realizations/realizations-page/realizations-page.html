@@ -10,9 +10,7 @@
                 @let realizationItems = realizations();
                 @switch (realizationItems.status) {
                 @case ('loading') {
-                <div class="text-center w-full">
-                    <span class="loading loading-spinner loading-lg"></span>
-                </div>
+                <app-loading-items [count]="3"></app-loading-items>
                 }
                 @case ('success') {
                 @if (realizationItems.data.length > 0) {
