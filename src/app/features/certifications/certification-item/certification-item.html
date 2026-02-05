@@ -1,6 +1,6 @@
 <a [routerLink]="['/certification', certification.id]"
   class="card bg-base-200 shadow-2xl hover:bg-base-300 hover:-translate-y-2 border border-base-300 h-full flex flex-col transition-all">
-  <figure class="h-48 bg-base-200">
+  <figure class="h-64 bg-base-200">
     @if (certification.thumbnail) {
     <img [alt]="certification.name" [src]="certification.thumbnail | imageUrl" class="w-full h-full object-cover" />
     } @else {
