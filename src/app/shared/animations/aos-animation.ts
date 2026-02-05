@@ -31,11 +31,11 @@ export class AosAnimations implements AfterViewInit, OnInit {
             entry.target.classList.add('visible');
 
             // Cleanup animation classes and styles after animation completes
-            // This prevents conflicts with hover effects (e.g. transition-delay persisting)
+            // Only remove transition-delay to prevent conflicts with existing hover effects
             setTimeout(() => {
               entry.target.classList.remove(this.animationType, 'visible');
               (entry.target as HTMLElement).style.transitionDelay = '';
-              (entry.target as HTMLElement).style.transition = ''; // clear any inline transition if set, though mostly it's class based via .slide-in
+              // Don't clear transition property to preserve hover animations
             }, 1200); // Wait longer than max animation duration (1s)
 
             observer.unobserve(entry.target);
