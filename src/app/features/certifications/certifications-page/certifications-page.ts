@@ -1,19 +1,20 @@
-import {Component, computed, inject, OnInit, signal} from '@angular/core';
-import {toObservable, toSignal} from '@angular/core/rxjs-interop';
-import {switchMap} from 'rxjs/operators';
-import {ActivatedRoute, Router} from '@angular/router';
-import {CertificationsService} from '../../../core/services/certifications.service';
-import {Certification} from '../../../core/models/certification';
-import {ApiState} from '../../../core/models/api.state';
-import {PaginationMeta} from '../../../core/models/pagination-meta';
-import {Header} from '../../../shared/header/header';
-import {Footer} from '../../../shared/footer/footer';
-import {ContactSection} from '../../../shared/contact/contact-section/contact-section';
-import {CertificationItem} from '../certification-item/certification-item';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { switchMap } from 'rxjs/operators';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CertificationsService } from '../../../core/services/certifications.service';
+import { Certification } from '../../../core/models/certification';
+import { ApiState } from '../../../core/models/api.state';
+import { PaginationMeta } from '../../../core/models/pagination-meta';
+import { Header } from '../../../shared/header/header';
+import { Footer } from '../../../shared/footer/footer';
+import { ContactSection } from '../../../shared/contact/contact-section/contact-section';
+import { CertificationItem } from '../certification-item/certification-item';
+import { LoadingCard } from '../../../shared/loading/loading-card/loading-card';
 
 @Component({
   selector: 'app-certifications-page',
-  imports: [Header, Footer, ContactSection, CertificationItem],
+  imports: [Header, Footer, ContactSection, CertificationItem, LoadingCard],
   templateUrl: './certifications-page.html',
   styleUrl: './certifications-page.scss',
 })
