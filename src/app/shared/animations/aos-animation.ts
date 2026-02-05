@@ -29,6 +29,15 @@ export class AosAnimations implements AfterViewInit, OnInit {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             entry.target.classList.add('visible');
+
+            // Cleanup animation classes and styles after animation completes
+            // This prevents conflicts with hover effects (e.g. transition-delay persisting)
+            setTimeout(() => {
+              entry.target.classList.remove(this.animationType, 'visible');
+              (entry.target as HTMLElement).style.transitionDelay = '';
+              (entry.target as HTMLElement).style.transition = ''; // clear any inline transition if set, though mostly it's class based via .slide-in
+            }, 1200); // Wait longer than max animation duration (1s)
+
             observer.unobserve(entry.target);
           }
         });
