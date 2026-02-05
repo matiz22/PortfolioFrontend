@@ -22,11 +22,11 @@
 
         <!-- Photo Section -->
         <div class="flex justify-center lg:justify-end order-1 lg:order-1">
-          <div class="relative group" [ngClass]="{'animate-fade-in-up': isHydrated()}">
+          <div class="relative group mx-10 sm:mx-0" [ngClass]="{'animate-fade-in-up': isHydrated()}">
 
             <!-- Photo container -->
             <div class="relative">
-              <div class="w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-full overflow-hidden shadow-2xl">
+              <div class="w-80 h-80 md:w-64 md:h-64 lg:w-96 lg:h-96 rounded-full overflow-hidden shadow-2xl">
                 <img src="https://via.placeholder.com/400x400/667eea/ffffff?text=Your+Photo"
                   alt="Mateusz Malich - Software Engineer"
                   class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" />
@@ -35,7 +35,7 @@
               <!-- Decorative floating icons -->
               <!-- Top right - Code icon -->
               <div
-                class="absolute -top-4 -right-4 w-12 h-12 bg-primary/20 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 animate-float">
+                class="absolute -top-4 -right-2 w-12 h-12 bg-primary/20 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 animate-float">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                   stroke="currentColor" class="w-6 h-6 text-primary">
                   <path stroke-linecap="round" stroke-linejoin="round"
@@ -45,7 +45,7 @@
 
               <!-- Bottom left - Sparkles icon -->
               <div
-                class="absolute -bottom-6 -left-6 w-14 h-14 bg-secondary/20 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 animate-float-delayed">
+                class="absolute -bottom-6 -left-2 w-14 h-14 bg-secondary/20 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 animate-float-delayed">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                   stroke="currentColor" class="w-7 h-7 text-secondary">
                   <path stroke-linecap="round" stroke-linejoin="round"
@@ -55,7 +55,7 @@
 
               <!-- Top left - Book icon -->
               <div
-                class="absolute top-8 -left-8 w-10 h-10 bg-accent/20 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 animate-float-slow">
+                class="absolute top-6 -left-2 w-10 h-10 bg-accent/20 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 animate-float-slow">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                   stroke="currentColor" class="w-5 h-5 text-accent">
                   <path stroke-linecap="round" stroke-linejoin="round"
@@ -65,7 +65,7 @@
 
               <!-- Bottom right - Rocket icon -->
               <div
-                class="absolute bottom-8 -right-8 w-11 h-11 bg-primary/20 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 animate-float">
+                class="absolute bottom-12 -right-6 w-11 h-11 bg-primary/20 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 animate-float">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                   stroke="currentColor" class="w-5 h-5 text-primary">
                   <path stroke-linecap="round" stroke-linejoin="round"
@@ -92,7 +92,7 @@
 
           <!-- Main heading with gradient text -->
           <h1
-            class="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black mb-6 leading-tight bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent animate-gradient-text bg-[length:200%_auto]"
+            class="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black mb-6 leading-tight bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent animate-gradient-text bg-[length:200%_auto]"
             [ngClass]="{'animate-fade-in-up animation-delay-100': isHydrated()}" i18n="@@hero.heading">
             Hi, I'm Mateusz
           </h1>
@@ -135,14 +135,14 @@
           </div>
 
           <!-- Description -->
-          <p class="text-base-content/70 text-lg md:text-xl max-w-2xl mx-auto lg:mx-0 mb-10 leading-relaxed"
+          <p class="text-base-content/70 text-lg md:text-xl max-w-md mx-auto lg:mx-0 mb-10 leading-relaxed"
             [ngClass]="{'animate-fade-in-up animation-delay-300': isHydrated()}" i18n="@@hero.description">
             Creating elegant solutions and exceptional digital experiences with simple, modern, and effective
             technologies.
           </p>
 
           <!-- CTA Buttons -->
-          <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4"
+          <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4"
             [ngClass]="{'animate-fade-in-up animation-delay-400': isHydrated()}">
             <a [routerLink]="[]" fragment="about"
               class="btn btn-primary btn-lg gap-2 group shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/40 transition-all duration-300">
