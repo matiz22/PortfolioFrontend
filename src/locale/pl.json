@@ -2,7 +2,7 @@
     "locale": "pl",
     "translations": {
         "about.heading": "Jak mogę Ci pomóc?",
-        "about.intro": " Cześć, jestem Mateusz Malich – zmotywowany Freelance Developer i Entuzjasta AI, gotowy wcielić Twoje pomysły w życie. Posiadam solidne doświadczenie inżynierskie, dzięki czemu tworzę skalowalne aplikacje, responsywne strony internetowe i inteligentne systemy precyzyjnie dostosowane do Twoich celów. Oto, jak mogę pomóc w transformacji Twojego biznesu poprzez innowacyjne podejście i kreatywne rozwiązywanie problemów: ",
+        "about.intro": " Mogę pomóc Ci w tworzeniu skalowalnych aplikacji webowych, nowoczesnych stron internetowych oraz inteligentnych rozwiązań opartych na AI, które realnie wspierają rozwój Twojego biznesu. Projektuję i wdrażam systemy dopasowane do Twoich celów, dbając o wydajność, estetykę oraz długoterminową skalowalność, a także pomagam optymalizować i rozwijać istniejące projekty, aby działały szybciej, bezpieczniej i efektywniej.",
         "about.card.web.title": "Tworzenie Stron Internetowych",
         "about.card.web.description": " Projektuję i wdrażam nowoczesne, responsywne strony internetowe oraz zaawansowane aplikacje webowe jako freelance developer. Od konwertujących landing page'y po złożone, oparte na danych platformy – dbam o to, by projekt opierał się na czystym kodzie. Skupiam się na dostarczaniu wysoce wydajnych, przyjaznych dla SEO i dostępnych rozwiązań, które nie tylko wyglądają niesamowicie, ale również przynoszą realne korzyści Twojej marce w internecie. ",
         "about.card.apps.title": "Aplikacje Desktopowe i Mobilne",
@@ -34,7 +34,7 @@
         "hero.badge.engineer": "Implementacja AI",
         "hero.badge.enthusiast": "Eksplorator Technologii",
         "hero.badge.innovator": "Kreator Pomysłów",
-        "hero.description": " Tworzę eleganckie, nowoczesne rozwiązania oprogramowania i wyjątkowe cyfrowe doświadczenia. Jako freelance developer i entuzjasta AI, łączę nowoczesne frameworki ze sprawdzonymi praktykami inżynierskimi, realizując projekty skrojone na miarę. ",
+        "hero.description": " Tworzę eleganckie, nowoczesne rozwiązania i wyjątkowe cyfrowe doświadczenia. Jako freelance developer i entuzjasta AI, łączę nowoczesne frameworki ze sprawdzonymi praktykami inżynierskimi, realizując projekty skrojone na miarę. ",
         "hero.cta.about": "Więcej o mnie",
         "hero.cta.contact": "Skontaktuj się",
         "homeTitleMeta": "Mateusz Malich | Freelance Developer i Entuzjasta AI",
