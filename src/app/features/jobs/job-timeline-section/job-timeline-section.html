@@ -19,7 +19,7 @@
           @if (index > 0) {
           <hr [class.bg-primary]="job.isCurrent" />
           }
-          <a routerLink="/job/{{ job.id }}"
+          <a routerLink="/job/{{ job.id }}" [title]="job.title"
             [class]="index % 2 === 0 ? 'timeline-start timeline-box max-w-md p-3 sm:p-4 lg:p-6 cursor-pointer hover:bg-base-200 transition-colors' : 'timeline-end timeline-box max-w-md p-3 sm:p-4 lg:p-6 cursor-pointer hover:bg-base-200 transition-colors'">
             <div class="text-base sm:text-lg lg:text-2xl font-bold">{{ job.title }}</div>
             <div class="text-sm sm:text-base lg:text-lg opacity-70">{{ job.companyName }}</div>

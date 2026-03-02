@@ -1,19 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { ContactSection } from "../../shared/contact/contact-section/contact-section";
-import { EducationSection } from "../education/education-section/education-section";
-import { CertificationsSection } from "../certifications/certifications-section/certifications-section";
 import { Footer } from "../../shared/footer/footer";
-import { ProjectsRealizationsHomeSection } from "../showcase/projects-realizations-home-section/projects-realizations-home-section";
-import { JobTimelineSection } from "../jobs/job-timeline-section/job-timeline-section";
 import { HeroSection } from "../hero/hero-section/hero-section";
 import { HeroLoading } from "../hero/hero-loading/hero-loading";
 import { AboutMeSection } from "../about-me/about-me-section/about-me-section";
 import { Header } from "../../shared/header/header";
 import { Meta, Title } from '@angular/platform-browser';
+import { LoadingItems } from '../../shared/loading/loading-items/loading-items';
+import { ContactSection } from "../../shared/contact/contact-section/contact-section";
+import { EducationSection } from "../education/education-section/education-section";
+import { CertificationsSection } from "../certifications/certifications-section/certifications-section";
+import { ProjectsRealizationsHomeSection } from "../showcase/projects-realizations-home-section/projects-realizations-home-section";
+import { JobTimelineSection } from "../jobs/job-timeline-section/job-timeline-section";
 
 @Component({
   selector: 'app-home-page',
-  imports: [ContactSection, EducationSection, CertificationsSection, Footer, ProjectsRealizationsHomeSection, JobTimelineSection, HeroSection, HeroLoading, AboutMeSection, Header],
+  imports: [Footer, HeroSection, HeroLoading, AboutMeSection, Header, ContactSection, EducationSection, CertificationsSection, ProjectsRealizationsHomeSection, JobTimelineSection],
   templateUrl: './home-page.html',
   styleUrl: './home-page.scss',
 })

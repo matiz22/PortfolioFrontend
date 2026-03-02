@@ -1,4 +1,4 @@
-<a [routerLink]="['/realization', realization.id]"
+<a [routerLink]="['/realization', realization.id]" [title]="realization.title"
   class="card bg-base-200 shadow-2xl hover:bg-base-300 hover:-translate-y-2 transition ease-in-out border border-base-300 h-full flex flex-col">
   <!-- thumbnail (if available) -->
   @if (realization.thumbnail) {

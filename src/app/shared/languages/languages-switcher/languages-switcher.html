@@ -12,7 +12,7 @@
     <ul tabindex="0" class="dropdown-content menu bg-base-300 text-white rounded-xl z-[1] w-32 p-2 shadow-lg">
         @for (lang of languagesOptions; track lang.code) {
         <li>
-            <a [href]="lang.url" class="text-sm">
+            <a [href]="lang.url" [title]="lang.label" class="text-sm">
                 {{ lang.label }}
             </a>
         </li>
