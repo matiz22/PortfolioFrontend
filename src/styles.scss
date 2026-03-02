@@ -44,7 +44,12 @@
 html {
   font-family: "Nunito", sans-serif;
   font-size: 17px;
+  scroll-behavior: smooth;
   /* Slight increase from default 16px */
+}
+
+html:active-view-transition {
+  scroll-behavior: auto !important;
 }
 
 body {
