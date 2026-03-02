@@ -1,4 +1,5 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { RealizationsService } from '../../../core/services/realizations.service';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { switchMap } from 'rxjs/operators';
@@ -24,10 +25,17 @@ import { LoadingItems } from '../../../shared/loading/loading-items/loading-item
   templateUrl: './realizations-page.html',
   styleUrl: './realizations-page.scss',
 })
-export class RealizationsPage {
+export class RealizationsPage implements OnInit {
   realizationsService: RealizationsService = inject(RealizationsService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+  private titleService = inject(Title);
+
+  ngOnInit(): void {
+    const title = this.route.snapshot.title
+      ?? $localize`:@@realizationsTitleMeta:Realizations | Mateusz Malich`;
+    this.titleService.setTitle(title);
+  }
 
   // Reactive query param map that updates when route changes (even when component is reused)
   private queryParamMap = toSignal(this.route.queryParamMap);

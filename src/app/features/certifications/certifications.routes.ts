@@ -7,6 +7,7 @@ export const CERTIFICATIONS_ROUTES: Routes = [
             import('./certifications-page/certifications-page').then(
                 (m) => m.CertificationsPage
             ),
+        title: $localize`:@@certificationsTitleMeta:Certifications | Mateusz Malich`,
         data: { reuse: true },
     },
     {

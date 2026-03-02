@@ -7,6 +7,7 @@ export const REALIZATIONS_ROUTES: Routes = [
             import('./realizations-page/realizations-page').then(
                 (m) => m.RealizationsPage
             ),
+        title: $localize`:@@realizationsTitleMeta:Realizations | Mateusz Malich`,
         data: { reuse: true },
     },
     {

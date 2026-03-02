@@ -1,4 +1,5 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, effect, inject } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { RealizationsService } from '../../../core/services/realizations.service';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -38,6 +39,17 @@ export class RealizationDetailsPage {
     ),
     { initialValue: ApiState.loading<Realization>() }
   );
+
+  private readonly titleService = inject(Title);
+
+  constructor() {
+    effect(() => {
+      const state = this.realization();
+      if (state.status === 'success') {
+        this.titleService.setTitle(`${state.data.title} | Mateusz Malich`);
+      }
+    });
+  }
 
   private readonly clientButtonLabel = $localize`:@@clientButton:Client website`;
   links = computed<Link[]>(() => {

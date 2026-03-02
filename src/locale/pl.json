@@ -101,6 +101,11 @@
         "header.nav.education": "Edukacja",
         "header.nav.certificates": "Certyfikaty",
         "header.nav.jobs": "Praca",
-        "header.nav.certifications": "Certyfikaty"
+        "header.nav.certifications": "Certyfikaty",
+        "jobsTitleMeta": "Doświadczenie | Mateusz Malich",
+        "educationTitleMeta": "Edukacja | Mateusz Malich",
+        "certificationsTitleMeta": "Certyfikaty | Mateusz Malich",
+        "projectsTitleMeta": "Projekty | Mateusz Malich",
+        "realizationsTitleMeta": "Realizacje | Mateusz Malich"
     }
 }

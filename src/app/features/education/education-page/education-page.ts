@@ -1,4 +1,5 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { EducationService } from '../../../core/services/education.service';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { switchMap } from 'rxjs/operators';
@@ -18,10 +19,17 @@ import { LoadingItems } from '../../../shared/loading/loading-items/loading-item
   templateUrl: './education-page.html',
   styleUrl: './education-page.scss',
 })
-export class EducationPage {
+export class EducationPage implements OnInit {
   educationService: EducationService = inject(EducationService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+  private titleService = inject(Title);
+
+  ngOnInit(): void {
+    const title = this.route.snapshot.title
+      ?? $localize`:@@educationTitleMeta:Education | Mateusz Malich`;
+    this.titleService.setTitle(title);
+  }
 
   // Reactive query param map that updates when route changes (even when component is reused)
   private queryParamMap = toSignal(this.route.queryParamMap);

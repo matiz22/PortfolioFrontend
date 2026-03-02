@@ -1,4 +1,5 @@
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { JobsService } from '../../../core/services/jobs.service';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -38,4 +39,14 @@ export class JobDetailsPage {
     ),
     { initialValue: ApiState.loading<Job>() }
   );
+  private readonly titleService = inject(Title);
+
+  constructor() {
+    effect(() => {
+      const state = this.job();
+      if (state.status === 'success') {
+        this.titleService.setTitle(`${state.data.title} at ${state.data.companyName} | Mateusz Malich`);
+      }
+    });
+  }
 }

@@ -1,4 +1,5 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, effect, inject } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ImageUrlPipe } from '../../../shared/pipes/image-url-pipe';
 import { Header } from '../../../shared/header/header';
@@ -36,6 +37,17 @@ export class ProjectDetailsPage {
     ),
     { initialValue: ApiState.loading<Project>() }
   );
+
+  private readonly titleService = inject(Title);
+
+  constructor() {
+    effect(() => {
+      const state = this.project();
+      if (state.status === 'success') {
+        this.titleService.setTitle(`${state.data.title} | Mateusz Malich`);
+      }
+    });
+  }
 
   private readonly repoButtonLabel = $localize`:@@projectRepoButton:Project repository`;
 

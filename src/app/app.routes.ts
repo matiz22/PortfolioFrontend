@@ -6,6 +6,7 @@ export const routes: Routes = [
     {
         path: '',
         component: HomePage,
+        title: $localize`:@@homeTitleMeta:Mateusz Malich | Freelance Developer & AI Enthusiast`,
         data: { reuse: true },
     },
     // All other features are lazy loaded
