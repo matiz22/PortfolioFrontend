@@ -10,6 +10,9 @@ import { LanguagesSwitcher } from '../languages/languages-switcher/languages-swi
   ],
   templateUrl: './header.html',
   styleUrl: './header.scss',
+  host: {
+    class: 'relative z-[9999] block'
+  }
 })
 export class Header {
   @ViewChild('menuDetails') menuDetails!: ElementRef<HTMLDetailsElement>;
