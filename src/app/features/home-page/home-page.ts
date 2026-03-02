@@ -25,11 +25,14 @@ export class HomePage implements OnInit {
 
   ngOnInit(): void {
     const title = $localize`:@@homeTitleMeta:Mateusz Malich | Freelance Developer & AI Enthusiast`;
-    const description = $localize`:@@homeDescriptionMeta:Freelance developer and student crafting simple, effective digital experiences. I build apps, websites, and AI solutions tailored to your goals.`;
+    const description = $localize`:@@homeDescriptionMeta:Freelance developer and student. I build simple, effective apps, websites, and AI solutions tailored to your goals.`;
 
     this.title.setTitle(title);
     this.meta.updateTag({ name: 'description', content: description });
     this.meta.updateTag({ property: 'og:title', content: title });
     this.meta.updateTag({ property: 'og:description', content: description });
+    this.meta.updateTag({ property: 'og:image', content: 'https://malich.dev/hero.png' });
+    this.meta.updateTag({ property: 'og:type', content: 'website' });
+    this.meta.updateTag({ property: 'og:url', content: 'https://malich.dev/' });
   }
 }

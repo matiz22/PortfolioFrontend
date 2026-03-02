@@ -1,18 +1,20 @@
 <div class="fixed top-0 left-0 right-0 z-[9999] flex justify-center pointer-events-none">
   <nav class="mt-4 w-fit bg-primary bg-opacity-90 text-black py-3 rounded-full pointer-events-auto">
     <div class="max-w-7xl mx-auto px-4 flex justify-between items-center gap-8">
-      <a [routerLink]="['/']">
+      <a [routerLink]="['/']" title="Mateusz Malich - Home">
         <h4 class="font-bold">Malich.dev</h4>
       </a>
 
       <!-- Desktop Navigation -->
       <div class="hidden md:flex items-center space-x-6">
         <ul class="flex space-x-5 list-none m-0 p-0">
-          <li><a [routerLink]="['/projects']" i18n="@@header.nav.projects">Projects</a></li>
-          <li><a [routerLink]="['/realizations']" i18n="@@header.nav.realizations">Realizations</a></li>
-          <li><a [routerLink]="['/education']" i18n="@@header.nav.education">Education</a></li>
-          <li><a [routerLink]="['/certifications']" i18n="@@header.nav.certificates">Certificates</a></li>
-          <li><a [routerLink]="['/jobs']" i18n="@@header.nav.jobs">Jobs</a></li>
+          <li><a [routerLink]="['/projects']" i18n="@@header.nav.projects" title="Projects">Projects</a></li>
+          <li><a [routerLink]="['/realizations']" i18n="@@header.nav.realizations" title="Realizations">Realizations</a>
+          </li>
+          <li><a [routerLink]="['/education']" i18n="@@header.nav.education" title="Education">Education</a></li>
+          <li><a [routerLink]="['/certifications']" i18n="@@header.nav.certificates"
+              title="Certifications">Certificates</a></li>
+          <li><a [routerLink]="['/jobs']" i18n="@@header.nav.jobs" title="Work Experience">Jobs</a></li>
         </ul>
         <app-languages-switcher class="ml-4" />
       </div>
@@ -30,11 +32,13 @@
               </summary>
 
               <ul class="bg-base-300 text-white rounded-xl right-0 w-48">
-                <li><a [routerLink]="['/projects']" i18n="@@header.nav.projects">Projects</a></li>
-                <li><a [routerLink]="['/realizations']" i18n="@@header.nav.realizations">Realizations</a></li>
-                <li><a [routerLink]="['/education']" i18n="@@header.nav.education">Education</a></li>
-                <li><a [routerLink]="['/certifications']" i18n="@@header.nav.certifications">Certifications</a></li>
-                <li><a [routerLink]="['/jobs']" i18n="@@header.nav.jobs">Jobs</a></li>
+                <li><a [routerLink]="['/projects']" i18n="@@header.nav.projects" title="Projects">Projects</a></li>
+                <li><a [routerLink]="['/realizations']" i18n="@@header.nav.realizations"
+                    title="Realizations">Realizations</a></li>
+                <li><a [routerLink]="['/education']" i18n="@@header.nav.education" title="Education">Education</a></li>
+                <li><a [routerLink]="['/certifications']" i18n="@@header.nav.certifications"
+                    title="Certifications">Certifications</a></li>
+                <li><a [routerLink]="['/jobs']" i18n="@@header.nav.jobs" title="Work Experience">Jobs</a></li>
                 <li class="border-t border-base-100 mt-2 pt-2">
                   <app-languages-switcher />
                 </li>
