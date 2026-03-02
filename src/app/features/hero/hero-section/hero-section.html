@@ -22,11 +22,12 @@
 
         <!-- Photo Section -->
         <div class="flex justify-center lg:justify-end order-1 lg:order-1">
-          <div class="relative group mx-10 sm:mx-0" [ngClass]="{'animate-fade-in-up': isHydrated()}">
+          <div class="relative group mx-auto sm:mx-0 mt-4 sm:mt-0" [ngClass]="{'animate-fade-in-up': isHydrated()}">
 
             <!-- Photo container -->
             <div class="relative">
-              <div class="w-80 h-80 md:w-64 md:h-64 lg:w-96 lg:h-96 rounded-full overflow-hidden shadow-2xl">
+              <div
+                class="w-56 h-56 sm:w-72 sm:h-72 md:w-64 md:h-64 lg:w-96 lg:h-96 rounded-full overflow-hidden shadow-2xl">
                 <img src="hero.png" alt="Mateusz Malich - Software Engineer" class="w-full h-full object-cover" />
               </div>
 
@@ -98,7 +99,8 @@
           <!-- Subtitle with animated typing effect look -->
           <div class="flex flex-wrap items-center justify-center lg:justify-start gap-2 mb-8"
             [ngClass]="{'animate-fade-in-up animation-delay-200': isHydrated()}">
-            <span class="badge badge-lg badge-primary badge-outline gap-2 min-w-[250px] justify-center">
+            <span
+              class="badge badge-lg badge-primary badge-outline gap-2 w-full sm:w-auto sm:min-w-[250px] justify-center">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                 stroke="currentColor" class="w-4 h-4">
                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -106,7 +108,8 @@
               </svg>
               <ng-container i18n="@@hero.badge.fullstack">Software Engineer</ng-container>
             </span>
-            <span class="badge badge-lg badge-secondary badge-outline gap-2 min-w-[250px] justify-center">
+            <span
+              class="badge badge-lg badge-secondary badge-outline gap-2 w-full sm:w-auto sm:min-w-[250px] justify-center">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                 stroke="currentColor" class="w-4 h-4">
                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -114,7 +117,8 @@
               </svg>
               <ng-container i18n="@@hero.badge.engineer">AI-Driven Solutions</ng-container>
             </span>
-            <span class="badge badge-lg badge-accent badge-outline gap-2 min-w-[250px] justify-center">
+            <span
+              class="badge badge-lg badge-accent badge-outline gap-2 w-full sm:w-auto sm:min-w-[250px] justify-center">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                 stroke="currentColor" class="w-4 h-4">
                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -122,7 +126,8 @@
               </svg>
               <ng-container i18n="@@hero.badge.enthusiast">Tech Explorer</ng-container>
             </span>
-            <span class="badge badge-lg badge-primary badge-outline gap-2 min-w-[250px] justify-center">
+            <span
+              class="badge badge-lg badge-primary badge-outline gap-2 w-full sm:w-auto sm:min-w-[250px] justify-center">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                 stroke="currentColor" class="w-4 h-4">
                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -133,7 +138,7 @@
           </div>
 
           <!-- Description -->
-          <p class="text-base-content/70 text-lg md:text-xl max-w-md mx-auto lg:mx-0 mb-10 leading-relaxed"
+          <p class="text-base-content/70 text-lg md:text-xl max-w-sm sm:max-w-md mx-auto lg:mx-0 mb-10 leading-relaxed"
             [ngClass]="{'animate-fade-in-up animation-delay-300': isHydrated()}" i18n="@@hero.description">
             Creating elegant solutions and exceptional digital experiences with simple, modern, and effective
             technologies.
