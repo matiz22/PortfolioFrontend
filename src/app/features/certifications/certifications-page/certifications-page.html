@@ -6,7 +6,7 @@
             <h1 class="text-4xl font-bold text-center mb-12" i18n="@@certificationsPage.heading">All Certifications</h1>
 
             @defer {
-            <div class="flex flex-row flex-wrap justify-center gap-4">
+            <div class="flex flex-row flex-wrap justify-center gap-4 animate-[fadeSlideIn_0.4s_ease-out_both]">
                 @let certificationItems = certifications();
                 @switch (certificationItems.status) {
                 @case ('loading') {
