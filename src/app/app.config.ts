@@ -17,7 +17,7 @@ export const appConfig: ApplicationConfig = {
         skipInitialTransition: true,
         onViewTransitionCreated: ({ transition }) => {
           const router = inject(Router);
-          const targetUrl = router.getCurrentNavigation()!.finalUrl!;
+          const targetUrl = router.currentNavigation()!.finalUrl!;
           // Skip transition if only fragment or query params change
           const config = {
             paths: 'exact',
