@@ -65,4 +65,34 @@ export class RealizationDetailsPage {
 
     return [];
   });
+
+  // Carousel drag functionality
+  private isDragging = false;
+  private startX = 0;
+  private scrollLeft = 0;
+
+  onMouseDown(event: MouseEvent, carousel: HTMLElement): void {
+    this.isDragging = true;
+    carousel.classList.add('cursor-grabbing');
+    this.startX = event.pageX - carousel.offsetLeft;
+    this.scrollLeft = carousel.scrollLeft;
+  }
+
+  onMouseMove(event: MouseEvent, carousel: HTMLElement): void {
+    if (!this.isDragging) return;
+    event.preventDefault();
+    const x = event.pageX - carousel.offsetLeft;
+    const walk = (x - this.startX) * 2; // Scroll speed multiplier
+    carousel.scrollLeft = this.scrollLeft - walk;
+  }
+
+  onMouseUp(carousel: HTMLElement): void {
+    this.isDragging = false;
+    carousel.classList.remove('cursor-grabbing');
+  }
+
+  onMouseLeave(carousel: HTMLElement): void {
+    this.isDragging = false;
+    carousel.classList.remove('cursor-grabbing');
+  }
 }

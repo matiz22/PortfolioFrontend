@@ -66,10 +66,42 @@
                                 Website</ng-container>
                         </a>
                         }
+                        @if (data.companyLink) {
+                        <a [href]="data.companyLink" class="btn btn-secondary" rel="noopener noreferrer"
+                            target="_blank">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                                    stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+                            </svg>
+                            <ng-container i18n="@@realizationDetails.btn.visitCompany">Visit Company
+                                Website</ng-container>
+                        </a>
+                        }
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Screenshots Section -->
+        @if (data.screenshots && data.screenshots.length > 0) {
+        <div class="card bg-base-100 shadow-xl border border-base-300 mb-8">
+            <div class="card-body">
+                <h2 class="card-title text-2xl mb-4" i18n="@@projectDetails.screenshots">Screenshots</h2>
+                <div #carouselEl class="carousel rounded-box cursor-grab select-none overflow-x-auto"
+                    (mousedown)="onMouseDown($event, carouselEl)" (mousemove)="onMouseMove($event, carouselEl)"
+                    (mouseup)="onMouseUp(carouselEl)" (mouseleave)="onMouseLeave(carouselEl)">
+                    @for (screenshot of data.screenshots; track screenshot; let i = $index) {
+                    <div class="carousel-item">
+                        <img [alt]="data.title + ' screenshot ' + (i + 1)" [src]="screenshot | imageUrl"
+                            class="h-[600px] pointer-events-none" />
+                    </div>
+                    }
+                </div>
+            </div>
+        </div>
+        }
 
         <!-- Technologies Section -->
         <app-technologies-details-section [technologies]="data.technologies"

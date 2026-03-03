@@ -1,5 +1,5 @@
-import {TechnologyDto} from './technology';
-import {SkillDto} from './skill';
+import { TechnologyDto } from './technology';
+import { SkillDto } from './skill';
 
 export interface RealizationDto {
   id: number;
@@ -16,6 +16,8 @@ export interface RealizationDto {
   home_page: boolean;
   published: boolean;
   short_desc: string;
+  company_link: string | null;
+  screenshots: string[];
   technologies: TechnologyDto[];
   skills: SkillDto[];
 }

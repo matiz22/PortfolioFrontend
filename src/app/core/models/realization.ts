@@ -1,5 +1,5 @@
-import {Technology} from './technology';
-import {Skill} from './skill';
+import { Technology } from './technology';
+import { Skill } from './skill';
 
 
 export interface Realization {
@@ -17,6 +17,8 @@ export interface Realization {
   homePage: boolean;
   published: boolean;
   shortDesc: string;
+  companyLink: string | null;
+  screenshots: string[];
   technologies: Technology[];
   skills: Skill[];
 }

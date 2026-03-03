@@ -62,6 +62,8 @@
         "projectsPage.error": "Błąd ładowania projektów. Spróbuj ponownie później.",
         "realizationDetails.label.client": "Klient",
         "realizationDetails.btn.visitClient": "Odwiedź stronę klienta",
+        "realizationDetails.btn.visitCompany": "Strona firmy",
+        "realizationDetails.label.screenshotsTitle": "Galeria projektu",
         "realizationDetails.btn.back": "Powrót do realizacji",
         "clientButton": "Strona klienta",
         "realizationsPage.heading": "Wszystkie Realizacje",

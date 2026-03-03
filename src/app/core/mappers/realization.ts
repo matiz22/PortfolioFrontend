@@ -1,7 +1,7 @@
-import {RealizationDto} from '../dto/realization';
-import {Realization} from '../models/realization';
-import {mapTechnology} from './technology';
-import {mapSkill} from './skill';
+import { RealizationDto } from '../dto/realization';
+import { Realization } from '../models/realization';
+import { mapTechnology } from './technology';
+import { mapSkill } from './skill';
 
 export function mapRealization(dto: RealizationDto): Realization {
   return {
@@ -19,7 +19,9 @@ export function mapRealization(dto: RealizationDto): Realization {
     homePage: dto.home_page,
     published: dto.published,
     shortDesc: dto.short_desc,
-    technologies: dto.technologies.map(mapTechnology),
-    skills: dto.skills.map(mapSkill),
+    companyLink: dto.company_link,
+    screenshots: dto.screenshots || [],
+    technologies: (dto.technologies || []).map(mapTechnology),
+    skills: (dto.skills || []).map(mapSkill),
   };
 }

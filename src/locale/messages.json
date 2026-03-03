@@ -64,6 +64,8 @@
     "projectsTitleMeta": "Projects | Mateusz Malich",
     "realizationDetails.label.client": "Client",
     "realizationDetails.btn.visitClient": "Visit Client Website",
+    "realizationDetails.btn.visitCompany": "Visit Company Website",
+    "realizationDetails.label.screenshotsTitle": "Project Gallery",
     "realizationDetails.btn.back": "Back to Realizations",
     "clientButton": "Client website",
     "realizationsPage.heading": "All Realizations",
