@@ -22,7 +22,7 @@ export class RealizationItem {
   }
 
   get summary(): string {
-    return this.realization?.shortDesc || this.realization?.description || '';
+    return this.realization?.shortDesc || '';
   }
 
   get techList() {
