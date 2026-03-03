@@ -14,23 +14,26 @@
     @let data = jobState.data;
     <div class="container mx-auto px-4 py-8">
         <!-- Hero Section with Title, Company and Thumbnail -->
-        <div class="hero bg-base-200 rounded-box mb-8">
-            <div class="hero-content flex-col lg:flex-row-reverse gap-8 py-12">
-                @if (data.thumbnail) {
-                <img [alt]="data.title" [src]="data.thumbnail | imageUrl"
-                    class="max-w-sm rounded-lg shadow-2xl w-full object-cover" />
-                }
-                <div>
-                    <h1 class="text-3xl md:text-5xl font-bold">{{ data.title }}</h1>
+        <div class="hero rounded-box mb-8 overflow-hidden relative">
+            @if (data.thumbnail) {
+            <img [alt]="data.title" [src]="data.thumbnail | imageUrl"
+                class="absolute inset-0 w-full h-full object-cover z-0" />
+            }
+            <div class="absolute inset-0 bg-black/60 z-10"></div>
+            <div class="hero-content flex-col gap-8 py-16 text-center relative z-20 w-full">
+                <div class="max-w-3xl">
+                    <h1 class="text-3xl md:text-5xl font-bold drop-shadow-md">{{ data.title }}</h1>
 
                     <!-- Company Information -->
-                    <div class="mt-4 mb-6">
+                    <div class="mt-4 mb-6 flex justify-center">
                         <div class="flex items-center gap-4">
                             <div>
-                                <p class="text-sm opacity-70" i18n="@@jobDetails.label.company">Company</p>
-                                <p class="text-2xl font-semibold">{{ data.companyName }}</p>
+                                <p class="text-sm opacity-90 drop-shadow-md font-medium"
+                                    i18n="@@jobDetails.label.company">Company</p>
+                                <p class="text-2xl font-semibold drop-shadow-md">{{ data.companyName }}</p>
                                 @if (data.location) {
-                                <p class="text-sm opacity-70 flex items-center gap-1">
+                                <p
+                                    class="text-sm opacity-90 font-medium drop-shadow-md flex items-center justify-center gap-1">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                                         xmlns="http://www.w3.org/2000/svg">
                                         <path

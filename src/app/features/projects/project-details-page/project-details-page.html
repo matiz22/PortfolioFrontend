@@ -13,17 +13,18 @@
     @case ('success') {
     @let data = projectState.data;
     <div class="container mx-auto px-4 py-8">
-        <!-- Hero Section with Title and Image -->
-        <div class="hero bg-base-200 rounded-box mb-8">
-            <div class="hero-content flex-col lg:flex-row-reverse gap-8 py-12">
-                @if (data.thumbnail) {
-                <img [alt]="data.title" [src]="data.thumbnail | imageUrl"
-                    class="max-w-sm rounded-lg shadow-2xl w-full object-cover" />
-                }
-                <div>
-                    <h1 class="text-3xl md:text-5xl font-bold">{{ data.title }}</h1>
-                    <p class="py-6 text-lg">{{ data.shortDesc }}</p>
-                    <div class="flex gap-3 flex-wrap">
+        <!-- Hero Section with Title and Background Image -->
+        <div class="hero rounded-box mb-8 overflow-hidden relative">
+            @if (data.thumbnail) {
+            <img [alt]="data.title" [src]="data.thumbnail | imageUrl"
+                class="absolute inset-0 w-full h-full object-cover z-0" />
+            }
+            <div class="absolute inset-0 bg-black/60 z-10"></div>
+            <div class="hero-content flex-col gap-8 py-16 text-center relative z-20 w-full">
+                <div class="max-w-3xl">
+                    <h1 class="text-3xl md:text-5xl font-bold drop-shadow-md">{{ data.title }}</h1>
+                    <p class="py-6 text-lg font-medium drop-shadow-md">{{ data.shortDesc }}</p>
+                    <div class="flex gap-3 flex-wrap justify-center">
                         @if (data.liveUrl) {
                         <a [href]="data.liveUrl" class="btn btn-primary" rel="noopener noreferrer" target="_blank">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -35,7 +36,7 @@
                         </a>
                         }
                         @if (data.repoUrl) {
-                        <a [href]="data.repoUrl" class="btn btn-ghost" rel="noopener noreferrer" target="_blank">
+                        <a [href]="data.repoUrl" class="btn btn-neutral" rel="noopener noreferrer" target="_blank">
                             <svg class="w-5 h-5" viewBox="0 0 92 92" xmlns="http://www.w3.org/2000/svg">
                                 <defs>
                                     <clipPath id="a">

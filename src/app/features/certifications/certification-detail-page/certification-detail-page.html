@@ -13,26 +13,30 @@
     @case ('success') {
     @let data = certificationState.data;
     <div class="container mx-auto px-4 py-8">
-        <!-- Hero Section with Title and Thumbnail -->
-        <div class="hero bg-base-200 rounded-box mb-8">
-            <div class="hero-content flex-col lg:flex-row-reverse gap-8 py-12">
-                @if (data.thumbnail) {
-                <img [alt]="data.name" [src]="data.thumbnail | imageUrl"
-                    class="max-w-sm rounded-lg shadow-2xl w-full object-cover" />
-                }
-                <div>
-                    <h1 class="text-3xl md:text-5xl font-bold">{{ data.name }}</h1>
+        <!-- Hero Section with Title and Background Image -->
+        <div class="hero rounded-box mb-8 overflow-hidden relative">
+            @if (data.thumbnail) {
+            <img [alt]="data.name" [src]="data.thumbnail | imageUrl"
+                class="absolute inset-0 w-full h-full object-cover z-0" />
+            }
+            <div class="absolute inset-0 bg-black/60 z-10"></div>
+            <div class="hero-content flex-col gap-8 py-16 text-center relative z-20 w-full">
+                <div class="max-w-3xl">
+                    <h1 class="text-3xl md:text-5xl font-bold drop-shadow-md">{{ data.name }}</h1>
 
                     <!-- Issuing Organization -->
-                    <div class="mt-4 mb-6">
-                        <p class="text-sm opacity-70" i18n="@@certificationDetails.label.issuedBy">Issued by</p>
-                        <p class="text-2xl font-semibold">{{ data.issuingOrganization }}</p>
+                    <div class="mt-4 mb-6 flex justify-center">
+                        <div>
+                            <p class="text-sm opacity-90 drop-shadow-md font-medium"
+                                i18n="@@certificationDetails.label.issuedBy">Issued by</p>
+                            <p class="text-2xl font-semibold drop-shadow-md">{{ data.issuingOrganization }}</p>
+                        </div>
                     </div>
 
                     <!-- Dates -->
-                    <div class="flex flex-wrap gap-4 mb-6">
+                    <div class="flex flex-wrap justify-center gap-4 mb-6">
                         <div
-                            class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary text-primary-content text-sm md:text-base border border-primary">
+                            class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary text-primary-content text-sm md:text-base border border-primary shadow-md">
                             <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path
@@ -46,7 +50,7 @@
                         </div>
                         @if (data.expirationDate) {
                         <div
-                            class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary text-secondary-content text-sm md:text-base border border-secondary">
+                            class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary text-secondary-content text-sm md:text-base border border-secondary shadow-md">
                             <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round"
@@ -61,14 +65,14 @@
                     </div>
 
                     @if (data.credentialId) {
-                    <p class="text-sm opacity-70 mb-4"><ng-container
+                    <p class="text-sm opacity-90 drop-shadow-md font-medium mb-4"><ng-container
                             i18n="@@certificationDetails.label.credentialId">Credential ID:</ng-container> {{
                         data.credentialId }}</p>
                     }
 
-                    <div class="flex gap-3 flex-wrap">
+                    <div class="flex gap-3 justify-center flex-wrap">
                         @if (data.credentialUrl) {
-                        <a [href]="data.credentialUrl" class="btn btn-primary" rel="noopener noreferrer"
+                        <a [href]="data.credentialUrl" class="btn btn-primary shadow-md" rel="noopener noreferrer"
                             target="_blank">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                                 xmlns="http://www.w3.org/2000/svg">
