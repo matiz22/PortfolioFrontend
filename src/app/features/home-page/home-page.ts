@@ -27,8 +27,8 @@ export class HomePage implements OnInit {
 
   ngOnInit(): void {
     const title = this.route.snapshot.title
-      ?? $localize`:@@homeTitleMeta:Mateusz Malich | Freelance Developer & AI Enthusiast`;
-    const description = $localize`:@@homeDescriptionMeta:Freelance developer and student. I build simple, effective apps, websites, and AI solutions tailored to your goals.`;
+      ?? $localize`:@@homeTitleMeta:Mateusz Malich | Apps, Websites & AI Solutions`;
+    const description = $localize`:@@homeDescriptionMeta:Building intelligent apps and modern websites that power your business. Unlock the potential of AI and cutting-edge tech for your brand. Explore my work!`;
 
     this.titleService.setTitle(title);
     this.meta.updateTag({ name: 'description', content: description });
