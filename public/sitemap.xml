@@ -6,14 +6,8 @@
   <!-- Polish homepage -->
   <url>
     <loc>https://malich.dev/</loc>
-    <xhtml:link
-      rel="alternate"
-      hreflang="pl"
-      href="https://malich.dev/"/>
-    <xhtml:link
-      rel="alternate"
-      hreflang="en"
-      href="https://malich.dev/en"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://malich.dev/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://malich.dev/en"/>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -21,15 +15,84 @@
   <!-- English homepage -->
   <url>
     <loc>https://malich.dev/en</loc>
-    <xhtml:link
-      rel="alternate"
-      hreflang="pl"
-      href="https://malich.dev/"/>
-    <xhtml:link
-      rel="alternate"
-      hreflang="en"
-      href="https://malich.dev/en"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://malich.dev/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://malich.dev/en"/>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
+
+  <!-- Polish List Pages -->
+  <url>
+    <loc>https://malich.dev/projects</loc>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://malich.dev/projects"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://malich.dev/en/projects"/>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://malich.dev/realizations</loc>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://malich.dev/realizations"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://malich.dev/en/realizations"/>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://malich.dev/education</loc>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://malich.dev/education"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://malich.dev/en/education"/>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://malich.dev/certifications</loc>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://malich.dev/certifications"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://malich.dev/en/certifications"/>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://malich.dev/jobs</loc>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://malich.dev/jobs"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://malich.dev/en/jobs"/>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- English List Pages -->
+  <url>
+    <loc>https://malich.dev/en/projects</loc>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://malich.dev/projects"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://malich.dev/en/projects"/>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://malich.dev/en/realizations</loc>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://malich.dev/realizations"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://malich.dev/en/realizations"/>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://malich.dev/en/education</loc>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://malich.dev/education"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://malich.dev/en/education"/>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://malich.dev/en/certifications</loc>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://malich.dev/certifications"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://malich.dev/en/certifications"/>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://malich.dev/en/jobs</loc>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://malich.dev/jobs"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://malich.dev/en/jobs"/>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
 </urlset>

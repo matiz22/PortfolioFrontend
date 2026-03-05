@@ -1,5 +1,5 @@
 import { Component, effect, inject } from '@angular/core';
-import { Title } from '@angular/platform-browser';
+import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CertificationsService } from '../../../core/services/certifications.service';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -50,4 +50,17 @@ export class CertificationDetailPage {
     ),
     { initialValue: ApiState.loading<Certification>() }
   );
+
+  private readonly titleService = inject(Title);
+  private readonly metaService = inject(Meta);
+
+  constructor() {
+    effect(() => {
+      const state = this.certification();
+      if (state.status === 'success') {
+        this.titleService.setTitle(`${state.data.name} | Mateusz Malich`);
+        this.metaService.updateTag({ name: 'robots', content: 'noindex, nofollow' });
+      }
+    });
+  }
 }

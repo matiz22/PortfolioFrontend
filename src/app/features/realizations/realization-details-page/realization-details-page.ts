@@ -1,5 +1,5 @@
 import { Component, computed, effect, inject } from '@angular/core';
-import { Title } from '@angular/platform-browser';
+import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { RealizationsService } from '../../../core/services/realizations.service';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -41,12 +41,14 @@ export class RealizationDetailsPage {
   );
 
   private readonly titleService = inject(Title);
+  private readonly metaService = inject(Meta);
 
   constructor() {
     effect(() => {
       const state = this.realization();
       if (state.status === 'success') {
         this.titleService.setTitle(`${state.data.title} | Mateusz Malich`);
+        this.metaService.updateTag({ name: 'robots', content: 'noindex, nofollow' });
       }
     });
   }

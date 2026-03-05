@@ -1,5 +1,5 @@
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
-import { Title } from '@angular/platform-browser';
+import { Meta, Title } from '@angular/platform-browser';
 import { EducationService } from '../../../core/services/education.service';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { switchMap } from 'rxjs/operators';
@@ -24,11 +24,17 @@ export class EducationPage implements OnInit {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private titleService = inject(Title);
+  private metaService = inject(Meta);
 
   ngOnInit(): void {
     const title = this.route.snapshot.title
       ?? $localize`:@@educationTitleMeta:Education | Mateusz Malich`;
     this.titleService.setTitle(title);
+    this.metaService.updateTag({ name: 'robots', content: 'index, follow' });
+    this.metaService.updateTag({
+      name: 'description',
+      content: $localize`:@@educationDescriptionMeta:Learn about my academic background, degrees, and studies in computer science and related fields that form the foundation of my technical knowledge.`
+    });
   }
 
   // Reactive query param map that updates when route changes (even when component is reused)

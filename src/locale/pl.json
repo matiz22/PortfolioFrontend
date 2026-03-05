@@ -108,6 +108,11 @@
         "educationTitleMeta": "Edukacja | Mateusz Malich",
         "certificationsTitleMeta": "Certyfikaty | Mateusz Malich",
         "projectsTitleMeta": "Projekty | Mateusz Malich",
-        "realizationsTitleMeta": "Realizacje | Mateusz Malich"
+        "realizationsTitleMeta": "Realizacje | Mateusz Malich",
+        "projectsDescriptionMeta": "Odkryj moje portfolio projektów osobistych i zawodowych, które prezentują moje umiejętności w programowaniu webowym, inżynierii backendowej oraz integracji AI.",
+        "jobsDescriptionMeta": "Zapoznaj się z moim doświadczeniem zawodowym jako inżynier oprogramowania, moimi rolami, zakresem obowiązków i kluczowymi osiągnięciami.",
+        "educationDescriptionMeta": "Dowiedz się więcej o moim wykształceniu akademickim, dyplomach i studiach informatycznych, które stanowią fundament mojej wiedzy technicznej.",
+        "certificationsDescriptionMeta": "Przejrzyj moje profesjonalne certyfikaty oraz osiągnięcia w ciągłym doskonaleniu umiejętności w zakresie różnych technologii i metodyk.",
+        "realizationsDescriptionMeta": "Zobacz kolekcję zrealizowanych projektów dla klientów, prac jako freelancer oraz aplikacji komercyjnych, które dostarczyłem."
     }
 }

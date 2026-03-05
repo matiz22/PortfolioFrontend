@@ -1,5 +1,5 @@
 import { Component, computed, effect, inject } from '@angular/core';
-import { Title } from '@angular/platform-browser';
+import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ImageUrlPipe } from '../../../shared/pipes/image-url-pipe';
 import { Header } from '../../../shared/header/header';
@@ -39,12 +39,14 @@ export class ProjectDetailsPage {
   );
 
   private readonly titleService = inject(Title);
+  private readonly metaService = inject(Meta);
 
   constructor() {
     effect(() => {
       const state = this.project();
       if (state.status === 'success') {
         this.titleService.setTitle(`${state.data.title} | Mateusz Malich`);
+        this.metaService.updateTag({ name: 'robots', content: 'noindex, nofollow' });
       }
     });
   }
