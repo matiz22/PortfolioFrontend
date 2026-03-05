@@ -13,6 +13,7 @@ import { ContactSection } from '../../../shared/contact/contact-section/contact-
 import { Footer } from '../../../shared/footer/footer';
 import { LoadingItems } from '../../../shared/loading/loading-items/loading-items';
 import { PaginationService } from '../../../shared/pagination/pagination.service';
+import { PaginationTiles } from '../../../shared/pagination/pagination-tiles/pagination-tiles';
 
 @Component({
   selector: 'app-jobs-page',
@@ -21,7 +22,8 @@ import { PaginationService } from '../../../shared/pagination/pagination.service
     Header,
     ContactSection,
     Footer,
-    LoadingItems
+    LoadingItems,
+    PaginationTiles
   ],
   providers: [PaginationService],
   templateUrl: './jobs-page.html',

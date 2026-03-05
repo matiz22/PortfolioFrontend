@@ -13,10 +13,11 @@ import { ContactSection } from '../../../shared/contact/contact-section/contact-
 import { CertificationItem } from '../certification-item/certification-item';
 import { LoadingItems } from '../../../shared/loading/loading-items/loading-items';
 import { PaginationService } from '../../../shared/pagination/pagination.service';
+import { PaginationTiles } from '../../../shared/pagination/pagination-tiles/pagination-tiles';
 
 @Component({
   selector: 'app-certifications-page',
-  imports: [Header, Footer, ContactSection, CertificationItem, LoadingItems],
+  imports: [Header, Footer, ContactSection, CertificationItem, LoadingItems, PaginationTiles],
   providers: [PaginationService],
   templateUrl: './certifications-page.html',
   styleUrl: './certifications-page.scss',

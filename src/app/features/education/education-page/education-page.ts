@@ -13,10 +13,11 @@ import { ContactSection } from '../../../shared/contact/contact-section/contact-
 import { EducationItem } from '../education-item/education-item';
 import { LoadingItems } from '../../../shared/loading/loading-items/loading-items';
 import { PaginationService } from '../../../shared/pagination/pagination.service';
+import { PaginationTiles } from '../../../shared/pagination/pagination-tiles/pagination-tiles';
 
 @Component({
   selector: 'app-education-page',
-  imports: [Header, Footer, ContactSection, EducationItem, LoadingItems],
+  imports: [Header, Footer, ContactSection, EducationItem, LoadingItems, PaginationTiles],
   providers: [PaginationService],
   templateUrl: './education-page.html',
   styleUrl: './education-page.scss',

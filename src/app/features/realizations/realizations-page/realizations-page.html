@@ -35,17 +35,9 @@
             </div>
 
             <!-- Pagination Controls -->
-            @let meta = paginationMeta();
-            @if (meta && meta.lastPage > 1) {
-            <div class="flex justify-center mt-12">
-                <div class="join">
-                    @for (page of pageNumbers(); track page) {
-                    <input class="join-item btn btn-square" type="radio" name="page-options" [attr.aria-label]="page"
-                        [checked]="currentPage() === page" (click)="goToPage(page)" />
-                    }
-                </div>
-            </div>
-            }
+            <app-pagination-tiles [pageNumbers]="pageNumbers" [currentPage]="currentPage"
+                (pageChange)="goToPage($event)">
+            </app-pagination-tiles>
             } @placeholder {
             <app-loading-items [count]="3"></app-loading-items>
             }

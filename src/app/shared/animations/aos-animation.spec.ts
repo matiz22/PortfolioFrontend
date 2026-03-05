@@ -1,8 +1,9 @@
-import { AosAnimation } from './aos-animation';
+import { AosAnimations } from './aos-animation';
 
-describe('AosAnimation', () => {
+describe('AosAnimations', () => {
   it('should create an instance', () => {
-    const directive = new AosAnimation();
+    // @ts-ignore
+    const directive = new AosAnimations();
     expect(directive).toBeTruthy();
   });
 });

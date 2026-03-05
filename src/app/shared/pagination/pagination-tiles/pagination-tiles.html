@@ -1,0 +1,10 @@
+@if (pageNumbers().length > 1) {
+<div class="flex justify-center mt-12">
+    <div class="join">
+        @for (page of pageNumbers(); track page) {
+        <input class="join-item btn btn-square" type="radio" name="page-options" [attr.aria-label]="page"
+            [checked]="currentPage() === page" (click)="onPageClick(page)" />
+        }
+    </div>
+</div>
+}
