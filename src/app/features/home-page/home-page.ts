@@ -30,7 +30,7 @@ export class HomePage implements OnInit {
 
   ngOnInit(): void {
     const title = this.route.snapshot.title
-      ?? $localize`:@@homeTitleMeta:Mateusz Malich | Apps, Websites & AI Solutions`;
+      ?? $localize`:@@homeTitleMeta:Mateusz Malich | Programmer | Apps | Websites | AI`;
     const description = $localize`:@@homeDescriptionMeta:Building intelligent apps and modern websites that power your business. Unlock the potential of AI and cutting-edge tech for your brand. Explore my work!`;
 
     this.titleService.setTitle(title);
