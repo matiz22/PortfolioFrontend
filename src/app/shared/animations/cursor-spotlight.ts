@@ -10,7 +10,11 @@ export class CursorSpotlight implements AfterViewInit, OnDestroy {
   private mouseMoveHandler: ((e: MouseEvent) => void) | null = null;
   private mouseLeaveHandler: (() => void) | null = null;
   private mouseEnterHandler: ((e: MouseEvent) => void) | null = null;
+  private scrollHandler: (() => void) | null = null;
   private rafId: number | null = null;
+  private lastX = 0;
+  private lastY = 0;
+  private isHovered = false;
 
   constructor(
     private el: ElementRef<HTMLElement>,
@@ -50,12 +54,14 @@ export class CursorSpotlight implements AfterViewInit, OnDestroy {
     this.renderer.appendChild(host, this.overlay);
 
     this.mouseMoveHandler = (e: MouseEvent) => {
+      this.lastX = e.clientX;
+      this.lastY = e.clientY;
       if (this.rafId) cancelAnimationFrame(this.rafId);
 
       this.rafId = requestAnimationFrame(() => {
         const rect = host.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
+        const x = this.lastX - rect.left;
+        const y = this.lastY - rect.top;
         const maskValue = `radial-gradient(300px circle at ${x}px ${y}px, black, transparent 70%)`;
 
         if (this.overlay) {
@@ -66,11 +72,14 @@ export class CursorSpotlight implements AfterViewInit, OnDestroy {
     };
 
     this.mouseEnterHandler = (e: MouseEvent) => {
+      this.isHovered = true;
+      this.lastX = e.clientX;
+      this.lastY = e.clientY;
       if (this.overlay) {
         this.renderer.setStyle(this.overlay, 'opacity', '1');
         const rect = host.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
+        const x = this.lastX - rect.left;
+        const y = this.lastY - rect.top;
         const maskValue = `radial-gradient(300px circle at ${x}px ${y}px, black, transparent 70%)`;
         this.renderer.setStyle(this.overlay, '-webkit-mask-image', maskValue);
         this.renderer.setStyle(this.overlay, 'mask-image', maskValue);
@@ -78,14 +87,33 @@ export class CursorSpotlight implements AfterViewInit, OnDestroy {
     };
 
     this.mouseLeaveHandler = () => {
+      this.isHovered = false;
       if (this.overlay) {
         this.renderer.setStyle(this.overlay, 'opacity', '0');
       }
     };
 
+    this.scrollHandler = () => {
+      if (!this.isHovered) return;
+      if (this.rafId) cancelAnimationFrame(this.rafId);
+
+      this.rafId = requestAnimationFrame(() => {
+        const rect = host.getBoundingClientRect();
+        const x = this.lastX - rect.left;
+        const y = this.lastY - rect.top;
+        const maskValue = `radial-gradient(300px circle at ${x}px ${y}px, black, transparent 70%)`;
+
+        if (this.overlay) {
+          this.renderer.setStyle(this.overlay, '-webkit-mask-image', maskValue);
+          this.renderer.setStyle(this.overlay, 'mask-image', maskValue);
+        }
+      });
+    };
+
     host.addEventListener('mousemove', this.mouseMoveHandler);
     host.addEventListener('mouseenter', this.mouseEnterHandler);
     host.addEventListener('mouseleave', this.mouseLeaveHandler);
+    window.addEventListener('scroll', this.scrollHandler, true); // true for capture to catch scroll on any element
   }
 
   ngOnDestroy(): void {
@@ -93,6 +121,7 @@ export class CursorSpotlight implements AfterViewInit, OnDestroy {
     if (this.mouseMoveHandler) host.removeEventListener('mousemove', this.mouseMoveHandler);
     if (this.mouseEnterHandler) host.removeEventListener('mouseenter', this.mouseEnterHandler);
     if (this.mouseLeaveHandler) host.removeEventListener('mouseleave', this.mouseLeaveHandler);
+    if (this.scrollHandler) window.removeEventListener('scroll', this.scrollHandler, true);
 
     if (this.rafId) cancelAnimationFrame(this.rafId);
 
