@@ -9,7 +9,7 @@ export class CursorSpotlight implements AfterViewInit, OnDestroy {
   private overlay: HTMLElement | null = null;
   private mouseMoveHandler: ((e: MouseEvent) => void) | null = null;
   private mouseLeaveHandler: (() => void) | null = null;
-  private mouseEnterHandler: (() => void) | null = null;
+  private mouseEnterHandler: ((e: MouseEvent) => void) | null = null;
   private rafId: number | null = null;
 
   constructor(
@@ -65,9 +65,15 @@ export class CursorSpotlight implements AfterViewInit, OnDestroy {
       });
     };
 
-    this.mouseEnterHandler = () => {
+    this.mouseEnterHandler = (e: MouseEvent) => {
       if (this.overlay) {
         this.renderer.setStyle(this.overlay, 'opacity', '1');
+        const rect = host.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const maskValue = `radial-gradient(300px circle at ${x}px ${y}px, black, transparent 70%)`;
+        this.renderer.setStyle(this.overlay, '-webkit-mask-image', maskValue);
+        this.renderer.setStyle(this.overlay, 'mask-image', maskValue);
       }
     };
 
