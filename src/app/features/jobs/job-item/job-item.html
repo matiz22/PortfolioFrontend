@@ -10,7 +10,7 @@
     <div class="card-body" [class.before:absolute]="job.thumbnail" [class.before:inset-0]="job.thumbnail" [class.before:bg-black/60]="job.thumbnail" [class.before:-z-10]="job.thumbnail">
         <h3 class="card-title font-mono tracking-tight">{{ job.title }}</h3>
         <p class="text-sm text-base-content/60">{{ job.companyName }}</p>
-        <p class="text-sm text-base-content/40">{{ job.location }}</p>
+        <p class="text-sm text-base-content/60">{{ job.location }}</p>
         <div class="flex gap-1.5 flex-wrap mt-4">
             @for (technology of job.technologies; track technology.id) {
             <div class="badge badge-primary badge-outline badge-sm">{{ technology.name }}</div>
