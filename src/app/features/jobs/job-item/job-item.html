@@ -1,21 +1,23 @@
 <a [routerLink]="['/job', job.id]" [title]="job.title"
-    class="card bg-base-100 image-full shadow-2xl hover:shadow-2xl hover:-translate-y-2 transition ease-in-out h-full min-h-64 overflow-hidden">
+    [class]="job.thumbnail
+      ? 'card image-full border border-white/5 hover:border-primary/30 transition-all duration-300 ease-out hover:-translate-y-1 h-full min-h-64 overflow-hidden'
+      : 'card bg-base-200/50 border border-white/5 hover:border-primary/30 transition-all duration-300 ease-out hover:-translate-y-1 h-full min-h-64 overflow-hidden'">
     @if (job.thumbnail) {
     <figure>
         <img [alt]="job.title" [src]="job.thumbnail | imageUrl" />
     </figure>
     }
-    <div class="card-body before:absolute before:inset-0 before:bg-black/60 before:-z-10">
-        <h3 class="card-title">{{ job.title }}</h3>
-        <p class="text-lg">{{ job.companyName }}</p>
-        <p class="text-base opacity-90">{{ job.location }}</p>
-        <div class="flex gap-2 flex-wrap mt-4">
+    <div class="card-body" [class.before:absolute]="job.thumbnail" [class.before:inset-0]="job.thumbnail" [class.before:bg-black/60]="job.thumbnail" [class.before:-z-10]="job.thumbnail">
+        <h3 class="card-title font-mono tracking-tight">{{ job.title }}</h3>
+        <p class="text-sm text-base-content/60">{{ job.companyName }}</p>
+        <p class="text-sm text-base-content/40">{{ job.location }}</p>
+        <div class="flex gap-1.5 flex-wrap mt-4">
             @for (technology of job.technologies; track technology.id) {
-            <div class="badge badge-accent badge-outline">{{ technology.name }}</div>
+            <div class="badge badge-primary badge-outline badge-sm">{{ technology.name }}</div>
             }
         </div>
         <div class="card-actions justify-end mt-auto">
-            <div class="badge badge-primary badge-sm">
+            <div class="badge badge-primary badge-sm font-mono">
                 {{ job.startDate | date:'MMM yyyy' }} - {{ job.isCurrent ? 'Present' : (job.endDate | date:'MMM yyyy')
                 }}
             </div>

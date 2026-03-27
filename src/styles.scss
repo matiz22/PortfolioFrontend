@@ -9,18 +9,18 @@
   default: true;
   prefersdark: true;
   color-scheme: "dark";
-  --color-base-100: oklch(25.33% 0.016 252.42);
-  --color-base-200: oklch(23.26% 0.014 253.1);
-  --color-base-300: oklch(21.15% 0.012 254.09);
-  --color-base-content: oklch(97.807% 0.029 256.847);
+  --color-base-100: oklch(10% 0.004 260);
+  --color-base-200: oklch(13% 0.005 260);
+  --color-base-300: oklch(17% 0.006 260);
+  --color-base-content: oklch(93% 0.005 260);
   --color-primary: oklch(79% 0.209 151.711);
   --color-primary-content: oklch(0% 0 0);
-  --color-secondary: oklch(78% 0.154 211.53);
-  --color-secondary-content: oklch(27% 0.041 260.031);
-  --color-accent: oklch(77% 0.152 181.912);
-  --color-accent-content: oklch(38% 0.063 188.416);
-  --color-neutral: oklch(14% 0.005 285.823);
-  --color-neutral-content: oklch(92% 0.004 286.32);
+  --color-secondary: oklch(55% 0.015 260);
+  --color-secondary-content: oklch(93% 0.005 260);
+  --color-accent: oklch(45% 0.012 260);
+  --color-accent-content: oklch(93% 0.005 260);
+  --color-neutral: oklch(14% 0.005 260);
+  --color-neutral-content: oklch(80% 0.005 260);
   --color-info: oklch(74% 0.16 232.661);
   --color-info-content: oklch(29% 0.066 243.157);
   --color-success: oklch(76% 0.177 163.223);
@@ -29,23 +29,21 @@
   --color-warning-content: oklch(41% 0.112 45.904);
   --color-error: oklch(71% 0.194 13.428);
   --color-error-content: oklch(27% 0.105 12.094);
-  --radius-selector: 2rem;
-  --radius-field: 2rem;
-  --radius-box: 2rem;
+  --radius-selector: 0.5rem;
+  --radius-field: 0.5rem;
+  --radius-box: 0.75rem;
   --size-selector: 0.25rem;
   --size-field: 0.28125rem;
-  --border: 2px;
-  --depth: 1;
+  --border: 1px;
+  --depth: 0;
   --noise: 0;
 }
 
 
-// /* Global font size increases (moderate) */
 html {
-  font-family: "Nunito", sans-serif;
-  font-size: 17px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 16px;
   scroll-behavior: smooth;
-  /* Slight increase from default 16px */
 }
 
 html:active-view-transition {
@@ -53,66 +51,21 @@ html:active-view-transition {
 }
 
 body {
-  font-family: "Nunito", sans-serif;
+  font-family: "JetBrains Mono", monospace;
 }
 
-// body {
-//   font-size: 1.0625rem;
-//   /* 18px - moderately larger body text */
-//   line-height: 1.6;
-//   /* Improved line height for readability */
-// }
+/* Font utility classes */
+.font-serif {
+  font-family: "Instrument Serif", serif;
+}
 
-// /* Moderately scale up heading sizes */
-// h1 {
-//   font-size: 2.5rem;
-//   /* 42.5px */
-// }
+.font-sans {
+  font-family: "JetBrains Mono", monospace;
+}
 
-// h2 {
-//   font-size: 2rem;
-//   /* 34px */
-// }
-
-// h3 {
-//   font-size: 1.75rem;
-//   /* 29.75px */
-// }
-
-// h4 {
-//   font-size: 1.5rem;
-//   /* 25.5px */
-// }
-
-// h5 {
-//   font-size: 1.25rem;
-//   /* 21.25px */
-// }
-
-// h6 {
-//   font-size: 1.125rem;
-//   /* 19.125px */
-// }
-
-// /* Moderate increase for paragraph and text sizes */
-// p,
-// li,
-// span,
-// a,
-// label,
-// input,
-// textarea,
-// select,
-// button {
-//   font-size: 1.0625rem;
-//   /* 18px */
-// }
-
-// /* Slightly increase small text */
-// small {
-//   font-size: 0.9375rem;
-//   /* 16px */
-// }
+.font-mono {
+  font-family: "JetBrains Mono", monospace;
+}
 
 /* Fade-in Animation to prevent flickering */
 @keyframes fadeIn {
@@ -188,4 +141,18 @@ body {
 /* Initial state for elements that will animate - prevents flicker */
 .will-animate {
   opacity: 0;
+}
+
+/* Section headings — editorial style */
+.section-heading {
+  font-family: "Instrument Serif", serif;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+/* Subtle divider line */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(255,255,255,0.06), transparent);
 }

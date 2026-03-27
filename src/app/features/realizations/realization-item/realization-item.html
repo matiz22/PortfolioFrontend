@@ -1,16 +1,16 @@
 <a [routerLink]="['/realization', realization.id]" [title]="realization.title"
-  class="card bg-base-200 shadow-2xl hover:bg-base-300 hover:-translate-y-2 transition ease-in-out border border-base-300 h-full flex flex-col">
+  class="card bg-base-200/50 border border-white/5 hover:border-primary/30 transition-all duration-300 ease-out hover:-translate-y-1 h-full flex flex-col overflow-hidden">
   <!-- thumbnail (if available) -->
   @if (realization.thumbnail) {
   <figure>
-    <img [alt]="realization.title" [src]="realization.thumbnail | imageUrl" class="w-full h-64 object-cover">
+    <img [alt]="realization.title" [src]="realization.thumbnail | imageUrl" class="w-full h-48 object-cover">
   </figure>
   }
 
   <div class="card-body items-center text-center flex flex-col flex-1">
-    <h3 class="card-title">{{ realization.title || 'Untitled' }}</h3>
+    <h3 class="card-title font-mono tracking-tight">{{ realization.title || 'Untitled' }}</h3>
 
-    <p class="text-sm opacity-70">
+    <p class="text-sm text-base-content/40">
       @if (realization.clientName) {
       {{ realization.clientName }}
       •
@@ -18,11 +18,11 @@
       {{ year || '' }}
     </p>
 
-    <p class="mt-2">{{ summary }}</p>
+    <p class="mt-2 text-sm text-base-content/60">{{ summary }}</p>
 
-    <div class="flex gap-2 flex-wrap mt-4 justify-center">
+    <div class="flex gap-1.5 flex-wrap mt-4 justify-center">
       @for (tech of techList; track tech.id) {
-      <div class="badge badge-accent badge-outline">{{ tech.name }}</div>
+      <div class="badge badge-primary badge-outline badge-sm">{{ tech.name }}</div>
       }
     </div>
   </div>

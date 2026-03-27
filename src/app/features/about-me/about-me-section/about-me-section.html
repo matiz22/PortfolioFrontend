@@ -1,25 +1,31 @@
-<section class="py-20" id="about">
-  <div class="container mx-auto px-6">
-    <h2 class="text-4xl font-bold text-center mb-12" i18n="@@about.heading">How can I help you?</h2>
-    <p class="text-lg text-center max-w-2xl mx-auto mb-12 opacity-80" i18n="@@about.intro">
-      I build digital tools that drive your business forward. From modern websites and advanced applications to
-      intelligent AI automation - I deliver solutions ready for tomorrow's challenges.
-    </p>
+<section appCursorSpotlight class="py-24 border-y border-white/5 bg-[radial-gradient(oklch(79%_0.209_151.711_/_0.4)_1.5px,transparent_1.5px)] [background-size:24px_24px]" id="about">
+  <div class="container mx-auto px-6 max-w-6xl">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
+      <div class="md:w-1/2">
+        <h2 class="section-heading text-4xl md:text-5xl lg:text-6xl text-left" i18n="@@about.heading">How can I help you?</h2>
+      </div>
+      <div class="md:w-1/2 lg:w-2/5">
+        <p class="text-base text-left text-base-content/80 backdrop-blur-md bg-base-100/50 rounded-xl px-5 py-4 border border-white/5 relative z-10" i18n="@@about.intro">
+          I build digital tools that drive your business forward. From modern websites and advanced applications to
+          intelligent AI automation - I deliver solutions ready for tomorrow's challenges.
+        </p>
+      </div>
+    </div>
 
-    <div class="flex flex-row flex-wrap justify-center gap-4 max-w-5xl mx-auto">
+    <div class="flex flex-row flex-wrap justify-center gap-4 max-w-5xl mx-auto relative z-10">
       <!-- Web Development -->
       <div appAosAnimations="slide-in" [delay]="0"
-        class="flex-1 min-w-full md:min-w-[calc(50%-0.5rem)] lg:min-w-[calc(33.333%-0.67rem)] md:max-w-[calc(50%-0.5rem)] lg:max-w-[calc(33.333%-0.67rem)] card bg-base-200 shadow-xl hover:shadow-2xl transition-all duration-500 ease-out hover:-translate-y-2">
-        <div class="card-body items-center text-center">
-          <div class="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-primary" fill="none" viewBox="0 0 24 24"
+        class="flex-1 min-w-full md:min-w-[calc(50%-0.5rem)] lg:min-w-[calc(33.333%-0.67rem)] md:max-w-[calc(50%-0.5rem)] lg:max-w-[calc(33.333%-0.67rem)] bg-base-200 border border-white/5 rounded-xl hover:border-primary/30 transition-all duration-500 ease-out hover:-translate-y-1">
+        <div class="p-6 flex flex-col items-center text-center">
+          <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-5">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24"
               stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                 d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
             </svg>
           </div>
-          <h3 class="card-title text-xl" i18n="@@about.card.web.title">Web Development</h3>
-          <p class="opacity-70" i18n="@@about.card.web.description">
+          <h3 class="font-serif italic text-xl mb-3" i18n="@@about.card.web.title">Web Development</h3>
+          <p class="text-sm text-base-content/50 leading-relaxed" i18n="@@about.card.web.description">
             Modern websites that deliver results I create fast, responsive, and SEO-optimized websites and e-commerce
             platforms. My focus is not just on aesthetics, but on high conversion rates and intuitive UX that turns
             visitors into loyal customers.
@@ -29,17 +35,17 @@
 
       <!-- Desktop & Mobile Apps -->
       <div appAosAnimations="slide-in" [delay]="100"
-        class="flex-1 min-w-full md:min-w-[calc(50%-0.5rem)] lg:min-w-[calc(33.333%-0.67rem)] md:max-w-[calc(50%-0.5rem)] lg:max-w-[calc(33.333%-0.67rem)] card bg-base-200 shadow-xl hover:shadow-2xl transition-all duration-500 ease-out hover:-translate-y-2">
-        <div class="card-body items-center text-center">
-          <div class="w-16 h-16 rounded-full bg-secondary/20 flex items-center justify-center mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-secondary" fill="none" viewBox="0 0 24 24"
+        class="flex-1 min-w-full md:min-w-[calc(50%-0.5rem)] lg:min-w-[calc(33.333%-0.67rem)] md:max-w-[calc(50%-0.5rem)] lg:max-w-[calc(33.333%-0.67rem)] bg-base-200 border border-white/5 rounded-xl hover:border-primary/30 transition-all duration-500 ease-out hover:-translate-y-1">
+        <div class="p-6 flex flex-col items-center text-center">
+          <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-5">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24"
               stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                 d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
             </svg>
           </div>
-          <h3 class="card-title text-xl" i18n="@@about.card.apps.title">Mobile &amp; Desktop Apps</h3>
-          <p class="opacity-70" i18n="@@about.card.apps.description">
+          <h3 class="font-serif italic text-xl mb-3" i18n="@@about.card.apps.title">Mobile &amp; Desktop Apps</h3>
+          <p class="text-sm text-base-content/50 leading-relaxed" i18n="@@about.card.apps.description">
             Software tailored to your needs I build high-performance native and cross-platform applications designed to
             streamline your daily operations. Whether you need a custom internal tool or a mobile app for your users - I
             deliver a product that just works.
@@ -49,17 +55,17 @@
 
       <!-- AI Implementation -->
       <div appAosAnimations="slide-in" [delay]="200"
-        class="flex-1 min-w-full md:min-w-[calc(50%-0.5rem)] lg:min-w-[calc(33.333%-0.67rem)] md:max-w-[calc(50%-0.5rem)] lg:max-w-[calc(33.333%-0.67rem)] card bg-base-200 shadow-xl hover:shadow-2xl transition-all duration-500 ease-out hover:-translate-y-2">
-        <div class="card-body items-center text-center">
-          <div class="w-16 h-16 rounded-full bg-accent/20 flex items-center justify-center mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24"
+        class="flex-1 min-w-full md:min-w-[calc(50%-0.5rem)] lg:min-w-[calc(33.333%-0.67rem)] md:max-w-[calc(50%-0.5rem)] lg:max-w-[calc(33.333%-0.67rem)] bg-base-200 border border-white/5 rounded-xl hover:border-primary/30 transition-all duration-500 ease-out hover:-translate-y-1">
+        <div class="p-6 flex flex-col items-center text-center">
+          <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-5">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24"
               stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                 d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
             </svg>
           </div>
-          <h3 class="card-title text-xl" i18n="@@about.card.ai.title">AI Implementation</h3>
-          <p class="opacity-70" i18n="@@about.card.ai.description">
+          <h3 class="font-serif italic text-xl mb-3" i18n="@@about.card.ai.title">AI Implementation</h3>
+          <p class="text-sm text-base-content/50 leading-relaxed" i18n="@@about.card.ai.description">
             AI & Automation for your business I help you leverage the power of AI to gain a competitive edge. From
             intelligent AI agents, MCPs, and process automation to data insights - I implement solutions that save you
             time and

@@ -1,16 +1,22 @@
-<section class="py-20" id="education">
-  <div class="container mx-auto px-6">
-    <h2 class="text-4xl font-bold text-center mb-12" i18n="@@education.heading">Education</h2>
-    <p class="text-lg text-center max-w-2xl mx-auto mb-12 opacity-80" i18n="@@education.description">
-      My academic background and the foundations of my knowledge in computer science and software engineering.
-    </p>
+<section appCursorSpotlight class="py-24 border-y border-white/5" id="education" style="background-image: radial-gradient(oklch(79% 0.209 151.711 / 0.4) 1.5px, transparent 1.5px); background-size: 24px 24px;">
+  <div class="container mx-auto px-6 max-w-6xl relative z-10">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
+      <div class="md:w-1/2">
+        <h2 class="section-heading text-4xl md:text-5xl lg:text-6xl text-left" i18n="@@education.heading">Education</h2>
+      </div>
+      <div class="md:w-1/2 lg:w-2/5">
+        <p class="text-base text-left text-base-content/80 backdrop-blur-md bg-base-100/50 rounded-xl px-5 py-4 border border-white/5 relative z-10" i18n="@@education.description">
+          My academic background and the foundations of my knowledge in computer science and software engineering.
+        </p>
+      </div>
+    </div>
 
     <!-- Flex layout with centering: orphan items center nicely -->
-    <div class="flex flex-row flex-wrap justify-center gap-4">
+    <div class="flex flex-row flex-wrap justify-center gap-4 relative z-10">
       @if (education(); as state) {
       @if (state.status === 'loading') {
       <div class="text-center w-full">
-        <span class="loading loading-spinner loading-lg"></span>
+        <span class="loading loading-spinner loading-lg text-primary"></span>
       </div>
       }
       @else if (state.status === 'success') {
@@ -28,10 +34,10 @@
     </div>
 
     <!-- View All Link -->
-    <div class="text-center mt-8">
-      <a routerLink="/education" class="btn btn-outline btn-primary">
+    <div class="text-center mt-8 relative z-10">
+      <a routerLink="/education" class="btn bg-base-100/50 backdrop-blur-md border border-primary/30 text-base-content hover:border-white hover:text-white hover:bg-transparent">
         <ng-container i18n="@@education.viewall">View All Education</ng-container>
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" fill="none" viewBox="0 0 24 24"
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24"
           stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
         </svg>

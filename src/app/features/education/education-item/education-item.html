@@ -1,34 +1,36 @@
 <a [routerLink]="['/education', education.id]" [title]="education.degree"
-  class="card bg-base-100 image-full shadow-2xl hover:shadow-2xl hover:-translate-y-2 transition ease-in-out h-full min-h-64 overflow-hidden">
+  [class]="education.thumbnail
+    ? 'card image-full border border-white/5 hover:border-primary/30 transition-all duration-300 ease-out hover:-translate-y-1 h-full min-h-64 overflow-hidden'
+    : 'card bg-base-200/50 border border-white/5 hover:border-primary/30 transition-all duration-300 ease-out hover:-translate-y-1 h-full min-h-64 overflow-hidden'">
   @if (education.thumbnail) {
   <figure>
     <img [alt]="education.institution" [src]="education.thumbnail | imageUrl" />
   </figure>
   }
-  <div class="card-body before:absolute before:inset-0 before:bg-black/60 before:-z-10">
+  <div class="card-body" [class.before:absolute]="education.thumbnail" [class.before:inset-0]="education.thumbnail" [class.before:bg-black/60]="education.thumbnail" [class.before:-z-10]="education.thumbnail">
     <div class="flex flex-col">
-      <h3 class="card-title">{{ education.degree }}</h3>
-      <p class="text-lg mt-1">{{ education.institution }}</p>
+      <h3 class="card-title font-mono tracking-tight">{{ education.degree }}</h3>
+      <p class="text-sm text-base-content/60 mt-1">{{ education.institution }}</p>
       @if (education.fieldOfStudy) {
-      <p class="text-base opacity-90">{{ education.fieldOfStudy }}</p>
+      <p class="text-sm text-base-content/40">{{ education.fieldOfStudy }}</p>
       }
     </div>
     @if (education.technologies.length > 0) {
     <div class="mt-4">
-      <div class="flex gap-2 flex-wrap">
+      <div class="flex gap-1.5 flex-wrap">
         @for (tech of education.technologies; track tech.id) {
-        <div class="badge badge-primary badge-outline">{{ tech.name }}</div>
+        <div class="badge badge-primary badge-outline badge-sm">{{ tech.name }}</div>
         }
       </div>
     </div>
     }
     <div class="card-actions justify-between items-center mt-auto">
-      <div class="badge badge-sm badge-primary">
+      <div class="badge badge-primary badge-sm font-mono">
         {{ education.startDate | date:'yyyy' }} - {{ education.isCurrent ? 'Present' : (education.endDate |
         date:'yyyy') }}
       </div>
       @if (education.grade) {
-      <p class="font-semibold">{{ education.grade }}</p>
+      <p class="font-medium text-sm text-base-content/60">{{ education.grade }}</p>
       }
     </div>
   </div>

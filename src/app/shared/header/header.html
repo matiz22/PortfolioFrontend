@@ -1,20 +1,20 @@
 <div class="fixed top-0 left-0 right-0 z-[9999] flex justify-center pointer-events-none">
-  <nav class="mt-4 w-fit bg-primary bg-opacity-90 text-black py-3 rounded-full pointer-events-auto">
-    <div class="max-w-7xl mx-auto px-4 flex justify-between items-center gap-8">
+  <nav class="mt-4 w-fit bg-base-200/80 backdrop-blur-xl border border-primary/30 text-base-content py-3 rounded-full pointer-events-auto transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-5 flex justify-between items-center gap-8">
       <a [routerLink]="['/']" title="Mateusz Malich - Home">
-        <h4 class="font-bold">Malich.dev</h4>
+        <h4 class="font-serif italic text-lg text-base-content hover:text-primary transition-colors">Malich.dev</h4>
       </a>
 
       <!-- Desktop Navigation -->
       <div class="hidden md:flex items-center space-x-6">
-        <ul class="flex space-x-5 list-none m-0 p-0">
-          <li><a [routerLink]="['/projects']" i18n="@@header.nav.projects" title="Projects">Projects</a></li>
-          <li><a [routerLink]="['/realizations']" i18n="@@header.nav.realizations" title="Realizations">Realizations</a>
+        <ul class="flex space-x-5 list-none m-0 p-0 text-sm font-medium">
+          <li><a [routerLink]="['/projects']" i18n="@@header.nav.projects" title="Projects" class="text-base-content/70 hover:text-primary transition-colors">Projects</a></li>
+          <li><a [routerLink]="['/realizations']" i18n="@@header.nav.realizations" title="Realizations" class="text-base-content/70 hover:text-primary transition-colors">Realizations</a>
           </li>
-          <li><a [routerLink]="['/education']" i18n="@@header.nav.education" title="Education">Education</a></li>
+          <li><a [routerLink]="['/education']" i18n="@@header.nav.education" title="Education" class="text-base-content/70 hover:text-primary transition-colors">Education</a></li>
           <li><a [routerLink]="['/certifications']" i18n="@@header.nav.certificates"
-              title="Certifications">Certificates</a></li>
-          <li><a [routerLink]="['/jobs']" i18n="@@header.nav.jobs" title="Work Experience">Jobs</a></li>
+              title="Certifications" class="text-base-content/70 hover:text-primary transition-colors">Certificates</a></li>
+          <li><a [routerLink]="['/jobs']" i18n="@@header.nav.jobs" title="Work Experience" class="text-base-content/70 hover:text-primary transition-colors">Jobs</a></li>
         </ul>
         <app-languages-switcher class="ml-4" />
       </div>
@@ -24,22 +24,22 @@
         <ul class="menu menu-horizontal p-0">
           <li>
             <details #menuDetails (click)="$event.stopPropagation()">
-              <summary class="btn btn-ghost btn-circle btn-sm">
+              <summary class="btn btn-ghost btn-circle btn-sm text-base-content/70">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                   stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
               </summary>
 
-              <ul class="bg-base-300 text-white rounded-xl right-0 w-48">
-                <li><a [routerLink]="['/projects']" i18n="@@header.nav.projects" title="Projects">Projects</a></li>
+              <ul class="bg-base-200 border border-white/5 text-base-content rounded-xl right-0 w-48">
+                <li><a [routerLink]="['/projects']" i18n="@@header.nav.projects" title="Projects" class="hover:text-primary">Projects</a></li>
                 <li><a [routerLink]="['/realizations']" i18n="@@header.nav.realizations"
-                    title="Realizations">Realizations</a></li>
-                <li><a [routerLink]="['/education']" i18n="@@header.nav.education" title="Education">Education</a></li>
+                    title="Realizations" class="hover:text-primary">Realizations</a></li>
+                <li><a [routerLink]="['/education']" i18n="@@header.nav.education" title="Education" class="hover:text-primary">Education</a></li>
                 <li><a [routerLink]="['/certifications']" i18n="@@header.nav.certifications"
-                    title="Certifications">Certifications</a></li>
-                <li><a [routerLink]="['/jobs']" i18n="@@header.nav.jobs" title="Work Experience">Jobs</a></li>
-                <li class="border-t border-base-100 mt-2 pt-2">
+                    title="Certifications" class="hover:text-primary">Certifications</a></li>
+                <li><a [routerLink]="['/jobs']" i18n="@@header.nav.jobs" title="Work Experience" class="hover:text-primary">Jobs</a></li>
+                <li class="border-t border-white/5 mt-2 pt-2">
                   <app-languages-switcher />
                 </li>
               </ul>

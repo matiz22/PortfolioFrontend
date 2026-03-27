@@ -6,7 +6,7 @@
   <title>PortfolioFrontend</title>
   <base href="/">
   <meta content="width=device-width, initial-scale=1" name="viewport">
-  <meta name="theme-color" content="#111418">
+  <meta name="theme-color" content="#0a0a0b">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
@@ -26,26 +26,21 @@
   <link rel="manifest" href="/site.webmanifest">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200..1000&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
-    /* Critical CSS to prevent FOUC - matches --color-base-100 from theme */
+    /* Critical CSS to prevent FOUC - matches new near-black base */
     html,
     body {
-      background-color: oklch(25.33% 0.016 252.42);
-      color: oklch(97.807% 0.029 256.847);
+      background-color: #0a0a0b;
+      color: #e8e8ec;
     }
   </style>
 </head>
 
 <body class="relative overflow-x-hidden">
-  <!-- Global background gradient decoration -->
-  <div class="fixed inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 pointer-events-none z-0">
-  </div>
-  <div
-    class="fixed top-0 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl opacity-50 -translate-y-1/2 pointer-events-none z-0">
-  </div>
-  <div
-    class="fixed bottom-0 right-1/4 w-72 h-72 bg-secondary/10 rounded-full blur-3xl opacity-50 translate-y-1/2 pointer-events-none z-0">
+  <!-- Subtle green radial glow — very faint -->
+  <div class="fixed inset-0 pointer-events-none z-0"
+    style="background: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(74,222,128,0.04) 0%, transparent 60%);">
   </div>
 
   <app-root class="relative z-10"></app-root>

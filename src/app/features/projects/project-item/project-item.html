@@ -1,21 +1,23 @@
 <a [routerLink]="['/project', project.id]" [title]="project.title"
-  class="card bg-base-100 image-full shadow-2xl hover:shadow-2xl hover:-translate-y-2 transition ease-in-out h-full min-h-64 overflow-hidden">
+  [class]="project.thumbnail
+    ? 'card image-full border border-white/5 hover:border-primary/30 transition-all duration-300 ease-out hover:-translate-y-1 h-full min-h-64 overflow-hidden'
+    : 'card bg-base-200/50 border border-white/5 hover:border-primary/30 transition-all duration-300 ease-out hover:-translate-y-1 h-full min-h-64 overflow-hidden'">
   @if (project.thumbnail) {
   <figure>
     <img [alt]="project.title" [src]="project.thumbnail | imageUrl" />
   </figure>
   }
-  <div class="card-body before:absolute before:inset-0 before:bg-black/60 before:-z-10">
-    <h3 class="card-title">{{ project.title }}</h3>
-    <p class="text-lg">{{ project.shortDesc }}</p>
-    <div class="flex gap-2 flex-wrap mt-4">
+  <div class="card-body" [class.before:absolute]="project.thumbnail" [class.before:inset-0]="project.thumbnail" [class.before:bg-black/60]="project.thumbnail" [class.before:-z-10]="project.thumbnail">
+    <h3 class="card-title font-mono tracking-tight">{{ project.title }}</h3>
+    <p class="text-sm text-base-content/50">{{ project.shortDesc }}</p>
+    <div class="flex gap-1.5 flex-wrap mt-4">
       @for (technology of project.technologies; track technology.id) {
-      <div class="badge badge-accent badge-outline">{{ technology.name }}</div>
+      <div class="badge badge-primary badge-outline badge-sm">{{ technology.name }}</div>
       }
     </div>
     <div class="card-actions justify-end mt-auto">
       @if (project.liveUrl) {
-      <a [href]="project.liveUrl" class="btn btn-primary" rel="noopener noreferrer" target="_blank"
+      <a [href]="project.liveUrl" class="btn btn-primary btn-sm" rel="noopener noreferrer" target="_blank"
         i18n="@@projectItem.btn.viewLive">View Live</a>
       }
     </div>

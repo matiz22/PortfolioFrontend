@@ -1,15 +1,21 @@
-<section class="py-20" id="work">
-  <div class="container mx-auto px-6">
-    <h2 class="text-4xl font-bold text-center mb-12" i18n="@@showcase.heading">My Work</h2>
-    <p class="text-lg text-center max-w-2xl mx-auto mb-12 opacity-80" i18n="@@showcase.description">
-      Explore my latest projects and professional accomplishments. Each item represents a unique challenge solved with
-      modern technology.
-    </p>
+<section class="py-24 relative overflow-hidden" id="work">
+  <div class="container mx-auto px-6 max-w-6xl relative z-10">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
+      <div class="md:w-1/2">
+        <h2 class="section-heading text-4xl md:text-5xl lg:text-6xl text-left" i18n="@@showcase.heading">My Work</h2>
+      </div>
+      <div class="md:w-1/2 lg:w-2/5">
+        <p class="text-base text-left text-base-content/50" i18n="@@showcase.description">
+          Explore my latest projects and professional accomplishments. Each item represents a unique challenge solved with
+          modern technology.
+        </p>
+      </div>
+    </div>
 
-    <div class="tabs tabs-lifted tabs-lg justify-center mb-8" role="tablist">
+    <div class="tabs tabs-bordered tabs-lg justify-center mb-8" role="tablist">
       <input aria-label="Projects" i18n-aria-label="@@showcase.tab.projects" checked class="tab" name="work_tabs"
         role="tab" type="radio" />
-      <div class="tab-content bg-base-100 rounded-box p-6" role="tabpanel">
+      <div class="tab-content rounded-xl p-6" role="tabpanel">
         <!-- Flex layout with centering: orphan items center nicely -->
         <div class="flex flex-row flex-wrap justify-center gap-4">
           @let projectItems = projects();
@@ -35,9 +41,9 @@
 
         <!-- View All Link -->
         <div class="text-center mt-8">
-          <a routerLink="/projects" class="btn btn-outline btn-primary">
+          <a routerLink="/projects" class="btn btn-outline border-white/10 text-base-content/70 hover:border-primary hover:text-primary hover:bg-transparent">
             <ng-container i18n="@@showcase.viewall.projects">View All Projects</ng-container>
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" fill="none" viewBox="0 0 24 24"
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24"
               stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
             </svg>
@@ -48,7 +54,7 @@
 
       <input aria-label="Realizations" i18n-aria-label="@@showcase.tab.realizations" class="tab" name="work_tabs"
         role="tab" type="radio" />
-      <div class="tab-content bg-base-100 rounded-box p-6" role="tabpanel">
+      <div class="tab-content rounded-xl p-6" role="tabpanel">
         <!-- Flex layout with centering: orphan items center nicely -->
         <div class="flex flex-row flex-wrap justify-center gap-4">
           @let realizationsItems = realizations();
@@ -74,9 +80,9 @@
 
         <!-- View All Link -->
         <div class="text-center mt-8">
-          <a routerLink="/realizations" class="btn btn-outline btn-primary">
+          <a routerLink="/realizations" class="btn btn-outline border-white/10 text-base-content/70 hover:border-primary hover:text-primary hover:bg-transparent">
             <ng-container i18n="@@showcase.viewall.realizations">View All Realizations</ng-container>
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" fill="none" viewBox="0 0 24 24"
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24"
               stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
             </svg>

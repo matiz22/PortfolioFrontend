@@ -1,86 +1,9 @@
-/* Custom animations for hero section */
-@keyframes gradient-shift {
-
-    0%,
-    100% {
-        background-position: 0% 50%;
-    }
-
-    50% {
-        background-position: 100% 50%;
-    }
-}
-
-@keyframes gradient-text {
-    0% {
-        background-position: 0% 50%;
-    }
-
-    100% {
-        background-position: 200% 50%;
-    }
-}
-
-@keyframes float {
-
-    0%,
-    100% {
-        transform: translateY(0) translateX(0);
-    }
-
-    25% {
-        transform: translateY(-20px) translateX(10px);
-    }
-
-    50% {
-        transform: translateY(-10px) translateX(-10px);
-    }
-
-    75% {
-        transform: translateY(-25px) translateX(5px);
-    }
-}
-
-@keyframes float-delayed {
-
-    0%,
-    100% {
-        transform: translateY(0) translateX(0);
-    }
-
-    25% {
-        transform: translateY(-15px) translateX(-15px);
-    }
-
-    50% {
-        transform: translateY(-25px) translateX(10px);
-    }
-
-    75% {
-        transform: translateY(-10px) translateX(-5px);
-    }
-}
-
-@keyframes float-slow {
-
-    0%,
-    100% {
-        transform: translateY(0) translateX(0);
-    }
-
-    33% {
-        transform: translateY(-30px) translateX(15px);
-    }
-
-    66% {
-        transform: translateY(-15px) translateX(-20px);
-    }
-}
+/* Hero section animations — simplified for editorial design */
 
 @keyframes fade-in-up {
     0% {
         opacity: 0;
-        transform: translateY(30px);
+        transform: translateY(20px);
     }
 
     100% {
@@ -89,37 +12,13 @@
     }
 }
 
-/* Animation classes */
-.animate-gradient-shift {
-    background-size: 200% 200%;
-    animation: gradient-shift 15s ease infinite;
-}
-
-.animate-gradient-text {
-    animation: gradient-text 3s linear infinite;
-}
-
-.animate-float {
-    animation: float 8s ease-in-out infinite;
-}
-
-.animate-float-delayed {
-    animation: float-delayed 10s ease-in-out infinite;
-    animation-delay: 2s;
-}
-
-.animate-float-slow {
-    animation: float-slow 12s ease-in-out infinite;
-    animation-delay: 4s;
-}
-
 /* 
  * SSR-safe fade-in animation: 
  * Content starts visible to prevent flash during SSR hydration.
  * Animation uses 'both' fill-mode to handle the animation naturally.
  */
 .animate-fade-in-up {
-    animation: fade-in-up 0.8s ease-out both;
+    animation: fade-in-up 0.7s ease-out both;
 }
 
 /* Animation delays */
