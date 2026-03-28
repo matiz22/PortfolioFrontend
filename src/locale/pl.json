@@ -31,7 +31,7 @@
         "education.description": "Moje wykształcenie akademickie i fundamenty wiedzy z zakresu informatyki i inżynierii oprogramowania.",
         "education.viewall": "Cała Edukacja",
         "hero.badge.available": "Dostępny do współpracy",
-        "hero.heading": "Cześć, jestem Mateusz Malich",
+        "hero.heading": "Cześć, jestem {$START_TAG_SPAN}Mateusz Malich{$CLOSE_TAG_SPAN}",
         "hero.badge.fullstack": "Programista",
         "hero.badge.engineer": "Inżynier AI",
         "hero.badge.enthusiast": "Pasjonata innowacji",
