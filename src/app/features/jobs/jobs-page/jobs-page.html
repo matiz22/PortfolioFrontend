@@ -17,7 +17,7 @@
 
     <section class="py-20 lg:py-24 relative z-10">
         <div class="container mx-auto px-6 max-w-7xl">
-            @defer {
+            @defer (hydrate on idle) {
             <div class="flex flex-row flex-wrap justify-center gap-4 animate-[fadeSlideIn_0.4s_ease-out_both]">
                 @let jobItems = jobs();
                 @switch (jobItems.status) {
