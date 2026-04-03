@@ -32,13 +32,15 @@ export class CursorSpotlight implements AfterViewInit, OnDestroy {
     if (computedPosition === 'static') {
       this.renderer.setStyle(host, 'position', 'relative');
     }
+    // Create a stacking context so overlay z-index:-1 stays above background but below content
+    this.renderer.setStyle(host, 'isolation', 'isolate');
 
     // Create overlay with BIGGER dots — same grid, larger radius
     this.overlay = this.renderer.createElement('div');
     this.renderer.setStyle(this.overlay, 'position', 'absolute');
     this.renderer.setStyle(this.overlay, 'inset', '0');
     this.renderer.setStyle(this.overlay, 'pointer-events', 'none');
-    this.renderer.setStyle(this.overlay, 'z-index', '1');
+    this.renderer.setStyle(this.overlay, 'z-index', '-1');
     this.renderer.setStyle(this.overlay, 'opacity', '0');
     this.renderer.setStyle(this.overlay, 'transition', 'opacity 0.4s ease');
     // Bigger, brighter dots on the same 24px grid
