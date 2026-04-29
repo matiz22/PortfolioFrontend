@@ -27,7 +27,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=block"
     rel="stylesheet">
   <style>
     /* Critical CSS to prevent FOUC - matches new near-black base */
@@ -35,6 +35,71 @@
     body {
       background-color: #0a0a0b;
       color: #e8e8ec;
+    }
+
+    /* Critical skeleton styles for app shell & defer placeholders */
+    .skeleton {
+      animation: skeleton 1.8s ease-in-out infinite;
+      background-color: #17171a;
+      background-image: linear-gradient(105deg, transparent 0%, transparent 40%, rgba(255, 255, 255, 0.04) 50%, transparent 60%, transparent 100%);
+      background-size: 200% auto;
+    }
+
+    @keyframes skeleton {
+      0% {
+        background-position: 150%;
+      }
+
+      100% {
+        background-position: -50%;
+      }
+    }
+
+    /* Critical Header styles to prevent FOUC */
+    app-header>div {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 9999;
+      display: flex;
+      justify-content: center;
+      pointer-events: none;
+    }
+
+    app-header nav {
+      margin-top: 1rem;
+      width: fit-content;
+      background-color: oklch(13% 0.005 260 / 80%);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid oklch(79% 0.209 151.711 / 30%);
+      color: oklch(93% 0.005 260);
+      padding-top: 0.75rem;
+      padding-bottom: 0.75rem;
+      border-radius: 9999px;
+      pointer-events: auto;
+    }
+
+    /* Critical inner layout for the nav so it doesn't stack vertically */
+    app-header nav>div {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 2rem;
+      padding-left: 1.25rem;
+      padding-right: 1.25rem;
+      max-width: 80rem;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    app-header nav ul {
+      display: flex;
+      gap: 1.25rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
     }
   </style>
 </head>

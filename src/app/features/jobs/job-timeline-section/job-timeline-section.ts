@@ -5,10 +5,11 @@ import { RouterLink } from '@angular/router';
 import { ApiState } from '../../../core/models/api.state';
 import { JobsService } from '../../../core/services/jobs.service';
 import { Job } from '../../../core/models/job';
+import { AosAnimations } from '../../../shared/animations/aos-animation';
 
 @Component({
   selector: 'app-job-timeline-section',
-  imports: [DatePipe, RouterLink],
+  imports: [DatePipe, RouterLink, AosAnimations],
   templateUrl: './job-timeline-section.html',
   styleUrl: './job-timeline-section.scss',
 })

@@ -7,7 +7,7 @@ import { isPlatformBrowser } from '@angular/common';
 })
 export class AosAnimations implements AfterViewInit, OnInit {
 
-  @Input() animationType: string = 'slide-in';
+  @Input('appAosAnimations') animationType: string = 'reveal-elegant';
   @Input() delay: string | number = 0;
 
   constructor(
@@ -17,9 +17,11 @@ export class AosAnimations implements AfterViewInit, OnInit {
 
   ngOnInit() {
     this.el.nativeElement.classList.add(this.animationType);
-    if (this.delay) {
-      const delayValue = typeof this.delay === 'number' ? `${this.delay}ms` : this.delay;
+    if (this.delay !== undefined) {
+      const baseDelay = 150;
+      const delayValue = typeof this.delay === 'number' ? `${this.delay + baseDelay}ms` : this.delay;
       this.el.nativeElement.style.transitionDelay = delayValue;
+      this.el.nativeElement.style.animationDelay = delayValue;
     }
   }
 
@@ -36,7 +38,7 @@ export class AosAnimations implements AfterViewInit, OnInit {
               entry.target.classList.remove(this.animationType, 'visible');
               (entry.target as HTMLElement).style.transitionDelay = '';
               // Don't clear transition property to preserve hover animations
-            }, 1200); // Wait longer than max animation duration (1s)
+            }, 2000); // Wait longer than max animation duration (1.4s)
 
             observer.unobserve(entry.target);
           }

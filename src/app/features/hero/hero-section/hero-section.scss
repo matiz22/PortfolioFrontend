@@ -1,6 +1,18 @@
-/* Hero section animations — simplified for editorial design */
+/* Hero section animations — Multi-Layered Sharp Reveal */
 
-@keyframes fade-in-up {
+/* 1. Pure Fade (Badge & Buttons) — Sharp & Grounded */
+@keyframes pure-fade {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+/* 2. Slide Reveal (Text Content) — Sharp & Precision */
+@keyframes slide-reveal {
     0% {
         opacity: 0;
         transform: translateY(20px);
@@ -12,16 +24,48 @@
     }
 }
 
-/* 
- * SSR-safe fade-in animation: 
- * Content starts visible to prevent flash during SSR hydration.
- * Animation uses 'both' fill-mode to handle the animation naturally.
- */
-.animate-fade-in-up {
-    animation: fade-in-up 0.7s ease-out both;
+/* 3. Horizontal Wipe & Zoom (Hero Image) — Cinematic & Intentional */
+@keyframes image-reveal-premium {
+    0% {
+        opacity: 0;
+        clip-path: inset(0 100% 0 0);
+        transform: scale(1.08) translateX(10px);
+    }
+
+    100% {
+        opacity: 1;
+        clip-path: inset(0 0 0 0);
+        transform: scale(1) translateX(0);
+    }
 }
 
-/* Animation delays */
+.animate-pure-fade {
+    animation: pure-fade 1s cubic-bezier(0.2, 0, 0.2, 1) both;
+
+    @starting-style {
+        opacity: 0;
+    }
+}
+
+.animate-slide-reveal {
+    animation: slide-reveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+
+    @starting-style {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+}
+
+.animate-image-reveal-premium {
+    animation: image-reveal-premium 1s cubic-bezier(0.23, 1, 0.32, 1) both;
+
+    @starting-style {
+        opacity: 0;
+        clip-path: inset(0 100% 0 0);
+        transform: scale(1.08) translateX(10px);
+    }
+}
+
 .animation-delay-100 {
     animation-delay: 0.1s;
 }
@@ -40,4 +84,11 @@
 
 .animation-delay-500 {
     animation-delay: 0.5s;
+}
+
+/* Performance optimization */
+.hero-image-container,
+.animate-slide-reveal,
+.animate-curtain-reveal {
+    will-change: transform, opacity, clip-path;
 }

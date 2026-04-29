@@ -51,3 +51,103 @@
         transform: scale(1);
     }
 }
+
+/* 1. Reveal Iris — Center-out Expanding Circular Mask */
+@keyframes reveal-iris {
+  0% {
+    opacity: 0;
+    clip-path: circle(0% at 50% 50%);
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    clip-path: circle(150% at 50% 50%);
+    transform: scale(1);
+  }
+}
+
+/* 2. Reveal Shutter — Dual-leaf Horizontal Wipe from Center */
+@keyframes reveal-shutter {
+  0% {
+    opacity: 0;
+    clip-path: inset(0 50% 0 50%);
+  }
+  100% {
+    opacity: 1;
+    clip-path: inset(0 0% 0 0%);
+  }
+}
+
+/* 3. Reveal Unfold — 3D Vertical Drop/Unfold */
+@keyframes reveal-unfold {
+  0% {
+    opacity: 0;
+    transform: perspective(1000px) rotateX(-90deg);
+    transform-origin: top;
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(1000px) rotateX(0deg);
+    transform-origin: top;
+  }
+}
+
+/* 4. Reveal Card Flip — Sophisticated Y-Axis 3D Flip */
+@keyframes reveal-card-flip {
+  0% {
+    opacity: 0;
+    transform: perspective(1000px) rotateY(-30deg) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(1000px) rotateY(0deg) scale(1);
+  }
+}
+
+.reveal-iris {
+  opacity: 0;
+  &.visible {
+    animation: reveal-iris 1.4s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+}
+
+.reveal-shutter {
+  opacity: 0;
+  &.visible {
+    animation: reveal-shutter 1.2s cubic-bezier(0.23, 1, 0.32, 1) both;
+  }
+}
+
+.reveal-unfold {
+  opacity: 0;
+  &.visible {
+    animation: reveal-unfold 1.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+}
+
+.reveal-card-flip {
+  opacity: 0;
+  &.visible {
+    animation: reveal-card-flip 1.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+}
+
+// Support for modern @starting-style to ensure hydration-safe entrances
+.reveal-iris, .reveal-shutter, .reveal-unfold, .reveal-card-flip {
+  &.visible {
+    @starting-style { opacity: 0; }
+  }
+}
+
+// Legacy AOS Transitions (keep for compatibility)
+.slide-in {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 1.2s ease-out, transform 1.2s ease-out;
+    will-change: opacity, transform;
+
+    &.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

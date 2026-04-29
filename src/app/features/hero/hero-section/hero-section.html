@@ -8,70 +8,84 @@
         <!-- Content Section (left) -->
         <div class="text-center lg:text-left order-2 lg:order-1">
           <!-- Availability badge -->
-          <div
-            class="inline-flex items-center gap-2 px-3 py-1.5 mb-8 rounded-full border border-white/10 bg-white/[0.03]"
-            [ngClass]="{'animate-fade-in-up': isHydrated()}">
-            <span class="relative flex h-2 w-2">
-              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-              <span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-            </span>
-            <span class="text-xs font-medium tracking-wide uppercase text-base-content/60" i18n="@@hero.badge.available">Available for
-              collaborations</span>
+          <div class="mb-8 animate-pure-fade">
+            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/10 bg-white/[0.03]">
+              <span class="relative flex h-2 w-2">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+              </span>
+              <span class="text-xs font-medium tracking-wide uppercase text-base-content/90"
+                i18n="@@hero.badge.available">Available for
+                collaborations</span>
+            </div>
           </div>
 
-          <!-- Name — editorial serif -->
-          <h1
-            class="font-serif italic text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-base-content mb-6 leading-[1.05] tracking-tight"
-            [ngClass]="{'animate-fade-in-up animation-delay-100': isHydrated()}" i18n="@@hero.heading">
-            Hi, I'm <span class="block text-primary">Mateusz Malich</span>
-          </h1>
-
-          <!-- Roles — minimal inline text -->
-          <div class="flex flex-wrap items-center gap-x-2 sm:gap-x-3 gap-y-1 mb-8 justify-center lg:justify-start text-xs sm:text-sm font-mono text-base-content/50"
-            [ngClass]="{'animate-fade-in-up animation-delay-200': isHydrated()}">
-            <span i18n="@@hero.badge.fullstack">Software Engineer</span>
-            <span class="text-primary">/</span>
-            <span i18n="@@hero.badge.engineer">AI Engineer</span>
-            <span class="text-primary">/</span>
-            <span i18n="@@hero.badge.enthusiast">Innovation-driven</span>
-            <span class="text-primary">/</span>
-            <span i18n="@@hero.badge.innovator">Challenge-ready</span>
+          <!-- Name — editorial serif (Slide Reveal) -->
+          <div class="mb-6 animate-slide-reveal animation-delay-100">
+            <h1
+              class="font-serif italic text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-base-content leading-[1.05] tracking-tight"
+              i18n="@@hero.heading">
+              Hi, I'm <span class="block text-primary">Mateusz Malich</span>
+            </h1>
           </div>
 
-          <!-- Description -->
-          <p class="text-base-content/50 text-base md:text-lg max-w-md mx-auto lg:mx-0 mb-10 leading-relaxed"
-            [ngClass]="{'animate-fade-in-up animation-delay-300': isHydrated()}" i18n="@@hero.description">
-            Turning your ideas into intelligent digital solutions.
-            As a freelance developer and AI enthusiast, I build elegant tools that help brands thrive in the digital
-            world. You bring the vision, I' ll handle the rest.
-          </p>
+          <!-- Roles — minimal inline text (Slide Reveal) -->
+          <div class="mb-8 animate-slide-reveal animation-delay-200">
+            <div
+              class="flex flex-wrap items-center gap-x-2 sm:gap-x-3 gap-y-1 justify-center lg:justify-start text-xs sm:text-sm font-mono text-base-content/80">
+              <span i18n="@@hero.badge.fullstack">Software Engineer</span>
+              <span class="text-primary">/</span>
+              <span i18n="@@hero.badge.engineer">AI Engineer</span>
+              <span class="text-primary">/</span>
+              <span i18n="@@hero.badge.enthusiast">Innovation-driven</span>
+              <span class="text-primary">/</span>
+              <span i18n="@@hero.badge.innovator">Challenge-ready</span>
+            </div>
+          </div>
 
-          <!-- CTA Buttons -->
-          <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4"
-            [ngClass]="{'animate-fade-in-up animation-delay-400': isHydrated()}">
-            <a [routerLink]="[]" fragment="about"
-              class="btn btn-primary btn-lg gap-2 group">
-              <ng-container i18n="@@hero.cta.about">More About Me</ng-container>
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                stroke="currentColor" class="w-4 h-4 group-hover:translate-x-1 transition-transform">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-              </svg>
-            </a>
-            <a [routerLink]="['/']" fragment="contact"
-              class="btn btn-outline border-white/10 text-base-content/80 btn-lg gap-2 group hover:border-primary hover:text-primary hover:bg-transparent transition-all duration-300">
-              <ng-container i18n="@@hero.cta.contact">Get In Touch</ng-container>
-            </a>
+          <!-- Description (Slide Reveal) -->
+          <div class="mb-10 animate-slide-reveal animation-delay-300">
+            <p class="text-base-content/80 text-base md:text-lg max-w-md mx-auto lg:mx-0 leading-relaxed"
+              i18n="@@hero.description">
+              Turning your ideas into intelligent digital solutions.
+              As a freelance developer and AI enthusiast, I build elegant tools that help brands thrive in the digital
+              world. You bring the vision, I' ll handle the rest.
+            </p>
+          </div>
+
+          <!-- CTA Buttons (Pure Fade) -->
+          <div class="animate-pure-fade animation-delay-400">
+            <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4">
+              <a [routerLink]="[]" fragment="about" class="btn btn-primary btn-lg gap-2 group">
+                <ng-container i18n="@@hero.cta.about">More About Me</ng-container>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                  stroke="currentColor" class="w-4 h-4 group-hover:translate-x-1 transition-transform">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                </svg>
+              </a>
+              <a [routerLink]="['/']" fragment="contact"
+                class="btn btn-outline border-white/10 text-base-content btn-lg gap-2 group hover:border-primary hover:text-primary hover:bg-transparent transition-all duration-300">
+                <ng-container i18n="@@hero.cta.contact">Get In Touch</ng-container>
+              </a>
+            </div>
           </div>
         </div>
 
         <!-- Photo Section (right) -->
         <div class="flex justify-center lg:justify-center order-1 lg:order-2 lg:self-center">
-          <div class="relative w-1/3 max-w-[120px] md:w-full md:max-w-[280px] lg:max-w-sm" [ngClass]="{'animate-fade-in-up': isHydrated()}">
+          <div class="hero-image-container relative w-1/3 max-w-[120px] md:w-full md:max-w-[280px] lg:max-w-sm">
+
+            @defer (on immediate) {
             <div
-              class="aspect-[3/4] w-full max-h-[500px] rounded-2xl overflow-hidden border border-white/5">
-              <img src="hero.png" alt="Mateusz Malich - Software Engineer" class="w-full h-full object-cover"
-                fetchpriority="high" loading="eager" />
+              class="aspect-[3/4] w-full max-h-[500px] rounded-2xl overflow-hidden border border-white/5 animate-image-reveal-premium animation-delay-200">
+              <img ngSrc="hero.png" width="384" height="512" alt="Mateusz Malich - Software Engineer"
+                class="w-full h-full object-cover" priority />
             </div>
+            } @placeholder {
+            <!-- DaisyUI Skeleton placeholder with matching aspect ratio -->
+            <div class="skeleton aspect-[3/4] w-full max-h-[500px] rounded-2xl bg-white/5 border border-white/5"></div>
+            }
+
           </div>
         </div>
 

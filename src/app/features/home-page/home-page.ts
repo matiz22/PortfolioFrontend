@@ -3,7 +3,6 @@ import { DOCUMENT } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { Footer } from "../../shared/footer/footer";
 import { HeroSection } from "../hero/hero-section/hero-section";
-import { HeroLoading } from "../hero/hero-loading/hero-loading";
 import { AboutMeSection } from "../about-me/about-me-section/about-me-section";
 import { Header } from "../../shared/header/header";
 import { Meta, Title } from '@angular/platform-browser';
@@ -15,7 +14,7 @@ import { JobTimelineSection } from "../jobs/job-timeline-section/job-timeline-se
 
 @Component({
   selector: 'app-home-page',
-  imports: [Footer, HeroSection, HeroLoading, AboutMeSection, Header, ContactSection, EducationSection, CertificationsSection, ProjectsRealizationsHomeSection, JobTimelineSection],
+  imports: [Footer, HeroSection, AboutMeSection, Header, ContactSection, EducationSection, CertificationsSection, ProjectsRealizationsHomeSection, JobTimelineSection],
   templateUrl: './home-page.html',
   styleUrl: './home-page.scss',
 })
