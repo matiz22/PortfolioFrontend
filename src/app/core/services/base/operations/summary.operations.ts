@@ -1,41 +1,41 @@
-import { catchError, map, Observable, of } from 'rxjs';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { ApiState } from '../../../models/api.state';
-import { PaginatedResponse } from '../../../models/paginated-response';
-import { PaginationMeta } from '../../../models/pagination-meta';
+import {catchError, map, Observable, of} from 'rxjs';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {ApiState} from '../../../models/api.state';
+import {PaginatedResponse} from '../../../models/paginated-response';
+import {PaginationMeta} from '../../../models/pagination-meta';
 
-export class CrudOperations<TDto, TModel> {
+export class SummaryOperations<TDto, TModel> {
   constructor(
     private http: HttpClient,
-    private baseUrl: string,
+    private summaryBaseUrl: string,
     private mapper: (dto: TDto) => TModel,
     private entityName: string = 'Entity'
   ) {
   }
 
   getAll(): Observable<ApiState<TModel[]>> {
-    return this.http.get<TDto[]>(this.baseUrl).pipe(
+    return this.http.get<TDto[]>(this.summaryBaseUrl).pipe(
       map(dtos => ApiState.success(dtos.map(dto => this.mapper(dto)))),
       catchError(err => of(ApiState.error<TModel[]>(this.getErrorMessage(err))))
     );
   }
 
   getById(id: string): Observable<ApiState<TModel>> {
-    return this.http.get<TDto>(`${this.baseUrl}/${id}`).pipe(
+    return this.http.get<TDto>(`${this.summaryBaseUrl}/${id}`).pipe(
       map(dto => ApiState.success(this.mapper(dto))),
       catchError(err => of(ApiState.error<TModel>(this.getErrorMessage(err))))
     );
   }
 
   getBySlug(slug: string): Observable<ApiState<TModel>> {
-    return this.http.get<TDto>(`${this.baseUrl}/slug/${slug}`).pipe(
+    return this.http.get<TDto>(`${this.summaryBaseUrl}/slug/${slug}`).pipe(
       map(dto => ApiState.success(this.mapper(dto))),
       catchError(err => of(ApiState.error<TModel>(this.getErrorMessage(err))))
     );
   }
 
   getAllPaginated(page: number = 1, perPage: number = 15): Observable<ApiState<{ data: TModel[], meta: PaginationMeta }>> {
-    return this.http.get<PaginatedResponse<TDto>>(`${this.baseUrl}/paginated?page=${page}&perPage=${perPage}`).pipe(
+    return this.http.get<PaginatedResponse<TDto>>(`${this.summaryBaseUrl}/paginated?page=${page}&perPage=${perPage}`).pipe(
       map(response => {
         const data = response.data.map(dto => this.mapper(dto));
         const meta: PaginationMeta = {
@@ -53,6 +53,6 @@ export class CrudOperations<TDto, TModel> {
   }
 
   private getErrorMessage(error: HttpErrorResponse): string {
-    return error.error?.message || `Failed to load ${this.entityName.toLowerCase()}.`;
+    return error.error?.message || `Failed to load ${this.entityName.toLowerCase()} summary.`;
   }
 }

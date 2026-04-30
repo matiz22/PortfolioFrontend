@@ -1,5 +1,4 @@
-import { Component, effect, inject } from '@angular/core';
-import { Meta, Title } from '@angular/platform-browser';
+import { Component, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CertificationsService } from '../../../core/services/certifications.service';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -41,26 +40,13 @@ export class CertificationDetailPage {
   certification = toSignal(
     this.route.paramMap.pipe(
       switchMap(params => {
-        const id = params.get('id');
-        if (!id) {
-          return of(ApiState.error<Certification>('No certification ID provided'));
+        const slug = params.get('slug');
+        if (!slug) {
+          return of(ApiState.error<Certification>('No certification slug provided'));
         }
-        return this.certificationsService.getById(id);
+        return this.certificationsService.getBySlug(slug);
       })
     ),
     { initialValue: ApiState.loading<Certification>() }
   );
-
-  private readonly titleService = inject(Title);
-  private readonly metaService = inject(Meta);
-
-  constructor() {
-    effect(() => {
-      const state = this.certification();
-      if (state.status === 'success') {
-        this.titleService.setTitle(`${state.data.name} | Mateusz Malich`);
-        this.metaService.updateTag({ name: 'robots', content: 'noindex, nofollow' });
-      }
-    });
-  }
 }

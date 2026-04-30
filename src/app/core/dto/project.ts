@@ -14,4 +14,10 @@ export interface ProjectDto {
   updated_at: string;
   screenshots: string[];
   technologies: TechnologyDto[];
+  home_page: boolean;
+  published: boolean;
+  seo_enabled: boolean;
+  seo_title: string | null;
+  seo_description: string | null;
+  seo_keywords: string | null;
 }

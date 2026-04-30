@@ -1,5 +1,4 @@
-import { Component, computed, effect, inject } from '@angular/core';
-import { Meta, Title } from '@angular/platform-browser';
+import { Component, computed, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { RealizationsService } from '../../../core/services/realizations.service';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -30,28 +29,15 @@ export class RealizationDetailsPage {
   realization = toSignal(
     this.route.paramMap.pipe(
       switchMap(params => {
-        const id = params.get('id');
-        if (!id) {
-          return of(ApiState.error<Realization>('No realization ID provided'));
+        const slug = params.get('slug');
+        if (!slug) {
+          return of(ApiState.error<Realization>('No realization slug provided'));
         }
-        return this.realizationsService.getById(id);
+        return this.realizationsService.getBySlug(slug);
       })
     ),
     { initialValue: ApiState.loading<Realization>() }
   );
-
-  private readonly titleService = inject(Title);
-  private readonly metaService = inject(Meta);
-
-  constructor() {
-    effect(() => {
-      const state = this.realization();
-      if (state.status === 'success') {
-        this.titleService.setTitle(`${state.data.title} | Mateusz Malich`);
-        this.metaService.updateTag({ name: 'robots', content: 'noindex, nofollow' });
-      }
-    });
-  }
 
   private readonly clientButtonLabel = $localize`:@@clientButton:Client website`;
   links = computed<Link[]>(() => {

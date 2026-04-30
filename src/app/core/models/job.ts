@@ -3,6 +3,7 @@ import {Skill} from './skill';
 
 export interface Job {
   id: number;
+  slug: string;
   companyName: string;
   title: string;
   thumbnail: string;
@@ -18,4 +19,8 @@ export interface Job {
   homePage: boolean;
   technologies: Technology[];
   skills: Skill[];
+  seoEnabled: boolean;
+  metaTitle: string | null;
+  metaDescription: string | null;
+  metaKeywords: string | null;
 }

@@ -14,4 +14,10 @@ export interface Project {
   updatedAt: Date;
   screenshots: string[];
   technologies: Technology[];
+  homePage: boolean;
+  published: boolean;
+  seoEnabled: boolean;
+  metaTitle: string | null;
+  metaDescription: string | null;
+  metaKeywords: string | null;
 }

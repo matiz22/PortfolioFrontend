@@ -3,6 +3,7 @@ import {Skill} from './skill';
 
 export interface Certification {
   id: number;
+  slug: string;
   name: string;
   issuingOrganization: string;
   issueDate: Date;
@@ -18,4 +19,8 @@ export interface Certification {
   published: boolean;
   technologies: Technology[];
   skills: Skill[];
+  seoEnabled: boolean;
+  metaTitle: string | null;
+  metaDescription: string | null;
+  metaKeywords: string | null;
 }

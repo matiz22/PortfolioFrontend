@@ -3,6 +3,7 @@ import {SkillDto} from './skill';
 
 export interface CertificationDto {
   id: number;
+  slug: string;
   name: string;
   issuing_organization: string;
   issue_date: string;
@@ -18,4 +19,8 @@ export interface CertificationDto {
   published: boolean;
   technologies: TechnologyDto[];
   skills: SkillDto[];
+  seo_enabled: boolean;
+  seo_title: string | null;
+  seo_description: string | null;
+  seo_keywords: string | null;
 }

@@ -21,4 +21,9 @@ export interface Realization {
   screenshots: string[];
   technologies: Technology[];
   skills: Skill[];
+  slug: string;
+  seoEnabled: boolean;
+  metaTitle: string | null;
+  metaDescription: string | null;
+  metaKeywords: string | null;
 }

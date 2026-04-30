@@ -1,5 +1,4 @@
-import { Component, effect, inject } from '@angular/core';
-import { Meta, Title } from '@angular/platform-browser';
+import { Component, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { JobsService } from '../../../core/services/jobs.service';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -30,25 +29,13 @@ export class JobDetailsPage {
   job = toSignal(
     this.route.paramMap.pipe(
       switchMap(params => {
-        const id = params.get('id');
-        if (!id) {
-          return of(ApiState.error<Job>('No job ID provided'));
+        const slug = params.get('slug');
+        if (!slug) {
+          return of(ApiState.error<Job>('No job slug provided'));
         }
-        return this.jobsService.getById(id);
+        return this.jobsService.getBySlug(slug);
       })
     ),
     { initialValue: ApiState.loading<Job>() }
   );
-  private readonly titleService = inject(Title);
-  private readonly metaService = inject(Meta);
-
-  constructor() {
-    effect(() => {
-      const state = this.job();
-      if (state.status === 'success') {
-        this.titleService.setTitle(`${state.data.title} at ${state.data.companyName} | Mateusz Malich`);
-        this.metaService.updateTag({ name: 'robots', content: 'noindex, nofollow' });
-      }
-    });
-  }
 }

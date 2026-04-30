@@ -1,5 +1,4 @@
-import { Component, OnInit, computed, inject } from '@angular/core';
-import { Meta, Title } from '@angular/platform-browser';
+import { Component, computed, inject } from '@angular/core';
 import { ProjectsService } from '../../../core/services/projects.service';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { switchMap } from 'rxjs/operators';
@@ -29,23 +28,10 @@ import { PaginationTiles } from '../../../shared/pagination/pagination-tiles/pag
   templateUrl: './projects-page.html',
   styleUrl: './projects-page.scss',
 })
-export class ProjectsPage implements OnInit {
+export class ProjectsPage {
   projectsService: ProjectsService = inject(ProjectsService);
   private route = inject(ActivatedRoute);
-  private titleService = inject(Title);
-  private metaService = inject(Meta);
   protected pagination = inject(PaginationService);
-
-  ngOnInit(): void {
-    const title = this.route.snapshot.title
-      ?? $localize`:@@projectsTitleMeta:Projects | Mateusz Malich`;
-    this.titleService.setTitle(title);
-    this.metaService.updateTag({ name: 'robots', content: 'index, follow' });
-    this.metaService.updateTag({
-      name: 'description',
-      content: $localize`:@@projectsDescriptionMeta:Discover my portfolio of personal and professional projects showcasing my skills in web development, backend engineering, and AI integration.`
-    });
-  }
 
   // Fetch paginated response based on current page
   projectsResponse = toSignal(

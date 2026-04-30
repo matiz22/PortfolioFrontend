@@ -28,7 +28,7 @@
           @if (index > 0) {
           <hr [class.bg-primary]="job.isCurrent" class="!bg-white/10" />
           }
-          <a routerLink="/job/{{ job.id }}" [title]="job.title" appAosAnimations="reveal-shutter" [delay]="index * 100"
+          <a routerLink="/job/{{ job.slug }}" [title]="job.title" appAosAnimations="reveal-shutter" [delay]="index * 100"
             [class]="index % 2 === 0 ? 'timeline-start timeline-box max-w-md p-3 sm:p-4 lg:p-6 cursor-pointer bg-base-200/50 border border-white/5 hover:border-primary/30 transition-all duration-300' : 'timeline-end timeline-box max-w-md p-3 sm:p-4 lg:p-6 cursor-pointer bg-base-200/50 border border-white/5 hover:border-primary/30 transition-all duration-300'">
             <div class="text-base sm:text-lg lg:text-2xl font-mono tracking-tight">{{ job.title }}</div>
             <div class="text-sm sm:text-base lg:text-lg text-base-content/60">{{ job.companyName }}</div>

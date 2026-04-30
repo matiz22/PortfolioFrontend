@@ -1,5 +1,7 @@
 import {SkillDto} from '../dto/skill';
+import {SkillSummaryDto} from '../dto/summary/skill';
 import {Skill} from '../models/skill';
+import {SkillSummary} from '../models/summary/skill';
 
 export function mapSkill(dto: SkillDto): Skill {
   return {
@@ -14,5 +16,12 @@ export function mapSkill(dto: SkillDto): Skill {
       realizationId: dto.pivot.realization_id,
       skillId: dto.pivot.skill_id,
     },
+  };
+}
+
+export function mapSkillSummary(dto: SkillSummaryDto): SkillSummary {
+  return {
+    id: dto.id,
+    name: dto.name,
   };
 }

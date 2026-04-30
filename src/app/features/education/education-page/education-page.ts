@@ -1,5 +1,4 @@
-import { Component, OnInit, computed, inject } from '@angular/core';
-import { Meta, Title } from '@angular/platform-browser';
+import { Component, computed, inject } from '@angular/core';
 import { EducationService } from '../../../core/services/education.service';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { switchMap } from 'rxjs/operators';
@@ -22,23 +21,10 @@ import { PaginationTiles } from '../../../shared/pagination/pagination-tiles/pag
   templateUrl: './education-page.html',
   styleUrl: './education-page.scss',
 })
-export class EducationPage implements OnInit {
+export class EducationPage {
   educationService: EducationService = inject(EducationService);
   private route = inject(ActivatedRoute);
-  private titleService = inject(Title);
-  private metaService = inject(Meta);
   protected pagination = inject(PaginationService);
-
-  ngOnInit(): void {
-    const title = this.route.snapshot.title
-      ?? $localize`:@@educationTitleMeta:Education | Mateusz Malich`;
-    this.titleService.setTitle(title);
-    this.metaService.updateTag({ name: 'robots', content: 'index, follow' });
-    this.metaService.updateTag({
-      name: 'description',
-      content: $localize`:@@educationDescriptionMeta:Learn about my academic background, degrees, and studies in computer science and related fields that form the foundation of my technical knowledge.`
-    });
-  }
 
   // Fetch paginated response based on current page
   educationResponse = toSignal(

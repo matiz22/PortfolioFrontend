@@ -1,5 +1,4 @@
-import { Component, effect, inject } from '@angular/core';
-import { Meta, Title } from '@angular/platform-browser';
+import { Component, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { of, switchMap } from 'rxjs';
@@ -37,28 +36,17 @@ import { LoadingDetailsPage } from '../../../shared/loading/loading-details-page
 export class EducationDetailsPage {
   private readonly educationService = inject(EducationService);
   private readonly route = inject(ActivatedRoute);
+
   education = toSignal(
     this.route.paramMap.pipe(
       switchMap(params => {
-        const id = params.get('id');
-        if (!id) {
-          return of(ApiState.error<Education>('No certification ID provided'));
+        const slug = params.get('slug');
+        if (!slug) {
+          return of(ApiState.error<Education>('No education slug provided'));
         }
-        return this.educationService.getById(id);
+        return this.educationService.getBySlug(slug);
       })
     ),
     { initialValue: ApiState.loading<Education>() }
   );
-  private readonly titleService = inject(Title);
-  private readonly metaService = inject(Meta);
-
-  constructor() {
-    effect(() => {
-      const state = this.education();
-      if (state.status === 'success') {
-        this.titleService.setTitle(`${state.data.degree} at ${state.data.institution} | Mateusz Malich`);
-        this.metaService.updateTag({ name: 'robots', content: 'noindex, nofollow' });
-      }
-    });
-  }
 }

@@ -20,4 +20,9 @@ export interface RealizationDto {
   screenshots: string[];
   technologies: TechnologyDto[];
   skills: SkillDto[];
+  slug: string;
+  seo_enabled: boolean;
+  seo_title: string | null;
+  seo_description: string | null;
+  seo_keywords: string | null;
 }

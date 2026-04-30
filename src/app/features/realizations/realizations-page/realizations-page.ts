@@ -1,5 +1,4 @@
-import { Component, OnInit, computed, inject } from '@angular/core';
-import { Meta, Title } from '@angular/platform-browser';
+import { Component, computed, inject } from '@angular/core';
 import { RealizationsService } from '../../../core/services/realizations.service';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { switchMap } from 'rxjs/operators';
@@ -29,23 +28,10 @@ import { PaginationTiles } from '../../../shared/pagination/pagination-tiles/pag
   templateUrl: './realizations-page.html',
   styleUrl: './realizations-page.scss',
 })
-export class RealizationsPage implements OnInit {
+export class RealizationsPage {
   realizationsService: RealizationsService = inject(RealizationsService);
   private route = inject(ActivatedRoute);
-  private titleService = inject(Title);
-  private metaService = inject(Meta);
   protected pagination = inject(PaginationService);
-
-  ngOnInit(): void {
-    const title = this.route.snapshot.title
-      ?? $localize`:@@realizationsTitleMeta:Realizations | Mateusz Malich`;
-    this.titleService.setTitle(title);
-    this.metaService.updateTag({ name: 'robots', content: 'index, follow' });
-    this.metaService.updateTag({
-      name: 'description',
-      content: $localize`:@@realizationsDescriptionMeta:View a collection of successful client projects, freelance work, and commercial applications I have delivered.`
-    });
-  }
 
   // Fetch paginated response based on current page
   realizationsResponse = toSignal(

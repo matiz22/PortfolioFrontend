@@ -1,7 +1,9 @@
 import { RealizationDto } from '../dto/realization';
+import { RealizationSummaryDto } from '../dto/summary/realization';
 import { Realization } from '../models/realization';
-import { mapTechnology } from './technology';
-import { mapSkill } from './skill';
+import { RealizationSummary } from '../models/summary/realization';
+import { mapTechnology, mapTechnologySummary } from './technology';
+import { mapSkill, mapSkillSummary } from './skill';
 
 export function mapRealization(dto: RealizationDto): Realization {
   return {
@@ -23,5 +25,27 @@ export function mapRealization(dto: RealizationDto): Realization {
     screenshots: dto.screenshots || [],
     technologies: (dto.technologies || []).map(mapTechnology),
     skills: (dto.skills || []).map(mapSkill),
+    slug: dto.slug,
+    seoEnabled: dto.seo_enabled,
+    metaTitle: dto.seo_title,
+    metaDescription: dto.seo_description,
+    metaKeywords: dto.seo_keywords,
+  };
+}
+
+export function mapRealizationSummary(dto: RealizationSummaryDto): RealizationSummary {
+  return {
+    id: dto.id,
+    slug: dto.slug,
+    title: dto.title,
+    shortDesc: dto.short_desc,
+    clientName: dto.client_name,
+    location: dto.location,
+    thumbnail: dto.thumbnail,
+    homePage: dto.home_page,
+    published: dto.published,
+    order: dto.order,
+    technologies: (dto.technologies || []).map(mapTechnologySummary),
+    skills: (dto.skills || []).map(mapSkillSummary),
   };
 }

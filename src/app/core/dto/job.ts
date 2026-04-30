@@ -1,8 +1,9 @@
-import {TechnologyDto} from './technology';
-import {SkillDto} from './skill';
+import { TechnologyDto } from './technology';
+import { SkillDto } from './skill';
 
 export interface JobDto {
   id: number;
+  slug: string;
   company_name: string;
   title: string;
   thumbnail: string;
@@ -18,4 +19,8 @@ export interface JobDto {
   home_page: boolean;
   technologies: TechnologyDto[];
   skills: SkillDto[];
+  seo_enabled: boolean;
+  seo_title: string | null;
+  seo_description: string | null;
+  seo_keywords: string | null;
 }

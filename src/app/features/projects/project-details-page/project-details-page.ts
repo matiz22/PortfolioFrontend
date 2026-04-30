@@ -1,5 +1,4 @@
-import { Component, computed, effect, inject } from '@angular/core';
-import { Meta, Title } from '@angular/platform-browser';
+import { Component, computed, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ImageUrlPipe } from '../../../shared/pipes/image-url-pipe';
 import { Header } from '../../../shared/header/header';
@@ -28,28 +27,15 @@ export class ProjectDetailsPage {
   project = toSignal(
     this.route.paramMap.pipe(
       switchMap(params => {
-        const id = params.get('id');
-        if (!id) {
-          return of(ApiState.error<Project>('No project ID provided'));
+        const slug = params.get('slug');
+        if (!slug) {
+          return of(ApiState.error<Project>('No project slug provided'));
         }
-        return this.projectService.getById(id);
+        return this.projectService.getBySlug(slug);
       })
     ),
     { initialValue: ApiState.loading<Project>() }
   );
-
-  private readonly titleService = inject(Title);
-  private readonly metaService = inject(Meta);
-
-  constructor() {
-    effect(() => {
-      const state = this.project();
-      if (state.status === 'success') {
-        this.titleService.setTitle(`${state.data.title} | Mateusz Malich`);
-        this.metaService.updateTag({ name: 'robots', content: 'noindex, nofollow' });
-      }
-    });
-  }
 
   private readonly repoButtonLabel = $localize`:@@projectRepoButton:Project repository`;
 

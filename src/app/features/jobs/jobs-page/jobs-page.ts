@@ -1,5 +1,4 @@
-import { Component, OnInit, computed, inject } from '@angular/core';
-import { Meta, Title } from '@angular/platform-browser';
+import { Component, computed, inject } from '@angular/core';
 import { JobsService } from '../../../core/services/jobs.service';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { switchMap } from 'rxjs/operators';
@@ -29,23 +28,10 @@ import { PaginationTiles } from '../../../shared/pagination/pagination-tiles/pag
   templateUrl: './jobs-page.html',
   styleUrl: './jobs-page.scss',
 })
-export class JobsPage implements OnInit {
+export class JobsPage {
   jobsService: JobsService = inject(JobsService);
   private route = inject(ActivatedRoute);
-  private titleService = inject(Title);
-  private metaService = inject(Meta);
   protected pagination = inject(PaginationService);
-
-  ngOnInit(): void {
-    const title = this.route.snapshot.title
-      ?? $localize`:@@jobsTitleMeta:Experience | Mateusz Malich`;
-    this.titleService.setTitle(title);
-    this.metaService.updateTag({ name: 'robots', content: 'index, follow' });
-    this.metaService.updateTag({
-      name: 'description',
-      content: $localize`:@@jobsDescriptionMeta:Explore my professional background and work experience in software engineering, including roles, responsibilities, and key achievements.`
-    });
-  }
 
   // Fetch paginated response based on current page
   jobsResponse = toSignal(

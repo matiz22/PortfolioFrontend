@@ -3,6 +3,7 @@ import {SkillDto} from './skill';
 
 export interface EducationDto {
   id: number;
+  slug: string;
   institution: string;
   degree: string;
   field_of_study: string;
@@ -19,4 +20,8 @@ export interface EducationDto {
   published: boolean;
   technologies: TechnologyDto[];
   skills: SkillDto[];
+  seo_enabled: boolean;
+  seo_title: string | null;
+  seo_description: string | null;
+  seo_keywords: string | null;
 }

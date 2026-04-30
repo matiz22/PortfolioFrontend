@@ -3,6 +3,7 @@ import {Skill} from './skill';
 
 export interface Education {
   id: number;
+  slug: string;
   institution: string;
   degree: string;
   fieldOfStudy: string;
@@ -19,4 +20,8 @@ export interface Education {
   published: boolean;
   technologies: Technology[];
   skills: Skill[];
+  seoEnabled: boolean;
+  metaTitle: string | null;
+  metaDescription: string | null;
+  metaKeywords: string | null;
 }

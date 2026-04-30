@@ -1,5 +1,4 @@
-import { Component, OnInit, computed, inject } from '@angular/core';
-import { Meta, Title } from '@angular/platform-browser';
+import { Component, computed, inject } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { switchMap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
@@ -22,23 +21,10 @@ import { PaginationTiles } from '../../../shared/pagination/pagination-tiles/pag
   templateUrl: './certifications-page.html',
   styleUrl: './certifications-page.scss',
 })
-export class CertificationsPage implements OnInit {
+export class CertificationsPage {
   private certificationsService = inject(CertificationsService);
   private route = inject(ActivatedRoute);
-  private titleService = inject(Title);
-  private metaService = inject(Meta);
   protected pagination = inject(PaginationService);
-
-  ngOnInit(): void {
-    const title = this.route.snapshot.title
-      ?? $localize`:@@certificationsTitleMeta:Certifications | Mateusz Malich`;
-    this.titleService.setTitle(title);
-    this.metaService.updateTag({ name: 'robots', content: 'index, follow' });
-    this.metaService.updateTag({
-      name: 'description',
-      content: $localize`:@@certificationsDescriptionMeta:Review my professional certifications and continuous learning achievements in various technologies and methodologies.`
-    });
-  }
 
   // Fetch paginated response based on current page
   certificationsResponse = toSignal(
