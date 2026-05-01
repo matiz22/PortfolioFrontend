@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Project } from '../../../core/models/project';
+import { ProjectSummary } from '../../../core/models/summary/project';
 import { ImageUrlPipe } from '../../../shared/pipes/image-url-pipe';
 import { RouterLink } from '@angular/router';
 
@@ -13,5 +14,5 @@ import { RouterLink } from '@angular/router';
   styleUrl: './project-item.scss',
 })
 export class ProjectItem {
-  @Input({ required: true }) project!: Project;
+  @Input({ required: true }) project!: Project | ProjectSummary;
 }

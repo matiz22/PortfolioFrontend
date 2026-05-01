@@ -1,11 +1,9 @@
 import { Component, computed, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { RealizationsService } from '../../../core/services/realizations.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ApiState } from '../../../core/models/api.state';
 import { Realization } from '../../../core/models/realization';
-import { switchMap } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Link } from '../../../shared/models/link';
 import { ImageUrlPipe } from '../../../shared/pipes/image-url-pipe';
 import { Header } from '../../../shared/header/header';
@@ -15,6 +13,8 @@ import { SkillsDetailsSection } from '../../skills/skills-details-section/skills
 import { TechnologiesDetailsSection } from '../../technologies/technologies-details-section/technologies-details-section';
 import { ContactSection } from '../../../shared/contact/contact-section/contact-section';
 import { LoadingDetailsPage } from '../../../shared/loading/loading-details-page/loading-details-page';
+import { SeoService } from '../../../core/services/seo.service';
+import { buildSeoFromModel } from '../../../core/resolvers/seo.resolver';
 
 @Component({
   selector: 'app-realization-details-page',
@@ -23,21 +23,27 @@ import { LoadingDetailsPage } from '../../../shared/loading/loading-details-page
   styleUrl: './realization-details-page.scss',
 })
 export class RealizationDetailsPage {
-  private route: ActivatedRoute = inject(ActivatedRoute);
-  private realizationsService: RealizationsService = inject(RealizationsService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly seoService = inject(SeoService);
 
+  constructor() {
+    const state = this.route.snapshot.data['realizationState'] as ApiState<Realization>;
+    if (state?.status === 'success') {
+      const seo = buildSeoFromModel(state.data, `${state.data.title} | Mateusz Malich`);
+      this.seoService.updateMeta(seo);
+    }
+  }
+
+  // Data is now provided by the resolver to ensure SSR captures SEO tags
   realization = toSignal(
-    this.route.paramMap.pipe(
-      switchMap(params => {
-        const slug = params.get('slug');
-        if (!slug) {
-          return of(ApiState.error<Realization>('No realization slug provided'));
-        }
-        return this.realizationsService.getBySlug(slug);
-      })
-    ),
+    this.route.data.pipe(map(d => d['realizationState'] as ApiState<Realization>)),
     { initialValue: ApiState.loading<Realization>() }
   );
+
+  private readonly realizationData = computed(() => {
+    const state = this.realization();
+    return state.status === 'success' ? state.data : null;
+  });
 
   private readonly clientButtonLabel = $localize`:@@clientButton:Client website`;
   links = computed<Link[]>(() => {

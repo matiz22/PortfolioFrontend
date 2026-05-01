@@ -27,7 +27,6 @@ export function mapCertification(dto: CertificationDto): Certification {
     seoEnabled: dto.seo_enabled,
     metaTitle: dto.seo_title,
     metaDescription: dto.seo_description,
-    metaKeywords: dto.seo_keywords,
   };
 }
 

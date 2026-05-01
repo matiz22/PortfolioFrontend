@@ -22,5 +22,4 @@ export interface Certification {
   seoEnabled: boolean;
   metaTitle: string | null;
   metaDescription: string | null;
-  metaKeywords: string | null;
 }

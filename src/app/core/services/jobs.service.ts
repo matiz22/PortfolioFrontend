@@ -21,7 +21,7 @@ import {PaginationMeta} from '../models/pagination-meta';
   providedIn: 'root'
 })
 export class JobsService implements ICrudService<Job>,
-  IHomeService<Job>,
+  IHomeService<Job, JobSummary>,
   ISummaryService<JobSummary>,
   ISlugService<Job> {
 
@@ -60,6 +60,10 @@ export class JobsService implements ICrudService<Job>,
 
   getHomeItems(): Observable<ApiState<Job[]>> {
     return this.homeOps.getHomeItems();
+  }
+
+  getHomeSummaryItems(): Observable<ApiState<JobSummary[]>> {
+    return this.homeOps.getHomeSummaryItems(mapJobSummary);
   }
 
   getAllPaginated(page: number = 1): Observable<ApiState<{ data: Job[], meta: PaginationMeta }>> {

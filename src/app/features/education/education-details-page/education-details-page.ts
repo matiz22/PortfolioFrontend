@@ -1,8 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { of, switchMap } from 'rxjs';
-import { EducationService } from '../../../core/services/education.service';
+import { map } from 'rxjs';
 import { ApiState } from '../../../core/models/api.state';
 import { Education } from '../../../core/models/education';
 import { Header } from '../../../shared/header/header';
@@ -14,6 +13,8 @@ import { SkillsDetailsSection } from '../../skills/skills-details-section/skills
 import { TechnologiesDetailsSection } from '../../technologies/technologies-details-section/technologies-details-section';
 import { ContactSection } from '../../../shared/contact/contact-section/contact-section';
 import { LoadingDetailsPage } from '../../../shared/loading/loading-details-page/loading-details-page';
+import { SeoService } from '../../../core/services/seo.service';
+import { buildSeoFromModel } from '../../../core/resolvers/seo.resolver';
 
 
 @Component({
@@ -34,19 +35,25 @@ import { LoadingDetailsPage } from '../../../shared/loading/loading-details-page
   styleUrl: './education-details-page.scss'
 })
 export class EducationDetailsPage {
-  private readonly educationService = inject(EducationService);
   private readonly route = inject(ActivatedRoute);
+  private readonly seoService = inject(SeoService);
 
+  constructor() {
+    const state = this.route.snapshot.data['educationState'] as ApiState<Education>;
+    if (state?.status === 'success') {
+      const seo = buildSeoFromModel(state.data, `${state.data.degree} at ${state.data.institution} | Mateusz Malich`);
+      this.seoService.updateMeta(seo);
+    }
+  }
+
+  // Data is now provided by the resolver to ensure SSR captures SEO tags
   education = toSignal(
-    this.route.paramMap.pipe(
-      switchMap(params => {
-        const slug = params.get('slug');
-        if (!slug) {
-          return of(ApiState.error<Education>('No education slug provided'));
-        }
-        return this.educationService.getBySlug(slug);
-      })
-    ),
+    this.route.data.pipe(map(d => d['educationState'] as ApiState<Education>)),
     { initialValue: ApiState.loading<Education>() }
   );
+
+  private readonly educationData = computed(() => {
+    const state = this.education();
+    return state.status === 'success' ? state.data : null;
+  });
 }

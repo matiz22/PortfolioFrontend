@@ -7,6 +7,8 @@ import {
 import express from 'express';
 import {join} from 'node:path';
 
+import { generateSitemapXml } from './sitemap-generator';
+
 const browserDistFolder = join(import.meta.dirname, '../browser');
 
 const app = express();
@@ -38,6 +40,17 @@ app.use(
 /**
  * Handle all other requests by rendering the Angular application.
  */
+app.get('/sitemap.xml', async (req, res, next) => {
+  try {
+    const xml = await generateSitemapXml();
+    res.header('Content-Type', 'application/xml');
+    res.send(xml);
+  } catch (error) {
+    console.error('Sitemap generation failed:', error);
+    next(); // Fallback to static sitemap.xml
+  }
+});
+
 app.use((req, res, next) => {
   angularApp
     .handle(req)

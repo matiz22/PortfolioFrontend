@@ -7,6 +7,7 @@ export interface EducationSummary {
   institution: string;
   degree: string;
   fieldOfStudy: string;
+  grade: string | null;
   description: string;
   startDate: Date;
   endDate: Date | null;

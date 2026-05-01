@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Realization } from '../../../core/models/realization';
+import { RealizationSummary } from '../../../core/models/summary/realization';
 import { ImageUrlPipe } from '../../../shared/pipes/image-url-pipe';
 import { RouterLink } from '@angular/router';
 
@@ -13,11 +14,11 @@ import { RouterLink } from '@angular/router';
   styleUrl: './realization-item.scss',
 })
 export class RealizationItem {
-  @Input({ required: true }) realization!: Realization;
+  @Input({ required: true }) realization!: Realization | RealizationSummary;
 
   // derived helpers for template
   get year(): number | null {
-    const date = this.realization?.createdAt;
+    const date = (this.realization as any)?.createdAt;
     return date ? new Date(date).getFullYear() : null;
   }
 

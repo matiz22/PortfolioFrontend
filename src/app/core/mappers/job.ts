@@ -27,7 +27,6 @@ export function mapJob(dto: JobDto): Job {
     seoEnabled: dto.seo_enabled,
     metaTitle: dto.seo_title,
     metaDescription: dto.seo_description,
-    metaKeywords: dto.seo_keywords,
   };
 }
 

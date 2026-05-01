@@ -21,7 +21,7 @@ import {PaginationMeta} from '../models/pagination-meta';
   providedIn: 'root'
 })
 export class CertificationsService implements ICrudService<Certification>,
-  IHomeService<Certification>,
+  IHomeService<Certification, CertificationSummary>,
   ISummaryService<CertificationSummary>,
   ISlugService<Certification> {
 
@@ -60,6 +60,10 @@ export class CertificationsService implements ICrudService<Certification>,
 
   getHomeItems(): Observable<ApiState<Certification[]>> {
     return this.homeOps.getHomeItems();
+  }
+
+  getHomeSummaryItems(): Observable<ApiState<CertificationSummary[]>> {
+    return this.homeOps.getHomeSummaryItems(mapCertificationSummary);
   }
 
   getAllPaginated(page: number = 1): Observable<ApiState<{ data: Certification[], meta: PaginationMeta }>> {

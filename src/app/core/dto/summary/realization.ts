@@ -7,6 +7,7 @@ export interface RealizationSummaryDto {
   title: string;
   short_desc: string;
   client_name: string;
+  client_url: string | null;
   location: string | null;
   thumbnail: string;
   home_page: boolean;

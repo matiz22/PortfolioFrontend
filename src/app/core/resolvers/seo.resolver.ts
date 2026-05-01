@@ -1,9 +1,10 @@
 import { inject, ProviderToken } from '@angular/core';
 import { ResolveFn } from '@angular/router';
 import { SeoData, SeoService } from '../services/seo.service';
+import { environment } from '../../../environments/environment';
 import { ISlugService } from '../services/base/services/slug.service';
-import { map, tap } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { tap } from 'rxjs';
+import { ApiState } from '../models/api.state';
 
 /**
  * Common SEO fields shared by all detail models.
@@ -12,8 +13,8 @@ export interface Seoable {
   seoEnabled: boolean;
   metaTitle: string | null;
   metaDescription: string | null;
-  metaKeywords: string | null;
   description: string;
+  thumbnail?: string | null;
 }
 
 /**
@@ -21,7 +22,7 @@ export interface Seoable {
  */
 export const staticSeoResolver: ResolveFn<void> = (route) => {
   const seoService = inject(SeoService);
-  const seoData = route.data['seo'];
+  const seoData: SeoData | undefined = route.data['seo'];
   if (seoData) {
     seoService.updateMeta(seoData);
   }
@@ -29,33 +30,55 @@ export const staticSeoResolver: ResolveFn<void> = (route) => {
 
 /**
  * Creates a resolver that fetches an entity by slug and applies its SEO metadata.
+ * This is the preferred way for SSR as it ensures meta tags are updated BEFORE rendering.
  *
  * @param serviceToken  DI token for the service implementing ISlugService
- * @param titleFallback  Function that builds a fallback title from the entity when metaTitle is null
+ * @param titleBuilder  Function that builds a fallback title from the entity when metaTitle is null
  */
-export function createSeoResolver<T extends Seoable>(
+export function createEntityResolver<T extends Seoable>(
   serviceToken: ProviderToken<ISlugService<T>>,
-  titleFallback: (data: T) => string
-): ResolveFn<void> {
+  titleBuilder: (data: T) => string
+): ResolveFn<ApiState<T>> {
   return (route) => {
     const slug = route.paramMap.get('slug');
-    const seoService = inject(SeoService);
+    if (!slug) return inject(serviceToken).getBySlug(''); // Or error state
+
     const service = inject(serviceToken);
-    if (!slug) return of(void 0);
+    const seoService = inject(SeoService);
+
     return service.getBySlug(slug).pipe(
       tap(state => {
         if (state.status === 'success') {
-          const data = state.data;
-          const seo: SeoData = {
-            title: data.metaTitle || titleFallback(data),
-            description: data.metaDescription || data.description.substring(0, 160),
-            keywords: data.metaKeywords || undefined,
-            robots: data.seoEnabled ? 'index, follow' : 'noindex, nofollow',
-          };
+          const seo = buildSeoFromModel(state.data, titleBuilder(state.data));
           seoService.updateMeta(seo);
         }
-      }),
-      map(() => void 0)
+      })
     );
+  };
+}
+
+/**
+ * Builds SeoData from a model that implements Seoable.
+ *
+ * @param data           The entity with SEO fields
+ * @param titleFallback  A fallback title when metaTitle is null
+ */
+export function buildSeoFromModel<T extends Seoable>(
+  data: T,
+  titleFallback: string,
+): SeoData {
+  // Fallback to public/opengraph.png if no thumbnail is provided
+  let ogImage = '/opengraph.png';
+  if (data.thumbnail) {
+    ogImage = data.thumbnail.startsWith('http')
+      ? data.thumbnail
+      : `${environment.storageUrl}/${data.thumbnail}`;
+  }
+
+  return {
+    title: data.metaTitle || titleFallback,
+    description: data.metaDescription || data.description.substring(0, 160),
+    robots: data.seoEnabled ? 'index, follow' : 'noindex, nofollow',
+    ogImage: ogImage
   };
 }

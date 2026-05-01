@@ -1,11 +1,9 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { CertificationsService } from '../../../core/services/certifications.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ApiState } from '../../../core/models/api.state';
 import { Certification } from '../../../core/models/certification';
-import { switchMap } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { ImageUrlPipe } from '../../../shared/pipes/image-url-pipe';
 import { Header } from '../../../shared/header/header';
 import { Footer } from '../../../shared/footer/footer';
@@ -15,6 +13,8 @@ import { TechnologiesDetailsSection } from '../../technologies/technologies-deta
 import { DatePipe } from '@angular/common';
 import { ContactSection } from '../../../shared/contact/contact-section/contact-section';
 import { LoadingDetailsPage } from '../../../shared/loading/loading-details-page/loading-details-page';
+import { SeoService } from '../../../core/services/seo.service';
+import { buildSeoFromModel } from '../../../core/resolvers/seo.resolver';
 
 @Component({
   selector: 'app-certification-detail-page',
@@ -34,19 +34,25 @@ import { LoadingDetailsPage } from '../../../shared/loading/loading-details-page
   styleUrl: './certification-detail-page.scss',
 })
 export class CertificationDetailPage {
-  private route: ActivatedRoute = inject(ActivatedRoute);
-  private certificationsService: CertificationsService = inject(CertificationsService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly seoService = inject(SeoService);
 
+  constructor() {
+    const state = this.route.snapshot.data['certificationState'] as ApiState<Certification>;
+    if (state?.status === 'success') {
+      const seo = buildSeoFromModel(state.data, `${state.data.name} | Mateusz Malich`);
+      this.seoService.updateMeta(seo);
+    }
+  }
+
+  // Data is now provided by the resolver to ensure SSR captures SEO tags
   certification = toSignal(
-    this.route.paramMap.pipe(
-      switchMap(params => {
-        const slug = params.get('slug');
-        if (!slug) {
-          return of(ApiState.error<Certification>('No certification slug provided'));
-        }
-        return this.certificationsService.getBySlug(slug);
-      })
-    ),
+    this.route.data.pipe(map(d => d['certificationState'] as ApiState<Certification>)),
     { initialValue: ApiState.loading<Certification>() }
   );
+
+  private readonly certificationData = computed(() => {
+    const state = this.certification();
+    return state.status === 'success' ? state.data : null;
+  });
 }

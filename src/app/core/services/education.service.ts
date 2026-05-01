@@ -21,7 +21,7 @@ import {PaginationMeta} from '../models/pagination-meta';
   providedIn: 'root'
 })
 export class EducationService implements ICrudService<Education>,
-  IHomeService<Education>,
+  IHomeService<Education, EducationSummary>,
   ISummaryService<EducationSummary>,
   ISlugService<Education> {
 
@@ -60,6 +60,10 @@ export class EducationService implements ICrudService<Education>,
 
   getHomeItems(): Observable<ApiState<Education[]>> {
     return this.homeOps.getHomeItems();
+  }
+
+  getHomeSummaryItems(): Observable<ApiState<EducationSummary[]>> {
+    return this.homeOps.getHomeSummaryItems(mapEducationSummary);
   }
 
   getAllPaginated(page: number = 1): Observable<ApiState<{ data: Education[], meta: PaginationMeta }>> {

@@ -21,7 +21,7 @@ import { PaginationMeta } from '../models/pagination-meta';
   providedIn: 'root'
 })
 export class RealizationsService implements ICrudService<Realization>,
-  IHomeService<Realization>,
+  IHomeService<Realization, RealizationSummary>,
   ISummaryService<RealizationSummary>,
   ISlugService<Realization> {
 
@@ -60,6 +60,10 @@ export class RealizationsService implements ICrudService<Realization>,
 
   getHomeItems(): Observable<ApiState<Realization[]>> {
     return this.homeOps.getHomeItems();
+  }
+
+  getHomeSummaryItems(): Observable<ApiState<RealizationSummary[]>> {
+    return this.homeOps.getHomeSummaryItems(mapRealizationSummary);
   }
 
   getAllPaginated(page: number = 1): Observable<ApiState<{ data: Realization[], meta: PaginationMeta }>> {

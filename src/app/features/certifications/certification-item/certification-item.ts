@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Certification } from '../../../core/models/certification';
+import { CertificationSummary } from '../../../core/models/summary/certification';
 import { ImageUrlPipe } from '../../../shared/pipes/image-url-pipe';
 
 @Component({
@@ -11,5 +12,5 @@ import { ImageUrlPipe } from '../../../shared/pipes/image-url-pipe';
   styleUrl: './certification-item.scss',
 })
 export class CertificationItem {
-  @Input({ required: true }) certification!: Certification;
+  @Input({ required: true }) certification!: Certification | CertificationSummary;
 }

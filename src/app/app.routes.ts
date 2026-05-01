@@ -1,16 +1,11 @@
 import { Routes } from '@angular/router';
 import { HomePage } from './features/home-page/home-page';
-import { createSeoResolver, staticSeoResolver } from './core/resolvers/seo.resolver';
+import { createEntityResolver, staticSeoResolver } from './core/resolvers/seo.resolver';
 import { ProjectsService } from './core/services/projects.service';
 import { RealizationsService } from './core/services/realizations.service';
 import { EducationService } from './core/services/education.service';
 import { CertificationsService } from './core/services/certifications.service';
 import { JobsService } from './core/services/jobs.service';
-import { Project } from './core/models/project';
-import { Realization } from './core/models/realization';
-import { Education } from './core/models/education';
-import { Certification } from './core/models/certification';
-import { Job } from './core/models/job';
 
 export const routes: Routes = [
     // HomePage loads eagerly for fast initial load
@@ -52,7 +47,7 @@ export const routes: Routes = [
                 (m) => m.ProjectDetailsPage
             ),
         resolve: {
-            seo: createSeoResolver<Project>(ProjectsService, data => `${data.title} | Mateusz Malich`),
+            projectState: createEntityResolver(ProjectsService, data => `${data.title} | Mateusz Malich`),
         },
     },
     {
@@ -79,7 +74,7 @@ export const routes: Routes = [
                 (m) => m.RealizationDetailsPage
             ),
         resolve: {
-            seo: createSeoResolver<Realization>(RealizationsService, data => `${data.title} | Mateusz Malich`),
+            realizationState: createEntityResolver(RealizationsService, data => `${data.title} | Mateusz Malich`),
         },
     },
     {
@@ -106,7 +101,7 @@ export const routes: Routes = [
                 (m) => m.EducationDetailsPage
             ),
         resolve: {
-            seo: createSeoResolver<Education>(EducationService, data => `${data.degree} at ${data.institution} | Mateusz Malich`),
+            educationState: createEntityResolver(EducationService, data => `${data.degree} at ${data.institution} | Mateusz Malich`),
         },
     },
     {
@@ -133,7 +128,7 @@ export const routes: Routes = [
                 (m) => m.CertificationDetailPage
             ),
         resolve: {
-            seo: createSeoResolver<Certification>(CertificationsService, data => `${data.name} | Mateusz Malich`),
+            certificationState: createEntityResolver(CertificationsService, data => `${data.name} | Mateusz Malich`),
         },
     },
     {
@@ -158,7 +153,7 @@ export const routes: Routes = [
                 (m) => m.JobDetailsPage
             ),
         resolve: {
-            seo: createSeoResolver<Job>(JobsService, data => `${data.title} at ${data.companyName} | Mateusz Malich`),
+            jobState: createEntityResolver(JobsService, data => `${data.title} at ${data.companyName} | Mateusz Malich`),
         },
     },
     {

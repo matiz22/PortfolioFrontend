@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Education } from '../../../core/models/education';
+import { EducationSummary } from '../../../core/models/summary/education';
 import { DatePipe } from '@angular/common';
 import { ImageUrlPipe } from '../../../shared/pipes/image-url-pipe';
 import { RouterLink } from '@angular/router';
@@ -11,5 +12,5 @@ import { RouterLink } from '@angular/router';
   styleUrl: './education-item.scss',
 })
 export class EducationItem {
-  @Input({ required: true }) education!: Education;
+  @Input({ required: true }) education!: Education | EducationSummary;
 }

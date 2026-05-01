@@ -3,9 +3,8 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ImageUrlPipe } from '../../../shared/pipes/image-url-pipe';
 import { Header } from '../../../shared/header/header';
 import { Footer } from '../../../shared/footer/footer';
-import { ProjectsService } from '../../../core/services/projects.service';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { of, switchMap } from 'rxjs';
+import { map } from 'rxjs';
 import { Project } from '../../../core/models/project';
 import { ApiState } from '../../../core/models/api.state';
 import { Link } from '../../../shared/models/link';
@@ -13,6 +12,8 @@ import { DescriptionMd } from '../../../shared/description/description-md/descri
 import { TechnologiesDetailsSection } from '../../technologies/technologies-details-section/technologies-details-section';
 import { ContactSection } from '../../../shared/contact/contact-section/contact-section';
 import { LoadingDetailsPage } from '../../../shared/loading/loading-details-page/loading-details-page';
+import { SeoService } from '../../../core/services/seo.service';
+import { buildSeoFromModel } from '../../../core/resolvers/seo.resolver';
 
 @Component({
   selector: 'app-project-details-page',
@@ -21,19 +22,20 @@ import { LoadingDetailsPage } from '../../../shared/loading/loading-details-page
   styleUrl: './project-details-page.scss',
 })
 export class ProjectDetailsPage {
-  private readonly projectService = inject(ProjectsService);
   private readonly route = inject(ActivatedRoute);
+  private readonly seoService = inject(SeoService);
 
+  constructor() {
+    const state = this.route.snapshot.data['projectState'] as ApiState<Project>;
+    if (state?.status === 'success') {
+      const seo = buildSeoFromModel(state.data, `${state.data.title} | Mateusz Malich`);
+      this.seoService.updateMeta(seo);
+    }
+  }
+
+  // Data is now provided by the resolver to ensure SSR captures SEO tags
   project = toSignal(
-    this.route.paramMap.pipe(
-      switchMap(params => {
-        const slug = params.get('slug');
-        if (!slug) {
-          return of(ApiState.error<Project>('No project slug provided'));
-        }
-        return this.projectService.getBySlug(slug);
-      })
-    ),
+    this.route.data.pipe(map(d => d['projectState'] as ApiState<Project>)),
     { initialValue: ApiState.loading<Project>() }
   );
 

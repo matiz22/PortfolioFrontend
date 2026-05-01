@@ -5,6 +5,7 @@ import { RouterLink } from '@angular/router';
 import { ApiState } from '../../../core/models/api.state';
 import { JobsService } from '../../../core/services/jobs.service';
 import { Job } from '../../../core/models/job';
+import { JobSummary } from '../../../core/models/summary/job';
 import { AosAnimations } from '../../../shared/animations/aos-animation';
 
 @Component({
@@ -16,9 +17,9 @@ import { AosAnimations } from '../../../shared/animations/aos-animation';
 export class JobTimelineSection {
   jobsService: JobsService = inject(JobsService);
   jobs = toSignal(
-    this.jobsService.getHomeItems(),
+    this.jobsService.getHomeSummaryItems(),
     {
-      initialValue: ApiState.loading<Job[]>()
+      initialValue: ApiState.loading<JobSummary[]>()
     }
   );
 }

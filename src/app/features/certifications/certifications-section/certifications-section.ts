@@ -5,6 +5,7 @@ import { CertificationsService } from '../../../core/services/certifications.ser
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ApiState } from '../../../core/models/api.state';
 import { Certification } from '../../../core/models/certification';
+import { CertificationSummary } from '../../../core/models/summary/certification';
 import { CertificationItem } from '../certification-item/certification-item';
 import { RouterLink } from '@angular/router';
 
@@ -18,9 +19,9 @@ export class CertificationsSection {
   private certificationsService = inject(CertificationsService);
 
   certifications = toSignal(
-    this.certificationsService.getHomeItems(),
+    this.certificationsService.getHomeSummaryItems(),
     {
-      initialValue: ApiState.loading<Certification[]>()
+      initialValue: ApiState.loading<CertificationSummary[]>()
     }
   );
 }

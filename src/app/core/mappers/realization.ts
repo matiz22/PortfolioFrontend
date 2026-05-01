@@ -29,7 +29,6 @@ export function mapRealization(dto: RealizationDto): Realization {
     seoEnabled: dto.seo_enabled,
     metaTitle: dto.seo_title,
     metaDescription: dto.seo_description,
-    metaKeywords: dto.seo_keywords,
   };
 }
 
@@ -40,6 +39,7 @@ export function mapRealizationSummary(dto: RealizationSummaryDto): RealizationSu
     title: dto.title,
     shortDesc: dto.short_desc,
     clientName: dto.client_name,
+    clientUrl: dto.client_url,
     location: dto.location,
     thumbnail: dto.thumbnail,
     homePage: dto.home_page,

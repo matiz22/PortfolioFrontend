@@ -7,6 +7,7 @@ export interface RealizationSummary {
   title: string;
   shortDesc: string;
   clientName: string;
+  clientUrl: string | null;
   location: string | null;
   thumbnail: string;
   homePage: boolean;

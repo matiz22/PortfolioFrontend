@@ -22,7 +22,7 @@ import {PaginationMeta} from '../models/pagination-meta';
   providedIn: 'root'
 })
 export class ProjectsService implements ICrudService<Project>,
-  IHomeService<Project>,
+  IHomeService<Project, ProjectSummary>,
   ISummaryService<ProjectSummary>,
   ISlugService<Project> {
 
@@ -61,6 +61,10 @@ export class ProjectsService implements ICrudService<Project>,
 
   getHomeItems(): Observable<ApiState<Project[]>> {
     return this.homeOps.getHomeItems();
+  }
+
+  getHomeSummaryItems(): Observable<ApiState<ProjectSummary[]>> {
+    return this.homeOps.getHomeSummaryItems(mapProjectSummary);
   }
 
   getAllPaginated(page: number = 1): Observable<ApiState<{ data: Project[], meta: PaginationMeta }>> {

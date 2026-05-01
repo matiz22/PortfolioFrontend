@@ -28,7 +28,6 @@ export function mapEducation(dto: EducationDto): Education {
     seoEnabled: dto.seo_enabled,
     metaTitle: dto.seo_title,
     metaDescription: dto.seo_description,
-    metaKeywords: dto.seo_keywords,
   };
 }
 
@@ -39,6 +38,7 @@ export function mapEducationSummary(dto: EducationSummaryDto): EducationSummary 
     institution: dto.institution,
     degree: dto.degree,
     fieldOfStudy: dto.field_of_study,
+    grade: dto.grade,
     description: dto.description,
     startDate: new Date(dto.start_date),
     endDate: dto.end_date ? new Date(dto.end_date) : null,

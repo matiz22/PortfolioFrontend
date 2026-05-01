@@ -23,5 +23,4 @@ export interface EducationDto {
   seo_enabled: boolean;
   seo_title: string | null;
   seo_description: string | null;
-  seo_keywords: string | null;
 }

@@ -18,6 +18,13 @@ export class HomeOperations<TDto, TModel> {
     );
   }
 
+  getHomeSummaryItems<TSummaryDto, TSummaryModel>(mapper: (dto: TSummaryDto) => TSummaryModel): Observable<ApiState<TSummaryModel[]>> {
+    return this.http.get<TSummaryDto[]>(`${this.homeUrl}/summary`).pipe(
+      map(dtos => ApiState.success(dtos.map(dto => mapper(dto)))),
+      catchError(err => of(ApiState.error<TSummaryModel[]>(this.getErrorMessage(err))))
+    );
+  }
+
   private getErrorMessage(error: HttpErrorResponse): string {
     return error.error?.message || `Failed to load ${this.entityName.toLowerCase()}.`;
   }

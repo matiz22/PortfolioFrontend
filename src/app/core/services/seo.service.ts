@@ -4,7 +4,6 @@ import { Meta, Title } from '@angular/platform-browser';
 export interface SeoData {
   title?: string;
   description?: string;
-  keywords?: string;
   robots?: string;
   ogTitle?: string;
   ogDescription?: string;
@@ -28,10 +27,6 @@ export class SeoService {
     if (seo.description) {
       this.metaService.updateTag({ name: 'description', content: seo.description });
       this.metaService.updateTag({ property: 'og:description', content: seo.description });
-    }
-
-    if (seo.keywords) {
-      this.metaService.updateTag({ name: 'keywords', content: seo.keywords });
     }
 
     this.metaService.updateTag({ name: 'robots', content: seo.robots || 'index, follow' });
