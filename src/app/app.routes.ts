@@ -162,5 +162,14 @@ export const routes: Routes = [
             import('./shared/privacy-policy/privacy-policy').then(
                 (m) => m.PrivacyPolicy
             ),
+        title: $localize`:@@privacyPolicyTitleMeta:Privacy Policy`,
+        resolve: { seo: staticSeoResolver },
+        data: {
+            seo: {
+                title: $localize`:@@privacyPolicyTitleMeta:Privacy Policy`,
+                description: $localize`:@@privacyPolicyDescriptionMeta:Privacy policy and data protection information for Malich.dev.`,
+                robots: 'index, follow'
+            }
+        },
     },
 ];
