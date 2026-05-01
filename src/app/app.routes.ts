@@ -18,7 +18,7 @@ export const routes: Routes = [
             reuse: true,
             seo: {
                 title: $localize`:@@homeTitleMeta:Apps, Websites & AI Solutions`,
-                description: $localize`:@@homeDescriptionMeta:Tworzę inteligentne aplikacje i nowoczesne strony, które napędzają biznes. Wykorzystaj potencjał AI i nowoczesnych technologii w swojej firmie. Sprawdź!`,
+                description: $localize`:@@homeDescriptionMeta:I build intelligent applications and modern websites that drive business. Leverage the potential of AI and modern technologies in your company. Check it out!`,
                 robots: 'index, follow'
             }
         },
@@ -35,7 +35,7 @@ export const routes: Routes = [
             reuse: true,
             seo: {
                 title: $localize`:@@projectsTitleMeta:Projects`,
-                description: $localize`:@@projectsDescriptionMeta:Odkryj moje portfolio projektów osobistych i zawodowych, które prezentują moje umiejętności w programowaniu webowym, inżynierii backendowej oraz integracji AI.`,
+                description: $localize`:@@projectsDescriptionMeta:Discover my portfolio of personal and professional projects that showcase my skills in web development, backend engineering, and AI integration.`,
                 robots: 'index, follow'
             }
         },
@@ -62,7 +62,7 @@ export const routes: Routes = [
             reuse: true,
             seo: {
                 title: $localize`:@@realizationsTitleMeta:Realizations`,
-                description: $localize`:@@realizationsDescriptionMeta:Zobacz kolekcję zrealizowanych projektów dla klientów, prac jako freelancer oraz aplikacji komercyjnych, które dostarczyłem.`,
+                description: $localize`:@@realizationsDescriptionMeta:View a collection of completed projects for clients, freelance work, and commercial applications I have delivered.`,
                 robots: 'index, follow'
             }
         },
@@ -89,7 +89,7 @@ export const routes: Routes = [
             reuse: true,
             seo: {
                 title: $localize`:@@educationTitleMeta:Education`,
-                description: $localize`:@@educationDescriptionMeta:Dowiedz się więcej o moim wykształceniu akademickim, dyplomach i studiach informatycznych, które stanowią fundament mojej wiedzy technicznej.`,
+                description: $localize`:@@educationDescriptionMeta:Learn more about my academic background, degrees, and computer science studies that form the foundation of my technical knowledge.`,
                 robots: 'index, follow'
             }
         },
@@ -116,7 +116,7 @@ export const routes: Routes = [
             reuse: true,
             seo: {
                 title: $localize`:@@certificationsTitleMeta:Certifications`,
-                description: $localize`:@@certificationsDescriptionMeta:Przejrzyj moje profesjonalne certyfikaty oraz osiągnięcia w ciągłym doskonaleniu umiejętności w zakresie różnych technologii i metodyk.`,
+                description: $localize`:@@certificationsDescriptionMeta:Review my professional certifications and achievements in continuous skill improvement across various technologies and methodologies.`,
                 robots: 'index, follow'
             }
         },
@@ -141,7 +141,7 @@ export const routes: Routes = [
             reuse: true,
             seo: {
                 title: $localize`:@@jobsTitleMeta:Experience`,
-                description: $localize`:@@jobsDescriptionMeta:Zapoznaj się z moim doświadczeniem zawodowym jako inżynier oprogramowania, moimi rolami, zakresem obowiązków i kluczowymi osiągnięciami.`,
+                description: $localize`:@@jobsDescriptionMeta:Get to know my professional experience as a software engineer, my roles, scope of responsibilities, and key achievements.`,
                 robots: 'index, follow'
             }
         },

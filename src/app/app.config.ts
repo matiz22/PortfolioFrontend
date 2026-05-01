@@ -6,6 +6,8 @@ import { provideClientHydration, withEventReplay, withI18nSupport, withIncrement
 import { HTTP_INTERCEPTORS, provideHttpClient, withFetch, withInterceptorsFromDi } from '@angular/common/http';
 import { LocaleInterceptor } from './core/interceptors/locale.interceptor';
 import { CustomRouteReuseStrategy } from './route.reuse.strategy';
+import { TitleStrategy } from '@angular/router';
+import { AppTitleStrategy } from './core/strategies/title.strategy';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -40,6 +42,7 @@ export const appConfig: ApplicationConfig = {
       withInterceptorsFromDi()
     ),
     { provide: HTTP_INTERCEPTORS, useClass: LocaleInterceptor, multi: true },
+    { provide: TitleStrategy, useClass: AppTitleStrategy },
   ]
 };
 
