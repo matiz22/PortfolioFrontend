@@ -29,7 +29,7 @@ export class JobDetailsPage {
   constructor() {
     const state = this.route.snapshot.data['jobState'] as ApiState<Job>;
     if (state?.status === 'success') {
-      const seo = buildSeoFromModel(state.data, `${state.data.title} at ${state.data.companyName} | Mateusz Malich`);
+      const seo = buildSeoFromModel(state.data, `${state.data.title} at ${state.data.companyName}`);
       this.seoService.updateMeta(seo);
     }
   }

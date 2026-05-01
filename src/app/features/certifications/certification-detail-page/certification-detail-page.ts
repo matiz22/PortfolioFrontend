@@ -40,7 +40,7 @@ export class CertificationDetailPage {
   constructor() {
     const state = this.route.snapshot.data['certificationState'] as ApiState<Certification>;
     if (state?.status === 'success') {
-      const seo = buildSeoFromModel(state.data, `${state.data.name} | Mateusz Malich`);
+      const seo = buildSeoFromModel(state.data, `${state.data.name}`);
       this.seoService.updateMeta(seo);
     }
   }

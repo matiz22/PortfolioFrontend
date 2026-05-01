@@ -29,7 +29,7 @@ export class RealizationDetailsPage {
   constructor() {
     const state = this.route.snapshot.data['realizationState'] as ApiState<Realization>;
     if (state?.status === 'success') {
-      const seo = buildSeoFromModel(state.data, `${state.data.title} | Mateusz Malich`);
+      const seo = buildSeoFromModel(state.data, `${state.data.title}`);
       this.seoService.updateMeta(seo);
     }
   }

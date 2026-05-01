@@ -41,7 +41,7 @@ export class EducationDetailsPage {
   constructor() {
     const state = this.route.snapshot.data['educationState'] as ApiState<Education>;
     if (state?.status === 'success') {
-      const seo = buildSeoFromModel(state.data, `${state.data.degree} at ${state.data.institution} | Mateusz Malich`);
+      const seo = buildSeoFromModel(state.data, `${state.data.degree} at ${state.data.institution}`);
       this.seoService.updateMeta(seo);
     }
   }

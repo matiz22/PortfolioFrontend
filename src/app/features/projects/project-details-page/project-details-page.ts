@@ -28,7 +28,7 @@ export class ProjectDetailsPage {
   constructor() {
     const state = this.route.snapshot.data['projectState'] as ApiState<Project>;
     if (state?.status === 'success') {
-      const seo = buildSeoFromModel(state.data, `${state.data.title} | Mateusz Malich`);
+      const seo = buildSeoFromModel(state.data, `${state.data.title}`);
       this.seoService.updateMeta(seo);
     }
   }

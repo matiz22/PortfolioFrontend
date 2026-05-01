@@ -1,5 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
+import { environment } from '../../../environments/environment';
 
 export interface SeoData {
   title?: string;
@@ -20,8 +21,9 @@ export class SeoService {
 
   updateMeta(seo: SeoData): void {
     if (seo.title) {
-      this.titleService.setTitle(seo.title);
-      this.metaService.updateTag({ property: 'og:title', content: seo.title });
+      const fullTitle = `${seo.title}${environment.seoTitleSuffix}`;
+      this.titleService.setTitle(fullTitle);
+      this.metaService.updateTag({ property: 'og:title', content: fullTitle });
     }
 
     if (seo.description) {

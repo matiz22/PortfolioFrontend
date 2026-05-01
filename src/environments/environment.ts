@@ -16,5 +16,6 @@ export const environment = {
       label: 'English',
       url: 'http://localhost:4000/en/'
     },
-  ] as LanguageOption[]
+  ] as LanguageOption[],
+  seoTitleSuffix: ' | Mateusz Malich'
 };
