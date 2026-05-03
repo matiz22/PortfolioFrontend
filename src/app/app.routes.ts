@@ -172,4 +172,20 @@ export const routes: Routes = [
             }
         },
     },
+    {
+        path: '**',
+        loadComponent: () =>
+            import('./features/not-found-page/not-found-page').then(
+                (m) => m.NotFoundPage
+            ),
+        title: $localize`:@@notFoundTitleMeta:404 - Page Not Found`,
+        resolve: { seo: staticSeoResolver },
+        data: {
+            seo: {
+                title: $localize`:@@notFoundTitleMeta:404 - Page Not Found`,
+                description: $localize`:@@notFoundDescriptionMeta:The page you are looking for does not exist on Malich.dev.`,
+                robots: 'noindex, nofollow'
+            }
+        },
+    },
 ];

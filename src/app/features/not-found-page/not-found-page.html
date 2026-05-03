@@ -1,0 +1,48 @@
+<app-header></app-header>
+
+<main class="pt-20">
+  <section class="not-found-container py-24 md:py-32 border-b border-white/5 bg-[radial-gradient(oklch(79%_0.209_151.711_/_0.15)_1.5px,transparent_1.5px)] [background-size:24px_24px] relative">
+    
+    <!-- Drift Particles for atmosphere -->
+    <div class="drift-particle w-1 h-1 left-[10%] bottom-0" style="animation-duration: 15s; animation-delay: -2s;"></div>
+    <div class="drift-particle w-2 h-2 left-[30%] bottom-0" style="animation-duration: 25s; animation-delay: -5s;"></div>
+    <div class="drift-particle w-1.5 h-1.5 left-[70%] bottom-0" style="animation-duration: 20s; animation-delay: -10s;"></div>
+    <div class="drift-particle w-1 h-1 left-[90%] bottom-0" style="animation-duration: 18s; animation-delay: -15s;"></div>
+
+    <div class="container mx-auto px-6 max-w-7xl relative z-10 text-center">
+      <div class="inline-flex items-center gap-3 mb-8 animate-fade-in">
+        <div class="w-1.5 h-1.5 bg-error rounded-full animate-pulse"></div>
+        <span class="text-xs font-mono tracking-widest uppercase text-error" i18n="@@notFound.status">Error 404</span>
+      </div>
+
+      <div class="glitch-wrapper mb-8 animate-fade-in-scale" style="animation-delay: 200ms;">
+        <h1 class="glitch-text m-0">404</h1>
+      </div>
+
+      <h2 class="text-3xl md:text-5xl sub-heading mb-6 animate-fade-in" style="animation-delay: 400ms;" i18n="@@notFound.heading">
+        Lost in the void.
+      </h2>
+
+      <p class="text-secondary-content/60 max-w-lg mx-auto mb-12 font-mono text-sm leading-relaxed animate-fade-in" style="animation-delay: 600ms;" i18n="@@notFound.description">
+        The coordinates you provided led to a non-existent location in the digital expanse. 
+        The page may have been moved, deleted, or never existed in this reality.
+      </p>
+
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in" style="animation-delay: 800ms;">
+        <a routerLink="/" rel="nofollow" class="btn btn-primary px-8 rounded-full font-mono uppercase text-xs tracking-widest group">
+          <span i18n="@@notFound.returnHome">Return to Home</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-2 transition-transform group-hover:translate-x-1"><path d="m9 18 6-6-6-6"/></svg>
+        </a>
+        <a routerLink="/projects" rel="nofollow" class="btn btn-ghost px-8 rounded-full font-mono uppercase text-xs tracking-widest border border-white/10">
+          <span i18n="@@notFound.viewProjects">Explore Projects</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-base-100 to-transparent"></div>
+  </section>
+
+  <app-contact-section></app-contact-section>
+</main>
+
+<app-footer></app-footer>

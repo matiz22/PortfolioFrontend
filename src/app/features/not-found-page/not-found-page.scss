@@ -1,0 +1,88 @@
+.not-found-container {
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.glitch-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.glitch-text {
+  font-size: 15rem;
+  line-height: 0.8;
+  font-family: "Instrument Serif", serif;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--color-primary);
+  position: relative;
+  z-index: 1;
+  text-shadow: 0.05em 0 0 rgba(255, 0, 0, 0.2), -0.025em -0.05em 0 rgba(0, 255, 0, 0.2),
+    0.025em 0.05em 0 rgba(0, 0, 255, 0.2);
+  animation: glitch 2s infinite;
+
+  @media (max-width: 768px) {
+    font-size: 8rem;
+  }
+}
+
+.sub-heading {
+  font-family: "Instrument Serif", serif;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+@keyframes glitch {
+  0% {
+    text-shadow: 0.05em 0 0 rgba(255, 0, 0, 0.2), -0.025em -0.05em 0 rgba(0, 255, 0, 0.2),
+      0.025em 0.05em 0 rgba(0, 0, 255, 0.2);
+  }
+  14% {
+    text-shadow: 0.05em 0 0 rgba(255, 0, 0, 0.2), -0.025em -0.05em 0 rgba(0, 255, 0, 0.2),
+      0.025em 0.05em 0 rgba(0, 0, 255, 0.2);
+  }
+  15% {
+    text-shadow: -0.05em -0.025em 0 rgba(255, 0, 0, 0.2), 0.025em 0.025em 0 rgba(0, 255, 0, 0.2),
+      -0.05em -0.05em 0 rgba(0, 0, 255, 0.2);
+  }
+  49% {
+    text-shadow: -0.05em -0.025em 0 rgba(255, 0, 0, 0.2), 0.025em 0.025em 0 rgba(0, 255, 0, 0.2),
+      -0.05em -0.05em 0 rgba(0, 0, 255, 0.2);
+  }
+  50% {
+    text-shadow: 0.025em 0.05em 0 rgba(255, 0, 0, 0.2), 0.05em 0 0 rgba(0, 255, 0, 0.2),
+      0 -0.05em 0 rgba(0, 0, 255, 0.2);
+  }
+  99% {
+    text-shadow: 0.025em 0.05em 0 rgba(255, 0, 0, 0.2), 0.05em 0 0 rgba(0, 255, 0, 0.2),
+      0 -0.05em 0 rgba(0, 0, 255, 0.2);
+  }
+  100% {
+    text-shadow: -0.025em 0 0 rgba(255, 0, 0, 0.2), -0.025em -0.025em 0 rgba(0, 255, 0, 0.2),
+      -0.025em -0.05em 0 rgba(0, 0, 255, 0.2);
+  }
+}
+
+.drift-particle {
+  position: absolute;
+  background: var(--color-primary);
+  border-radius: 50%;
+  opacity: 0.1;
+  pointer-events: none;
+  animation: drift linear infinite;
+}
+
+@keyframes drift {
+  from {
+    transform: translateY(0) translateX(0) rotate(0deg);
+  }
+  to {
+    transform: translateY(-100vh) translateX(20vw) rotate(360deg);
+  }
+}

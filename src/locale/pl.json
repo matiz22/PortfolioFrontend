@@ -120,6 +120,13 @@
         "certificationsDescriptionMeta": "Przejrzyj moje profesjonalne certyfikaty oraz osiągnięcia w ciągłym doskonaleniu umiejętności w zakresie różnych technologii i metodyk.",
         "realizationsDescriptionMeta": "Zobacz kolekcję zrealizowanych projektów dla klientów, prac jako freelancer oraz aplikacji komercyjnych, które dostarczyłem.",
         "privacyPolicyTitleMeta": "Polityka prywatności",
-        "privacyPolicyDescriptionMeta": "Polityka prywatności oraz informacje o ochronie danych osobowych na stronie Malich.dev."
+        "privacyPolicyDescriptionMeta": "Polityka prywatności oraz informacje o ochronie danych osobowych na stronie Malich.dev.",
+        "notFoundTitleMeta": "404 - Nie znaleziono strony",
+        "notFoundDescriptionMeta": "Strona, której szukasz, nie istnieje na Malich.dev.",
+        "notFound.status": "Błąd 404",
+        "notFound.heading": "Zagubiony w próżni.",
+        "notFound.description": "Współrzędne, które podałeś, prowadzą do nieistniejącej lokalizacji w cyfrowej przestrzeni. Strona mogła zostać przeniesiona, usunięta lub nigdy nie istniała w tej rzeczywistości.",
+        "notFound.returnHome": "Wróć do strony głównej",
+        "notFound.viewProjects": "Przeglądaj projekty"
     }
 }
