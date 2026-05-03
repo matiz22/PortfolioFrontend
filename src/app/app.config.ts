@@ -36,7 +36,11 @@ export const appConfig: ApplicationConfig = {
       withInMemoryScrolling({ scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled' }),
     ),
     { provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy },
-    provideClientHydration(withIncrementalHydration()),
+    provideClientHydration(
+      withIncrementalHydration(),
+      withI18nSupport(),
+      withEventReplay(),
+    ),
     provideHttpClient(
       withFetch(),
       withInterceptorsFromDi()
