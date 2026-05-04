@@ -1,5 +1,6 @@
 import { Component, computed, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { DecimalPipe } from '@angular/common';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ApiState } from '../../../core/models/api.state';
 import { Realization } from '../../../core/models/realization';
@@ -9,8 +10,6 @@ import { ImageUrlPipe } from '../../../shared/pipes/image-url-pipe';
 import { Header } from '../../../shared/header/header';
 import { Footer } from '../../../shared/footer/footer';
 import { DescriptionMd } from '../../../shared/description/description-md/description-md';
-import { SkillsDetailsSection } from '../../skills/skills-details-section/skills-details-section';
-import { TechnologiesDetailsSection } from '../../technologies/technologies-details-section/technologies-details-section';
 import { ContactSection } from '../../../shared/contact/contact-section/contact-section';
 import { LoadingDetailsPage } from '../../../shared/loading/loading-details-page/loading-details-page';
 import { SeoService } from '../../../core/services/seo.service';
@@ -18,7 +17,7 @@ import { buildSeoFromModel } from '../../../core/resolvers/seo.resolver';
 
 @Component({
   selector: 'app-realization-details-page',
-  imports: [ImageUrlPipe, RouterLink, Header, Footer, DescriptionMd, SkillsDetailsSection, TechnologiesDetailsSection, ContactSection, LoadingDetailsPage],
+  imports: [ImageUrlPipe, DecimalPipe, RouterLink, Header, Footer, DescriptionMd, ContactSection, LoadingDetailsPage],
   templateUrl: './realization-details-page.html',
   styleUrl: './realization-details-page.scss',
 })

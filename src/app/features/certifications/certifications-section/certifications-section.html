@@ -1,12 +1,17 @@
-<section appCursorSpotlight class="py-24 border-y border-white/5 bg-[radial-gradient(oklch(79%_0.209_151.711_/_0.4)_1.5px,transparent_1.5px)] [background-size:24px_24px]" id="certifications">
+<section appCursorSpotlight
+    class="py-24 border-y border-white/5 bg-black bg-[radial-gradient(oklch(79%_0.209_151.711_/_0.4)_1.5px,transparent_1.5px)] [background-size:24px_24px]"
+    id="certifications">
     <div class="container mx-auto px-6 max-w-6xl">
         <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
             <div class="md:w-1/2">
-                <h2 class="section-heading text-4xl md:text-5xl lg:text-6xl text-left" i18n="@@certifications.heading">Certifications</h2>
+                <h2 class="section-heading text-4xl md:text-5xl lg:text-6xl text-left" i18n="@@certifications.heading">
+                    Certifications</h2>
             </div>
             <div class="md:w-1/2 lg:w-2/5">
-                <p class="text-base text-left text-base-content/80 backdrop-blur-md bg-base-100/50 rounded-xl px-5 py-4 border border-white/5 relative z-10" i18n="@@certifications.description">
-                    A collection of my professional certifications and achievements, validating my commitment to continuous
+                <p class="text-base text-left text-base-content/80 backdrop-blur-md bg-base-100/50 rounded-xl px-5 py-4 border border-white/5 relative z-10"
+                    i18n="@@certifications.description">
+                    A collection of my professional certifications and achievements, validating my commitment to
+                    continuous
                     learning and excellence.
                 </p>
             </div>
@@ -17,7 +22,7 @@
             @if (certifications(); as state) {
             @if (state.status === 'loading') {
             <div class="text-center w-full">
-                <span class="loading loading-spinner loading-lg text-primary"></span>
+                <span class="loading loading-spinner loading-lg text-secondary"></span>
             </div>
             } @else if (state.status === 'success') {
             @for (item of state.data; track item.id; let i = $index) {
@@ -34,7 +39,8 @@
 
         <!-- View All Link -->
         <div class="text-center mt-8 relative z-10">
-            <a routerLink="/certifications" class="btn bg-base-100/50 backdrop-blur-md border border-primary/30 text-base-content hover:border-white hover:text-white hover:bg-transparent">
+            <a routerLink="/certifications"
+                class="btn bg-base-100/50 backdrop-blur-md border border-secondary/30 text-base-content hover:border-secondary hover:text-secondary hover:bg-transparent">
                 <ng-container i18n="@@certifications.viewall">View All Certifications</ng-container>
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor">

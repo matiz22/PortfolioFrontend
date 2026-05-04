@@ -1,4 +1,4 @@
-import { Component, Inject, LOCALE_ID } from '@angular/core';
+import { Component, Inject, LOCALE_ID, Input } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { LanguageOption } from '../../../core/models/languages';
 
@@ -10,6 +10,7 @@ import { LanguageOption } from '../../../core/models/languages';
   styleUrl: './languages-switcher.scss',
 })
 export class LanguagesSwitcher {
+  @Input() mode: 'dropdown' | 'inline' = 'dropdown';
   languagesOptions: LanguageOption[] = environment.languagesOptions;
 
   constructor(@Inject(LOCALE_ID) public locale: string) { }

@@ -1,7 +1,7 @@
 <a [routerLink]="['/job', job.slug]" [title]="job.title"
     [class]="job.thumbnail
-      ? 'card image-full border border-white/5 hover:border-primary/30 transition-all duration-300 ease-out hover:-translate-y-1 h-full min-h-64 overflow-hidden'
-      : 'card bg-base-200/50 border border-white/5 hover:border-primary/30 transition-all duration-300 ease-out hover:-translate-y-1 h-full min-h-64 overflow-hidden'">
+      ? 'card image-full border border-white/5 hover:border-accent/30 transition-all duration-300 ease-out hover:-translate-y-1 h-full min-h-64 overflow-hidden'
+      : 'card bg-base-200/50 border border-white/5 hover:border-accent/30 transition-all duration-300 ease-out hover:-translate-y-1 h-full min-h-64 overflow-hidden'">
     @if (job.thumbnail) {
     <figure>
         <img [alt]="job.title" [src]="job.thumbnail | imageUrl" />
@@ -13,11 +13,11 @@
         <p class="text-sm text-base-content/60">{{ job.location }}</p>
         <div class="flex gap-1.5 flex-wrap mt-4">
             @for (technology of job.technologies; track technology.id) {
-            <div class="badge badge-primary badge-outline badge-sm">{{ technology.name }}</div>
+            <div class="badge badge-accent badge-outline badge-sm">{{ technology.name }}</div>
             }
         </div>
         <div class="card-actions justify-end mt-auto">
-            <div class="badge badge-primary badge-sm font-mono">
+            <div class="badge badge-accent badge-sm font-mono">
                 {{ job.startDate | date:'MMM yyyy' }} - {{ job.isCurrent ? 'Present' : (job.endDate | date:'MMM yyyy')
                 }}
             </div>

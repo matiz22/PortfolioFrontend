@@ -1,5 +1,5 @@
 <a [routerLink]="['/realization', realization.slug]" [title]="realization.title"
-  class="card bg-base-200/50 border border-white/5 hover:border-primary/30 transition-all duration-300 ease-out hover:-translate-y-1 h-full flex flex-col overflow-hidden">
+  class="card bg-base-200/50 border border-white/5 hover:border-secondary/30 transition-all duration-300 ease-out hover:-translate-y-1 h-full flex flex-col overflow-hidden">
   <!-- thumbnail (if available) -->
   @if (realization.thumbnail) {
   <figure>
@@ -22,7 +22,7 @@
 
     <div class="flex gap-1.5 flex-wrap mt-4 justify-center">
       @for (tech of techList; track tech.id) {
-      <div class="badge badge-primary badge-outline badge-sm">{{ tech.name }}</div>
+      <div class="badge badge-secondary badge-outline badge-sm">{{ tech.name }}</div>
       }
     </div>
   </div>

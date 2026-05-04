@@ -1,4 +1,4 @@
-<section appCursorSpotlight class="py-24 border-y border-white/5" id="education" style="background-image: radial-gradient(oklch(79% 0.209 151.711 / 0.4) 1.5px, transparent 1.5px); background-size: 24px 24px;">
+<section appCursorSpotlight class="py-24 border-y border-white/5 bg-black" id="education" style="background-image: radial-gradient(oklch(79% 0.209 151.711 / 0.4) 1.5px, transparent 1.5px); background-size: 24px 24px;">
   <div class="container mx-auto px-6 max-w-6xl relative z-10">
     <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
       <div class="md:w-1/2">
@@ -16,7 +16,7 @@
       @if (education(); as state) {
       @if (state.status === 'loading') {
       <div class="text-center w-full">
-        <span class="loading loading-spinner loading-lg text-primary"></span>
+        <span class="loading loading-spinner loading-lg text-accent"></span>
       </div>
       }
       @else if (state.status === 'success') {
@@ -35,7 +35,7 @@
 
     <!-- View All Link -->
     <div class="text-center mt-8 relative z-10">
-      <a routerLink="/education" class="btn bg-base-100/50 backdrop-blur-md border border-primary/30 text-base-content hover:border-white hover:text-white hover:bg-transparent">
+      <a routerLink="/education" class="btn bg-base-100/50 backdrop-blur-md border border-accent/30 text-base-content hover:border-accent hover:text-accent hover:bg-transparent">
         <ng-container i18n="@@education.viewall">View All Education</ng-container>
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24"
           stroke="currentColor">

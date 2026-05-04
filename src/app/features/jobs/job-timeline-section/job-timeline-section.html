@@ -1,4 +1,4 @@
-<section class="py-24 px-4 sm:px-6 lg:px-8 border-y border-white/5" id="experience">
+<section class="py-24 px-4 sm:px-6 lg:px-8 border-y border-white/5 bg-black section-noise" id="experience">
   <div class="container mx-auto max-w-6xl">
     <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
       <div class="md:w-1/2">
@@ -43,7 +43,7 @@
               <div class="flex flex-wrap gap-1.5">
                 @for (skill of job.skills; track skill.id) {
                 <span
-                  class="badge badge-primary badge-outline badge-xs sm:badge-sm min-w-0 shrink whitespace-normal h-auto text-center leading-tight">{{
+                  class="badge badge-secondary badge-outline badge-xs sm:badge-sm min-w-0 shrink whitespace-normal h-auto text-center leading-tight">{{
                   skill.name
                   }}</span>
                 }
@@ -57,7 +57,7 @@
               <div class="flex flex-wrap gap-1.5">
                 @for (tech of job.technologies; track tech.id) {
                 <span
-                  class="badge badge-primary badge-outline badge-xs sm:badge-sm min-w-0 shrink whitespace-normal h-auto text-center leading-tight">{{
+                  class="badge badge-accent badge-outline badge-xs sm:badge-sm min-w-0 shrink whitespace-normal h-auto text-center leading-tight">{{
                   tech.name
                   }}</span>
                 }
@@ -95,7 +95,7 @@
 
     <!-- View All Link -->
     <div class="text-center mt-8">
-      <a routerLink="/jobs" class="btn btn-outline border-white/10 text-base-content/70 hover:border-primary hover:text-primary hover:bg-transparent">
+      <a routerLink="/jobs" class="btn btn-outline border-white/10 text-base-content/70 hover:border-accent hover:text-accent hover:bg-transparent">
         <ng-container i18n="@@jobs.viewall">View All Jobs</ng-container>
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24"
           stroke="currentColor">

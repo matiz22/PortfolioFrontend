@@ -1,7 +1,7 @@
 <a [routerLink]="['/certification', certification.slug]" [title]="certification.name"
   [class]="certification.thumbnail
-    ? 'card image-full border border-white/5 hover:border-primary/30 transition-all duration-300 ease-out hover:-translate-y-1 h-full min-h-64 overflow-hidden'
-    : 'card bg-base-200/50 border border-white/5 hover:border-primary/30 transition-all duration-300 ease-out hover:-translate-y-1 h-full min-h-64 overflow-hidden'">
+    ? 'card image-full border border-white/5 hover:border-secondary/30 transition-all duration-300 ease-out hover:-translate-y-1 h-full min-h-64 overflow-hidden'
+    : 'card bg-base-200/50 border border-white/5 hover:border-secondary/30 transition-all duration-300 ease-out hover:-translate-y-1 h-full min-h-64 overflow-hidden'">
   @if (certification.thumbnail) {
   <figure>
     <img [alt]="certification.name" [src]="certification.thumbnail | imageUrl" />
@@ -25,17 +25,17 @@
     <div class="mt-4">
       <div class="card-actions justify-start flex-wrap gap-1.5">
         @for (tech of certification.technologies; track tech.id) {
-        <div class="badge badge-primary badge-outline badge-sm">{{ tech.name }}</div>
+        <div class="badge badge-secondary badge-outline badge-sm">{{ tech.name }}</div>
         }
         @for (skill of certification.skills; track skill.id) {
-        <div class="badge badge-primary badge-outline badge-sm">{{ skill.name }}</div>
+        <div class="badge badge-secondary badge-outline badge-sm">{{ skill.name }}</div>
         }
       </div>
     </div>
     }
 
     <div class="card-actions justify-end mt-auto">
-      <div class="badge badge-primary badge-sm font-mono">{{ certification.issueDate | date:'yyyy' }}</div>
+      <div class="badge badge-secondary badge-sm font-mono">{{ certification.issueDate | date:'yyyy' }}</div>
     </div>
   </div>
 </a>

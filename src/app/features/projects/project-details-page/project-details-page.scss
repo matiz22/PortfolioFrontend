@@ -1,0 +1,47 @@
+:host {
+    display: block;
+}
+
+.carousel {
+    scrollbar-width: none; /* Firefox */
+    &::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Opera */
+    }
+}
+
+// Hero text shadow for better legibility on busy images
+h1 {
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+// Custom staggered animation adjustments
+.animate-fade-in {
+    opacity: 0;
+    animation: fadeIn 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-fade-in-slow {
+    opacity: 0;
+    animation: fadeIn 5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hero-bg-image {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transform: scale(1.05);
+    background-color: #000;
+}

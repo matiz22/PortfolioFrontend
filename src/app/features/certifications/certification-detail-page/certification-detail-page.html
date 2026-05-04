@@ -1,136 +1,128 @@
 <app-header></app-header>
 
-<main class="pt-24">
-    @defer (hydrate on idle) {
-
-
-
+<main class="min-h-screen bg-black">
     @let certificationState = certification();
+
     @switch (certificationState.status) {
     @case ('loading') {
     <app-loading-details-page></app-loading-details-page>
     }
     @case ('success') {
     @let data = certificationState.data;
-    <div class="container mx-auto px-4 py-8">
-        <!-- Hero Section with Title and Background Image -->
-        <div class="hero rounded-box mb-8 overflow-hidden relative">
-            @if (data.thumbnail) {
-            <img [alt]="data.name" [src]="data.thumbnail | imageUrl"
-                class="absolute inset-0 w-full h-full object-cover z-0" />
-            }
-            <div class="absolute inset-0 bg-black/60 z-10"></div>
-            <div class="hero-content flex-col gap-8 py-16 text-center relative z-20 w-full">
-                <div class="max-w-3xl">
-                    <h1 class="text-3xl md:text-5xl font-bold drop-shadow-md">{{ data.name }}</h1>
 
-                    <!-- Issuing Organization -->
-                    <div class="mt-4 mb-6 flex justify-center">
-                        <div>
-                            <p class="text-sm opacity-90 drop-shadow-md font-medium"
-                                i18n="@@certificationDetails.label.issuedBy">Issued by</p>
-                            <p class="text-2xl font-semibold drop-shadow-md">{{ data.issuingOrganization }}</p>
-                        </div>
+    <!-- Hero Section: Editorial Style -->
+    <section class="relative w-full min-h-[70vh] md:h-[72vh] overflow-hidden flex items-end bg-black pt-32">
+        @if (data.thumbnail) {
+        <div class="absolute inset-0 z-0 hero-bg-image"
+            [style.background-image]="'linear-gradient(to top, #000, rgba(0,0,0,0.4)), url(' + (data.thumbnail | imageUrl) + ')'">
+        </div>
+        }
+
+        <div class="container mx-auto px-6 pb-16 md:pb-24 relative z-10">
+            <div class="max-w-5xl animate-fade-in">
+                <!-- Metadata: Issuer and Date -->
+                <div class="flex items-center gap-4 mb-6 animate-fade-in [animation-delay:200ms]">
+                    <span class="h-px w-12 bg-primary"></span>
+                    <div class="flex flex-col">
+                        <span class="font-mono text-sm uppercase tracking-[0.4em] text-primary mb-1" i18n="@@details.label.professionalCertification">Professional Certification</span>
+                        <span class="font-mono text-xs uppercase text-white/60 tracking-wider">
+                            {{ data.issuingOrganization }} • {{ data.issueDate | date:'MMMM yyyy' }}
+                        </span>
                     </div>
+                </div>
 
-                    <!-- Dates -->
-                    <div class="flex flex-wrap justify-center gap-4 mb-6">
-                        <div
-                            class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary text-primary-content text-sm md:text-base border border-primary shadow-md">
-                            <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                                    stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
-                            </svg>
-                            <span class="font-medium">
-                                <ng-container i18n="@@certificationDetails.badge.issued">Issued:</ng-container> {{
-                                data.issueDate | date:'MMMM yyyy' }}
-                            </span>
-                        </div>
-                        @if (data.expirationDate) {
-                        <div
-                            class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary text-secondary-content text-sm md:text-base border border-secondary shadow-md">
-                            <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round"
-                                    stroke-linejoin="round" stroke-width="2" />
-                            </svg>
-                            <span class="font-medium">
-                                <ng-container i18n="@@certificationDetails.badge.expires">Expires:</ng-container> {{
-                                data.expirationDate | date:'MMMM yyyy' }}
-                            </span>
-                        </div>
-                        }
+                <h1
+                    class="font-serif italic text-5xl md:text-8xl lg:text-9xl leading-[0.9] mb-8 drop-shadow-sm animate-fade-in [animation-delay:400ms]">
+                    {{ data.name }}
+                </h1>
+
+                <!-- Verified Skills Pills -->
+                <div class="flex gap-3 flex-wrap mt-8 animate-fade-in [animation-delay:600ms]">
+                    @for (skill of data.skills; track skill.id) {
+                    <div class="flex items-center gap-2 px-3 py-1.5 bg-primary/10 backdrop-blur-md rounded-full border border-primary/20 text-xs font-mono uppercase tracking-wider text-primary/80">
+                        {{ skill.name }}
                     </div>
-
-                    @if (data.credentialId) {
-                    <p class="text-sm opacity-90 drop-shadow-md font-medium mb-4"><ng-container
-                            i18n="@@certificationDetails.label.credentialId">Credential ID:</ng-container> {{
-                        data.credentialId }}</p>
                     }
+                </div>
 
-                    <div class="flex gap-3 justify-center flex-wrap">
-                        @if (data.credentialUrl) {
-                        <a [href]="data.credentialUrl" class="btn btn-primary shadow-md" rel="noopener noreferrer"
-                            target="_blank">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg">
+                <div class="flex flex-wrap gap-4 mt-10 animate-fade-in [animation-delay:800ms]">
+                    @if (data.credentialUrl) {
+                    <a [href]="data.credentialUrl" class="btn btn-primary rounded-full px-8 group overflow-hidden relative w-full sm:w-auto"
+                        rel="noopener noreferrer" target="_blank">
+                        <span class="relative z-10 flex items-center justify-center gap-2">
+                            <ng-container i18n="@@certificationDetails.btn.viewCredential">Verify Credential</ng-container>
+                            <svg class="w-4 h-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
                                     stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
                             </svg>
-                            <ng-container i18n="@@certificationDetails.btn.viewCredential">View
-                                Credential</ng-container>
-                        </a>
-                        }
+                        </span>
+                    </a>
+                    }
+                    @if (data.expirationDate) {
+                    <div class="px-6 py-2 bg-white/5 backdrop-blur-md rounded-full border border-white/10 text-sm font-mono uppercase tracking-widest text-white/60 flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+                        </svg>
+                        Expires: {{ data.expirationDate | date:'MMM yyyy' }}
                     </div>
+                    }
                 </div>
             </div>
         </div>
+    </section>
 
-        <!-- Technologies Section -->
-        <app-technologies-details-section [technologies]="data.technologies"
-            [title]="'Technologies'"></app-technologies-details-section>
+    <!-- Main Content Area with Noise Texture -->
+    <div class="section-noise bg-black relative">
+        <div class="container mx-auto px-6 pt-6 pb-24 flex flex-col gap-16">
 
-        <!-- Skills Section -->
-        <app-skills-details-section [skills]="data.skills" [title]="'Skills'"></app-skills-details-section>
+            @if (data.description) {
+                <div class="section-divider"></div>
 
-        <!-- Description Section -->
-        @if (data.description) {
-        <app-description-md [description]="data.description"></app-description-md>
-        }
+                <!-- Description Section -->
+            <div class="animate-fade-in w-full">
+                <h2 class="section-heading text-4xl mb-12 font-serif italic" i18n="@@certificationDetails.details">Certification Details</h2>
+                @defer (on viewport; hydrate on idle) {
+                    <app-description-md [description]="data.description"></app-description-md>
+                } @placeholder {
+                    <div class="w-full h-64 skeleton bg-white/5 rounded-2xl"></div>
+                }
+            </div>
+            }
 
-        <!-- Contact Section -->
-        <app-contact-section></app-contact-section>
+            <div class="section-divider"></div>
 
-        <!-- Back Button -->
-        <div class="mt-8 flex justify-center">
-            <a class="btn btn-outline" routerLink="/certifications">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path d="M10 19l-7-7m0 0l7-7m-7 7h18" stroke-linecap="round" stroke-linejoin="round"
-                        stroke-width="2" />
-                </svg>
-                <ng-container i18n="@@certificationDetails.btn.back">Back to Certifications</ng-container>
-            </a>
+            <!-- Contact Section -->
+            <div class="animate-fade-in">
+                <app-contact-section></app-contact-section>
+            </div>
+
+            <!-- Back Button -->
+            <div class="pt-12 flex justify-center animate-fade-in">
+                <a class="group flex items-center gap-4 font-mono text-xs uppercase tracking-[0.3em] text-white/40 hover:text-primary transition-colors"
+                    routerLink="/certifications">
+                    <svg class="w-5 h-5 transition-transform group-hover:-translate-x-2" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24">
+                        <path d="M10 19l-7-7m0 0l7-7m-7 7h18" stroke-linecap="round" stroke-linejoin="round"
+                            stroke-width="2" />
+                    </svg>
+                    <span i18n="@@certificationDetails.btn.back">Back to Credentials</span>
+                </a>
+            </div>
         </div>
     </div>
     }
     @case ('error') {
-    <div class="container mx-auto px-4 py-12">
-        <div role="alert" class="alert alert-error">
-            <svg class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg">
+    <div class="container mx-auto px-6 py-24 text-center">
+        <div role="alert" class="alert alert-error rounded-2xl border-none shadow-xl inline-flex w-auto">
+            <svg class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
                 <path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round"
                     stroke-linejoin="round" stroke-width="2" />
             </svg>
-            <span>{{ certificationState.error }}</span>
+            <span class="font-mono text-sm">{{ certificationState.error }}</span>
         </div>
     </div>
     }
-    }
-    } @placeholder {
-    <app-loading-details-page></app-loading-details-page>
     }
 </main>
 

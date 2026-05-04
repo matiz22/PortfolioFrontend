@@ -1,0 +1,50 @@
+:host {
+    display: block;
+}
+
+::ng-deep .prose {
+    // Custom list styling
+    ul > li::marker {
+        color: var(--color-primary);
+        opacity: 0.5;
+    }
+
+    // Modern horizontal rule
+    hr {
+        border: 0;
+        height: 1px;
+        background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1), transparent);
+        margin: 4rem 0;
+    }
+
+    // Better spacing for code blocks if they are fenced
+    pre {
+        background-color: rgba(0, 0, 0, 0.3) !important;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 1rem;
+        padding: 1.5rem !important;
+        
+        code {
+            background-color: transparent !important;
+            padding: 0 !important;
+            color: #d1d5db !important;
+            font-size: 0.9em !important;
+        }
+    }
+
+    // Heading adjustments
+    h1, h2, h3, h4 {
+        color: white;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+    }
+
+    // Ensure symmetry by removing margins on first and last children
+    & > :first-child {
+        margin-top: 0 !important;
+    }
+
+    & > :last-child {
+        margin-bottom: 0 !important;
+    }
+}

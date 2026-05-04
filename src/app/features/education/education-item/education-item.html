@@ -1,7 +1,7 @@
 <a [routerLink]="['/education', education.slug]" [title]="education.degree"
   [class]="education.thumbnail
-    ? 'card image-full border border-white/5 hover:border-primary/30 transition-all duration-300 ease-out hover:-translate-y-1 h-full min-h-64 overflow-hidden'
-    : 'card bg-base-200/50 border border-white/5 hover:border-primary/30 transition-all duration-300 ease-out hover:-translate-y-1 h-full min-h-64 overflow-hidden'">
+    ? 'card image-full border border-white/5 hover:border-accent/30 transition-all duration-300 ease-out hover:-translate-y-1 h-full min-h-64 overflow-hidden'
+    : 'card bg-base-200/50 border border-white/5 hover:border-accent/30 transition-all duration-300 ease-out hover:-translate-y-1 h-full min-h-64 overflow-hidden'">
   @if (education.thumbnail) {
   <figure>
     <img [alt]="education.institution" [src]="education.thumbnail | imageUrl" />
@@ -19,13 +19,13 @@
     <div class="mt-4">
       <div class="flex gap-1.5 flex-wrap">
         @for (tech of education.technologies; track tech.id) {
-        <div class="badge badge-primary badge-outline badge-sm">{{ tech.name }}</div>
+        <div class="badge badge-accent badge-outline badge-sm">{{ tech.name }}</div>
         }
       </div>
     </div>
     }
     <div class="card-actions justify-between items-center mt-auto">
-      <div class="badge badge-primary badge-sm font-mono">
+      <div class="badge badge-accent badge-sm font-mono">
         {{ education.startDate | date:'yyyy' }} - {{ education.isCurrent ? 'Present' : (education.endDate |
         date:'yyyy') }}
       </div>

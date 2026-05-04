@@ -1,149 +1,213 @@
 <app-header></app-header>
 
-<main class="pt-24">
-    @defer (hydrate on idle) {
-
-
-
+<main class="min-h-screen bg-black">
     @let realizationState = realization();
+
     @switch (realizationState.status) {
     @case ('loading') {
     <app-loading-details-page></app-loading-details-page>
     }
     @case ('success') {
     @let data = realizationState.data;
-    <div class="container mx-auto px-4 py-8">
-        <!-- Hero Section with Title, Client Logo and Thumbnail -->
-        <div class="hero bg-base-200 rounded-box mb-8">
-            <div class="hero-content flex-col lg:flex-row gap-8 py-12 w-full max-w-full lg:px-12">
-                @if (data.thumbnail) {
-                <div class="w-full lg:w-1/2">
-                    <img [alt]="data.title" [src]="data.thumbnail | imageUrl"
-                        class="rounded-lg shadow-2xl w-full object-cover aspect-video" />
-                </div>
-                }
-                <div class="w-full lg:w-1/2 flex flex-col justify-center">
-                    <h1 class="text-3xl md:text-5xl font-bold">{{ data.title }}</h1>
 
-                    <!-- Client Information -->
-                    <div class="mt-4 mb-6">
-                        <div class="flex items-center gap-4">
-                            @if (data.clientLogo) {
-                            <img [alt]="data.clientName" [src]="data.clientLogo | imageUrl"
-                                class="w-16 h-16 rounded-lg object-contain bg-base-100 p-2 shadow-sm" />
-                            }
-                            <div>
-                                <p class="text-sm opacity-70" i18n="@@realizationDetails.label.client">Client</p>
-                                <p class="text-2xl font-semibold">{{ data.clientName }}</p>
-                                @if (data.location) {
-                                <p class="text-sm opacity-70 flex items-center gap-1 mt-1">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                                            stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
-                                        <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round"
-                                            stroke-linejoin="round" stroke-width="2" />
-                                    </svg>
-                                    {{ data.location }}
-                                </p>
-                                }
-                            </div>
+    <!-- Hero Section: Featured Mockup Style -->
+    <section class="relative w-full min-h-[70vh] flex items-center bg-black pt-32 pb-16 overflow-hidden">
+        <!-- Atmospheric Background Elements -->
+        <div class="absolute -top-24 -right-24 w-96 h-96 bg-primary/10 blur-[120px] rounded-full"></div>
+        <div class="absolute top-1/2 left-1/4 w-64 h-64 bg-accent/5 blur-[100px] rounded-full"></div>
+
+        <div class="container mx-auto px-6 relative z-20">
+            <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+                
+                <!-- Hero Content -->
+                <div class="w-full lg:w-1/2 animate-fade-in">
+                    <!-- Client Badge -->
+                    <div class="flex items-center gap-4 mb-8 animate-fade-in [animation-delay:200ms]">
+                        @if (data.clientLogo) {
+                        <img [alt]="data.clientName" [src]="data.clientLogo | imageUrl"
+                            class="w-14 h-14 rounded-2xl object-contain bg-white/5 backdrop-blur-md p-3 border border-white/10" />
+                        }
+                        <div class="flex flex-col">
+                        <span class="font-mono text-sm uppercase tracking-[0.4em] text-primary mb-1" i18n="@@details.label.successStory">Success Story</span>
+                            <span class="font-mono text-xs uppercase text-white/50 tracking-wider">{{ data.clientName }}</span>
                         </div>
                     </div>
 
-                    <p class="py-6 text-lg">{{ data.shortDesc }}</p>
+                    <h1 class="font-serif italic text-5xl md:text-7xl lg:text-8xl leading-[1.1] mb-8 animate-fade-in [animation-delay:400ms]">
+                        {{ data.title }}
+                    </h1>
 
-                    <div class="flex gap-3 flex-wrap">
+                    @if (data.location) {
+                    <div class="flex items-center gap-2 mb-8 animate-fade-in [animation-delay:500ms] text-white/40 font-mono text-[10px] uppercase tracking-[0.2em]">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+                            <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+                        </svg>
+                        {{ data.location }}
+                    </div>
+                    }
+
+                    <p class="max-w-xl text-base md:text-xl text-base-content/70 font-medium leading-relaxed mb-10 animate-fade-in [animation-delay:600ms]">
+                        {{ data.shortDesc }}
+                    </p>
+
+                    <!-- Technical Stack Pills -->
+                    <div class="flex flex-wrap gap-3 mb-10 animate-fade-in [animation-delay:700ms]">
+                        @for (tech of data.technologies; track tech.id) {
+                        <div class="flex items-center gap-2 px-3 py-1.5 bg-white/5 backdrop-blur-md rounded-full border border-white/10 text-xs font-mono uppercase tracking-wider text-white/80 transition-colors hover:bg-white/10">
+                            @if (tech.icon) {
+                            <img [alt]="tech.name" [src]="tech.icon | imageUrl" class="w-3.5 h-3.5 opacity-70" />
+                            }
+                            {{ tech.name }}
+                        </div>
+                        }
+                    </div>
+
+                    <div class="flex flex-wrap gap-4 animate-fade-in [animation-delay:800ms]">
                         @if (data.clientUrl) {
-                        <a [href]="data.clientUrl" class="btn btn-primary" rel="noopener noreferrer" target="_blank">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                                    stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
-                            </svg>
-                            <ng-container i18n="@@realizationDetails.btn.visitClient">Visit Client
-                                Website</ng-container>
+                        <a [href]="data.clientUrl" class="btn btn-primary rounded-full px-8 group overflow-hidden relative w-full sm:w-auto" rel="noopener noreferrer" target="_blank">
+                            <span class="relative z-10 flex items-center justify-center gap-2">
+                            <ng-container i18n="@@realizationDetails.btn.visitClient">Visit Client</ng-container>
+                                <svg class="w-4 h-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+                                </svg>
+                            </span>
                         </a>
                         }
                         @if (data.companyLink) {
-                        <a [href]="data.companyLink" class="btn btn-secondary" rel="noopener noreferrer"
-                            target="_blank">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-                                    stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
-                            </svg>
-                            <ng-container i18n="@@realizationDetails.btn.visitCompany">Visit Company
-                                Website</ng-container>
+                        <a [href]="data.companyLink" class="btn btn-ghost border-white/10 rounded-full px-8 hover:bg-white/5" rel="noopener noreferrer" target="_blank">
+                            <span class="flex items-center gap-2">
+                                <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                                    <path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                </svg>
+                                <ng-container i18n="@@realizationDetails.btn.visitCompany">Partnership</ng-container>
+                            </span>
                         </a>
                         }
                     </div>
                 </div>
+
+                <!-- Featured Mockup -->
+                <div class="w-full lg:w-1/2 animate-fade-in [animation-delay:500ms]">
+                    @if (data.thumbnail) {
+                    <div class="relative group">
+                        <!-- Atmospheric glow behind the mockup -->
+                        <div class="absolute inset-0 bg-primary/20 blur-[100px] rounded-full scale-75 opacity-50 group-hover:opacity-80 transition-opacity duration-1000"></div>
+                        <div class="relative z-10 overflow-hidden rounded-2xl border border-white/10 shadow-[0_32px_64px_-12px_rgba(0,0,0,0.8)] transition-transform duration-1000 group-hover:scale-[1.02]">
+                            <img [alt]="data.title" [src]="data.thumbnail | imageUrl"
+                                class="w-full h-auto object-cover" />
+                        </div>
+                    </div>
+                    }
+                </div>
+                
             </div>
         </div>
+    </section>
 
-        <!-- Screenshots Section -->
-        @if (data.screenshots && data.screenshots.length > 0) {
-        <div class="card bg-base-100 shadow-xl border border-base-300 mb-8">
-            <div class="card-body">
-                <h2 class="card-title text-2xl mb-4" i18n="@@projectDetails.screenshots">Screenshots</h2>
-                <div #carouselEl class="carousel rounded-box cursor-grab select-none overflow-x-auto"
-                    (mousedown)="onMouseDown($event, carouselEl)" (mousemove)="onMouseMove($event, carouselEl)"
-                    (mouseup)="onMouseUp(carouselEl)" (mouseleave)="onMouseLeave(carouselEl)">
-                    @for (screenshot of data.screenshots; track screenshot; let i = $index) {
-                    <div class="carousel-item">
-                        <img [alt]="data.title + ' screenshot ' + (i + 1)" [src]="screenshot | imageUrl"
-                            class="h-[600px] pointer-events-none" />
+    <!-- Main Content Area with Noise Texture -->
+    <div class="section-noise bg-black relative">
+        <div class="container mx-auto px-6 pt-6 pb-24 flex flex-col gap-16">
+
+            <!-- Technical Stack Section -->
+            <div class="animate-fade-in">
+                <div class="flex items-center gap-4 mb-12">
+                    <span class="h-px w-12 bg-primary/30"></span>
+                    <h2 class="font-mono text-xs uppercase tracking-[0.4em] text-white/40" i18n="@@details.label.technicalExpertise">Technical Expertise</h2>
+                </div>
+                <div class="flex gap-3 flex-wrap">
+                    @for (tech of data.technologies; track tech.id) {
+                    <div class="flex items-center gap-2 px-4 py-2 bg-white/5 rounded-full border border-white/10 text-xs font-mono uppercase tracking-wider text-white/80 transition-colors hover:bg-white/10">
+                        @if (tech.icon) {
+                        <img [alt]="tech.name" [src]="tech.icon | imageUrl" class="w-4 h-4 opacity-70" />
+                        }
+                        {{ tech.name }}
+                    </div>
+                    }
+                    @for (skill of data.skills; track skill.id) {
+                    <div class="flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full border border-primary/20 text-xs font-mono uppercase tracking-wider text-primary/80">
+                        {{ skill.name }}
                     </div>
                     }
                 </div>
             </div>
-        </div>
-        }
 
-        <!-- Technologies Section -->
-        <app-technologies-details-section [technologies]="data.technologies"
-            [title]="'Technologies Used'"></app-technologies-details-section>
+            <!-- Screenshots Section -->
+            @if (data.screenshots && data.screenshots.length > 0) {
+            <div class="animate-fade-in">
+                <div class="flex flex-col md:flex-row justify-between items-baseline mb-12 gap-4">
+                    <h2 class="section-heading text-4xl md:text-5xl" i18n="@@realizationDetails.screenshots">Visual Portfolio</h2>
+                    <span class="font-mono text-xs uppercase tracking-widest text-white/40" i18n="@@details.carousel.hint">Slide to explore details</span>
+                </div>
 
-        <!-- Skills Section -->
-        <app-skills-details-section [skills]="data.skills" [title]="'Skills Applied'"></app-skills-details-section>
+                @defer (on viewport; hydrate on idle) {
+                <div class="relative group animate-fade-in">
+                    <div #carouselEl class="carousel rounded-3xl cursor-grab select-none overflow-x-auto gap-6 pb-8"
+                        (mousedown)="onMouseDown($event, carouselEl)" (mousemove)="onMouseMove($event, carouselEl)"
+                        (mouseup)="onMouseUp(carouselEl)" (mouseleave)="onMouseLeave(carouselEl)">
+                        @for (screenshot of data.screenshots; track screenshot; let i = $index) {
+                        <div class="carousel-item">
+                            <div
+                                class="relative overflow-hidden rounded-2xl shadow-2xl transition-transform duration-500 hover:scale-[1.02]">
+                                <img [alt]="data.title + ' screenshot ' + (i + 1)" [src]="screenshot | imageUrl"
+                                    class="h-[400px] md:h-[600px] w-auto object-cover pointer-events-none" />
+                                <div
+                                    class="absolute bottom-6 left-6 font-mono text-xs bg-black/40 backdrop-blur-md px-3 py-1 rounded-full text-white/70">
+                                    IMG_{{ i + 1 | number:'2.0' }}
+                                </div>
+                            </div>
+                        </div>
+                        }
+                    </div>
+                </div>
+                } @placeholder {
+                <div class="w-full h-[400px] md:h-[600px] rounded-3xl skeleton bg-white/5"></div>
+                }
+            </div>
+            }
 
-        <!-- Description Section -->
-        <app-description-md [description]="data.description"></app-description-md>
+            <div class="section-divider"></div>
 
-        <!-- Contact Section -->
-        <app-contact-section></app-contact-section>
+            <!-- Description Section -->
+            <div class="animate-fade-in w-full">
+                <h2 class="section-heading text-4xl mb-12 font-serif italic" i18n="@@realizationDetails.genesis">Project Genesis</h2>
+                @defer (on viewport; hydrate on idle) {
+                    <app-description-md [description]="data.description"></app-description-md>
+                } @placeholder {
+                    <div class="w-full h-64 skeleton bg-white/5 rounded-2xl"></div>
+                }
+            </div>
 
-        <!-- Back Button -->
-        <div class="mt-8 flex justify-center">
-            <a class="btn btn-outline" routerLink="/realizations">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path d="M10 19l-7-7m0 0l7-7m-7 7h18" stroke-linecap="round" stroke-linejoin="round"
-                        stroke-width="2" />
-                </svg>
-                <ng-container i18n="@@realizationDetails.btn.back">Back to Realizations</ng-container>
-            </a>
+            <div class="section-divider"></div>
+
+            <!-- Contact Section -->
+            <div class="animate-fade-in">
+                <app-contact-section></app-contact-section>
+            </div>
+
+            <!-- Back Button -->
+            <div class="pt-12 flex justify-center animate-fade-in">
+                <a class="group flex items-center gap-4 font-mono text-xs uppercase tracking-[0.3em] text-white/40 hover:text-primary transition-colors"
+                    routerLink="/realizations">
+                    <svg class="w-5 h-5 transition-transform group-hover:-translate-x-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path d="M10 19l-7-7m0 0l7-7m-7 7h18" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+                    </svg>
+                    <span i18n="@@realizationDetails.btn.back">Archive of Realizations</span>
+                </a>
+            </div>
         </div>
     </div>
     }
     @case ('error') {
-    <div class="container mx-auto px-4 py-12">
-        <div role="alert" class="alert alert-error">
-            <svg class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round"
-                    stroke-linejoin="round" stroke-width="2" />
+    <div class="container mx-auto px-6 py-24 text-center">
+        <div role="alert" class="alert alert-error rounded-2xl border-none shadow-xl inline-flex w-auto">
+            <svg class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
+                <path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
             </svg>
-            <span>{{ realizationState.error }}</span>
+            <span class="font-mono text-sm">{{ realizationState.error }}</span>
         </div>
     </div>
     }
-    }
-    } @placeholder {
-    <app-loading-details-page></app-loading-details-page>
     }
 </main>
 

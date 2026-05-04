@@ -8,9 +8,7 @@ import { ImageUrlPipe } from '../../../shared/pipes/image-url-pipe';
 import { Header } from '../../../shared/header/header';
 import { Footer } from '../../../shared/footer/footer';
 import { DescriptionMd } from '../../../shared/description/description-md/description-md';
-import { SkillsDetailsSection } from '../../skills/skills-details-section/skills-details-section';
-import { TechnologiesDetailsSection } from '../../technologies/technologies-details-section/technologies-details-section';
-import { DatePipe } from '@angular/common';
+import { DatePipe, DecimalPipe } from '@angular/common';
 import { ContactSection } from '../../../shared/contact/contact-section/contact-section';
 import { LoadingDetailsPage } from "../../../shared/loading/loading-details-page/loading-details-page";
 import { SeoService } from '../../../core/services/seo.service';
@@ -18,7 +16,7 @@ import { buildSeoFromModel } from '../../../core/resolvers/seo.resolver';
 
 @Component({
   selector: 'app-job-details-page',
-  imports: [ImageUrlPipe, RouterLink, Header, Footer, DescriptionMd, SkillsDetailsSection, TechnologiesDetailsSection, DatePipe, ContactSection, LoadingDetailsPage],
+  imports: [ImageUrlPipe, RouterLink, Header, Footer, DescriptionMd, DatePipe, ContactSection, LoadingDetailsPage],
   templateUrl: './job-details-page.html',
   styleUrl: './job-details-page.scss',
 })

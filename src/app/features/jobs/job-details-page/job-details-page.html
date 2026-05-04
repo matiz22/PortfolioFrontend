@@ -1,105 +1,110 @@
 <app-header></app-header>
 
-<main class="pt-24">
-    @defer (hydrate on idle) {
-
-
-
+<main class="min-h-screen bg-black">
     @let jobState = job();
+
     @switch (jobState.status) {
     @case ('loading') {
     <app-loading-details-page></app-loading-details-page>
     }
     @case ('success') {
     @let data = jobState.data;
-    <div class="container mx-auto px-4 py-8">
-        <!-- Hero Section with Title, Company and Thumbnail -->
-        <div class="hero rounded-box mb-8 overflow-hidden relative">
-            @if (data.thumbnail) {
-            <img [alt]="data.title" [src]="data.thumbnail | imageUrl"
-                class="absolute inset-0 w-full h-full object-cover z-0" />
-            }
-            <div class="absolute inset-0 bg-black/60 z-10"></div>
-            <div class="hero-content flex-col gap-8 py-16 text-center relative z-20 w-full">
-                <div class="max-w-3xl">
-                    <h1 class="text-3xl md:text-5xl font-bold drop-shadow-md">{{ data.title }}</h1>
 
-                    <!-- Company Information -->
-                    <div class="mt-4 mb-6 flex justify-center">
-                        <div class="flex items-center gap-4">
-                            <div>
-                                <p class="text-sm opacity-90 drop-shadow-md font-medium"
-                                    i18n="@@jobDetails.label.company">Company</p>
-                                <p class="text-2xl font-semibold drop-shadow-md">{{ data.companyName }}</p>
-                                @if (data.location) {
-                                <p
-                                    class="text-sm opacity-90 font-medium drop-shadow-md flex items-center justify-center gap-1">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                                            stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
-                                        <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round"
-                                            stroke-linejoin="round" stroke-width="2" />
-                                    </svg>
-                                    {{ data.location }}
-                                </p>
-                                }
-                            </div>
-                        </div>
+    <!-- Hero Section: Editorial Style -->
+    <section class="relative w-full min-h-[70vh] md:h-[72vh] overflow-hidden flex items-end bg-black pt-32">
+        @if (data.thumbnail) {
+        <div class="absolute inset-0 z-0 hero-bg-image"
+            [style.background-image]="'linear-gradient(to top, #000, rgba(0,0,0,0.4)), url(' + (data.thumbnail | imageUrl) + ')'">
+        </div>
+        }
+
+        <div class="container mx-auto px-6 pb-16 md:pb-24 relative z-10">
+            <div class="max-w-5xl animate-fade-in">
+                <!-- Metadata: Company and Duration -->
+                <div class="flex items-center gap-4 mb-6 animate-fade-in [animation-delay:200ms]">
+                    <span class="h-px w-12 bg-primary"></span>
+                    <div class="flex flex-col">
+                        <span class="font-mono text-sm uppercase tracking-[0.4em] text-primary mb-1" i18n="@@details.label.careerMilestone">Career Milestone</span>
+                        <span class="font-mono text-xs uppercase text-white/60 tracking-wider">
+                            {{ data.companyName }} • {{ data.startDate | date:'MMMM yyyy' }} - {{ data.isCurrent ? 'Present' : (data.endDate | date:'MMMM yyyy') }}
+                        </span>
                     </div>
+                </div>
 
-                    <!-- Employment Period -->
-                    <div class="badge badge-primary badge-lg mb-4">
-                        {{ data.startDate | date:'MMM yyyy' }} - {{ data.isCurrent ? 'Present' : (data.endDate |
-                        date:'MMM yyyy') }}
+                <h1
+                    class="font-serif italic text-5xl md:text-8xl lg:text-9xl leading-[0.9] mb-8 drop-shadow-sm animate-fade-in [animation-delay:400ms]">
+                    {{ data.title }}
+                </h1>
+
+                <!-- Technologies & Skills on Thumbnail Overlay -->
+                <div class="flex gap-3 flex-wrap mt-8 animate-fade-in [animation-delay:700ms]">
+                    @for (tech of data.technologies; track tech.id) {
+                    <div class="flex items-center gap-2 px-3 py-1.5 bg-white/5 backdrop-blur-md rounded-full border border-white/10 text-xs font-mono uppercase tracking-wider text-white/80 transition-colors hover:bg-white/10">
+                        @if (tech.icon) {
+                        <img [alt]="tech.name" [src]="tech.icon | imageUrl" class="w-3.5 h-3.5 opacity-70" />
+                        }
+                        {{ tech.name }}
                     </div>
-
+                    }
+                    @for (skill of data.skills; track skill.id) {
+                    <div class="flex items-center gap-2 px-3 py-1.5 bg-primary/10 backdrop-blur-md rounded-full border border-primary/20 text-xs font-mono uppercase tracking-wider text-primary/80">
+                        {{ skill.name }}
+                    </div>
+                    }
                 </div>
             </div>
         </div>
+    </section>
 
-        <!-- Technologies Section -->
-        <app-technologies-details-section [technologies]="data.technologies"
-            [title]="'Technologies Used'"></app-technologies-details-section>
+    <!-- Main Content Area with Noise Texture -->
+    <div class="section-noise bg-black relative">
+        <div class="container mx-auto px-6 pt-6 pb-24 flex flex-col gap-16">
 
-        <!-- Skills Section -->
-        <app-skills-details-section [skills]="data.skills" [title]="'Skills Applied'"></app-skills-details-section>
+            <div class="section-divider"></div>
 
-        <!-- Description Section -->
-        <app-description-md [description]="data.description"></app-description-md>
+            <!-- Description Section -->
+            <div class="animate-fade-in w-full">
+                <h2 class="section-heading text-4xl mb-12 font-serif italic" i18n="@@jobDetails.overview">Role Overview</h2>
+                @defer (on viewport; hydrate on idle) {
+                    <app-description-md [description]="data.description"></app-description-md>
+                } @placeholder {
+                    <div class="w-full h-64 skeleton bg-white/5 rounded-2xl"></div>
+                }
+            </div>
 
-        <!-- Contact Section -->
-        <app-contact-section></app-contact-section>
+            <div class="section-divider"></div>
 
-        <!-- Back Button -->
-        <div class="mt-8 flex justify-center">
-            <a class="btn btn-outline" routerLink="/jobs">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path d="M10 19l-7-7m0 0l7-7m-7 7h18" stroke-linecap="round" stroke-linejoin="round"
-                        stroke-width="2" />
-                </svg>
-                <ng-container i18n="@@jobDetails.btn.back">Back to Jobs</ng-container>
-            </a>
+            <!-- Contact Section -->
+            <div class="animate-fade-in">
+                <app-contact-section></app-contact-section>
+            </div>
+
+            <!-- Back Button -->
+            <div class="pt-12 flex justify-center animate-fade-in">
+                <a class="group flex items-center gap-4 font-mono text-xs uppercase tracking-[0.3em] text-white/40 hover:text-primary transition-colors"
+                    routerLink="/jobs">
+                    <svg class="w-5 h-5 transition-transform group-hover:-translate-x-2" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24">
+                        <path d="M10 19l-7-7m0 0l7-7m-7 7h18" stroke-linecap="round" stroke-linejoin="round"
+                            stroke-width="2" />
+                    </svg>
+                    <span i18n="@@jobDetails.btn.back">Back to Career Path</span>
+                </a>
+            </div>
         </div>
     </div>
     }
     @case ('error') {
-    <div class="container mx-auto px-4 py-12">
-        <div role="alert" class="alert alert-error">
-            <svg class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg">
+    <div class="container mx-auto px-6 py-24 text-center">
+        <div role="alert" class="alert alert-error rounded-2xl border-none shadow-xl inline-flex w-auto">
+            <svg class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
                 <path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round"
                     stroke-linejoin="round" stroke-width="2" />
             </svg>
-            <span>{{ jobState.error }}</span>
+            <span class="font-mono text-sm">{{ jobState.error }}</span>
         </div>
     </div>
     }
-    }
-    } @placeholder {
-    <app-loading-details-page></app-loading-details-page>
     }
 </main>
 
