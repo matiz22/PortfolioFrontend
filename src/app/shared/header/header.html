@@ -1,13 +1,13 @@
 <div class="fixed top-0 left-0 right-0 z-[9999] flex justify-center pointer-events-none">
   <nav
-    class="mt-4 w-full max-w-[95%] md:w-fit bg-base-200/80 backdrop-blur-xl border border-primary/30 text-base-content py-2 rounded-full pointer-events-auto transition-colors duration-300">
+    class="mt-4 w-full max-w-[95%] lg:w-fit bg-base-200/80 backdrop-blur-xl border border-primary/30 text-base-content py-2 rounded-full pointer-events-auto transition-colors duration-300 overflow-visible">
     <div class="max-w-7xl mx-auto px-6 flex justify-between items-center gap-10">
       <a [routerLink]="['/']" title="Mateusz Malich - Home" class="pl-2">
         <span class="block font-serif italic text-xl text-base-content hover:text-primary transition-colors">Malich.dev</span>
       </a>
 
       <!-- Desktop Navigation -->
-      <div class="hidden md:flex items-center space-x-2">
+      <div class="hidden lg:flex items-center space-x-2">
         <ul class="flex items-center space-x-1 list-none m-0 p-0 text-xs font-medium">
           <li><a [routerLink]="['/projects']" i18n="@@header.nav.projects" title="Projects"
               class="px-4 py-2 rounded-full text-base-content/70 hover:text-primary hover:bg-white/5 transition-all uppercase tracking-widest">Projects</a></li>
@@ -21,11 +21,11 @@
           <li><a [routerLink]="['/jobs']" i18n="@@header.nav.jobs" title="Work Experience"
               class="px-4 py-2 rounded-full text-base-content/70 hover:text-primary hover:bg-white/5 transition-all uppercase tracking-widest">Jobs</a></li>
         </ul>
-        <app-languages-switcher class="ml-4" />
+        <app-languages-switcher class="ml-4 flex-shrink-0 self-center" />
       </div>
 
       <!-- Mobile Navigation (Hamburger Dropdown) -->
-      <div class="flex-none md:hidden pr-2">
+      <div class="flex-none lg:hidden pr-2">
         <ul class="menu menu-horizontal p-0">
           <li class="relative">
             <details #menuDetails class="w-full">
