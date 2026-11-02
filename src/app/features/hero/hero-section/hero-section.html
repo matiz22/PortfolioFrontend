@@ -1,14 +1,17 @@
-<section class="relative min-h-[80vh] overflow-hidden pt-30 pb-20" id="home">
+<section class="relative min-h-[80vh] overflow-hidden pt-30 pb-12 lg:pb-16" id="home">
+
+  <!-- Backdrop: faint dot grid -->
+  <div class="hero-dot-grid absolute inset-0 z-0 pointer-events-none" aria-hidden="true"></div>
 
   <!-- Main content -->
-  <div class="relative z-10 min-h-[70vh] flex items-center justify-center px-4">
-    <div class="container mx-auto max-w-5xl">
-      <div class="grid lg:grid-cols-2 gap-8 lg:gap-6 items-center">
+  <div class="relative z-10 flex items-center justify-center px-4">
+    <div class="container mx-auto max-w-6xl">
+      <div class="grid lg:grid-cols-2 gap-12 lg:gap-0 items-center">
 
         <!-- Content Section (left) -->
-        <div class="text-center lg:text-left order-2 lg:order-1">
+        <div class="relative z-20 text-center lg:text-left order-2 lg:order-1">
           <!-- Availability badge -->
-          <div class="mb-8 animate-pure-fade">
+          <div class="mb-7 animate-pure-fade">
             <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/10 bg-white/[0.03]">
               <span class="relative flex h-2 w-2">
                 <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
@@ -20,36 +23,30 @@
             </div>
           </div>
 
-          <!-- Name — editorial serif (Slide Reveal) -->
-          <div class="mb-6 animate-slide-reveal animation-delay-100">
+          <!-- Name — editorial serif (Slide Reveal, overlaps the photo on desktop) -->
+          <div class="relative z-20 lg:-mr-24 xl:-mr-32 mb-6 animate-slide-reveal animation-delay-100">
             <h1
-              class="font-serif italic text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-base-content leading-[1.05] tracking-tight"
+              class="font-serif italic text-5xl sm:text-6xl md:text-7xl lg:text-7xl xl:text-8xl text-base-content leading-[1.05] tracking-tight"
               i18n="@@hero.heading">
               Hi, I'm <span class="block text-primary">Mateusz Malich</span>
             </h1>
           </div>
 
           <!-- Roles — minimal inline text (Slide Reveal) -->
-          <div class="mb-8 animate-slide-reveal animation-delay-200">
+          <div class="mb-6 animate-slide-reveal animation-delay-200">
             <div
-              class="flex flex-wrap items-center gap-x-2 sm:gap-x-3 gap-y-1 justify-center lg:justify-start text-xs sm:text-sm font-mono text-base-content/80">
+              class="flex flex-wrap items-center gap-x-3 gap-y-1 justify-center lg:justify-start text-xs sm:text-sm font-mono uppercase tracking-wide text-base-content/70">
               <span i18n="@@hero.badge.fullstack">Software Engineer</span>
               <span class="text-primary">/</span>
               <span i18n="@@hero.badge.engineer">AI Engineer</span>
-              <span class="text-primary">/</span>
-              <span i18n="@@hero.badge.enthusiast">Innovation-driven</span>
-              <span class="text-primary">/</span>
-              <span i18n="@@hero.badge.innovator">Challenge-ready</span>
             </div>
           </div>
 
-          <!-- Description (Slide Reveal) -->
+          <!-- Tagline — one punchy line (Slide Reveal) -->
           <div class="mb-10 animate-slide-reveal animation-delay-300">
-            <p class="text-base-content/80 text-base md:text-lg max-w-md mx-auto lg:mx-0 leading-relaxed"
+            <p class="text-xl md:text-2xl text-base-content/80 leading-snug max-w-md mx-auto lg:mx-0"
               i18n="@@hero.description">
-              Turning your ideas into intelligent digital solutions.
-              As a freelance developer and AI enthusiast, I build elegant tools that help brands thrive in the digital
-              world. You bring the vision, I' ll handle the rest.
+              I turn ideas into <span class="font-serif italic text-primary">intelligent</span> digital products.
             </p>
           </div>
 
@@ -64,7 +61,7 @@
                 </svg>
               </a>
               <a [routerLink]="['/']" fragment="contact"
-                class="btn btn-outline border-white/10 text-base-content btn-lg gap-2 group hover:border-primary hover:text-primary hover:bg-transparent transition-all duration-300">
+                class="btn btn-outline border-white/10 text-base-content btn-lg group hover:border-primary hover:text-primary hover:bg-transparent transition-all duration-300">
                 <ng-container i18n="@@hero.cta.contact">Get In Touch</ng-container>
               </a>
             </div>
@@ -72,24 +69,72 @@
         </div>
 
         <!-- Photo Section (right) -->
-        <div class="flex justify-center lg:justify-center order-1 lg:order-2 lg:self-center">
-          <div class="hero-image-container relative w-1/3 max-w-[120px] md:w-full md:max-w-[280px] lg:max-w-sm">
-
-            @defer (on immediate) {
+        <div class="relative flex justify-center lg:justify-end order-1 lg:order-2">
+          <div class="hero-image-container relative w-full max-w-[260px] sm:max-w-xs md:max-w-sm lg:max-w-md">
             <div
-              class="aspect-[3/4] w-full max-h-[500px] rounded-2xl overflow-hidden border border-white/5 animate-image-reveal-premium animation-delay-200">
+              class="relative z-10 aspect-[3/4] w-full max-h-[560px] overflow-hidden rounded-t-3xl rounded-b-xl border border-white/10 animate-image-reveal-premium animation-delay-200">
               <img ngSrc="hero.png" width="384" height="512" alt="Mateusz Malich - Software Engineer"
                 class="w-full h-full object-cover" priority />
             </div>
-            } @placeholder {
-            <!-- DaisyUI Skeleton placeholder with matching aspect ratio -->
-            <div class="skeleton aspect-[3/4] w-full max-h-[500px] rounded-2xl bg-white/5 border border-white/5"></div>
-            }
-
           </div>
         </div>
 
       </div>
+
+      <!-- Scroll map — the site index -->
+      <nav class="relative mt-14 lg:mt-20 animate-pure-fade animation-delay-500"
+        aria-label="Site sections" i18n-aria-label="@@hero.index.label">
+        <div class="grid grid-cols-2 md:grid-cols-4 border-y border-white/5">
+          <a [routerLink]="[]" fragment="about"
+            class="group flex items-center justify-between gap-3 px-5 py-5 sm:px-6 text-left font-mono text-xs uppercase tracking-widest text-base-content/60 border-b md:border-b-0 md:border-r border-white/5 hover:text-base-content hover:bg-white/[0.02] transition-colors duration-300">
+            <span class="flex items-baseline gap-3">
+              <span class="text-primary/70 group-hover:text-primary transition-colors duration-300">01</span>
+              <span i18n="@@hero.index.about">About</span>
+            </span>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+              stroke="currentColor"
+              class="w-3.5 h-3.5 text-primary opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </a>
+          <a [routerLink]="[]" fragment="work"
+            class="group flex items-center justify-between gap-3 px-5 py-5 sm:px-6 text-left font-mono text-xs uppercase tracking-widest text-base-content/60 border-b md:border-b-0 md:border-r border-white/5 hover:text-base-content hover:bg-white/[0.02] transition-colors duration-300">
+            <span class="flex items-baseline gap-3">
+              <span class="text-primary/70 group-hover:text-primary transition-colors duration-300">02</span>
+              <span i18n="@@hero.index.work">Work</span>
+            </span>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+              stroke="currentColor"
+              class="w-3.5 h-3.5 text-primary opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </a>
+          <a [routerLink]="[]" fragment="experience"
+            class="group flex items-center justify-between gap-3 px-5 py-5 sm:px-6 text-left font-mono text-xs uppercase tracking-widest text-base-content/60 md:border-r border-white/5 hover:text-base-content hover:bg-white/[0.02] transition-colors duration-300">
+            <span class="flex items-baseline gap-3">
+              <span class="text-primary/70 group-hover:text-primary transition-colors duration-300">03</span>
+              <span i18n="@@hero.index.experience">Experience</span>
+            </span>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+              stroke="currentColor"
+              class="w-3.5 h-3.5 text-primary opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </a>
+          <a [routerLink]="[]" fragment="contact"
+            class="group flex items-center justify-between gap-3 px-5 py-5 sm:px-6 text-left font-mono text-xs uppercase tracking-widest text-base-content/60 hover:text-base-content hover:bg-white/[0.02] transition-colors duration-300">
+            <span class="flex items-baseline gap-3">
+              <span class="text-primary/70 group-hover:text-primary transition-colors duration-300">04</span>
+              <span i18n="@@hero.index.contact">Contact</span>
+            </span>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+              stroke="currentColor"
+              class="w-3.5 h-3.5 text-primary opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </a>
+        </div>
+      </nav>
     </div>
   </div>
 

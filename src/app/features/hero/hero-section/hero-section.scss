@@ -86,9 +86,17 @@
     animation-delay: 0.5s;
 }
 
+/* Backdrop: faint primary dot grid, masked to the hero's focal area */
+.hero-dot-grid {
+    background-image: radial-gradient(circle, oklch(79% 0.209 151.711 / 0.09) 1px, transparent 1.5px);
+    background-size: 28px 28px;
+
+    -webkit-mask-image: radial-gradient(ellipse 85% 70% at 55% 40%, #000 15%, transparent 75%);
+    mask-image: radial-gradient(ellipse 85% 70% at 55% 40%, #000 15%, transparent 75%);
+}
+
 /* Performance optimization */
 .hero-image-container,
-.animate-slide-reveal,
-.animate-curtain-reveal {
+.animate-slide-reveal {
     will-change: transform, opacity, clip-path;
 }
