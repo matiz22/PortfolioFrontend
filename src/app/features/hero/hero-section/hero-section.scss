@@ -3,11 +3,44 @@
 }
 
 .hero-section {
+    isolation: isolate;
     display: flex;
     align-items: center;
     min-height: 100vh;
     min-height: 100dvh;
     padding: clamp(7rem, 14vh, 10rem) 1.5rem clamp(3rem, 7vh, 6rem);
+}
+
+.hero-atmosphere {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    mask-image: linear-gradient(to bottom, transparent, #000 14%, #000 78%, transparent);
+}
+
+.hero-gradient-field {
+    position: absolute;
+    inset: -18%;
+    width: 136%;
+    height: 136%;
+    image-rendering: pixelated;
+    // SSR/no-canvas fallback, replaced by the pre-rendered ordered-dither bitmap.
+    background: radial-gradient(ellipse at var(--glow-origin, 78% 28%),
+        color-mix(in oklab, var(--glow-color, var(--color-primary)) 26%, transparent),
+        transparent 58%);
+}
+
+.hero-gradient-teal {
+    --glow-origin: 15% 76%;
+    --glow-color: var(--color-accent);
+    opacity: 0.7;
+}
+
+@media (prefers-reduced-motion: no-preference) and (hover: hover) and (pointer: fine) {
+    .hero-gradient-field {
+        will-change: transform;
+    }
 }
 
 .hero-layout {
@@ -79,7 +112,6 @@
     }
 
     .hero-description {
-        margin-top: 2rem;
         font-size: 0.9375rem;
     }
 

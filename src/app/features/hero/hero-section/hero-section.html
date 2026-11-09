@@ -1,4 +1,9 @@
 <section class="hero-section @container/hero relative overflow-hidden" id="home" aria-labelledby="hero-headline">
+  <div class="hero-atmosphere" aria-hidden="true">
+    <canvas class="hero-gradient-field hero-gradient-emerald"></canvas>
+    <canvas class="hero-gradient-field hero-gradient-teal"></canvas>
+  </div>
+
   <div class="hero-layout relative z-10 mx-auto grid w-full max-w-6xl gap-8 text-center">
     <figure class="hero-portrait">
       <div class="hero-image-container relative">
@@ -32,29 +37,33 @@
           i18n="@@hero.headline.workflows">Smarter workflows.</span>
       </h1>
 
-      <p class="hero-description mx-auto mt-7 max-w-[29rem] text-sm leading-[1.85] text-pretty text-base-content/70"
-        i18n="@@hero.description">
-        I design and build web, mobile, and desktop applications. Through AI integration and automation,
-        I help businesses simplify workflows and turn complex requirements into practical software.
-      </p>
+      <div class="hero-scroll-description mt-7 @min-[54rem]/hero:mt-8">
+        <p class="hero-description mx-auto max-w-[29rem] text-sm leading-[1.85] text-pretty text-base-content/70"
+          i18n="@@hero.description">
+          I design and build web, mobile, and desktop applications. Through AI integration and automation,
+          I help businesses simplify workflows and turn complex requirements into practical software.
+        </p>
+      </div>
 
-      <div class="hero-actions mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 @min-[54rem]/hero:justify-start">
-        <a [routerLink]="[]" fragment="work" class="hero-cta hero-cta-primary">
-          <span i18n="@@hero.cta.work">Explore my work</span>
-          <span class="hero-cta-icon" aria-hidden="true">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75"
-              stroke="currentColor" class="w-5 h-5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M6 18h12V6" />
+      <div class="hero-scroll-actions mt-8">
+        <div class="hero-actions flex flex-wrap items-center justify-center gap-x-6 gap-y-3 @min-[54rem]/hero:justify-start">
+          <a [routerLink]="[]" fragment="work" class="hero-cta hero-cta-primary">
+            <span i18n="@@hero.cta.work">Explore my work</span>
+            <span class="hero-cta-icon" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75"
+                stroke="currentColor" class="w-5 h-5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M6 18h12V6" />
+              </svg>
+            </span>
+          </a>
+          <a [routerLink]="[]" fragment="contact" class="hero-cta hero-cta-secondary">
+            <span i18n="@@hero.cta.contact">Let’s talk</span>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+              stroke="currentColor" class="w-4 h-4" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M7 17 17 7M7 7h10v10" />
             </svg>
-          </span>
-        </a>
-        <a [routerLink]="[]" fragment="contact" class="hero-cta hero-cta-secondary">
-          <span i18n="@@hero.cta.contact">Let’s talk</span>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-            stroke="currentColor" class="w-4 h-4" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M7 17 17 7M7 7h10v10" />
-          </svg>
-        </a>
+          </a>
+        </div>
       </div>
     </div>
   </div>
