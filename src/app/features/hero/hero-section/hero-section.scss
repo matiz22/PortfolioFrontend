@@ -1,6 +1,157 @@
-/* Hero section animations — Multi-Layered Sharp Reveal */
+:host {
+    display: block;
+}
 
-/* 1. Pure Fade (Badge & Buttons) — Sharp & Grounded */
+.hero-section {
+    display: flex;
+    align-items: center;
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding: clamp(7rem, 14vh, 10rem) 1.5rem clamp(3rem, 7vh, 6rem);
+}
+
+.hero-layout {
+    grid-template-areas: "portrait" "copy";
+}
+
+.hero-copy {
+    grid-area: copy;
+}
+
+.hero-headline {
+    font-size: clamp(3.4rem, 12.5cqw, 5.75rem);
+    line-height: 0.96;
+    letter-spacing: -0.035em;
+}
+
+.hero-headline-accent {
+    margin-top: 0.22em;
+    font-size: 0.74em;
+}
+
+.hero-portrait {
+    grid-area: portrait;
+    width: min(100%, 16rem);
+    margin: 0 auto;
+}
+
+.hero-image-container {
+    width: clamp(7.5rem, 20cqw, 10rem);
+    max-width: 100%;
+    margin-inline: auto;
+}
+
+.hero-photo {
+    aspect-ratio: 3 / 4;
+    border-radius: 0.75rem;
+    background: var(--color-base-200);
+}
+
+@media (min-width: 48rem) {
+    .hero-section {
+        padding-inline: 3rem;
+    }
+}
+
+// Switch when the hero itself has enough usable width, including in narrower containers.
+@container hero (min-width: 54rem) {
+    .hero-layout {
+        grid-template-areas: "copy portrait";
+        grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+        gap: clamp(3rem, 5cqw, 5rem);
+        align-items: start;
+        text-align: left;
+    }
+
+    .hero-headline {
+        font-size: clamp(5.5rem, 9.75cqw, 7.5rem);
+    }
+
+    .hero-headline-main,
+    .hero-description {
+        margin-inline: 0;
+    }
+
+    .hero-description {
+        margin-top: 2rem;
+        font-size: 0.9375rem;
+    }
+
+    .hero-portrait {
+        width: min(100%, 23rem);
+        margin-inline: auto 0;
+    }
+
+    .hero-image-container {
+        width: 100%;
+    }
+}
+
+.hero-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    min-height: 3.5rem;
+    padding: 0.75rem 1.25rem;
+    border: 1px solid transparent;
+    border-radius: 0.75rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: transform 200ms ease, background-color 200ms ease, box-shadow 200ms ease;
+
+    &:focus-visible {
+        outline: 2px solid var(--color-primary);
+        outline-offset: 5px;
+    }
+}
+
+.hero-cta-primary {
+    color: var(--color-primary-content);
+    background: var(--color-primary);
+    box-shadow: 0 6px 24px color-mix(in srgb, var(--color-primary) 15%, transparent);
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 32px color-mix(in srgb, var(--color-primary) 25%, transparent);
+    }
+
+    &:hover svg,
+    &:focus-visible svg {
+        transform: translate(2px, 2px);
+    }
+}
+
+.hero-cta-icon {
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--color-primary-content) 10%, transparent);
+
+    svg {
+        transition: transform 200ms ease;
+    }
+}
+
+.hero-cta-secondary {
+    gap: 0.5rem;
+    padding-inline: 0;
+    border-radius: 0;
+    color: var(--color-base-content);
+    font-weight: 400;
+    text-decoration: underline;
+    text-underline-offset: 0.4em;
+    text-decoration-color: color-mix(in srgb, var(--color-base-content) 30%, transparent);
+
+    &:hover {
+        color: var(--color-primary);
+        text-decoration-color: currentColor;
+    }
+}
+
 @keyframes pure-fade {
     0% {
         opacity: 0;
@@ -11,7 +162,6 @@
     }
 }
 
-/* 2. Slide Reveal (Text Content) — Sharp & Precision */
 @keyframes slide-reveal {
     0% {
         opacity: 0;
@@ -24,46 +174,46 @@
     }
 }
 
-/* 3. Horizontal Wipe & Zoom (Hero Image) — Cinematic & Intentional */
-@keyframes image-reveal-premium {
-    0% {
-        opacity: 0;
-        clip-path: inset(0 100% 0 0);
-        transform: scale(1.08) translateX(10px);
+/* Horizontal blind slats lift in sequence, revealing the portrait beneath. */
+@keyframes blind-lift {
+    from {
+        transform: scaleY(1);
     }
 
-    100% {
-        opacity: 1;
-        clip-path: inset(0 0 0 0);
-        transform: scale(1) translateX(0);
+    to {
+        transform: scaleY(0);
     }
+}
+
+@keyframes portrait-settle {
+    from {
+        transform: scale(1.06);
+    }
+
+    to {
+        transform: scale(1);
+    }
+}
+
+.hero-photo > img {
+    animation: portrait-settle 1.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+}
+
+.hero-photo-blind {
+    // Slight overlap prevents hairline gaps between the closed slats.
+    margin-block: -1px;
+    background: var(--color-base-100);
+    transform-origin: center top;
+    animation: blind-lift 0.9s cubic-bezier(0.76, 0, 0.24, 1) both;
+    animation-delay: calc(0.2s + var(--blind-index, 0) * 0.09s);
 }
 
 .animate-pure-fade {
     animation: pure-fade 1s cubic-bezier(0.2, 0, 0.2, 1) both;
-
-    @starting-style {
-        opacity: 0;
-    }
 }
 
 .animate-slide-reveal {
     animation: slide-reveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
-
-    @starting-style {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-}
-
-.animate-image-reveal-premium {
-    animation: image-reveal-premium 1s cubic-bezier(0.23, 1, 0.32, 1) both;
-
-    @starting-style {
-        opacity: 0;
-        clip-path: inset(0 100% 0 0);
-        transform: scale(1.08) translateX(10px);
-    }
 }
 
 .animation-delay-100 {
@@ -78,17 +228,23 @@
     animation-delay: 0.3s;
 }
 
-.animation-delay-400 {
-    animation-delay: 0.4s;
-}
+@media (prefers-reduced-motion: reduce) {
+    .animate-slide-reveal,
+    .animate-pure-fade,
+    .hero-photo > img,
+    .hero-cta,
+    .hero-cta-icon svg {
+        animation: none;
+        transition: none;
+    }
 
-.animation-delay-500 {
-    animation-delay: 0.5s;
-}
+    .hero-photo-blinds {
+        display: none;
+    }
 
-/* Performance optimization */
-.hero-image-container,
-.animate-slide-reveal,
-.animate-curtain-reveal {
-    will-change: transform, opacity, clip-path;
+    .hero-cta-primary:hover,
+    .hero-cta-primary:hover svg,
+    .hero-cta-primary:focus-visible svg {
+        transform: none;
+    }
 }
