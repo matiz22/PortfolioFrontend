@@ -4,21 +4,38 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 const EXIT_LAYERS = [
-  { selector: '.hero-portrait', x: 45, y: -90, compactY: -24, rotation: 2.25, scale: 0.94 },
-  { selector: '.hero-headline', x: -30, y: -60, compactY: -27, rotation: 0, scale: 1 },
-  { selector: '.hero-scroll-description', x: 0, y: -36, compactY: -18, rotation: 0, scale: 1 },
-  { selector: '.hero-scroll-actions', x: 0, y: -18, compactY: -12, rotation: 0, scale: 1 },
+  {
+    selector: '.hero-portrait', x: 45, y: -90, rotation: 2.25, scale: 0.94,
+    compact: { x: 32, y: 0, rotation: 1.25, scale: 0.96 },
+  },
+  {
+    selector: '.hero-headline', x: -30, y: -60, rotation: 0, scale: 1,
+    compact: { x: -24, y: 0, rotation: 0, scale: 1 },
+  },
+  {
+    selector: '.hero-scroll-description', x: -30, y: -36, rotation: 0, scale: 1,
+    startWith: '.hero-headline',
+    compact: { x: -24, y: 0, rotation: 0, scale: 1 },
+  },
+  {
+    selector: '.hero-scroll-actions', x: 0, y: -18, rotation: 0, scale: 1,
+    compact: { x: -8, y: 0, rotation: 0, scale: 1 },
+  },
 ] as const;
 
 // Offset geometry stays stable while GSAP transforms the layers and their descendants.
-function offsetWithinSection(layer: HTMLElement, section: HTMLElement): number {
-  let top = 0;
+function offsetWithinSection(
+  layer: HTMLElement,
+  section: HTMLElement,
+  property: 'offsetTop' | 'offsetLeft' = 'offsetTop',
+): number {
+  let offset = 0;
   for (let element: HTMLElement | null = layer;
     element && element !== section;
     element = element.offsetParent as HTMLElement | null) {
-    top += element.offsetTop;
+    offset += element[property];
   }
-  return top;
+  return offset;
 }
 
 export function animateHeroScroll(root: HTMLElement): gsap.MatchMedia {
@@ -53,6 +70,10 @@ export function animateHeroScroll(root: HTMLElement): gsap.MatchMedia {
       if (!layer) {
         continue;
       }
+      // Let the description join the headline's exit instead of waiting until it reaches the top.
+      const compactStart = 'startWith' in config
+        ? root.querySelector<HTMLElement>(config.startWith) ?? layer
+        : layer;
 
       gsap.timeline({
         defaults: { ease: 'none' },
@@ -61,7 +82,8 @@ export function animateHeroScroll(root: HTMLElement): gsap.MatchMedia {
           trigger: section,
           start: () => isWide()
             ? 'top top'
-            : `clamp(top+=${offsetWithinSection(layer, section)} 24%)`,
+            // Start while each block is still around mid-screen, not already at the top edge.
+            : `clamp(top+=${offsetWithinSection(compactStart, section)} 55%)`,
           end: () => isWide()
             ? 'bottom 25%'
             : `clamp(top+=${offsetWithinSection(layer, section) + layer.offsetHeight} top)`,
@@ -70,10 +92,21 @@ export function animateHeroScroll(root: HTMLElement): gsap.MatchMedia {
         },
       })
         .to(layer, {
-          x: () => isWide() ? config.x : 0,
-          y: () => isWide() ? config.y : config.compactY,
-          rotation: () => isWide() ? config.rotation : 0,
-          scale: () => isWide() ? config.scale : 1,
+          x: () => {
+            if (isWide()) {
+              return config.x;
+            }
+            // Use untransformed bounds so narrow screens never lose content off either edge.
+            const left = offsetWithinSection(layer, section, 'offsetLeft');
+            return gsap.utils.clamp(
+              -Math.max(0, left),
+              Math.max(0, section.clientWidth - left - layer.offsetWidth),
+              config.compact.x,
+            );
+          },
+          y: () => isWide() ? config.y : config.compact.y,
+          rotation: () => isWide() ? config.rotation : config.compact.rotation,
+          scale: () => isWide() ? config.scale : config.compact.scale,
           duration: 1,
         }, 0)
         // Keep the copy and actions readable until the final part of their exit.
