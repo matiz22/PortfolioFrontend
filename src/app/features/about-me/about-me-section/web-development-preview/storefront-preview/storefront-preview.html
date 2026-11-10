@@ -1,0 +1,23 @@
+<div class="preview-store-header" data-preview-part>
+  <span class="preview-store-logo"></span>
+  <span class="preview-store-search"></span>
+  <span class="preview-store-cart"></span>
+</div>
+<div class="preview-store-banner" data-preview-part>
+  <div><span class="preview-store-title"></span><span class="preview-mock-line"></span></div>
+  <span class="preview-banner-shape"></span>
+</div>
+<div class="preview-store-filters">
+  @for (filter of [0, 1, 2, 3]; track filter) {
+  <span class="preview-store-filter" data-preview-part></span>
+  }
+</div>
+<div class="preview-products">
+  @for (product of [0, 1, 2, 3, 4, 5]; track product) {
+  <div class="preview-product" data-preview-part>
+    <div class="preview-product-image"><span></span></div>
+    <span class="preview-mock-line"></span>
+    <div class="preview-product-meta"><span class="preview-mock-line"></span><span></span></div>
+  </div>
+  }
+</div>

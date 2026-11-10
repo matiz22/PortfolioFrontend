@@ -1,0 +1,237 @@
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+  container-type: size;
+}
+
+.mockup-browser {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  background: var(--color-base-200);
+  border-color: color-mix(in srgb, var(--color-base-content) 14%, transparent);
+}
+
+.mockup-browser-toolbar {
+  flex-shrink: 0;
+  min-height: 1.5rem;
+  margin-block: 0.375rem;
+  padding-inline: 0.75rem;
+
+  &::before {
+    height: 0.4rem;
+    margin-right: 1.75rem;
+    box-shadow: 0.8em 0, 1.6em 0, 2.4em 0;
+  }
+
+  .input {
+    width: min(62%, 16rem);
+    min-height: 0;
+    height: 1.5rem;
+    padding-inline: 0.625rem;
+    border: 0;
+    box-shadow: none;
+    background: var(--color-base-300);
+    color: color-mix(in srgb, var(--color-base-content) 50%, transparent);
+    font-size: 0.5625rem;
+
+    &::before {
+      width: 0.625rem;
+      height: 0.625rem;
+    }
+  }
+}
+
+.preview-viewport {
+  display: grid;
+  flex: 1;
+  min-height: 0;
+  grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+  overflow: hidden;
+  background: var(--color-base-300);
+}
+
+.preview-template {
+  grid-area: 1 / 1;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+
+  // SSR and reduced motion expose one complete layout, never overlapping mock pages.
+  &:not(:first-child) {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+.preview-site {
+  display: grid;
+  grid-template-rows: minmax(6px, 0.4fr) minmax(0, 2.5fr) minmax(0, 1fr);
+  gap: clamp(0.375rem, 4cqh, 0.625rem);
+  padding: clamp(0.375rem, 4cqh, 0.75rem) 5%;
+  background: var(--color-base-300);
+}
+
+.preview-nav,
+.preview-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.preview-nav {
+  justify-content: space-between;
+}
+
+.preview-logo {
+  width: 14%;
+  height: 60%;
+  border-radius: 2px;
+  background: var(--color-primary);
+}
+
+.preview-nav-links {
+  margin-left: auto;
+  margin-right: 4%;
+
+  span {
+    width: 1.25rem;
+    height: 3px;
+    border-radius: 2px;
+    background: color-mix(in srgb, var(--color-base-content) 20%, transparent);
+  }
+}
+
+.preview-nav-dot {
+  height: 65%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--color-primary) 40%, transparent);
+}
+
+.preview-hero {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  min-height: 0;
+  gap: 9%;
+}
+
+.preview-hero-copy {
+  display: flex;
+  min-height: 0;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 12%;
+}
+
+.preview-heading,
+.preview-description {
+  display: grid;
+  gap: 3px;
+  width: 100%;
+}
+
+.preview-heading-line {
+  height: clamp(3px, 3cqh, 7px);
+  width: 90%;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--color-base-content) 80%, transparent);
+
+  &:last-child {
+    width: 65%;
+    background: var(--color-primary);
+  }
+}
+
+.preview-copy-line {
+  height: clamp(2px, 1.25cqh, 3px);
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--color-base-content) 20%, transparent);
+
+  &:last-child {
+    width: 72%;
+  }
+}
+
+.preview-button {
+  width: 32%;
+  height: 12%;
+  min-height: 4px;
+  border-radius: 3px;
+  background: var(--color-primary);
+}
+
+.preview-image {
+  display: grid;
+  min-height: 0;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--color-primary) 20%, transparent);
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--color-primary) 7%, var(--color-base-200));
+}
+
+.preview-image-shape {
+  height: 50%;
+  aspect-ratio: 1;
+  border: 1px solid var(--color-primary);
+  border-radius: 22%;
+  transform: rotate(-15deg);
+  box-shadow: 8px 8px 0 color-mix(in srgb, var(--color-primary) 12%, transparent);
+}
+
+.preview-cards {
+  display: grid;
+  min-height: 0;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 4%;
+}
+
+.preview-card {
+  display: grid;
+  grid-template-columns: 0.7fr 1fr;
+  align-items: center;
+  min-height: 0;
+  gap: 12%;
+  padding: 7%;
+  border: 1px solid color-mix(in srgb, var(--color-base-content) 8%, transparent);
+  border-radius: 5px;
+  background: var(--color-base-200);
+}
+
+.preview-card-thumb {
+  height: 100%;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--color-primary) 18%, transparent);
+}
+
+.preview-card-lines {
+  display: grid;
+  gap: 3px;
+
+  span {
+    height: 2px;
+    border-radius: 2px;
+    background: color-mix(in srgb, var(--color-base-content) 25%, transparent);
+
+    &:last-child {
+      width: 65%;
+      opacity: 0.5;
+    }
+  }
+}
+
+@container (max-height: 11rem) {
+  .mockup-browser-toolbar {
+    min-height: 1.125rem;
+    margin-block: 0.25rem;
+
+    .input {
+      height: 1.125rem;
+      font-size: 0.5rem;
+    }
+  }
+}

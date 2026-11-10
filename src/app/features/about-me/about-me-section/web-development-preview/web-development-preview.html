@@ -1,0 +1,43 @@
+<div class="mockup-browser border border-base-300 w-full">
+  <div class="mockup-browser-toolbar">
+    <div class="input">https://daisyui.com</div>
+  </div>
+
+  <div class="preview-viewport border-t border-base-300">
+    <div class="preview-template preview-site" data-preview-template="landing">
+      <div class="preview-nav" data-preview-part>
+        <span class="preview-logo"></span>
+        <div class="preview-nav-links"><span></span><span></span><span></span></div>
+        <span class="preview-nav-dot"></span>
+      </div>
+
+      <div class="preview-hero">
+        <div class="preview-hero-copy">
+          <div class="preview-heading">
+            <span class="preview-heading-line" data-preview-part></span>
+            <span class="preview-heading-line" data-preview-part></span>
+          </div>
+          <div class="preview-description">
+            <span class="preview-copy-line" data-preview-part></span>
+            <span class="preview-copy-line" data-preview-part></span>
+            <span class="preview-copy-line" data-preview-part></span>
+          </div>
+          <span class="preview-button" data-preview-part></span>
+        </div>
+        <div class="preview-image" data-preview-part><span class="preview-image-shape"></span></div>
+      </div>
+
+      <div class="preview-cards">
+        @for (card of [0, 1, 2]; track card) {
+        <div class="preview-card" data-preview-part>
+          <span class="preview-card-thumb"></span>
+          <div class="preview-card-lines"><span></span><span></span></div>
+        </div>
+        }
+      </div>
+    </div>
+
+    <app-storefront-preview class="preview-template preview-store" data-preview-template="storefront" />
+    <app-dashboard-preview class="preview-template preview-dashboard" data-preview-template="dashboard" />
+  </div>
+</div>

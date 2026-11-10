@@ -1,0 +1,42 @@
+<div class="preview-dashboard-sidebar" data-preview-part>
+  <span class="preview-dashboard-brand"></span>
+  <div class="preview-dashboard-links">
+    @for (link of [0, 1, 2, 3, 4]; track link) {
+    <span></span>
+    }
+  </div>
+  <span class="preview-dashboard-avatar"></span>
+</div>
+<div class="preview-dashboard-main">
+  <div class="preview-dashboard-toolbar" data-preview-part>
+    <div><span class="preview-mock-line"></span><span class="preview-mock-line"></span></div>
+    <span class="preview-dashboard-status"></span>
+  </div>
+  <div class="preview-stats">
+    @for (stat of [0, 1, 2]; track stat) {
+    <div class="preview-stat" data-preview-part>
+      <span class="preview-mock-line"></span>
+      <span class="preview-stat-value"></span>
+      <span class="preview-stat-change"></span>
+    </div>
+    }
+  </div>
+  <div class="preview-chart" data-preview-part>
+    <span class="preview-mock-line"></span>
+    <div class="preview-chart-bars">
+      @for (bar of [45, 70, 55, 90, 65, 80, 100]; track $index) {
+      <span class="preview-chart-bar" [style.--bar-height]="bar + '%'" data-preview-part></span>
+      }
+    </div>
+  </div>
+  <div class="preview-dashboard-table">
+    @for (row of [0, 1]; track row) {
+    <div class="preview-dashboard-row" data-preview-part>
+      <span class="preview-row-avatar"></span>
+      <span class="preview-mock-line"></span>
+      <span class="preview-mock-line"></span>
+      <span class="preview-row-status"></span>
+    </div>
+    }
+  </div>
+</div>
