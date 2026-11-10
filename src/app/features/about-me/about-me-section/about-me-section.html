@@ -1,81 +1,96 @@
-<section appCursorSpotlight
-  class="py-24 border-y border-white/5 bg-black bg-[radial-gradient(oklch(79%_0.209_151.711_/_0.4)_1.5px,transparent_1.5px)] [background-size:24px_24px]"
-  id="about">
-  <div class="container mx-auto px-6 max-w-6xl">
-    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
-      <div class="md:w-1/2">
-        <h2 class="section-heading text-4xl md:text-5xl lg:text-6xl text-left" i18n="@@about.heading">How can I help
-          you?</h2>
-      </div>
-      <div class="md:w-1/2 lg:w-2/5">
-        <p class="text-base text-left text-base-content/80 backdrop-blur-md bg-base-100/50 rounded-xl px-5 py-4 border border-white/5 relative z-10"
-          i18n="@@about.intro">
-          I build digital tools that drive your business forward. From modern websites and advanced applications to
-          intelligent AI automation - I deliver solutions ready for tomorrow's challenges.
-        </p>
-      </div>
-    </div>
+<section class="about-section section-noise" id="about" aria-labelledby="about-heading">
+  <div class="about-shell relative z-10 mx-auto w-full max-w-6xl px-6">
+    <div class="about-stage">
+      <div class="about-sidebar">
+        <header class="about-header">
+          <h2 id="about-heading" class="section-heading" i18n="@@about.heading">How can I help you?</h2>
+        </header>
 
-    <div class="flex flex-row flex-wrap justify-center gap-4 max-w-5xl mx-auto relative z-10">
-      <!-- Web Development -->
-      <div appAosAnimations="reveal-card-flip" [delay]="100"
-        class="flex-1 min-w-full md:min-w-[calc(50%-0.5rem)] lg:min-w-[calc(33.333%-0.67rem)] md:max-w-[calc(50%-0.5rem)] lg:max-w-[calc(33.333%-0.67rem)] bg-base-300 border border-white/5 rounded-xl hover:border-primary/30 transition-all duration-500 ease-out hover:-translate-y-1">
-        <div class="p-6 flex flex-col items-center text-center">
-          <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-5">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24"
-              stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
-            </svg>
-          </div>
-          <h3 class="font-serif italic text-2xl mb-3" i18n="@@about.card.web.title">Web Development</h3>
-          <p class="text-sm text-base-content/50 leading-relaxed" i18n="@@about.card.web.description">
-            Modern websites that deliver results I create fast, responsive, and SEO-optimized websites and e-commerce
-            platforms. My focus is not just on aesthetics, but on high conversion rates and intuitive UX that turns
-            visitors into loyal customers.
-          </p>
-        </div>
+        <nav class="about-index" aria-labelledby="about-heading">
+          <div class="about-track" aria-hidden="true"><span class="about-fill"></span></div>
+          <ol>
+            <li>
+              <a class="about-index-link" href="#about-web" aria-controls="about-web">
+                <span class="about-index-number" aria-hidden="true">01</span>
+                <span class="about-index-title font-serif" i18n="@@about.card.web.title">Web Development</span>
+                <span class="about-index-arrow" aria-hidden="true">↗</span>
+              </a>
+            </li>
+            <li>
+              <a class="about-index-link" href="#about-apps" aria-controls="about-apps">
+                <span class="about-index-number" aria-hidden="true">02</span>
+                <span class="about-index-title font-serif" i18n="@@about.card.apps.title">Mobile &amp; Desktop Apps</span>
+                <span class="about-index-arrow" aria-hidden="true">↗</span>
+              </a>
+            </li>
+            <li>
+              <a class="about-index-link" href="#about-ai" aria-controls="about-ai">
+                <span class="about-index-number" aria-hidden="true">03</span>
+                <span class="about-index-title font-serif" i18n="@@about.card.ai.title">AI Implementation</span>
+                <span class="about-index-arrow" aria-hidden="true">↗</span>
+              </a>
+            </li>
+          </ol>
+        </nav>
       </div>
 
-      <!-- Desktop & Mobile Apps -->
-      <div appAosAnimations="reveal-card-flip" [delay]="200"
-        class="flex-1 min-w-full md:min-w-[calc(50%-0.5rem)] lg:min-w-[calc(33.333%-0.67rem)] md:max-w-[calc(50%-0.5rem)] lg:max-w-[calc(33.333%-0.67rem)] bg-base-300 border border-white/5 rounded-xl hover:border-secondary/30 transition-all duration-500 ease-out hover:-translate-y-1">
-        <div class="p-6 flex flex-col items-center text-center">
-          <div class="w-12 h-12 rounded-lg bg-secondary/10 flex items-center justify-center mb-5">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-secondary" fill="none" viewBox="0 0 24 24"
-              stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
-            </svg>
+      <div class="about-panels">
+        <article class="about-panel about-web" id="about-web" aria-labelledby="about-web-title">
+          <div class="about-visual about-web-visual" aria-hidden="true">
+            <app-web-development-preview />
           </div>
-          <h3 class="font-serif italic text-2xl mb-3" i18n="@@about.card.apps.title">Mobile &amp; Desktop Apps</h3>
-          <p class="text-sm text-base-content/50 leading-relaxed" i18n="@@about.card.apps.description">
-            Software tailored to your needs I build high-performance native and cross-platform applications designed to
-            streamline your daily operations. Whether you need a custom internal tool or a mobile app for your users - I
-            deliver a product that just works.
-          </p>
-        </div>
-      </div>
+          <div class="about-panel-copy">
+            <h3 id="about-web-title" class="font-serif" i18n="@@about.card.web.title">Web Development</h3>
+            <p i18n="@@about.card.web.description">
+              Modern websites that deliver results I create fast, responsive, and SEO-optimized websites and e-commerce
+              platforms. My focus is not just on aesthetics, but on high conversion rates and intuitive UX that turns
+              visitors into loyal customers.
+            </p>
+          </div>
+        </article>
 
-      <!-- AI Implementation -->
-      <div appAosAnimations="reveal-card-flip" [delay]="300"
-        class="flex-1 min-w-full md:min-w-[calc(50%-0.5rem)] lg:min-w-[calc(33.333%-0.67rem)] md:max-w-[calc(50%-0.5rem)] lg:max-w-[calc(33.333%-0.67rem)] bg-base-300 border border-white/5 rounded-xl hover:border-accent/30 transition-all duration-500 ease-out hover:-translate-y-1">
-        <div class="p-6 flex flex-col items-center text-center">
-          <div class="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center mb-5">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-accent" fill="none" viewBox="0 0 24 24"
-              stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
+        <article class="about-panel about-apps" id="about-apps" aria-labelledby="about-apps-title">
+          <div class="about-visual about-apps-visual" aria-hidden="true">
+            <app-apps-preview />
+          </div>
+          <div class="about-panel-copy">
+            <h3 id="about-apps-title" class="font-serif" i18n="@@about.card.apps.title">Mobile &amp; Desktop Apps</h3>
+            <p i18n="@@about.card.apps.description">
+              Software tailored to your needs I build high-performance native and cross-platform applications designed to
+              streamline your daily operations. Whether you need a custom internal tool or a mobile app for your users - I
+              deliver a product that just works.
+            </p>
+          </div>
+        </article>
+
+        <article class="about-panel about-ai" id="about-ai" aria-labelledby="about-ai-title">
+          <div class="about-visual" aria-hidden="true">
+            <span class="about-visual-number font-serif">03</span>
+            <svg viewBox="0 0 480 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <g stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M121 70h46a24 24 0 0 1 24 24v26m-70 56h46a24 24 0 0 0 24-24v-32m64 0h48a24 24 0 0 0 24-24V70h22m-94 50h48a24 24 0 0 1 24 24v32h22" opacity=".5" />
+                <rect x="67" y="47" width="54" height="46" rx="9" class="about-art-surface" />
+                <rect x="67" y="153" width="54" height="46" rx="9" class="about-art-surface" />
+                <rect x="349" y="47" width="54" height="46" rx="9" class="about-art-surface" />
+                <rect x="349" y="153" width="54" height="46" rx="9" class="about-art-surface" />
+                <rect x="181" y="82" width="84" height="76" rx="18" class="about-art-surface" />
+                <path d="m223 99 6 15 15 6-15 6-6 15-6-15-15-6 15-6 6-15Z" fill="currentColor" fill-opacity=".15" />
+                <path d="m83 69 7 7 14-14m-21 114h22m-11-11v22m274-118h16m-16 8h10m-9 99 5 5 10-10" />
+                <circle cx="154" cy="70" r="3" fill="currentColor" stroke="none" />
+                <circle cx="303" cy="176" r="3" fill="currentColor" stroke="none" />
+                <path d="M223 52V36m-8 8h16m-8 144v16m-8-8h16" opacity=".3" />
+              </g>
             </svg>
           </div>
-          <h3 class="font-serif italic text-2xl mb-3" i18n="@@about.card.ai.title">AI Implementation</h3>
-          <p class="text-sm text-base-content/50 leading-relaxed" i18n="@@about.card.ai.description">
-            AI & Automation for your business I help you leverage the power of AI to gain a competitive edge. From
-            intelligent AI agents, MCPs, and process automation to data insights - I implement solutions that save you
-            time and
-            make your business operate smarter and more efficiently.
-          </p>
-        </div>
+          <div class="about-panel-copy">
+            <h3 id="about-ai-title" class="font-serif" i18n="@@about.card.ai.title">AI Implementation</h3>
+            <p i18n="@@about.card.ai.description">
+              AI &amp; Automation for your business I help you leverage the power of AI to gain a competitive edge. From
+              intelligent AI agents, MCPs, and process automation to data insights - I implement solutions that save you
+              time and make your business operate smarter and more efficiently.
+            </p>
+          </div>
+        </article>
       </div>
     </div>
   </div>
