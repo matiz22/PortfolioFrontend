@@ -1,0 +1,133 @@
+:host {
+  --app-accent: var(--color-accent);
+  display: grid;
+  grid-template-rows: 0.25fr 0.7fr minmax(0, 1.5fr) 0.4fr;
+  gap: 6%;
+  padding: 5%;
+}
+
+.mini-title,
+.mini-line {
+  display: block;
+  height: 3px;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--color-base-content) 25%, transparent);
+}
+
+.mini-title {
+  width: 35%;
+  height: 5px;
+  background: var(--app-accent);
+}
+
+.short {
+  width: 60%;
+  opacity: 0.5;
+}
+
+.app-analytics-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.analytics-status {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--app-accent);
+}
+
+.analytics-stats {
+  display: grid;
+  min-height: 0;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 5%;
+}
+
+.app-metric-card,
+.app-trend-chart {
+  display: grid;
+  min-height: 0;
+  gap: 15%;
+  padding: 8%;
+  border: 1px solid rgb(255 255 255 / 7%);
+  border-radius: 4px;
+  background: var(--color-base-200);
+}
+
+.metric-value,
+.app-phone-metric-value {
+  width: 55%;
+  min-height: 4px;
+  border-radius: 2px;
+  background: var(--app-accent);
+}
+
+.app-trend-chart {
+  grid-template-rows: 3px minmax(0, 1fr);
+  padding: 4%;
+
+  > .mini-line {
+    width: 25%;
+  }
+}
+
+.analytics-bars {
+  display: flex;
+  align-items: flex-end;
+  min-height: 0;
+  gap: 7%;
+  background: repeating-linear-gradient(to top, rgb(255 255 255 / 5%) 0 1px, transparent 1px 33%);
+}
+
+.app-analytics-bar {
+  flex: 1;
+  height: var(--bar-height);
+  border-radius: 2px 2px 0 0;
+  background: color-mix(in srgb, var(--app-accent) 75%, transparent);
+}
+
+.analytics-activity {
+  display: grid;
+  min-height: 0;
+  gap: 20%;
+}
+
+.app-activity-row {
+  display: grid;
+  grid-template-columns: 5px 1fr 0.5fr;
+  align-items: center;
+  gap: 8%;
+
+  > span:first-child {
+    height: 5px;
+    border-radius: 2px;
+    background: color-mix(in srgb, var(--app-accent) 35%, transparent);
+  }
+}
+
+:host(.is-phone) {
+  grid-template-rows: 0.4fr 0.7fr minmax(0, 1.4fr) 0.8fr;
+  gap: 7%;
+  padding: 20% 9% 10%;
+
+  .app-analytics-heading {
+    display: grid;
+    align-content: center;
+    gap: 5px;
+  }
+
+  .mini-title {
+    width: 75%;
+    height: 4px;
+  }
+
+  .app-trend-chart {
+    grid-template-rows: minmax(0, 1fr);
+  }
+
+  .mini-line {
+    height: 2px;
+  }
+}

@@ -1,0 +1,170 @@
+:host {
+  --app-accent: var(--color-secondary);
+  display: grid;
+  grid-template-rows: 0.25fr minmax(0, 2fr);
+  gap: 8%;
+  padding: 5%;
+}
+
+.mini-title,
+.mini-line {
+  display: block;
+  height: 3px;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--color-base-content) 25%, transparent);
+}
+
+.mini-title {
+  width: 40%;
+  height: 5px;
+  background: var(--app-accent);
+}
+
+.short {
+  width: 65%;
+  opacity: 0.5;
+}
+
+.app-board-toolbar,
+.board-column-heading,
+.board-members {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+}
+
+.board-members span,
+.task-avatar {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--app-accent) 40%, transparent);
+}
+
+.app-board {
+  display: grid;
+  min-height: 0;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 5%;
+}
+
+.app-board-column {
+  display: grid;
+  min-height: 0;
+  grid-template-rows: 0.2fr repeat(3, minmax(0, 1fr));
+  gap: 7%;
+}
+
+.board-column-heading .mini-line {
+  width: 60%;
+}
+
+.board-column-heading > span:last-child {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--app-accent);
+}
+
+.app-task-card {
+  display: grid;
+  min-height: 0;
+  grid-template-rows: minmax(0, 0.6fr) repeat(2, minmax(0, 0.4fr)) minmax(0, 1fr);
+  gap: 8%;
+  padding: 7%;
+  border: 1px solid rgb(255 255 255 / 7%);
+  border-radius: 4px;
+  background: var(--color-base-200);
+
+  .mini-line {
+    height: min(2px, 100%);
+  }
+
+  .task-avatar {
+    justify-self: start;
+    width: auto;
+    height: min(6px, 100%);
+    aspect-ratio: 1;
+  }
+}
+
+.task-tag {
+  width: 40%;
+  height: min(3px, 100%);
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--app-accent) 45%, transparent);
+}
+
+:host(.is-phone) {
+  grid-template-rows: 0.5fr 3px minmax(0, 3fr) 0.25fr;
+  gap: 7%;
+  padding: 20% 9% 10%;
+}
+
+.app-task-heading,
+.app-task-row > div {
+  display: grid;
+  align-content: center;
+  gap: 5px;
+}
+
+.app-task-heading .mini-title {
+  width: 75%;
+  height: 4px;
+}
+
+.task-progress {
+  overflow: hidden;
+  border-radius: 3px;
+  background: var(--color-base-100);
+}
+
+.app-task-progress {
+  display: block;
+  width: 75%;
+  height: 100%;
+  background: var(--app-accent);
+}
+
+.task-list {
+  display: grid;
+  min-height: 0;
+  gap: 8%;
+}
+
+.app-task-row {
+  display: grid;
+  grid-template-columns: 0.22fr 1fr;
+  align-items: center;
+  min-height: 0;
+  gap: 10%;
+}
+
+.task-check {
+  display: grid;
+  aspect-ratio: 1;
+  padding: 2px;
+  border: 1px solid color-mix(in srgb, var(--app-accent) 35%, transparent);
+  border-radius: 2px;
+}
+
+.app-task-check-fill {
+  border-radius: 1px;
+  background: var(--app-accent);
+}
+
+.phone-tabs {
+  display: flex;
+  align-items: end;
+  justify-content: space-around;
+  border-top: 1px solid rgb(255 255 255 / 7%);
+
+  span {
+    width: 5px;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--color-base-content);
+    opacity: 0.2;
+  }
+}

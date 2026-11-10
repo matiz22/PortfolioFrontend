@@ -1,0 +1,38 @@
+@if (device() === 'desktop') {
+<div class="app-analytics-heading" data-app-part><span class="mini-title"></span><span class="analytics-status"></span></div>
+<div class="analytics-stats">
+  @for (stat of [0, 1, 2]; track stat) {
+  <div class="app-metric-card" data-app-part><span class="mini-line"></span><span class="metric-value"></span></div>
+  }
+</div>
+<div class="app-trend-chart" data-app-part>
+  <span class="mini-line short"></span>
+  <div class="analytics-bars">
+    @for (bar of [45, 65, 50, 85, 60, 95, 75]; track $index) {
+    <span class="app-analytics-bar" [style.--bar-height]="bar + '%'" data-app-part></span>
+    }
+  </div>
+</div>
+<div class="analytics-activity">
+  @for (row of [0, 1]; track row) {
+  <div class="app-activity-row" data-app-part><span></span><span class="mini-line"></span><span class="mini-line short"></span></div>
+  }
+</div>
+} @else {
+<div class="app-analytics-heading" data-app-part><span class="mini-title"></span><span class="mini-line short"></span></div>
+<div class="app-metric-card phone-metric" data-app-part>
+  <span class="mini-line short"></span><span class="app-phone-metric-value" data-app-part></span>
+</div>
+<div class="app-trend-chart" data-app-part>
+  <div class="analytics-bars">
+    @for (bar of [35, 60, 45, 85, 100]; track $index) {
+    <span class="app-analytics-bar" [style.--bar-height]="bar + '%'" data-app-part></span>
+    }
+  </div>
+</div>
+<div class="analytics-activity">
+  @for (row of [0, 1, 2]; track row) {
+  <div class="app-activity-row" data-app-part><span></span><span class="mini-line"></span><span class="mini-line short"></span></div>
+  }
+</div>
+}

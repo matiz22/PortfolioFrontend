@@ -1,0 +1,32 @@
+@if (device() === 'desktop') {
+<div class="app-board-toolbar" data-app-part>
+  <span class="mini-title"></span>
+  <div class="board-members"><span></span><span></span><span></span></div>
+</div>
+<div class="app-board">
+  @for (column of [0, 1, 2]; track column) {
+  <div class="app-board-column" data-app-part>
+    <div class="board-column-heading"><span class="mini-line"></span><span></span></div>
+    @for (card of [0, 1, 2]; track card) {
+    <div class="app-task-card" data-app-part>
+      <span class="task-tag"></span>
+      <span class="mini-line"></span><span class="mini-line short"></span>
+      <span class="task-avatar"></span>
+    </div>
+    }
+  </div>
+  }
+</div>
+} @else {
+<div class="app-task-heading" data-app-part><span class="mini-title"></span><span class="mini-line short"></span></div>
+<div class="task-progress"><span class="app-task-progress" data-app-part></span></div>
+<div class="task-list">
+  @for (task of [0, 1, 2, 3, 4]; track task) {
+  <div class="app-task-row" data-app-part>
+    <span class="task-check">@if (task < 3) {<span class="app-task-check-fill" data-app-part></span>}</span>
+    <div><span class="mini-line"></span><span class="mini-line short"></span></div>
+  </div>
+  }
+</div>
+<div class="phone-tabs"><span></span><span></span><span></span></div>
+}

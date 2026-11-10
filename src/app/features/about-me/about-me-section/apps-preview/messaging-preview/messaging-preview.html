@@ -1,0 +1,21 @@
+@if (device() === 'desktop') {
+<div class="app-inbox">
+  <span class="app-inbox-heading mini-title" data-app-part></span>
+  @for (contact of [0, 1, 2, 3]; track contact) {
+  <div class="app-inbox-row" data-app-part>
+    <span class="chat-avatar"></span>
+    <div><span class="mini-line"></span><span class="mini-line short"></span></div>
+  </div>
+  }
+</div>
+}
+<div class="chat-conversation">
+  <div class="app-chat-heading" data-app-part><span class="chat-avatar"></span><span class="mini-title"></span><span class="chat-status"></span></div>
+  <div class="chat-messages">
+    @for (message of [0, 1, 2, 3, 4]; track message) {
+    <div class="app-chat-bubble" [attr.data-message]="message" data-app-part><span class="mini-line"></span><span class="mini-line short"></span></div>
+    }
+    <div class="app-typing" data-app-part><span class="app-typing-dot"></span><span class="app-typing-dot"></span><span class="app-typing-dot"></span></div>
+  </div>
+  <div class="app-chat-composer" data-app-part><span class="mini-line"></span><span></span></div>
+</div>
