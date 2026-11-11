@@ -1,16 +1,127 @@
 .projects-home-grid {
+  position: relative;
+  isolation: isolate;
   display: grid;
-  gap: 1.25rem;
+  gap: 1.75rem;
   grid-template-columns: minmax(0, 1fr);
 }
 
 // Keep the fixed header pill clear when navigating to #projects.
 .projects-home-section {
+  // Clip banking corners without introducing another scroll container.
+  overflow-x: clip;
   scroll-margin-top: 4.5rem;
+}
+
+.projects-home-scroll {
+  position: relative;
+}
+
+.projects-home-stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 100svh;
+  padding-block: clamp(4.5rem, 8vw, 7rem);
+}
+
+.projects-home-content {
+  display: grid;
+  gap: 2rem;
+  width: 100%;
+  min-width: 0;
+}
+
+.projects-home-viewport {
+  position: relative;
+  min-width: 0;
+}
+
+.projects-home-progress {
+  display: none;
+  position: absolute;
+  inset: auto 0 0;
+  height: 2px;
+  background: rgb(255 255 255 / 8%);
+}
+
+.projects-home-progress-fill {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--color-primary);
+  transform-origin: left center;
+}
+
+// Progressive enhancement: the normal grid stays accessible without motion,
+// during loading, and on screens too short to contain a project card.
+.projects-home-is-assembling {
+  .projects-home-stage {
+    container-type: inline-size;
+    position: sticky;
+    top: 0;
+    align-items: stretch;
+    height: 100svh;
+    min-height: 0;
+    padding-block: clamp(5rem, 12svh, 6.5rem) clamp(1rem, 2.5svh, 2rem);
+  }
+
+  .projects-home-content {
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    gap: clamp(1rem, 2.5svh, 1.5rem);
+    min-height: 0;
+  }
+
+  .projects-home-header {
+    gap: 0.75rem;
+
+    h2 {
+      font-size: clamp(2.25rem, 5svh, 3.5rem);
+    }
+
+    p {
+      font-size: clamp(0.75rem, 1.6svh, 0.875rem);
+      line-height: 1.7;
+    }
+  }
+
+  .projects-home-viewport {
+    --projects-flight-gutter: max(1.5rem, calc((100cqw - 72rem) / 2 + 1.5rem));
+
+    min-height: 0;
+    // Let flights cross the full section width, not an invisible container edge.
+    // Padding keeps their final grid aligned with the heading and footer.
+    margin: -0.5rem calc(-1 * var(--projects-flight-gutter));
+    padding: 0.5rem var(--projects-flight-gutter);
+    overflow: clip;
+  }
+
+  .projects-home-progress {
+    display: block;
+  }
+}
+
+.projects-home-slot {
+  position: relative;
+  display: grid;
+  min-width: 0;
+
+  &:focus-within {
+    z-index: 2;
+  }
+}
+
+.projects-home-item {
+  position: relative;
+  display: block;
+  min-width: 0;
+  height: 100%;
+  transform-origin: center;
 }
 
 @media (min-width: 48rem) {
   .projects-home-grid {
+    gap: 2rem;
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -22,6 +133,7 @@
 }
 
 .projects-home-state {
+  grid-column: 1 / -1;
   padding-block: 2rem;
   font-size: 0.875rem;
   color: color-mix(in srgb, var(--color-base-content) 50%, transparent);
