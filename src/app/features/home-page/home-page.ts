@@ -7,12 +7,13 @@ import { Header } from "../../shared/header/header";
 import { ContactSection } from "../../shared/contact/contact-section/contact-section";
 import { EducationSection } from "../education/education-section/education-section";
 import { CertificationsSection } from "../certifications/certifications-section/certifications-section";
-import { ProjectsRealizationsHomeSection } from "../showcase/projects-realizations-home-section/projects-realizations-home-section";
+import { RealizationsHomeSection } from "../realizations/realizations-home-section/realizations-home-section";
+import { ProjectsHomeSection } from "../projects/projects-home-section/projects-home-section";
 import { JobTimelineSection } from "../jobs/job-timeline-section/job-timeline-section";
 
 @Component({
   selector: 'app-home-page',
-  imports: [Footer, HeroSection, AboutMeSection, Header, ContactSection, EducationSection, CertificationsSection, ProjectsRealizationsHomeSection, JobTimelineSection],
+  imports: [Footer, HeroSection, AboutMeSection, Header, ContactSection, EducationSection, CertificationsSection, RealizationsHomeSection, ProjectsHomeSection, JobTimelineSection],
   templateUrl: './home-page.html',
   styleUrl: './home-page.scss',
 })

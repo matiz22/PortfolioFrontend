@@ -14,9 +14,16 @@
         <div class="min-h-64"></div>
         }
 
-        <!-- Projects & Realizations Section with Tabs -->
+      <!-- Realizations Section (featured client work) -->
         @defer (on idle; hydrate on idle) {
-        <app-projects-realizations-home-section></app-projects-realizations-home-section>
+        <app-realizations-home-section></app-realizations-home-section>
+        } @placeholder {
+        <div class="min-h-64"></div>
+        }
+
+        <!-- Projects Section -->
+        @defer (on idle; hydrate on idle) {
+        <app-projects-home-section></app-projects-home-section>
         } @placeholder {
         <div class="min-h-64"></div>
         }
