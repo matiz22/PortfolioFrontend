@@ -62,8 +62,8 @@ export function animateAboutMeScroll(root: HTMLElement): gsap.MatchMedia {
       timeline.addLabel(`service-${i}`, i);
       if (i > 0) {
         timeline
-          .to(panels[i - 1], { autoAlpha: 0, y: -14, duration: 0.32 }, i - 0.16)
-          .to(panel, { autoAlpha: 1, y: 0, duration: 0.32 }, '<');
+          .to(panels[i - 1], { autoAlpha: 0, y: -14, duration: 0.16 }, i - 0.16)
+          .to(panel, { autoAlpha: 1, y: 0, duration: 0.16 }, i);
       }
     });
 
@@ -78,7 +78,7 @@ export function animateAboutMeScroll(root: HTMLElement): gsap.MatchMedia {
       animation: timeline,
       start: 'top 96px',
       // The stage uses svh, so a mobile browser's address bar does not change the scroll distance.
-      end: () => `+=${Math.round(panels.length * (stage.offsetHeight + 96) * 0.65)}`,
+      end: () => `+=${Math.round(panels.length * (stage.offsetHeight + 96) * 0.75)}`,
       pin: true,
       scrub: 0.5,
       invalidateOnRefresh: true,
