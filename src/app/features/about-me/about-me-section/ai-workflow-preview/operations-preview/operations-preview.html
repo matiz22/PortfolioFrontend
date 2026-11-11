@@ -1,0 +1,36 @@
+<div class="operations-health" [class.is-degraded]="degraded()" #health>
+  <div class="operations-health-heading">
+    <code>api.service</code>
+    <span class="operations-health-status"><i></i>{{ healthLabel() }}</span>
+  </div>
+  <svg class="operations-chart" viewBox="0 0 400 80" preserveAspectRatio="none" aria-hidden="true">
+    <path class="operations-chart-guide" d="M0 64H400M0 24H400" />
+    <path class="operations-healthy" d="M0 30 30 30 42 24 54 34 68 29 96 30 120 26 140 32 158 29 180 30 200 25 222 31 244 29 268 32 290 27 312 31 340 29 366 32 400 28" />
+    <path class="operations-failure" pathLength="100" d="M0 30 30 30 42 24 54 34 68 29 96 30 120 26 140 32 158 29 180 30 200 25 222 31 244 29 264 56 284 66 302 62" />
+    <path class="operations-recovery" pathLength="100" d="M302 62 316 61 328 45 340 29 354 24 366 32 380 29 400 28" />
+    <circle class="operations-alert" cx="284" cy="66" r="4" />
+    <circle class="operations-scan" cx="0" cy="30" r="3" />
+  </svg>
+</div>
+
+<div class="operations-log" #log>
+  <span class="operations-log-heading">diagnostic.log</span>
+  <code><span>!</span> upstream_timeout</code>
+  <span class="operations-log-detail">retry_limit: 3</span>
+</div>
+
+<div class="operations-action">
+  <span class="operations-action-icon" aria-hidden="true">↻</span>
+  <div>
+    <span class="operations-action-label" i18n="@@aiOperations.action">Corrective action</span>
+    <code>restart_service</code>
+  </div>
+</div>
+
+<div class="operations-result">
+  <span class="workflow-reply-icon" aria-hidden="true">✓</span>
+  <div>
+    <span class="operations-action-label" i18n="@@aiOperations.verified">Recovery verified</span>
+    <p i18n="@@aiOperations.result">Service restored.</p>
+  </div>
+</div>

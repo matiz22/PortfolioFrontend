@@ -1,0 +1,154 @@
+.ai-workflow {
+  --workflow-cyan: var(--color-accent);
+  --workflow-mint: var(--color-primary);
+  --workflow-yellow: var(--color-secondary);
+  --workflow-agent-size: clamp(4.5rem, 42cqh, 9rem);
+  --workflow-helper-size: clamp(2rem, 21cqh, 4.5rem);
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  container-type: size;
+
+  .workflow-team-scene { position: absolute; inset: 0; }
+
+  .workflow-connections {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  .workflow-link {
+    fill: none;
+    stroke: var(--workflow-mint);
+    stroke-width: 1;
+    stroke-dasharray: 100;
+    opacity: 0.28;
+  }
+
+  .workflow-link-researcher { stroke: var(--workflow-yellow); }
+  .workflow-packet, .workflow-return, .workflow-request { visibility: hidden; }
+  .workflow-packet-analyst, .workflow-return-analyst { fill: var(--workflow-mint); }
+  .workflow-packet-researcher, .workflow-return-researcher { fill: var(--workflow-yellow); }
+
+  .workflow-message {
+    position: absolute;
+    top: 9%;
+    left: 50%;
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    width: max-content;
+    max-width: 98%;
+    transform: translateX(-50%);
+    color: rgb(255 255 255 / 88%);
+
+    p {
+      margin: 0;
+      font-size: clamp(0.625rem, 2.7cqw, 0.8125rem);
+      line-height: 1.5;
+    }
+  }
+
+  .workflow-person {
+    display: grid;
+    flex-shrink: 0;
+    place-items: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border: 1px solid rgb(255 255 255 / 16%);
+    border-radius: 50%;
+
+    svg { width: 1rem; height: 1rem; stroke: currentColor; stroke-width: 1.3; }
+  }
+
+  .workflow-bubble {
+    padding: 0.375rem 0.75rem;
+    border: 1px solid rgb(255 255 255 / 12%);
+    border-radius: 0.75rem 0.75rem 0.75rem 0.125rem;
+    background: rgb(255 255 255 / 3%);
+  }
+
+  .workflow-message-label {
+    display: block;
+    color: rgb(255 255 255 / 40%);
+    font-size: 0.5625rem;
+    text-transform: uppercase;
+  }
+
+  .workflow-reply .workflow-message-label { color: var(--workflow-mint); }
+
+  .workflow-reply-icon {
+    display: grid;
+    place-items: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border: 1px solid color-mix(in srgb, var(--workflow-mint) 30%, transparent);
+    border-radius: 50%;
+    color: var(--workflow-mint);
+  }
+
+  .workflow-main-anchor, .workflow-helper-anchor {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    aspect-ratio: 1;
+  }
+
+  .workflow-main-anchor { top: max(47%, 4.75rem); left: 50%; width: var(--workflow-agent-size); }
+  &[data-scene='operations'] .workflow-main-anchor { top: 47%; }
+  .workflow-main-motion, .workflow-helper-motion, .workflow-blob { width: 100%; height: 100%; }
+  .workflow-helper-anchor { top: min(70%, calc(100% - 3.25rem)); width: var(--workflow-helper-size); }
+  .workflow-analyst { left: 22%; color: var(--workflow-mint); }
+  .workflow-researcher { left: 78%; color: var(--workflow-yellow); }
+
+  .workflow-blob {
+    display: block;
+
+    svg, img { display: block; width: 100%; height: 100%; }
+  }
+
+  .workflow-main-status {
+    position: absolute;
+    top: calc(100% - 0.875rem);
+    left: 50%;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    width: max-content;
+    transform: translateX(-50%);
+    color: var(--workflow-cyan);
+    font-size: clamp(0.5625rem, 2.3cqw, 0.6875rem);
+
+    &.is-complete { color: var(--workflow-mint); }
+  }
+
+  .workflow-helper-name, .workflow-tool {
+    position: absolute;
+    left: 50%;
+    width: max-content;
+    transform: translateX(-50%);
+  }
+
+  .workflow-helper-name {
+    top: calc(100% - 0.5rem);
+    font-size: clamp(0.5625rem, 2.3cqw, 0.625rem);
+  }
+
+  .workflow-tool {
+    top: calc(100% + 0.5rem);
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    overflow: hidden;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid color-mix(in srgb, currentColor 22%, transparent);
+    border-radius: 0.3125rem;
+    color: rgb(255 255 255 / 60%);
+    font-size: clamp(0.5625rem, 2.2cqw, 0.625rem);
+
+    code { font-family: inherit; }
+    &.is-done { color: var(--workflow-mint); }
+  }
+}

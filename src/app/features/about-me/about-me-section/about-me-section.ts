@@ -10,10 +10,11 @@ import {
 import type { gsap } from 'gsap';
 import { WebDevelopmentPreview } from './web-development-preview/web-development-preview';
 import { AppsPreview } from './apps-preview/apps-preview';
+import { AiWorkflowPreview } from './ai-workflow-preview/ai-workflow-preview';
 
 @Component({
   selector: 'app-about-me-section',
-  imports: [WebDevelopmentPreview, AppsPreview],
+  imports: [WebDevelopmentPreview, AppsPreview, AiWorkflowPreview],
   templateUrl: './about-me-section.html',
   styleUrl: './about-me-section.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

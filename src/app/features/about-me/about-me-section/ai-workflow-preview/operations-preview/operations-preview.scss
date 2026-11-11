@@ -1,0 +1,87 @@
+:host {
+  position: absolute;
+  inset: 0;
+  display: block;
+  visibility: hidden;
+  container-type: size;
+}
+
+.operations-health {
+  position: absolute;
+  inset: 10% 8% auto;
+  height: clamp(2.25rem, 25cqh, 5.75rem);
+  color: var(--color-primary);
+
+  &.is-degraded { color: var(--color-secondary); }
+}
+
+.operations-health-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: clamp(0.5rem, 2cqw, 0.625rem);
+  code { color: rgb(255 255 255 / 55%); font-family: inherit; }
+}
+
+.operations-health-status {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  i { width: 4px; height: 4px; border-radius: 50%; background: currentColor; }
+}
+
+.operations-chart {
+  width: 100%;
+  height: calc(100% - 1rem);
+  overflow: visible;
+  fill: none;
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.operations-chart-guide { stroke: rgb(255 255 255 / 6%); stroke-width: 1; }
+.operations-healthy, .operations-recovery { stroke: var(--color-primary); }
+.operations-failure { stroke: var(--color-secondary); }
+.operations-failure, .operations-recovery { stroke-dasharray: 100; }
+.operations-alert { fill: var(--color-secondary); }
+.operations-scan { fill: var(--color-primary); }
+
+.operations-log, .operations-action, .operations-result {
+  position: absolute;
+  top: 73%;
+  left: 50%;
+  width: max-content;
+  max-width: 92%;
+  transform: translateX(-50%);
+  font-size: clamp(0.5625rem, 2.5cqw, 0.75rem);
+}
+
+.operations-log {
+  display: grid;
+  gap: clamp(1px, 0.8cqh, 3px);
+  padding-left: 0.75rem;
+  border-left: 1px solid color-mix(in srgb, var(--color-secondary) 50%, transparent);
+  code { color: rgb(255 255 255 / 80%); font-family: inherit; }
+  code span { color: var(--color-secondary); }
+}
+
+.operations-log-heading, .operations-log-detail, .operations-action-label {
+  display: block;
+  color: rgb(255 255 255 / 40%);
+  font-size: clamp(0.4375rem, 1.8cqw, 0.5625rem);
+}
+
+.operations-action, .operations-result {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--color-primary);
+  code { font-family: inherit; }
+  p { margin: 0; }
+}
+
+.operations-action-icon { font-size: 1.75rem; line-height: 1; }
+.operations-result .operations-action-label { color: var(--color-primary); }
+.operations-log, .operations-action, .operations-failure, .operations-alert, .operations-scan { visibility: hidden; }

@@ -44,7 +44,9 @@
             ],
             "styles": [
               "src/styles.scss",
-              "src/animations.scss"
+              "src/animations.scss",
+              "node_modules/blobatar/dist/motion.css",
+              "node_modules/blobatar/dist/gaze.css"
             ],
             "server": "src/main.server.ts",
             "outputMode": "server",

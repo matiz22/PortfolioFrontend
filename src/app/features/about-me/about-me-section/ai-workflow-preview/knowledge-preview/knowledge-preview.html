@@ -1,0 +1,43 @@
+<div class="workflow-message knowledge-question" #question>
+  <span class="workflow-person" aria-hidden="true">?</span>
+  <div class="workflow-bubble">
+    <span class="workflow-message-label" i18n="@@aiWorkflow.you">You</span>
+    <p i18n="@@aiKnowledge.question">What’s our refund policy?</p>
+  </div>
+</div>
+
+<div class="workflow-message knowledge-answer" #answer>
+  <span class="workflow-reply-icon" aria-hidden="true">✓</span>
+  <div>
+    <span class="workflow-message-label" i18n="@@aiKnowledge.grounded">Grounded in your documents</span>
+    <p>
+      <span i18n="@@aiKnowledge.answer">Returns accepted within 30 days.</span>
+      <span class="knowledge-citation">[1]</span><span class="knowledge-citation">[3]</span>
+    </p>
+  </div>
+</div>
+
+<div class="knowledge-document knowledge-policy" #source>
+  <div class="knowledge-document-motion" [class.is-match]="grounded()">
+    <div class="knowledge-document-heading"><span>01</span><span>policy.md</span></div>
+    <span class="knowledge-line"></span>
+    <span class="knowledge-excerpt" i18n="@@aiKnowledge.policy">30-day returns</span>
+    <span class="knowledge-line short"></span>
+  </div>
+</div>
+<div class="knowledge-document knowledge-invoices">
+  <div class="knowledge-document-motion">
+    <div class="knowledge-document-heading"><span>02</span><span>billing.pdf</span></div>
+    <span class="knowledge-line"></span><span class="knowledge-line"></span><span class="knowledge-line short"></span>
+  </div>
+</div>
+<div class="knowledge-document knowledge-support">
+  <div class="knowledge-document-motion" [class.is-match]="grounded()">
+    <div class="knowledge-document-heading"><span>03</span><span>support.md</span></div>
+    <span class="knowledge-line"></span>
+    <span class="knowledge-excerpt" i18n="@@aiKnowledge.receipt">Receipt required</span>
+    <span class="knowledge-line short"></span>
+  </div>
+</div>
+<span class="knowledge-fragment knowledge-fragment-policy" aria-hidden="true">01</span>
+<span class="knowledge-fragment knowledge-fragment-support" aria-hidden="true">03</span>

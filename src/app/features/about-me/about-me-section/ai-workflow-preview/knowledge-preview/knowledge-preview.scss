@@ -1,0 +1,91 @@
+:host {
+  position: absolute;
+  inset: 0;
+  display: block;
+  visibility: hidden;
+  container-type: size;
+}
+
+.knowledge-answer {
+  max-width: 94%;
+
+  p { max-width: 21rem; }
+}
+
+.knowledge-citation {
+  display: inline-block;
+  margin-left: 0.25rem;
+  color: var(--color-primary);
+  font-size: 0.625rem;
+}
+
+.knowledge-document {
+  position: absolute;
+  top: min(70%, calc(100% - 2.75rem));
+  width: 27%;
+  height: clamp(2.75rem, 21cqh, 5rem);
+  transform: translateX(-50%);
+}
+
+.knowledge-policy { left: 18%; }
+.knowledge-invoices { left: 50%; }
+.knowledge-support { left: 82%; }
+
+.knowledge-document-motion {
+  display: grid;
+  align-content: start;
+  gap: clamp(2px, 1.5cqh, 6px);
+  height: 100%;
+  padding: clamp(4px, 2cqw, 10px);
+  overflow: hidden;
+  border: 1px solid rgb(255 255 255 / 15%);
+  border-radius: 0.375rem;
+  background: #0c100f;
+  color: rgb(255 255 255 / 45%);
+
+  &.is-match {
+    border-color: color-mix(in srgb, var(--color-primary) 40%, transparent);
+    color: var(--color-primary);
+  }
+}
+
+.knowledge-document-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.25rem;
+  font-size: clamp(0.4375rem, 1.8cqw, 0.625rem);
+}
+
+.knowledge-line {
+  height: 2px;
+  background: rgb(255 255 255 / 13%);
+  &.short { width: 65%; }
+}
+
+.knowledge-excerpt {
+  overflow: hidden;
+  white-space: nowrap;
+  color: rgb(255 255 255 / 40%);
+  font-size: clamp(0.4375rem, 1.8cqw, 0.625rem);
+  line-height: 1.4;
+}
+
+.is-match .knowledge-excerpt { color: var(--color-primary); background: rgb(53 224 139 / 8%); }
+
+.knowledge-fragment {
+  position: absolute;
+  top: 72%;
+  visibility: hidden;
+  padding: 2px 4px;
+  border-radius: 2px;
+  background: var(--color-primary);
+  color: #080b0a;
+  font-size: 0.5rem;
+}
+.knowledge-fragment-policy { left: 18%; }
+.knowledge-fragment-support { left: 82%; }
+
+// Keep the two useful sources legible when long translations leave little room.
+@container (max-height: 12rem) {
+  .knowledge-invoices { display: none; }
+}

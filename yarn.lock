@@ -493,6 +493,11 @@
     "@babel/helper-string-parser" "^7.27.1"
     "@babel/helper-validator-identifier" "^7.28.5"
 
+"@blobatar/angular@2.7.0":
+  version "2.7.0"
+  resolved "https://registry.yarnpkg.com/@blobatar/angular/-/angular-2.7.0.tgz#9ce2a79256c1e673ba4e091241458b18b1ebd8aa"
+  integrity sha512-dWg/8jSDQvOKdit05mxvzOrnApBRuSIXHpjF/OlxmznPFwB5nbcb7iE2/1IliMN912XjTsWjTd2AzOYwbpQn0g==
+
 "@braintree/sanitize-url@^7.1.1":
   version "7.1.1"
   resolved "https://registry.yarnpkg.com/@braintree/sanitize-url/-/sanitize-url-7.1.1.tgz#15e19737d946559289b915e5dad3b4c28407735e"
@@ -2380,6 +2385,11 @@ binary-extensions@^2.0.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-2.3.0.tgz#f6e14a97858d327252200242d4ccfe522c445522"
   integrity sha512-Ceh+7ox5qe7LJuLHoY0feh3pHuUDHAcRUeyL2VYghZwfpkNIy/+8Ocg0a3UuSoYzavmylwuLWQOf3hl0jjMMIw==
+
+blobatar@2.7.0:
+  version "2.7.0"
+  resolved "https://registry.yarnpkg.com/blobatar/-/blobatar-2.7.0.tgz#ac0215e48741011f1fea0fa405252550bb8ee4c3"
+  integrity sha512-tL1p2J3dXE/Z9U/ITwHqU7HBHmTH+Am+hif1J1hWAhvFT1VYC2HG+eXtN7081yuY+L2lrp9bs/VaF7dVH3S2jw==
 
 body-parser@^1.19.0:
   version "1.20.3"
