@@ -1,0 +1,73 @@
+<section class="realizations-section section-noise relative" id="work"
+  aria-labelledby="realizations-heading">
+  <div class="realizations-stage-wrap">
+    <div class="realizations-stage">
+      <div class="realizations-text">
+        <p class="realizations-eyebrow realizations-reveal" i18n="@@realizations.eyebrow">Selected client work</p>
+        <h2 id="realizations-heading"
+          class="realizations-heading section-heading realizations-reveal" i18n="@@realizations.heading">Built for real
+          businesses.</h2>
+        <p class="realizations-description realizations-reveal" i18n="@@realizations.description">
+          A closer look at the solutions delivered for clients — the context, the technology and the outcome behind
+          each collaboration.
+        </p>
+        <a routerLink="/realizations" class="realizations-viewall realizations-reveal">
+          <span i18n="@@realizations.viewall">View all realizations</span>
+          <span class="realizations-viewall-arrow" aria-hidden="true">↗</span>
+        </a>
+      </div>
+
+      <div class="realizations-gallery-panel">
+        <div class="realizations-gallery">
+          <div class="realizations-track">
+            @let realizationItems = realizations();
+            @switch (realizationItems.status) {
+            @case ('loading') {
+            <div class="realizations-skeleton" aria-hidden="true"></div>
+            <div class="realizations-skeleton" aria-hidden="true"></div>
+            }
+            @case ('success') {
+            @if (realizationItems.data.length > 0) {
+            @for (realization of realizationItems.data; track realization.id; let i = $index) {
+            <app-realization-showcase-card [realization]="realization" [index]="i" />
+            }
+            } @else {
+            <p class="realizations-state" i18n="@@realizations.empty">No realizations to show yet.</p>
+            }
+            }
+            @case ('error') {
+            <p class="realizations-state" i18n="@@realizations.error">Realizations could not be loaded. Please try again
+              later.</p>
+            }
+            }
+          </div>
+        </div>
+
+        @if (hasItems()) {
+        <div class="realizations-progress">
+          <button type="button" class="realizations-nav realizations-nav-prev" aria-label="Previous realization"
+            i18n-aria-label="@@realizations.prev">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M15 18l-6-6 6-6" />
+            </svg>
+          </button>
+          <span class="realizations-rail" aria-hidden="true"><span class="realizations-rail-fill"></span></span>
+          <p class="realizations-counter" aria-hidden="true">
+            <span class="realizations-counter-current">01</span>
+            <span class="realizations-counter-sep">/</span>
+            <span class="realizations-counter-total">{{ counterTotal() }}</span>
+          </p>
+          <button type="button" class="realizations-nav realizations-nav-next" aria-label="Next realization"
+            i18n-aria-label="@@realizations.next">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M9 18l6-6-6-6" />
+            </svg>
+          </button>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+</section>

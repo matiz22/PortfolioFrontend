@@ -1,0 +1,259 @@
+.realizations-section {
+  --realizations-inset: clamp(1.5rem, 4vw, 4rem);
+  border-top: 1px solid rgb(255 255 255 / 6%);
+  background: #080b0a;
+  // Clip the gallery bleed without creating a scroll container (sticky safe).
+  overflow-x: clip;
+}
+
+.realizations-stage-wrap {
+  position: relative;
+}
+
+// The whole composition is sticky: text and gallery stay in view together
+// while the track scrubs sideways. No ScrollTrigger pinning, so pinned
+// sections elsewhere on the page can never shift it.
+.realizations-stage {
+  position: sticky;
+  top: 0;
+  display: grid;
+  align-items: center;
+  gap: clamp(2rem, 4vw, 4rem);
+  min-height: 100svh;
+  padding: 6.5rem var(--realizations-inset) 2.5rem;
+}
+
+.realizations-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.realizations-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6875rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-secondary);
+}
+
+.realizations-heading {
+  margin-top: 0.6rem;
+  font-size: clamp(2rem, 2.6vw, 3.25rem);
+  line-height: 1.05;
+  text-wrap: balance;
+}
+
+.realizations-description {
+  margin-top: 1rem;
+  font-size: 0.8125rem;
+  line-height: 1.8;
+  color: color-mix(in srgb, var(--color-base-content) 60%, transparent);
+}
+
+.realizations-viewall {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-decoration: none;
+  color: color-mix(in srgb, var(--color-base-content) 70%, transparent);
+  transition: color 200ms ease;
+}
+
+.realizations-viewall-arrow {
+  transition: transform 250ms ease;
+}
+
+.realizations-viewall:hover,
+.realizations-viewall:focus-visible {
+  color: var(--color-secondary);
+
+  .realizations-viewall-arrow {
+    transform: translate(3px, -3px);
+  }
+}
+
+.realizations-gallery-panel {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.realizations-gallery {
+  // Bleed into the stage's right inset so cards clip at the viewport edge.
+  margin-right: calc(-1 * var(--realizations-inset));
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+
+  // Dark veil over the window's right edge: cards emerge from the dark and
+  // brighten while they travel leftward underneath it — the veil "drops off"
+  // each card as it is scrolled into view. Cards entering at the edge stay
+  // faintly visible instead of popping out of nothing.
+  -webkit-mask-image: linear-gradient(to right, #000 55%, rgba(0, 0, 0, 0.28) 95%, rgba(0, 0, 0, 0.28) 100%);
+  mask-image: linear-gradient(to right, #000 55%, rgba(0, 0, 0, 0.28) 95%, rgba(0, 0, 0, 0.28) 100%);
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.realizations-track {
+  position: relative;
+  display: flex;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.realizations-track > * {
+  flex: 0 0 min(86%, 24rem);
+  scroll-snap-align: start;
+}
+
+.realizations-state {
+  flex: 0 0 100%;
+  padding-block: 2rem;
+  font-size: 0.875rem;
+  color: color-mix(in srgb, var(--color-base-content) 50%, transparent);
+}
+
+// Scrubbed desktop mode: native swiping is replaced by the scroll-driven
+// translate, so the gallery must not scroll on its own.
+.realizations-is-pinned {
+  .realizations-gallery {
+    overflow: hidden;
+    scroll-snap-type: none;
+  }
+
+  .realizations-track > * {
+    scroll-snap-align: none;
+  }
+}
+
+.realizations-progress {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.realizations-rail {
+  display: block;
+  flex: 1;
+  height: 2px;
+  overflow: hidden;
+  background: rgb(255 255 255 / 12%);
+}
+
+.realizations-rail-fill {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--color-secondary);
+  transform-origin: left top;
+}
+
+.realizations-counter {
+  display: flex;
+  gap: 0.4rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  color: color-mix(in srgb, var(--color-base-content) 60%, transparent);
+}
+
+.realizations-counter-current {
+  display: inline-block;
+  color: var(--color-secondary);
+}
+
+.realizations-nav {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 1px solid rgb(255 255 255 / 12%);
+  border-radius: 999px;
+  background: transparent;
+  color: color-mix(in srgb, var(--color-base-content) 70%, transparent);
+  cursor: pointer;
+  transition: color 200ms ease, border-color 200ms ease;
+
+  svg {
+    width: 0.85rem;
+  }
+
+  &:hover:not(:disabled),
+  &:focus-visible:not(:disabled) {
+    color: var(--color-secondary);
+    border-color: color-mix(in srgb, var(--color-secondary) 45%, transparent);
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: default;
+  }
+}
+
+.realizations-skeleton {
+  height: clamp(14rem, 34svh, 18rem);
+  border-radius: 0.75rem;
+  background: rgb(255 255 255 / 4%);
+}
+
+@media (min-width: 64rem) {
+  // The whole composition is centered as a group: a fixed text column and a
+  // deliberately narrow gallery window beside it, centered in the viewport.
+  .realizations-stage {
+    grid-template-columns: minmax(20rem, 30rem) minmax(0, 36rem);
+    justify-content: center;
+  }
+
+  // The window sits flush against the text column — no centering margins —
+  // so the only separation is the stage's grid gap.
+  .realizations-gallery {
+    width: 36rem;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .realizations-progress {
+    max-width: 36rem;
+  }
+
+  .realizations-heading {
+    font-size: clamp(2.5rem, 3.4vw, 4.5rem);
+  }
+
+  .realizations-description {
+    font-size: 0.875rem;
+  }
+
+  // Compact editorial filmstrip; small enough that every card reads as an
+  // index entry rather than a hero shot.
+  .realizations-track {
+    gap: 4rem;
+  }
+
+  .realizations-track > * {
+    flex-basis: 26rem;
+  }
+
+  .realizations-skeleton {
+    height: clamp(11rem, 26svh, 19rem);
+  }
+
+  .realizations-nav {
+    display: none;
+  }
+}

@@ -1,0 +1,39 @@
+<a class="realization-card-link" [routerLink]="['/realization', realization().slug]" [title]="realization().title">
+  <div class="realization-card-heading">
+    <span class="realization-card-number" aria-hidden="true">{{ numberLabel() }}</span>
+    <h3 class="realization-card-title">{{ realization().title }}</h3>
+    <span class="realization-card-arrow" aria-hidden="true">↗</span>
+  </div>
+
+  <p class="realization-card-client">
+    @if (realization().clientName) {
+    @if (realization().clientUrl; as clientUrl) {
+    <a [href]="clientUrl" target="_blank" rel="noopener noreferrer" [title]="realization().clientName">{{
+      realization().clientName
+    }}</a>
+    } @else {
+    {{ realization().clientName }}
+    }
+    }
+    @if (realization().location) {
+    <span class="realization-card-location">{{ realization().location }}</span>
+    }
+  </p>
+
+  <div class="realization-card-frame">
+    @if (realization().thumbnail; as thumbnail) {
+    <img class="realization-card-image" [src]="thumbnail | imageUrl" [alt]="realization().title" loading="lazy"
+      decoding="async" />
+    } @else {
+    <span class="realization-card-fallback" aria-hidden="true">{{ realization().title }}</span>
+    }
+  </div>
+
+  @if (realization().shortDesc) {
+  <p class="realization-card-desc">{{ realization().shortDesc }}</p>
+  }
+
+  @if (techLine()) {
+  <p class="realization-card-tech">{{ techLine() }}</p>
+  }
+</a>

@@ -1,0 +1,28 @@
+.projects-home-grid {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+// Keep the fixed header pill clear when navigating to #projects.
+.projects-home-section {
+  scroll-margin-top: 4.5rem;
+}
+
+@media (min-width: 48rem) {
+  .projects-home-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.projects-home-skeleton {
+  min-height: 16rem;
+  border-radius: 0.75rem;
+  background: rgb(255 255 255 / 4%);
+}
+
+.projects-home-state {
+  padding-block: 2rem;
+  font-size: 0.875rem;
+  color: color-mix(in srgb, var(--color-base-content) 50%, transparent);
+}
