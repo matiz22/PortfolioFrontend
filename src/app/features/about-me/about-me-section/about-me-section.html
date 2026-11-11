@@ -1,11 +1,11 @@
 <section class="about-section section-noise" id="about" aria-labelledby="about-heading">
-  <div class="about-shell relative z-10 mx-auto w-full max-w-6xl px-6">
+  <div class="about-shell relative z-10 mx-auto w-full max-w-7xl px-6">
     <div class="about-stage">
-      <div class="about-sidebar">
-        <header class="about-header">
-          <h2 id="about-heading" class="section-heading" i18n="@@about.heading">How can I help you?</h2>
-        </header>
+      <header class="about-header">
+        <h2 id="about-heading" class="section-heading" i18n="@@about.heading">How can I help you?</h2>
+      </header>
 
+      <div class="about-sidebar">
         <nav class="about-index" aria-labelledby="about-heading">
           <div class="about-track" aria-hidden="true"><span class="about-fill"></span></div>
           <ol>
@@ -64,23 +64,8 @@
         </article>
 
         <article class="about-panel about-ai" id="about-ai" aria-labelledby="about-ai-title">
-          <div class="about-visual" aria-hidden="true">
-            <span class="about-visual-number font-serif">03</span>
-            <svg viewBox="0 0 480 240" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <g stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M121 70h46a24 24 0 0 1 24 24v26m-70 56h46a24 24 0 0 0 24-24v-32m64 0h48a24 24 0 0 0 24-24V70h22m-94 50h48a24 24 0 0 1 24 24v32h22" opacity=".5" />
-                <rect x="67" y="47" width="54" height="46" rx="9" class="about-art-surface" />
-                <rect x="67" y="153" width="54" height="46" rx="9" class="about-art-surface" />
-                <rect x="349" y="47" width="54" height="46" rx="9" class="about-art-surface" />
-                <rect x="349" y="153" width="54" height="46" rx="9" class="about-art-surface" />
-                <rect x="181" y="82" width="84" height="76" rx="18" class="about-art-surface" />
-                <path d="m223 99 6 15 15 6-15 6-6 15-6-15-15-6 15-6 6-15Z" fill="currentColor" fill-opacity=".15" />
-                <path d="m83 69 7 7 14-14m-21 114h22m-11-11v22m274-118h16m-16 8h10m-9 99 5 5 10-10" />
-                <circle cx="154" cy="70" r="3" fill="currentColor" stroke="none" />
-                <circle cx="303" cy="176" r="3" fill="currentColor" stroke="none" />
-                <path d="M223 52V36m-8 8h16m-8 144v16m-8-8h16" opacity=".3" />
-              </g>
-            </svg>
+          <div class="about-visual about-ai-visual" aria-hidden="true">
+            <app-ai-workflow-preview />
           </div>
           <div class="about-panel-copy">
             <h3 id="about-ai-title" class="font-serif" i18n="@@about.card.ai.title">AI Implementation</h3>

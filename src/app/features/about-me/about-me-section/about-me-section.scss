@@ -15,9 +15,11 @@
 .about-header {
   padding-bottom: 2.75rem;
   border-bottom: 1px solid rgb(255 255 255 / 9%);
+  text-align: center;
 
   h2 {
-    max-width: 12ch;
+    max-width: 20ch;
+    margin-inline: auto;
     font-size: clamp(3.25rem, 6vw, 5.5rem);
     line-height: 1.02;
     text-wrap: balance;
@@ -64,46 +66,19 @@
   isolation: isolate;
   height: clamp(11rem, 30vw, 15rem);
   overflow: hidden;
-  border: 1px solid color-mix(in srgb, var(--service-accent) 16%, transparent);
-  border-radius: 1rem;
   color: var(--service-accent);
-  background-color: color-mix(in srgb, var(--service-accent) 3%, #080b0a);
-  background-image: radial-gradient(color-mix(in srgb, var(--service-accent) 15%, transparent) 1px, transparent 1px);
-  background-size: 18px 18px;
-
-  svg {
-    position: relative;
-    width: 100%;
-    height: 100%;
-  }
-}
-
-.about-art-surface {
-  fill: #0c1310;
 }
 
 .about-web-visual,
-.about-apps-visual {
+.about-apps-visual,
+.about-ai-visual {
   height: clamp(15rem, 40svh, 20rem);
   overflow: visible;
-  border: 0;
-  border-radius: 0;
-  background: none;
 }
 
-.about-apps-visual {
+.about-apps-visual,
+.about-ai-visual {
   width: 100%;
-}
-
-.about-visual-number {
-  position: absolute;
-  right: 0.75rem;
-  bottom: -0.1em;
-  font-size: 8rem;
-  font-style: italic;
-  line-height: 1;
-  letter-spacing: -0.07em;
-  opacity: 0.14;
 }
 
 .about-panel-copy {
@@ -135,23 +110,30 @@
 .about-is-pinned {
   .about-stage {
     display: grid;
-    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    grid-template-rows: auto minmax(0, 1fr);
+    grid-template-areas:
+      "header header"
+      "sidebar panels";
     align-items: center;
-    gap: clamp(2.5rem, 5vw, 5rem);
+    column-gap: clamp(2.5rem, 5vw, 5rem);
+    row-gap: clamp(1.25rem, 2.5vw, 2rem);
     min-height: calc(100svh - 6rem);
-    padding-block: 2rem 3rem;
+    padding-block: 3.5rem 2rem;
   }
 
   .about-sidebar {
+    grid-area: sidebar;
     margin-bottom: 0;
   }
 
   .about-header {
-    margin-bottom: 1.75rem;
+    grid-area: header;
     padding-bottom: 0;
     border-bottom: 0;
 
     h2 {
+      max-width: none;
       font-size: clamp(3rem, 4.8vw, 4.25rem);
     }
   }
@@ -191,8 +173,8 @@
     display: grid;
     grid-template-columns: 1.5rem 1fr 1.25rem;
     align-items: baseline;
-    gap: 0.75rem;
-    padding-block: 1.35rem;
+    column-gap: 1rem;
+    padding-block: 1.1rem;
     color: color-mix(in srgb, var(--color-base-content) 45%, transparent);
     text-decoration: none;
     transition: color 200ms ease;
@@ -215,7 +197,7 @@
   }
 
   .about-index-title {
-    font-size: clamp(1.875rem, 3.2vw, 2.75rem);
+    font-size: clamp(1.25rem, 2.1vw, 1.875rem);
     font-style: italic;
     line-height: 1.12;
     letter-spacing: -0.02em;
@@ -223,7 +205,7 @@
 
   .about-index-arrow {
     align-self: center;
-    font-size: 1.25rem;
+    font-size: 1.125rem;
     opacity: 0;
     transform: translate(-4px, 4px);
     transition: opacity 200ms ease, transform 200ms ease;
@@ -237,6 +219,7 @@
   }
 
   .about-panels {
+    grid-area: panels;
     align-items: center;
     gap: 0;
   }
@@ -245,6 +228,12 @@
     // All panels size the same grid cell; even the longest translation fits.
     grid-area: 1 / 1;
     display: block;
+  }
+
+  .about-web-visual,
+  .about-apps-visual,
+  .about-ai-visual {
+    height: clamp(15rem, 40svh, 24rem);
   }
 
   .about-panel-copy {
@@ -256,18 +245,32 @@
   .about-is-pinned {
     .about-stage {
       grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: auto auto minmax(0, 1fr);
+      grid-template-areas:
+        "header"
+        "sidebar"
+        "panels";
       align-content: center;
       gap: 1.25rem;
       padding-block: 1rem;
     }
 
     .about-header {
-      margin-bottom: 0.75rem;
+      grid-area: header;
+      margin-bottom: 0;
 
       h2 {
         max-width: none;
         font-size: clamp(2.25rem, 8vw, 3.25rem);
       }
+    }
+
+    .about-sidebar {
+      grid-area: sidebar;
+    }
+
+    .about-panels {
+      grid-area: panels;
     }
 
     .about-index {
@@ -323,8 +326,8 @@
       height: clamp(6rem, 16svh, 9rem);
     }
 
-    .about-visual-number {
-      font-size: 5rem;
+    .about-ai-visual {
+      height: clamp(14rem, 32svh, 19rem);
     }
 
     .about-panel-copy {
@@ -347,7 +350,7 @@
   .about-is-pinned {
     .about-stage {
       height: calc(100svh - 6rem);
-      grid-template-rows: auto minmax(0, 1fr);
+      grid-template-rows: auto auto minmax(0, 1fr);
       align-content: stretch;
     }
 
@@ -358,7 +361,8 @@
     }
 
     .about-web,
-    .about-apps {
+    .about-apps,
+    .about-ai {
       display: flex;
       flex-direction: column;
       align-self: stretch;
@@ -366,14 +370,16 @@
     }
 
     .about-web-visual,
-    .about-apps-visual {
+    .about-apps-visual,
+    .about-ai-visual {
       flex: 1;
       min-height: 0;
       height: auto;
     }
 
     .about-web .about-panel-copy,
-    .about-apps .about-panel-copy {
+    .about-apps .about-panel-copy,
+    .about-ai .about-panel-copy {
       flex-shrink: 0;
     }
   }
@@ -424,6 +430,10 @@
   .about-is-pinned {
     .about-stage {
       grid-template-columns: minmax(0, 0.6fr) minmax(0, 1.4fr);
+      grid-template-rows: auto minmax(0, 1fr);
+      grid-template-areas:
+        "header header"
+        "sidebar panels";
       gap: 1.5rem;
       padding-block: 0.5rem;
     }
