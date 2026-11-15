@@ -24,10 +24,10 @@ export function animateAboutMeScroll(root: HTMLElement): gsap.MatchMedia {
   }
 
   motion.add({
-    isDesktop: '(min-width: 64rem)',
+    isDesktop: '(min-width: 64rem) and (min-height: 48rem)',
     canAnimate: '(prefers-reduced-motion: no-preference)',
   }, (context) => {
-    if (!context.conditions?.['canAnimate']) {
+    if (!context.conditions?.['canAnimate'] || !context.conditions['isDesktop']) {
       return;
     }
 

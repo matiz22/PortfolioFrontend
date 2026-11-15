@@ -26,7 +26,7 @@ export function animateRealizationsScroll(root: HTMLElement): gsap.MatchMedia {
 
   motion.add(
     {
-      isDesktop: '(min-width: 64rem)',
+      isDesktop: '(min-width: 64rem) and (min-height: 48rem)',
       canAnimate: '(prefers-reduced-motion: no-preference)',
     },
     (context) => {

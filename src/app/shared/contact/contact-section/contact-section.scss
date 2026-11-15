@@ -1,0 +1,25 @@
+:host {
+  display: block;
+}
+
+.contact-section {
+  padding-block: var(--contact-section-padding, 8rem);
+  scroll-margin-top: 6rem;
+}
+
+.contact-form-card {
+  padding: var(--contact-card-padding, 2rem);
+}
+
+@media (min-width: 48rem) {
+  .contact-form-card {
+    padding: var(--contact-card-padding, 3rem);
+  }
+}
+
+@media (min-width: 64rem) {
+  .contact-copy {
+    position: var(--contact-copy-position, sticky);
+    top: 6rem;
+  }
+}

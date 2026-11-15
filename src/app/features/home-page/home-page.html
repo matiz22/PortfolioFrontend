@@ -1,9 +1,9 @@
-<div class="min-h-screen flex flex-col">
+<div class="home-page">
     <!-- Header -->
     <app-header></app-header>
 
     <!-- Main Content -->
-    <main class="flex-grow">
+    <main>
         <!-- Hero Section -->
         <app-hero-section></app-hero-section>
 
@@ -49,12 +49,15 @@
         <div class="min-h-64"></div>
         }
 
-        <!-- Contact Section -->
-        @defer (on idle; hydrate on idle) {
-        <app-contact-section></app-contact-section>
-        } @placeholder {
-        <div class="min-h-32"></div>
-        }
     </main>
-    <app-footer></app-footer>
+
+    <!-- Contact and site footer form one closing chapter. -->
+    <div class="home-closing">
+        @defer (on idle; hydrate on idle) {
+        <app-contact-section class="home-contact"></app-contact-section>
+        } @placeholder {
+        <div class="home-contact-placeholder" aria-hidden="true"></div>
+        }
+        <app-footer></app-footer>
+    </div>
 </div>

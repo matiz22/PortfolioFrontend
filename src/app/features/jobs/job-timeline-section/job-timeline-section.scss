@@ -1,6 +1,6 @@
 .jobs-section {
   position: relative;
-  padding-block: clamp(4rem, 7vw, 6rem);
+  padding-block: var(--home-chapter-space, clamp(4rem, 7vw, 6rem));
   border-block: 1px solid rgb(255 255 255 / 5%);
   background: #050706;
   scroll-margin-top: 4.5rem;

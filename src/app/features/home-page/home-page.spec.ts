@@ -1,4 +1,5 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, DeferBlockBehavior, DeferBlockState, TestBed } from '@angular/core/testing';
 
 import { HomePage } from './home-page';
 
@@ -8,16 +9,52 @@ describe('HomePage', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HomePage]
+      imports: [HomePage],
+      deferBlockBehavior: DeferBlockBehavior.Manual,
     })
+    .overrideComponent(HomePage, { set: { imports: [], schemas: [NO_ERRORS_SCHEMA] } })
     .compileComponents();
 
     fixture = TestBed.createComponent(HomePage);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    fixture.autoDetectChanges();
+    await fixture.whenStable();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('keeps contact and the site footer in the same closing chapter', async () => {
+    const blocks = await fixture.getDeferBlocks();
+    await blocks[blocks.length - 1].render(DeferBlockState.Complete);
+    await fixture.whenStable();
+
+    const root: HTMLElement = fixture.nativeElement;
+    const closing = root.querySelector('.home-closing')!;
+    expect(closing.querySelector('app-contact-section.home-contact')).not.toBeNull();
+    expect(closing.lastElementChild?.tagName).toBe('APP-FOOTER');
+    expect(root.querySelector('main app-footer')).toBeNull();
+    expect(root.querySelectorAll('app-footer').length).toBe(1);
+  });
+
+  it('preserves the portfolio chapter order', async () => {
+    const blocks = await fixture.getDeferBlocks();
+    for (const block of blocks) {
+      await block.render(DeferBlockState.Complete);
+    }
+    await fixture.whenStable();
+
+    const root: HTMLElement = fixture.nativeElement;
+    const chapters = Array.from(root.querySelector('main')!.children, (child) => child.tagName);
+    expect(chapters).toEqual([
+      'APP-HERO-SECTION',
+      'APP-ABOUT-ME-SECTION',
+      'APP-REALIZATIONS-HOME-SECTION',
+      'APP-PROJECTS-HOME-SECTION',
+      'APP-CERTIFICATIONS-SECTION',
+      'APP-JOB-TIMELINE-SECTION',
+      'APP-EDUCATION-SECTION',
+    ]);
   });
 });

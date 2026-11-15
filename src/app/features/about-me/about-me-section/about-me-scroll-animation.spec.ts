@@ -12,18 +12,20 @@ describe('About Me scroll animation', () => {
   let motion: gsap.MatchMedia | undefined;
   let canAnimate: boolean;
   let isDesktop: boolean;
+  let isTall: boolean;
   let originalHeight: PropertyDescriptor | undefined;
 
   beforeEach(() => {
     canAnimate = true;
     isDesktop = true;
+    isTall = true;
     originalHeight = Object.getOwnPropertyDescriptor(window, 'innerHeight');
     Object.defineProperty(window, 'innerHeight', { configurable: true, value: 900 });
     const matchMedia = window.matchMedia.bind(window);
     spyOn(window, 'matchMedia').and.callFake((query) => {
       const media = matchMedia(query);
       Object.defineProperty(media, 'matches', {
-        value: query.includes('min-width') ? isDesktop : canAnimate,
+        value: query.includes('min-width') ? isDesktop && isTall : canAnimate,
       });
       return media;
     });
@@ -170,12 +172,24 @@ describe('About Me scroll animation', () => {
       .toContain([jasmine.objectContaining({ top, behavior: 'smooth' })]);
   });
 
-  it('uses horizontal progress for the existing mobile layout', () => {
+  it('keeps mobile services in natural document flow', () => {
     isDesktop = false;
     motion = animateAboutMeScroll(root);
-    timeline().time(timeline().labels['service-1'] + 0.5);
-    expect(Number(gsap.getProperty(fill, 'scaleX'))).toBeCloseTo(2 / 3, 3);
-    expect(Number(gsap.getProperty(fill, 'scaleY'))).toBe(1);
+    expect(section.classList.contains('about-is-pinned')).toBeFalse();
+    expect(trigger()).toBeUndefined();
+    panels.forEach((panel) => {
+      expect(panel.inert).toBeFalse();
+      expect(panel.hasAttribute('aria-hidden')).toBeFalse();
+      expect(panel.style.opacity).toBe('');
+    });
+  });
+
+  it('does not pin on short desktop screens', () => {
+    isTall = false;
+    motion = animateAboutMeScroll(root);
+    expect(section.classList.contains('about-is-pinned')).toBeFalse();
+    expect(trigger()).toBeUndefined();
+    expect(root.querySelector('.pin-spacer')).toBeNull();
   });
 
   it('keeps every service static and readable for reduced motion', () => {

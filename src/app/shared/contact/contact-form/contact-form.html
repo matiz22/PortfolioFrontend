@@ -13,9 +13,9 @@
         get back to you as soon as possible.</p>
 </div>
 } @else {
-<form class="space-y-5" [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+<form class="contact-form" [formGroup]="contactForm" (ngSubmit)="onSubmit()">
     <!-- Name Field -->
-    <div class="form-control">
+    <div class="form-control contact-identity">
         <label class="label pb-1.5" for="contact-name">
             <span class="label-text text-sm font-medium text-base-content/60 flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-primary/60" fill="none" viewBox="0 0 24 24"
@@ -39,7 +39,7 @@
     </div>
 
     <!-- Email Field -->
-    <div class="form-control">
+    <div class="form-control contact-identity">
         <label class="label pb-1.5" for="contact-email">
             <span class="label-text text-sm font-medium text-base-content/60 flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-primary/60" fill="none" viewBox="0 0 24 24"

@@ -10,17 +10,14 @@
   position: relative;
 }
 
-// The whole composition is sticky: text and gallery stay in view together
-// while the track scrubs sideways. No ScrollTrigger pinning, so pinned
-// sections elsewhere on the page can never shift it.
 .realizations-stage {
-  position: sticky;
-  top: 0;
+  position: relative;
   display: grid;
   align-items: center;
   gap: clamp(2rem, 4vw, 4rem);
-  min-height: 100svh;
-  padding: 6.5rem var(--realizations-inset) 2.5rem;
+  min-height: var(--home-showcase-min-height, 100svh);
+  padding: var(--home-chapter-space, 6.5rem) var(--realizations-inset)
+    var(--home-chapter-space, 2.5rem);
 }
 
 .realizations-text {
@@ -128,6 +125,16 @@
 // Scrubbed desktop mode: native swiping is replaced by the scroll-driven
 // translate, so the gallery must not scroll on its own.
 .realizations-is-pinned {
+  // Keep the whole composition in view only while the desktop track scrubs.
+  .realizations-stage {
+    position: sticky;
+    top: 0;
+  }
+
+  .realizations-nav {
+    display: none;
+  }
+
   .realizations-gallery {
     overflow: hidden;
     scroll-snap-type: none;
@@ -251,9 +258,5 @@
 
   .realizations-skeleton {
     height: clamp(11rem, 26svh, 19rem);
-  }
-
-  .realizations-nav {
-    display: none;
   }
 }
