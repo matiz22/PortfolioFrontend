@@ -3,6 +3,10 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
+const READING_HOLD = 1;
+const TRANSITION_DURATION = 0.24;
+const SERVICE_STEP = READING_HOLD + TRANSITION_DURATION;
+
 export function animateAboutMeScroll(root: HTMLElement): gsap.MatchMedia {
   const motion = gsap.matchMedia();
   const section = root.querySelector<HTMLElement>('.about-section');
@@ -59,28 +63,48 @@ export function animateAboutMeScroll(root: HTMLElement): gsap.MatchMedia {
 
     const timeline = gsap.timeline({ defaults: { ease: 'none' } });
     panels.forEach((panel, i) => {
-      timeline.addLabel(`service-${i}`, i);
+      const holdStart = i * SERVICE_STEP;
+      timeline.addLabel(`service-${i}`, holdStart);
       if (i > 0) {
+        const transitionStart = holdStart - TRANSITION_DURATION;
+        const switchAt = holdStart - TRANSITION_DURATION / 2;
+        const coverage = (i + 1) / panels.length;
         timeline
-          .to(panels[i - 1], { autoAlpha: 0, y: -14, duration: 0.16 }, i - 0.16)
-          .to(panel, { autoAlpha: 1, y: 0, duration: 0.16 }, i);
+          // Swap opacity in the same render rather than crossfading copy.
+          // There is always exactly one fully readable service, even when
+          // scrolling stops at the boundary or reverses across it.
+          .set(panels[i - 1], { autoAlpha: 0, immediateRender: false }, switchAt)
+          .set(panel, { autoAlpha: 1, immediateRender: false }, switchAt)
+          .fromTo(panel, { y: 14 }, {
+            y: 0, duration: TRANSITION_DURATION / 2, immediateRender: false,
+          }, switchAt)
+          .to(fill, {
+            scaleX: isDesktop ? 1 : coverage,
+            scaleY: isDesktop ? coverage : 1,
+            duration: TRANSITION_DURATION,
+          }, transitionStart);
       }
     });
 
-    // Equal reading time for each service, including a hold before unpinning.
-    timeline.to(fill, { scaleX: 1, scaleY: 1, duration: panels.length }, 0);
+    // Gaps before transitions hold each fully visible service in place.
+    // Extend the final service by the same reading time before releasing the pin.
+    timeline.to({}, { duration: READING_HOLD }, (panels.length - 1) * SERVICE_STEP);
     timeline.eventCallback('onUpdate', () => {
-      setActive(Math.min(panels.length - 1, Math.floor(timeline.time())));
+      setActive(Math.min(
+        panels.length - 1,
+        Math.floor((timeline.time() + TRANSITION_DURATION / 2) / SERVICE_STEP),
+      ));
     });
 
     const trigger = ScrollTrigger.create({
       trigger: stage,
       animation: timeline,
       start: 'top 96px',
-      // The stage uses svh, so a mobile browser's address bar does not change the scroll distance.
-      end: () => `+=${Math.round(panels.length * (stage.offsetHeight + 96) * 0.75)}`,
+      // Each hold gets one viewport of scrolling, with extra distance for
+      // transitions. Preserve the existing stage sizing and navigation clearance.
+      end: () => `+=${Math.round(timeline.duration() * (stage.offsetHeight + 96))}`,
       pin: true,
-      scrub: 0.5,
+      scrub: true,
       invalidateOnRefresh: true,
     });
 
@@ -90,8 +114,10 @@ export function animateAboutMeScroll(root: HTMLElement): gsap.MatchMedia {
           return;
         }
         event.preventDefault();
+        // Seek into the selected service's settled hold, not its transition.
+        const time = timeline.labels[`service-${i}`] + READING_HOLD * 0.35;
         view.scrollTo({
-          top: trigger.start + (i + 0.35) / panels.length * (trigger.end - trigger.start),
+          top: trigger.start + time / timeline.duration() * (trigger.end - trigger.start),
           behavior: 'smooth',
         });
       };
