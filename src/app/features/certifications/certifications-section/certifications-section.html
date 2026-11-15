@@ -1,53 +1,54 @@
-<section appCursorSpotlight
-    class="py-24 border-y border-white/5 bg-black bg-[radial-gradient(oklch(79%_0.209_151.711_/_0.4)_1.5px,transparent_1.5px)] [background-size:24px_24px]"
-    id="certifications">
-    <div class="container mx-auto px-6 max-w-6xl">
-        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
-            <div class="md:w-1/2">
-                <h2 class="section-heading text-4xl md:text-5xl lg:text-6xl text-left" i18n="@@certifications.heading">
-                    Certifications</h2>
-            </div>
-            <div class="md:w-1/2 lg:w-2/5">
-                <p class="text-base text-left text-base-content/80 backdrop-blur-md bg-base-100/50 rounded-xl px-5 py-4 border border-white/5 relative z-10"
-                    i18n="@@certifications.description">
-                    A collection of my professional certifications and achievements, validating my commitment to
-                    continuous
-                    learning and excellence.
-                </p>
-            </div>
-        </div>
+<section class="certifications-section section-noise" id="certifications"
+  aria-labelledby="certifications-heading">
+  <div class="certifications-shell">
+    <header class="certifications-header">
+      <h2 id="certifications-heading" class="section-heading" i18n="@@certifications.heading">
+        Certifications</h2>
+      <p i18n="@@certifications.description">
+        A collection of my professional certifications and achievements, validating my commitment to
+        continuous learning and excellence.
+      </p>
+    </header>
 
-        <!-- Flex layout with centering: orphan items center nicely -->
-        <div class="flex flex-row flex-wrap justify-center gap-4 relative z-10">
-            @if (certifications(); as state) {
-            @if (state.status === 'loading') {
-            <div class="text-center w-full">
-                <span class="loading loading-spinner loading-lg text-secondary"></span>
-            </div>
-            } @else if (state.status === 'success') {
-            @for (item of state.data; track item.id; let i = $index) {
-            <app-certification-item [certification]="item" appAosAnimations="reveal-unfold" [delay]="i * 100"
-                class="flex-1 min-w-full md:min-w-[calc(50%-0.5rem)] lg:min-w-[calc(33.333%-0.67rem)] md:max-w-[calc(50%-0.5rem)] lg:max-w-[calc(33.333%-0.67rem)]"></app-certification-item>
-            }
-            } @else if (state.status === 'error') {
-            <div class="alert alert-error w-full">
-                <span>{{ state.error }}</span>
-            </div>
-            }
-            }
+    @let state = certifications();
+    <div class="certifications-wall" [attr.aria-busy]="state.status === 'loading'"
+      [attr.data-count]="state.status === 'success' ? state.data.length : null">
+      @switch (state.status) {
+      @case ('loading') {
+      <span class="certifications-loading-label" role="status" i18n="@@certifications.loading">
+        Loading certifications…</span>
+      @for (placeholder of [0, 1, 2]; track placeholder) {
+      <div class="certifications-slot certifications-skeleton" aria-hidden="true">
+        <div class="certifications-skeleton-art"></div>
+        <div class="certifications-skeleton-caption"></div>
+      </div>
+      }
+      }
+      @case ('success') {
+      @for (item of state.data; track item.id; let i = $index) {
+      <div class="certifications-slot">
+        <div class="certifications-motion">
+          <app-certification-showcase-card [certification]="item" [index]="i + 1" />
         </div>
-
-        <!-- View All Link -->
-        <div class="text-center mt-8 relative z-10">
-            <a routerLink="/certifications"
-                class="btn bg-base-100/50 backdrop-blur-md border border-secondary/30 text-base-content hover:border-secondary hover:text-secondary hover:bg-transparent">
-                <ng-container i18n="@@certifications.viewall">View All Certifications</ng-container>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                </svg>
-            </a>
-        </div>
+      </div>
+      } @empty {
+      <p class="certifications-state" i18n="@@certifications.empty">New certifications will appear here soon.</p>
+      }
+      }
+      @case ('error') {
+      <p class="certifications-state" role="status" i18n="@@certifications.error">
+        Certifications could not be loaded. Please try again later.</p>
+      }
+      }
     </div>
+
+    <footer class="certifications-footer">
+      <span class="certifications-footer-rule" aria-hidden="true"></span>
+      <a routerLink="/certifications" class="certifications-viewall">
+        <span i18n="@@certifications.viewall">View All Certifications</span>
+        <span class="certifications-viewall-arrow" aria-hidden="true">↗</span>
+      </a>
+      <span class="certifications-footer-rule" aria-hidden="true"></span>
+    </footer>
+  </div>
 </section>
