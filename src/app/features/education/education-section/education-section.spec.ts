@@ -93,7 +93,7 @@ describe('EducationSection', () => {
   });
 
   it('labels the card and detail link with the field and degree', () => {
-    const root = render(ApiState.success([degree]));
+    const root = render(ApiState.success([{ ...degree, thumbnail: '/example.png' }]));
     expect(root.querySelector('#education-title-1')?.textContent).toBe(degree.degree);
     expect(root.querySelector('.education-detail-link')?.getAttribute('aria-labelledby'))
       .toBe('education-explore-1 education-title-1');
@@ -125,13 +125,21 @@ describe('EducationSection', () => {
     const root = render(ApiState.success([{
       ...degree, fieldOfStudy: '', grade: null, endDate: null,
     }]));
-    expect(root.querySelector('.education-subject')?.textContent).toBe(degree.degree);
-    expect(root.querySelector('.education-degree')).toBeNull();
+    expect(root.querySelector('.education-subject')).toBeNull();
+    expect(root.querySelector('.education-degree')?.textContent).toBe(degree.degree);
     expect(root.querySelector('.education-grade')).toBeNull();
     expect(root.querySelector('.education-detail-link')?.hasAttribute('aria-describedby')).toBeFalse();
     expect(root.querySelector('.education-current')).toBeNull();
     expect(root.querySelector('.education-dates')?.textContent).not.toContain('—');
     expect(root.querySelectorAll('time').length).toBe(1);
+  });
+
+  it('omits the media column instead of substituting a decorative number', () => {
+    const root = render(ApiState.success([degree]));
+    expect(root.querySelector('.education-media')).toBeNull();
+    expect(root.querySelector('.education-media-fallback')).toBeNull();
+    expect(root.querySelector('.education-record-label')).toBeNull();
+    expect(root.textContent).not.toContain('The learning continues.');
   });
 
   it('renders the empty state and preserves the catalogue link', () => {

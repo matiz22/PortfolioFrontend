@@ -3,7 +3,7 @@
   padding-block: var(--home-chapter-space, clamp(4rem, 7vw, 6rem));
   border-block: 1px solid rgb(255 255 255 / 5%);
   background: #050706;
-  scroll-margin-top: 4.5rem;
+  scroll-margin-top: 6rem;
 }
 
 .jobs-shell {
@@ -15,10 +15,6 @@
 
 .jobs-stage {
   padding-block: 1.5rem;
-}
-
-.jobs-end-anchor {
-  scroll-margin-top: 6rem;
 }
 
 .jobs-header {
@@ -33,14 +29,6 @@
     font-size: clamp(2.5rem, 4.5vw, 4rem);
     line-height: 1.05;
   }
-}
-
-.jobs-eyebrow {
-  margin-bottom: 0.75rem;
-  color: var(--color-primary);
-  font-size: 0.625rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
 }
 
 .jobs-intro {
@@ -165,11 +153,6 @@
   font-size: 0.75rem;
 }
 
-.jobs-index {
-  color: rgb(255 255 255 / 25%);
-  font-size: 0.5625rem;
-}
-
 .jobs-company {
   color: rgb(255 255 255 / 65%);
   overflow-wrap: anywhere;
@@ -223,39 +206,6 @@
 
 .jobs-tag-more {
   color: rgb(255 255 255 / 40%);
-}
-
-.jobs-scroll-guide {
-  display: none;
-}
-
-.jobs-footer {
-  display: flex;
-  align-items: center;
-  gap: clamp(1rem, 3vw, 2rem);
-  margin-top: 2.5rem;
-  scroll-margin-top: 6rem;
-}
-
-.jobs-footer-rule {
-  flex: 1;
-  height: 1px;
-  background: rgb(255 255 255 / 9%);
-}
-
-.jobs-viewall {
-  display: inline-flex;
-  align-items: center;
-  gap: 1rem;
-  padding-block: 0.5rem;
-  color: rgb(255 255 255 / 65%);
-  font-size: 0.75rem;
-  text-decoration: none;
-
-  &:hover,
-  &:focus-visible {
-    color: var(--color-primary);
-  }
 }
 
 .jobs-state,
@@ -405,48 +355,8 @@
   }
 
   .jobs-bottom {
+    --section-footer-space: 0px;
     flex-shrink: 0;
-    margin-top: 0;
-  }
-}
-
-.jobs-scrollable .jobs-bottom {
-  display: flex;
-  align-items: center;
-  gap: 2rem;
-  margin-top: 1.5rem;
-
-  .jobs-footer {
-    flex-shrink: 0;
-    margin-top: 0;
-  }
-
-  .jobs-footer-rule {
-    display: none;
-  }
-}
-
-.jobs-scrollable .jobs-scroll-guide {
-  display: flex;
-  flex: 1;
-  justify-content: space-between;
-  gap: 1rem;
-  font-size: 0.625rem;
-}
-
-.jobs-scroll-hint {
-  display: inline-flex;
-  gap: 0.75rem;
-  color: rgb(255 255 255 / 35%);
-}
-
-.jobs-skip {
-  color: rgb(255 255 255 / 45%);
-  text-underline-offset: 0.3em;
-
-  &:hover,
-  &:focus-visible {
-    color: var(--color-primary);
   }
 }
 

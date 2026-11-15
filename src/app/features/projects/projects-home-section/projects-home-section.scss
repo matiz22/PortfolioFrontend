@@ -6,7 +6,7 @@
   display: grid;
   align-items: center;
   min-height: var(--home-showcase-min-height, 0px);
-  scroll-margin-top: 4.5rem;
+  scroll-margin-top: 6rem;
   padding-block: var(--home-chapter-space, clamp(4.5rem, 8vw, 7rem));
 }
 
@@ -22,6 +22,10 @@
   grid-template-columns: minmax(0, 1fr);
   align-items: start;
   gap: 1.75rem;
+}
+
+.projects-home-footer {
+  --section-footer-space: 0px;
 }
 
 .projects-home-slot {

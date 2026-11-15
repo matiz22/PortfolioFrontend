@@ -12,8 +12,6 @@ import { ImageUrlPipe } from '../../../shared/pipes/image-url-pipe';
 })
 export class ProjectPreview {
   readonly project = input.required<ProjectSummary>();
-  readonly index = input(1);
-  protected readonly projectNumber = computed(() => String(this.index()).padStart(2, '0'));
   protected readonly visibleTechnologies = computed(() => this.project().technologies.slice(0, 3));
   protected readonly remainingTechnologies = computed(() =>
     this.project().technologies.slice(3).map((technology) => technology.name).join(', '),

@@ -79,6 +79,7 @@ describe('CertificationsSection', () => {
     expect(root.querySelector('.certifications-wall')?.getAttribute('data-count')).toBe('2');
     expect(root.querySelector('.certifications-wall')?.getAttribute('aria-busy')).toBe('false');
     expect(root.querySelector('.certificate-caption')?.textContent).toContain('Example Academy');
+    expect(root.querySelector('.certificate-index')).toBeNull();
     expect(root.querySelector('time')?.getAttribute('datetime')).toBe('2025-06-12');
   });
 

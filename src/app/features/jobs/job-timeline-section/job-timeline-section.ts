@@ -14,10 +14,12 @@ import type { gsap } from 'gsap';
 import { ApiState } from '../../../core/models/api.state';
 import { JobsService } from '../../../core/services/jobs.service';
 import { JobSummary } from '../../../core/models/summary/job';
+import { SectionAction } from '../../../shared/section-action/section-action';
+import { SectionFooter } from '../../../shared/section-footer/section-footer';
 
 @Component({
   selector: 'app-job-timeline-section',
-  imports: [DatePipe, RouterLink],
+  imports: [DatePipe, RouterLink, SectionAction, SectionFooter],
   templateUrl: './job-timeline-section.html',
   styleUrl: './job-timeline-section.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

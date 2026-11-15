@@ -1,5 +1,6 @@
 .realizations-section {
   --realizations-inset: clamp(1.5rem, 4vw, 4rem);
+  scroll-margin-top: 6rem;
   border-top: 1px solid rgb(255 255 255 / 6%);
   background: #080b0a;
   // Clip the gallery bleed without creating a scroll container (sticky safe).
@@ -25,18 +26,16 @@
   flex-direction: column;
   align-items: flex-start;
   min-width: 0;
+  max-width: 23rem;
 }
 
-.realizations-eyebrow {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.6875rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--color-secondary);
+.realizations-next {
+  grid-column: 1 / -1;
+  align-self: end;
+  --section-footer-space: 0px;
 }
 
 .realizations-heading {
-  margin-top: 0.6rem;
   font-size: clamp(2rem, 2.6vw, 3.25rem);
   line-height: 1.05;
   text-wrap: balance;
@@ -47,34 +46,6 @@
   font-size: 0.8125rem;
   line-height: 1.8;
   color: color-mix(in srgb, var(--color-base-content) 60%, transparent);
-}
-
-.realizations-viewall {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-top: 1.5rem;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.6875rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  white-space: nowrap;
-  text-decoration: none;
-  color: color-mix(in srgb, var(--color-base-content) 70%, transparent);
-  transition: color 200ms ease;
-}
-
-.realizations-viewall-arrow {
-  transition: transform 250ms ease;
-}
-
-.realizations-viewall:hover,
-.realizations-viewall:focus-visible {
-  color: var(--color-secondary);
-
-  .realizations-viewall-arrow {
-    transform: translate(3px, -3px);
-  }
 }
 
 .realizations-gallery-panel {
@@ -91,12 +62,10 @@
   overscroll-behavior-x: contain;
   scrollbar-width: none;
 
-  // Dark veil over the window's right edge: cards emerge from the dark and
-  // brighten while they travel leftward underneath it — the veil "drops off"
-  // each card as it is scrolled into view. Cards entering at the edge stay
-  // faintly visible instead of popping out of nothing.
-  -webkit-mask-image: linear-gradient(to right, #000 55%, rgba(0, 0, 0, 0.28) 95%, rgba(0, 0, 0, 0.28) 100%);
-  mask-image: linear-gradient(to right, #000 55%, rgba(0, 0, 0, 0.28) 95%, rgba(0, 0, 0, 0.28) 100%);
+  // Only veil incoming work. The edge becomes fully opaque as the final card
+  // settles; without JS, everything remains readable.
+  -webkit-mask-image: linear-gradient(to right, #000 55%, rgb(0 0 0 / var(--realizations-edge-alpha, 1)) 95%);
+  mask-image: linear-gradient(to right, #000 55%, rgb(0 0 0 / var(--realizations-edge-alpha, 1)) 95%);
 
   &::-webkit-scrollbar {
     display: none;
@@ -168,20 +137,6 @@
   transform-origin: left top;
 }
 
-.realizations-counter {
-  display: flex;
-  gap: 0.4rem;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.75rem;
-  letter-spacing: 0.12em;
-  color: color-mix(in srgb, var(--color-base-content) 60%, transparent);
-}
-
-.realizations-counter-current {
-  display: inline-block;
-  color: var(--color-secondary);
-}
-
 .realizations-nav {
   display: inline-flex;
   align-items: center;
@@ -219,41 +174,27 @@
 }
 
 @media (min-width: 64rem) {
-  // The whole composition is centered as a group: a fixed text column and a
-  // deliberately narrow gallery window beside it, centered in the viewport.
+  // Give the work twice the space of the introduction, without fixed widths.
   .realizations-stage {
-    grid-template-columns: minmax(20rem, 30rem) minmax(0, 36rem);
-    justify-content: center;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    max-width: 88rem;
+    margin-inline: auto;
   }
 
-  // The window sits flush against the text column — no centering margins —
-  // so the only separation is the stage's grid gap.
   .realizations-gallery {
-    width: 36rem;
-    margin-left: 0;
     margin-right: 0;
   }
 
-  .realizations-progress {
-    max-width: 36rem;
-  }
-
   .realizations-heading {
-    font-size: clamp(2.5rem, 3.4vw, 4.5rem);
+    font-size: clamp(2.25rem, 3vw, 3.5rem);
   }
 
   .realizations-description {
     font-size: 0.875rem;
   }
 
-  // Compact editorial filmstrip; small enough that every card reads as an
-  // index entry rather than a hero shot.
-  .realizations-track {
-    gap: 4rem;
-  }
-
   .realizations-track > * {
-    flex-basis: 26rem;
+    flex-basis: clamp(23rem, 34vw, 30rem);
   }
 
   .realizations-skeleton {

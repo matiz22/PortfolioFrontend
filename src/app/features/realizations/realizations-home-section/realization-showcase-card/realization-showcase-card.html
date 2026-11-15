@@ -1,7 +1,8 @@
-<a class="realization-card-link" [routerLink]="['/realization', realization().slug]" [title]="realization().title">
+<article class="realization-card-link">
   <div class="realization-card-heading">
-    <span class="realization-card-number" aria-hidden="true">{{ numberLabel() }}</span>
-    <h3 class="realization-card-title">{{ realization().title }}</h3>
+    <h3 class="realization-card-title">
+      <a class="realization-card-title-link" [routerLink]="['/realization', realization().slug]">{{ realization().title }}</a>
+    </h3>
     <span class="realization-card-arrow" aria-hidden="true">↗</span>
   </div>
 
@@ -36,4 +37,4 @@
   @if (techLine()) {
   <p class="realization-card-tech">{{ techLine() }}</p>
   }
-</a>
+</article>

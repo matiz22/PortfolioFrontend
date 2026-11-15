@@ -3,7 +3,6 @@
     <div class="jobs-stage">
       <header class="jobs-header">
         <div>
-          <p class="jobs-eyebrow" i18n="@@jobs.eyebrow">Along the way</p>
           <h2 id="experience-heading" class="section-heading" i18n="@@jobs.heading">Work Experience</h2>
         </div>
         <p class="jobs-intro" i18n="@@jobs.description">
@@ -26,7 +25,7 @@
         <div class="jobs-track" [style.--job-columns]="state.data.length - 1">
           <div class="jobs-rail" aria-hidden="true"><span class="jobs-rail-fill"></span></div>
           <ol class="jobs-list" role="list">
-            @for (job of state.data; track job.id; let index = $index) {
+            @for (job of state.data; track job.id) {
             <li class="jobs-entry" [class.jobs-entry-current]="job.isCurrent">
               <div class="jobs-point">
                 <span class="jobs-dot" aria-hidden="true"></span>
@@ -45,7 +44,6 @@
 
               <a class="jobs-card" [routerLink]="['/job', job.slug]" [attr.aria-labelledby]="'experience-role-' + job.id">
                 <div class="jobs-card-top">
-                  <span class="jobs-index" aria-hidden="true">{{ (index + 1).toString().padStart(2, '0') }}</span>
                   <span class="jobs-company">{{ job.companyName }}</span>
                   <span class="jobs-arrow" aria-hidden="true">↗</span>
                 </div>
@@ -96,26 +94,12 @@
         }
       </div>
 
-      <div class="jobs-bottom">
-        <div class="jobs-scroll-guide">
-          <span class="jobs-scroll-hint">
-            <span aria-hidden="true">↓</span>
-            <span i18n="@@jobs.scrollHint">Scroll to follow the journey</span>
-            <span aria-hidden="true">→</span>
-          </span>
-          <a href="#experience-end" class="jobs-skip" i18n="@@jobs.skip">Skip timeline ↓</a>
-        </div>
-
-        <footer class="jobs-footer">
-          <span class="jobs-footer-rule" aria-hidden="true"></span>
-          <a routerLink="/jobs" class="jobs-viewall">
-            <span i18n="@@jobs.viewall">View All Jobs</span>
-            <span aria-hidden="true">↗</span>
-          </a>
-          <span class="jobs-footer-rule" aria-hidden="true"></span>
-        </footer>
-      </div>
+      <app-section-footer class="jobs-bottom">
+        <a appSectionAction routerLink="/jobs" class="jobs-viewall">
+          <span i18n="@@jobs.viewall">View all jobs</span>
+        </a>
+        <ng-content select="[section-next]" />
+      </app-section-footer>
     </div>
   </div>
 </section>
-<div id="experience-end" class="jobs-end-anchor" aria-hidden="true"></div>

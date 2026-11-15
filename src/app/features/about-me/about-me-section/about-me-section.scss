@@ -3,6 +3,7 @@
 }
 
 .about-section {
+  scroll-margin-top: 6rem;
   padding-block: var(--home-chapter-space, clamp(4rem, 8vw, 7rem));
   border-block: 1px solid rgb(255 255 255 / 6%);
   background: #080b0a;
@@ -40,6 +41,10 @@
 
 .about-stage {
   padding-bottom: 1rem;
+}
+
+.about-next:empty {
+  display: none;
 }
 
 // Progressive enhancement: nothing is hidden until ScrollTrigger is ready.
@@ -116,15 +121,21 @@
   .about-stage {
     display: grid;
     grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
-    grid-template-rows: auto minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr) auto;
     grid-template-areas:
       "header header"
-      "sidebar panels";
+      "sidebar panels"
+      "next next";
     align-items: center;
     column-gap: clamp(2.5rem, 5vw, 5rem);
     row-gap: clamp(1.25rem, 2.5vw, 2rem);
     min-height: calc(100svh - 6rem);
     padding-block: 3.5rem 2rem;
+  }
+
+  .about-next {
+    grid-area: next;
+    --section-next-space: 0px;
   }
 
   .about-sidebar {
@@ -176,7 +187,7 @@
 
   .about-index-link {
     display: grid;
-    grid-template-columns: 1.5rem 1fr 1.25rem;
+    grid-template-columns: 1fr 1.25rem;
     align-items: baseline;
     column-gap: 1rem;
     padding-block: 1.1rem;
@@ -194,11 +205,6 @@
       outline-offset: 6px;
       border-radius: 2px;
     }
-  }
-
-  .about-index-number {
-    font-size: 0.6875rem;
-    font-variant-numeric: tabular-nums;
   }
 
   .about-index-title {
@@ -246,15 +252,36 @@
   }
 }
 
+// Keep the added next-section link on screen throughout shorter desktop pins.
+@media (min-width: 64rem) and (max-height: 56rem) {
+  .about-is-pinned {
+    .about-stage {
+      padding-block: 2rem 1rem;
+      row-gap: 1rem;
+    }
+
+    .about-web-visual,
+    .about-apps-visual,
+    .about-ai-visual {
+      height: clamp(12rem, 30svh, 17rem);
+    }
+
+    .about-panel-copy {
+      padding-top: 1rem;
+    }
+  }
+}
+
 @media (max-width: 63.999rem) {
   .about-is-pinned {
     .about-stage {
       grid-template-columns: minmax(0, 1fr);
-      grid-template-rows: auto auto minmax(0, 1fr);
+      grid-template-rows: auto auto minmax(0, 1fr) auto;
       grid-template-areas:
         "header"
         "sidebar"
-        "panels";
+        "panels"
+        "next";
       align-content: center;
       gap: 1.25rem;
       padding-block: 1rem;
@@ -309,22 +336,14 @@
       border-radius: 0.5rem;
     }
 
-    .about-index-number {
-      font-size: 0.8125rem;
-    }
-
     .about-index-title {
-      // Keep the complete translated service name available to screen readers.
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      overflow: hidden;
-      clip-path: inset(50%);
-      white-space: nowrap;
+      font-size: clamp(0.75rem, 2.5vw, 1rem);
+      line-height: 1.25;
+      overflow-wrap: anywhere;
     }
 
     .about-index-arrow {
-      font-size: 1rem;
+      display: none;
     }
 
     .about-visual {

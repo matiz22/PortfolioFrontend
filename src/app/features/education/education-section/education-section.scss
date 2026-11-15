@@ -8,7 +8,7 @@
   border-block: 1px solid rgb(255 255 255 / 5%);
   background: #000;
   color: var(--color-base-content);
-  scroll-margin-top: 5rem;
+  scroll-margin-top: 6rem;
 }
 
 .education-shell {
@@ -19,7 +19,6 @@
 
 .education-header {
   display: grid;
-  grid-template-columns: 1fr auto;
   align-items: baseline;
   gap: 1.5rem 2rem;
 
@@ -37,7 +36,6 @@
   }
 }
 
-.education-record-label,
 .education-tech,
 .education-label {
   color: #8a928b;
@@ -51,7 +49,7 @@
   display: grid;
   gap: clamp(1.5rem, 3vw, 2.25rem);
   margin: 0;
-  padding-block: clamp(3rem, 6vw, 5rem);
+  padding-block: clamp(3rem, 6vw, 5rem) 0;
   list-style: none;
 }
 
@@ -71,6 +69,10 @@
   will-change: transform;
   transform-style: preserve-3d;
   transition: border-color 200ms ease, background-color 200ms ease;
+
+  &:not(:has(.education-media)) {
+    grid-template-columns: minmax(0, 1fr);
+  }
 
   &:hover,
   &:focus-within {
@@ -97,20 +99,6 @@
 .education-card:hover .education-media img,
 .education-card:focus-within .education-media img {
   transform: scale(1.04);
-}
-
-.education-media-empty,
-.education-media-fallback {
-  display: grid;
-  place-items: center;
-  width: 100%;
-  height: 100%;
-}
-
-.education-media-fallback {
-  color: rgb(255 255 255 / 22%);
-  font-family: "Instrument Serif", serif;
-  font-size: 2.5rem;
 }
 
 .education-body {
@@ -234,21 +222,6 @@
   transition: transform 250ms ease;
 }
 
-.education-footer {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 1rem 2rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid rgb(255 255 255 / 10%);
-
-  > p {
-    color: #8a928b;
-    font-size: 0.6875rem;
-  }
-}
-
 .education-state {
   padding-block: 3rem;
   color: #999f99;
@@ -270,11 +243,6 @@
 @media (max-width: 47.99rem) {
   .education-header {
     gap: 1rem;
-  }
-
-  .education-record-label {
-    max-width: 8rem;
-    text-align: right;
   }
 
   .education-card {

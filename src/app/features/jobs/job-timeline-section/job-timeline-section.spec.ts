@@ -57,12 +57,11 @@ describe('JobTimelineSection', () => {
     expect(root.querySelector('.jobs-track')).toBeNull();
   });
 
-  it('keeps the footer in the stage and the skip destination outside the pinned section', () => {
-    expect(root.querySelector('.jobs-stage .jobs-bottom .jobs-footer')).not.toBeNull();
-    const end = root.querySelector('#experience-end');
-    expect(end).not.toBeNull();
-    expect(end?.closest('.jobs-section')).toBeNull();
-    expect(root.querySelector('.jobs-skip')?.getAttribute('href')).toBe('#experience-end');
+  it('keeps footer navigation in the stage without the old scroll instructions', () => {
+    expect(root.querySelector('.jobs-stage app-section-footer.jobs-bottom')).not.toBeNull();
+    expect(root.querySelector('.jobs-bottom a[appSectionAction]')?.getAttribute('href')).toBe('/jobs');
+    expect(root.querySelector('.jobs-scroll-guide, .jobs-skip, #experience-end')).toBeNull();
+    expect(root.textContent).not.toContain('Scroll to follow the journey');
   });
 
   it('renders API order, accessible role links, dates, and current status', async () => {

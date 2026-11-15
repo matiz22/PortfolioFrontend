@@ -5,46 +5,74 @@
     <!-- Main Content -->
     <main>
         <!-- Hero Section -->
-        <app-hero-section></app-hero-section>
+        <app-hero-section>
+            <app-section-next section-next targetId="about">
+                <span i18n="@@home.next.about">About me</span>
+            </app-section-next>
+        </app-hero-section>
 
         <!-- About Section -->
         @defer (on idle; hydrate on idle) {
-        <app-about-me-section></app-about-me-section>
+        <app-about-me-section>
+            <app-section-next section-next targetId="work">
+                <span i18n="@@home.next.work">Client work</span>
+            </app-section-next>
+        </app-about-me-section>
         } @placeholder {
         <div class="min-h-64"></div>
         }
 
       <!-- Realizations Section (featured client work) -->
         @defer (on idle; hydrate on idle) {
-        <app-realizations-home-section></app-realizations-home-section>
+        <app-realizations-home-section>
+            <app-section-next section-next targetId="projects">
+                <span i18n="@@home.next.projects">Projects</span>
+            </app-section-next>
+        </app-realizations-home-section>
         } @placeholder {
         <div class="min-h-64"></div>
         }
 
         <!-- Projects Section -->
         @defer (on idle; hydrate on idle) {
-        <app-projects-home-section></app-projects-home-section>
+        <app-projects-home-section>
+            <app-section-next section-next targetId="certifications">
+                <span i18n="@@home.next.certificates">Certificates</span>
+            </app-section-next>
+        </app-projects-home-section>
         } @placeholder {
         <div class="min-h-64"></div>
         }
 
         <!-- Certificates Section -->
         @defer (on idle; hydrate on idle) {
-        <app-certifications-section></app-certifications-section>
+        <app-certifications-section>
+            <app-section-next section-next targetId="experience">
+                <span i18n="@@home.next.experience">Experience</span>
+            </app-section-next>
+        </app-certifications-section>
         } @placeholder {
         <div class="min-h-64"></div>
         }
 
         <!-- Experience Section (Jobs Timeline) -->
         @defer (on idle; hydrate on idle) {
-        <app-job-timeline-section></app-job-timeline-section>
+        <app-job-timeline-section>
+            <app-section-next section-next targetId="education">
+                <span i18n="@@home.next.education">Education</span>
+            </app-section-next>
+        </app-job-timeline-section>
         } @placeholder {
         <div class="min-h-64"></div>
         }
 
         <!-- Education Section -->
         @defer (on idle; hydrate on idle) {
-        <app-education-section></app-education-section>
+        <app-education-section>
+            <app-section-next section-next targetId="contact">
+                <span i18n="@@home.next.contact">Let’s talk</span>
+            </app-section-next>
+        </app-education-section>
         } @placeholder {
         <div class="min-h-64"></div>
         }

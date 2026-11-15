@@ -2,7 +2,6 @@
   <div class="education-shell">
     <header class="education-header">
       <h2 id="education-heading" class="section-heading" i18n="@@education.heading">Education</h2>
-      <span class="education-record-label" i18n="@@education.record">Academic record</span>
       <p i18n="@@education.description">
         My academic background and the foundations of my knowledge in computer science and software engineering.
       </p>
@@ -19,17 +18,15 @@
       }
       @case ('success') {
       <ol class="education-entries" role="list">
-        @for (item of entries(); track item.id; let index = $index) {
+        @for (item of entries(); track item.id) {
         <li class="education-entry">
           <div class="education-motion">
             <article class="education-card" [attr.aria-labelledby]="'education-title-' + item.id">
-              <div class="education-media" [class.education-media-empty]="!item.thumbnail">
-                @if (item.thumbnail) {
+              @if (item.thumbnail) {
+              <div class="education-media">
                 <img [src]="item.thumbnail | imageUrl" alt="" loading="lazy" />
-                } @else {
-                <span class="education-media-fallback" aria-hidden="true">{{ (index + 1).toString().padStart(2, '0') }}</span>
-                }
               </div>
+              }
 
               <div class="education-body">
                 <div class="education-main">
@@ -90,12 +87,11 @@
       }
     </div>
 
-    <footer class="education-footer">
-      <p i18n="@@education.continues">The learning continues.</p>
-      <a routerLink="/education" class="education-link">
-        <span i18n="@@education.viewall">View All Education</span>
-        <span class="education-link-arrow" aria-hidden="true">↗</span>
+    <app-section-footer class="education-footer">
+      <a appSectionAction routerLink="/education">
+        <span i18n="@@education.viewall">View all education</span>
       </a>
-    </footer>
+      <ng-content select="[section-next]" />
+    </app-section-footer>
   </div>
 </section>

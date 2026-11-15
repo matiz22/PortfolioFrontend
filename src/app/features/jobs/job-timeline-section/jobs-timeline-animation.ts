@@ -66,7 +66,7 @@ export function animateJobsTimeline(root: HTMLElement): gsap.MatchMedia {
 
       if (horizontal) {
         stage.classList.add('jobs-horizontal');
-        // Reserve room for the guide before checking the real, font-loaded height.
+        // Reserve room for bottom navigation before checking the font-loaded height.
         stage.classList.toggle('jobs-scrollable', overflow() > 0);
         if (stage.offsetHeight > view.innerHeight - NAV_CLEARANCE - 16) {
           horizontal = false;

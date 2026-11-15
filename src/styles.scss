@@ -52,6 +52,12 @@ html:active-view-transition {
   scroll-behavior: auto !important;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
 body {
   font-family: "JetBrains Mono", monospace;
 }

@@ -1,0 +1,11 @@
+:host {
+  --section-next-space: 0px;
+  --section-next-width: auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+  min-width: 0;
+  padding-top: var(--section-footer-space, clamp(1.5rem, 3vw, 2.5rem));
+}

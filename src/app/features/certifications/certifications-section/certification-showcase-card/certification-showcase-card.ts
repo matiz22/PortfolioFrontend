@@ -13,6 +13,5 @@ import { ImageUrlPipe } from '../../../../shared/pipes/image-url-pipe';
 })
 export class CertificationShowcaseCard {
   readonly certification = input.required<CertificationSummary>();
-  readonly index = input.required<number>();
   protected readonly failedThumbnail = signal<string | null>(null);
 }

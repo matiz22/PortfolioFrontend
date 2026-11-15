@@ -35,16 +35,15 @@ describe('ProjectPreview', () => {
     fixture = TestBed.createComponent(ProjectPreview);
     root = fixture.nativeElement;
     fixture.componentRef.setInput('project', project);
-    fixture.componentRef.setInput('index', 2);
     fixture.autoDetectChanges();
     await fixture.whenStable();
   });
 
-  it('renders the screenshot, project number and accessible title', () => {
+  it('renders the screenshot and accessible title without decorative indexing', () => {
     expect(root.querySelector('h3')?.textContent).toContain(project.title);
     expect(root.querySelector('article')?.getAttribute('aria-labelledby'))
       .toBe('project-preview-title-7');
-    expect(root.querySelector('.project-preview-index')?.textContent).toContain('02');
+    expect(root.querySelector('.project-preview-index')).toBeNull();
     expect(root.querySelector('img')?.getAttribute('src')).toBe(project.thumbnail!);
     expect(root.querySelector('img')?.getAttribute('loading')).toBe('lazy');
     expect(root.querySelector('.project-preview-description')?.textContent).toBe(project.shortDesc);

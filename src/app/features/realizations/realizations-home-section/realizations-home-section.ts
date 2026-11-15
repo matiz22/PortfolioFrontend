@@ -15,10 +15,12 @@ import { RealizationsService } from '../../../core/services/realizations.service
 import { ApiState } from '../../../core/models/api.state';
 import { RealizationSummary } from '../../../core/models/summary/realization';
 import { RealizationShowcaseCard } from './realization-showcase-card/realization-showcase-card';
+import { SectionAction } from '../../../shared/section-action/section-action';
+import { SectionFooter } from '../../../shared/section-footer/section-footer';
 
 @Component({
   selector: 'app-realizations-home-section',
-  imports: [RouterLink, RealizationShowcaseCard],
+  imports: [RouterLink, RealizationShowcaseCard, SectionAction, SectionFooter],
   templateUrl: './realizations-home-section.html',
   styleUrl: './realizations-home-section.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -31,12 +33,6 @@ export class RealizationsHomeSection {
   private readonly realizationsService = inject(RealizationsService);
   readonly realizations = toSignal(this.realizationsService.getHomeSummaryItems(), {
     initialValue: ApiState.loading<RealizationSummary[]>(),
-  });
-
-  readonly counterTotal = computed(() => {
-    const state = this.realizations();
-    const count = state.status === 'success' ? state.data.length : 0;
-    return count > 0 ? String(count).padStart(2, '0') : '00';
   });
 
   readonly hasItems = computed(() => {

@@ -22,13 +22,13 @@
       }
       @case ('success') {
       @if (projectItems.data.length > 0) {
-      @for (row of projectRows(); track row[0].id; let rowIndex = $index) {
+      @for (row of projectRows(); track row[0].id) {
       <div class="projects-home-row" [attr.data-project-count]="row.length"
         [class.projects-home-row-single]="row.length === 1">
-        @for (project of row; track project.id; let index = $index) {
+        @for (project of row; track project.id) {
         <div class="projects-home-slot">
           <div class="projects-home-motion">
-            <app-project-preview [project]="project" [index]="rowIndex * columnsPerRow() + index + 1" />
+            <app-project-preview [project]="project" />
           </div>
         </div>
         }
@@ -45,15 +45,11 @@
       }
     </div>
 
-    <div class="projects-home-footer text-center">
-      <a routerLink="/projects"
-        class="btn btn-outline border-white/10 text-base-content/70 hover:border-primary hover:text-primary hover:bg-transparent">
-        <ng-container i18n="@@projects.home.viewall">View All Projects</ng-container>
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24"
-          stroke="currentColor" aria-hidden="true">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-        </svg>
+    <app-section-footer class="projects-home-footer">
+      <a appSectionAction routerLink="/projects">
+        <ng-container i18n="@@projects.home.viewall">View all projects</ng-container>
       </a>
-    </div>
+      <ng-content select="[section-next]" />
+    </app-section-footer>
   </div>
 </section>

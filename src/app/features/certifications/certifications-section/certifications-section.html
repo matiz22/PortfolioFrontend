@@ -25,10 +25,10 @@
       }
       }
       @case ('success') {
-      @for (item of state.data; track item.id; let i = $index) {
+      @for (item of state.data; track item.id) {
       <div class="certifications-slot">
         <div class="certifications-motion">
-          <app-certification-showcase-card [certification]="item" [index]="i + 1" />
+          <app-certification-showcase-card [certification]="item" />
         </div>
       </div>
       } @empty {
@@ -42,13 +42,11 @@
       }
     </div>
 
-    <footer class="certifications-footer">
-      <span class="certifications-footer-rule" aria-hidden="true"></span>
-      <a routerLink="/certifications" class="certifications-viewall">
-        <span i18n="@@certifications.viewall">View All Certifications</span>
-        <span class="certifications-viewall-arrow" aria-hidden="true">↗</span>
+    <app-section-footer class="certifications-footer">
+      <a appSectionAction routerLink="/certifications" class="certifications-viewall">
+        <span i18n="@@certifications.viewall">View all certifications</span>
       </a>
-      <span class="certifications-footer-rule" aria-hidden="true"></span>
-    </footer>
+      <ng-content select="[section-next]" />
+    </app-section-footer>
   </div>
 </section>

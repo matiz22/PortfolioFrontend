@@ -79,31 +79,6 @@
   pointer-events: none;
 }
 
-.project-preview-index {
-  position: absolute;
-  inset: 1.25rem 1.25rem auto;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  color: rgb(255 255 255 / 85%);
-  font-size: 0.625rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  text-shadow: 0 1px 8px #000;
-  pointer-events: none;
-}
-
-.project-preview-index-divider {
-  margin-inline: 0.4rem;
-  color: var(--color-primary);
-}
-
-.project-preview-index-line {
-  flex: 1;
-  height: 1px;
-  background: rgb(255 255 255 / 25%);
-}
-
 .project-preview-drawer {
   // Motion enhances this into a real, height-changing drawer on desktop.
   // Touch, SSR, reduced motion and failed JS loading keep it fully open.

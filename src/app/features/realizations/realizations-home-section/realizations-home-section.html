@@ -3,18 +3,12 @@
   <div class="realizations-stage-wrap">
     <div class="realizations-stage">
       <div class="realizations-text">
-        <p class="realizations-eyebrow realizations-reveal" i18n="@@realizations.eyebrow">Selected client work</p>
         <h2 id="realizations-heading"
           class="realizations-heading section-heading realizations-reveal" i18n="@@realizations.heading">Built for real
           businesses.</h2>
         <p class="realizations-description realizations-reveal" i18n="@@realizations.description">
-          A closer look at the solutions delivered for clients — the context, the technology and the outcome behind
-          each collaboration.
+          Websites and software built for clients, from first idea to launch.
         </p>
-        <a routerLink="/realizations" class="realizations-viewall realizations-reveal">
-          <span i18n="@@realizations.viewall">View all realizations</span>
-          <span class="realizations-viewall-arrow" aria-hidden="true">↗</span>
-        </a>
       </div>
 
       <div class="realizations-gallery-panel">
@@ -28,8 +22,8 @@
             }
             @case ('success') {
             @if (realizationItems.data.length > 0) {
-            @for (realization of realizationItems.data; track realization.id; let i = $index) {
-            <app-realization-showcase-card [realization]="realization" [index]="i" />
+            @for (realization of realizationItems.data; track realization.id) {
+            <app-realization-showcase-card [realization]="realization" />
             }
             } @else {
             <p class="realizations-state" i18n="@@realizations.empty">No realizations to show yet.</p>
@@ -53,11 +47,6 @@
             </svg>
           </button>
           <span class="realizations-rail" aria-hidden="true"><span class="realizations-rail-fill"></span></span>
-          <p class="realizations-counter" aria-hidden="true">
-            <span class="realizations-counter-current">01</span>
-            <span class="realizations-counter-sep">/</span>
-            <span class="realizations-counter-total">{{ counterTotal() }}</span>
-          </p>
           <button type="button" class="realizations-nav realizations-nav-next" aria-label="Next realization"
             i18n-aria-label="@@realizations.next">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -68,6 +57,12 @@
         </div>
         }
       </div>
+      <app-section-footer class="realizations-next">
+        <a appSectionAction routerLink="/realizations" class="realizations-viewall">
+          <span i18n="@@realizations.viewall">View all realizations</span>
+        </a>
+        <ng-content select="[section-next]" />
+      </app-section-footer>
     </div>
   </div>
 </section>

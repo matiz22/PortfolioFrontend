@@ -5,8 +5,6 @@ gsap.registerPlugin(ScrollTrigger);
 
 export function animateCertifications(root: HTMLElement): gsap.MatchMedia {
   const motion = gsap.matchMedia();
-  // Preserve completed reveals when changing between desktop and mobile layouts.
-  const revealed = new WeakSet<HTMLElement>();
 
   try {
     motion.add({
@@ -25,46 +23,46 @@ export function animateCertifications(root: HTMLElement): gsap.MatchMedia {
       const wallBounds = wall.getBoundingClientRect();
       const wallCenter = wallBounds.left + wallBounds.width / 2;
       const slots = Array.from(wall.querySelectorAll<HTMLElement>('.certifications-slot'));
-      const surfaces = new Map<HTMLElement, HTMLElement>();
 
       // Read every position before writing transforms. The stationary slots are
       // the scroll triggers; their children perform the spread-out reveal.
       const entries = slots.flatMap((slot) => {
         const surface = slot.querySelector<HTMLElement>('.certifications-motion');
         const bounds = slot.getBoundingClientRect();
-        if (!surface || revealed.has(slot) || bounds.bottom <= 0) {
+        if (!surface) {
           return [];
         }
-        surfaces.set(slot, surface);
         return [{
           slot,
           surface,
+          aboveViewport: bounds.bottom <= 0,
           x: desktop
             ? gsap.utils.clamp(-36, 36, (wallCenter - bounds.left - bounds.width / 2) * 0.12)
             : 0,
         }];
       });
+      const surfaces = new Map(entries.map((entry) => [entry.slot, entry]));
+      const distance = desktop ? 18 : 14;
 
       for (const entry of entries) {
         // Opacity, not visibility: keyboard users can still reach every link.
         gsap.set(entry.surface, {
           opacity: 0,
           x: entry.x,
-          y: desktop ? 18 : 14,
+          y: entry.aboveViewport ? -distance : distance,
         });
       }
 
       const show = (targets: HTMLElement[]) => {
-        const pending = targets.filter((slot) => !revealed.has(slot) && surfaces.has(slot));
-        if (!pending.length) {
-          return;
-        }
         context.add(() => {
-          pending.forEach((slot, index) => {
-            revealed.add(slot);
+          targets.forEach((slot, index) => {
+            const entry = surfaces.get(slot);
+            if (!entry) {
+              return;
+            }
             // Independent tweens let keyboard focus cancel one document without
             // interrupting the rest of the batch, even before its first frame.
-            gsap.to(surfaces.get(slot)!, {
+            gsap.to(entry.surface, {
               opacity: 1,
               x: 0,
               y: 0,
@@ -78,10 +76,34 @@ export function animateCertifications(root: HTMLElement): gsap.MatchMedia {
         });
       };
 
+      const hide = (targets: HTMLElement[], direction: number) => {
+        context.add(() => {
+          targets.forEach((slot) => {
+            const entry = surfaces.get(slot);
+            // Never fade a document while its link holds keyboard focus.
+            if (!entry || slot.contains(root.ownerDocument.activeElement)) {
+              return;
+            }
+            gsap.to(entry.surface, {
+              opacity: 0,
+              x: entry.x * 0.5,
+              y: direction * distance,
+              duration: 0.28,
+              delay: 0,
+              ease: 'power2.in',
+              overwrite: true,
+            });
+          });
+        });
+      };
+
       const triggers = ScrollTrigger.batch(entries.map(({ slot }) => slot), {
         start: 'top 95%',
-        once: true,
+        end: 'bottom top',
         onEnter: (targets) => show(targets as HTMLElement[]),
+        onEnterBack: (targets) => show(targets as HTMLElement[]),
+        onLeave: (targets) => hide(targets as HTMLElement[], -1),
+        onLeaveBack: (targets) => hide(targets as HTMLElement[], 1),
       });
 
       const onFocus = () => {
@@ -91,9 +113,8 @@ export function animateCertifications(root: HTMLElement): gsap.MatchMedia {
           return;
         }
         // Also finish a currently playing reveal, so focus is never obscured.
-        const surface = surfaces.get(slot);
+        const surface = surfaces.get(slot)?.surface;
         if (surface) {
-          revealed.add(slot);
           context.add(() => {
             gsap.killTweensOf(surface);
             gsap.set(surface, { clearProps: 'transform,opacity' });

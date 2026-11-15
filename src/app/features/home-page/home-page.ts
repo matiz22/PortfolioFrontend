@@ -10,10 +10,11 @@ import { CertificationsSection } from "../certifications/certifications-section/
 import { RealizationsHomeSection } from "../realizations/realizations-home-section/realizations-home-section";
 import { ProjectsHomeSection } from "../projects/projects-home-section/projects-home-section";
 import { JobTimelineSection } from "../jobs/job-timeline-section/job-timeline-section";
+import { SectionNext } from '../../shared/section-next/section-next';
 
 @Component({
   selector: 'app-home-page',
-  imports: [Footer, HeroSection, AboutMeSection, Header, ContactSection, EducationSection, CertificationsSection, RealizationsHomeSection, ProjectsHomeSection, JobTimelineSection],
+  imports: [Footer, HeroSection, AboutMeSection, Header, ContactSection, EducationSection, CertificationsSection, RealizationsHomeSection, ProjectsHomeSection, JobTimelineSection, SectionNext],
   templateUrl: './home-page.html',
   styleUrl: './home-page.scss',
 })

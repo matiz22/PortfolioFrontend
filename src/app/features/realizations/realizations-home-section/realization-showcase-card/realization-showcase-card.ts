@@ -15,10 +15,6 @@ import { RealizationSummary } from '../../../../core/models/summary/realization'
 })
 export class RealizationShowcaseCard {
   readonly realization = input.required<RealizationSummary>();
-  readonly index = input(0);
-
-  readonly numberLabel = computed(() => String(this.index() + 1).padStart(2, '0'));
-
   // Full stack list; the details page groups it the same way.
   readonly techLine = computed(() =>
     this.realization()

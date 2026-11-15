@@ -3,8 +3,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const pad = (value: number) => String(value).padStart(2, '0');
-
 export function animateRealizationsScroll(root: HTMLElement): gsap.MatchMedia {
   const motion = gsap.matchMedia();
   const view = root.ownerDocument.defaultView;
@@ -15,7 +13,6 @@ export function animateRealizationsScroll(root: HTMLElement): gsap.MatchMedia {
   const gallery = root.querySelector<HTMLElement>('.realizations-gallery');
   const track = root.querySelector<HTMLElement>('.realizations-track');
   const fill = root.querySelector<HTMLElement>('.realizations-rail-fill');
-  const counter = root.querySelector<HTMLElement>('.realizations-counter-current');
   const prevButton = root.querySelector<HTMLButtonElement>('.realizations-nav-prev');
   const nextButton = root.querySelector<HTMLButtonElement>('.realizations-nav-next');
   const cards = Array.from(root.querySelectorAll<HTMLElement>('.realization-showcase'));
@@ -26,6 +23,8 @@ export function animateRealizationsScroll(root: HTMLElement): gsap.MatchMedia {
 
   motion.add(
     {
+      // Navigation still needs listeners on small screens with reduced motion.
+      all: 'all',
       isDesktop: '(min-width: 64rem) and (min-height: 48rem)',
       canAnimate: '(prefers-reduced-motion: no-preference)',
     },
@@ -34,6 +33,14 @@ export function animateRealizationsScroll(root: HTMLElement): gsap.MatchMedia {
       const isDesktop = context.conditions?.['isDesktop'] === true;
 
       let activeIndex = 0;
+      const edgeProperty = '--realizations-edge-alpha';
+      const originalEdgeAlpha = gallery.style.getPropertyValue(edgeProperty);
+      const originalEdgePriority = gallery.style.getPropertyPriority(edgeProperty);
+      const edgeAlpha = (remaining: number) => {
+        const fadeWidth = gallery.clientWidth * 0.45;
+        const strength = fadeWidth > 0 ? Math.min(1, Math.max(0, remaining / fadeWidth)) : 0;
+        return 1 - 0.72 * strength;
+      };
 
       const syncNavButtons = () => {
         if (prevButton) {
@@ -44,21 +51,8 @@ export function animateRealizationsScroll(root: HTMLElement): gsap.MatchMedia {
         }
       };
 
-      const setCounter = (progress: number) => {
-        if (!counter || cards.length < 2) {
-          syncNavButtons();
-          return;
-        }
-        const index = Math.min(cards.length - 1, Math.max(0, Math.round(progress * (cards.length - 1))));
-        if (index !== activeIndex) {
-          activeIndex = index;
-          counter.textContent = pad(index + 1);
-          gsap.fromTo(
-            counter,
-            { y: 7, autoAlpha: 0.35 },
-            { y: 0, autoAlpha: 1, duration: 0.28, ease: 'power2.out', overwrite: true }
-          );
-        }
+      const syncProgress = (progress: number) => {
+        activeIndex = Math.min(cards.length - 1, Math.max(0, Math.round(progress * (cards.length - 1))));
         syncNavButtons();
       };
 
@@ -81,7 +75,8 @@ export function animateRealizationsScroll(root: HTMLElement): gsap.MatchMedia {
         if (fill) {
           gsap.set(fill, { scaleX: progress });
         }
-        setCounter(progress);
+        gallery.style.setProperty(edgeProperty, String(edgeAlpha(max - gallery.scrollLeft)));
+        syncProgress(progress);
       };
       const onPrev = () => step(-1);
       const onNext = () => step(1);
@@ -93,7 +88,7 @@ export function animateRealizationsScroll(root: HTMLElement): gsap.MatchMedia {
       onNativeScroll();
 
       let detachScroll: (() => void) | undefined;
-      let observer: ResizeObserver | undefined;
+      let refreshGallery = onNativeScroll;
 
       if (canAnimate) {
         const textBits = text ? Array.from(text.querySelectorAll<HTMLElement>('.realizations-reveal')) : [];
@@ -143,11 +138,12 @@ export function animateRealizationsScroll(root: HTMLElement): gsap.MatchMedia {
 
           const trackTo = gsap.quickTo(track, 'x', { duration: 0.5, ease: 'power2.out' });
           const fillTo = fill ? gsap.quickTo(fill, 'scaleX', { duration: 0.5, ease: 'power2.out' }) : undefined;
+          const edgeTo = gsap.quickTo(gallery, edgeProperty, { duration: 0.5, ease: 'power2.out' });
 
           // Cards hop while the strip travels: each one starts offset to the
           // right and slightly low, then lifts and settles into place as it
           // crosses into the window. The "out of the dark" look is owned by
-          // the gallery's static veil mask — cards simply brighten while they
+          // the gallery's edge mask — cards simply brighten while they
           // travel leftward underneath it.
           const HOP_X = 40;
           const HOP_Y = 12;
@@ -175,6 +171,7 @@ export function animateRealizationsScroll(root: HTMLElement): gsap.MatchMedia {
           const onScroll = () => {
             const distance = overflow();
             if (distance <= 0) {
+              edgeTo(1);
               return;
             }
             // Progress 0 while the leading hold rests (stage pinned, strip
@@ -189,20 +186,18 @@ export function animateRealizationsScroll(root: HTMLElement): gsap.MatchMedia {
             const settled = effective / distance;
             trackTo(-effective);
             fillTo?.(settled);
+            edgeTo(edgeAlpha(distance - effective));
             updateCardEntries(-effective);
-            setCounter(settled);
+            syncProgress(settled);
           };
 
           view.addEventListener('scroll', onScroll, { passive: true });
           detachScroll = () => view.removeEventListener('scroll', onScroll);
 
-          // Lazy images and fonts change the measured distances.
-          observer = new ResizeObserver(() => {
+          refreshGallery = () => {
             applyHeadroom();
             onScroll();
-          });
-          observer.observe(wrap);
-          observer.observe(track);
+          };
 
           onScroll();
         } else {
@@ -223,9 +218,16 @@ export function animateRealizationsScroll(root: HTMLElement): gsap.MatchMedia {
         }
       }
 
+      // Keep the edge correct when cards, fonts, or the viewport change size,
+      // including native swipe and reduced-motion layouts.
+      const observer = new ResizeObserver(() => refreshGallery());
+      observer.observe(gallery);
+      observer.observe(track);
+      observer.observe(stage);
+
       return () => {
         detachScroll?.();
-        observer?.disconnect();
+        observer.disconnect();
         gallery.removeEventListener('scroll', onNativeScroll);
         prevButton?.removeEventListener('click', onPrev);
         nextButton?.removeEventListener('click', onNext);
@@ -233,6 +235,12 @@ export function animateRealizationsScroll(root: HTMLElement): gsap.MatchMedia {
         wrap.style.height = '';
         // quickTo tweens are created lazily outside this context — kill them.
         gsap.killTweensOf([track, fill, ...cards].filter(Boolean) as HTMLElement[]);
+        gsap.killTweensOf(gallery, edgeProperty);
+        if (originalEdgeAlpha) {
+          gallery.style.setProperty(edgeProperty, originalEdgeAlpha, originalEdgePriority);
+        } else {
+          gallery.style.removeProperty(edgeProperty);
+        }
         gsap.set(track, { clearProps: 'x' });
         if (fill) {
           gsap.set(fill, { clearProps: 'scaleX' });
