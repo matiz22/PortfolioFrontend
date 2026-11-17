@@ -35,6 +35,33 @@ describe('ContactSection', () => {
     const section: HTMLElement = fixture.nativeElement.querySelector('.contact-section');
     expect(getComputedStyle(section).paddingTop).toBe('128px');
     expect(getComputedStyle(section).paddingBottom).toBe('128px');
+    expect(fixture.nativeElement.querySelector('.home-glass')).toBeNull();
+  });
+
+  it('opts the homepage copy and form into dark glass without frosting the section', async () => {
+    fixture.componentRef.setInput('glass', true);
+    await fixture.whenStable();
+
+    const host: HTMLElement = fixture.nativeElement;
+    const card = host.querySelector<HTMLElement>('.contact-form-card')!;
+    expect(card.classList).toContain('glass');
+    expect(card.classList).toContain('home-glass');
+    expect(host.querySelector('.contact-copy > p')?.classList).toContain('home-copy-panel');
+    expect(host.querySelector('.contact-section')?.classList).not.toContain('glass');
+    expect(getComputedStyle(card).backdropFilter).toContain('blur(');
+    expect(getComputedStyle(card).borderTopStyle).toBe('solid');
+  });
+
+  it('frosts the email chip for the homepage', async () => {
+    fixture.componentRef.setInput('glass', true);
+    await fixture.whenStable();
+
+    const email = (fixture.nativeElement as HTMLElement)
+      .querySelector<HTMLAnchorElement>('a[href^="mailto:"]')!;
+    expect(email.classList).toContain('glass');
+    expect(email.classList).toContain('home-glass-chip');
+    expect(getComputedStyle(email).backdropFilter).toContain('blur(');
+    expect(getComputedStyle(email).borderTopStyle).toBe('solid');
   });
 
   it('allows the home page to compact the layout without changing its content', () => {

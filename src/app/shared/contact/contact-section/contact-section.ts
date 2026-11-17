@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { ContactForm } from "../contact-form/contact-form";
 import { SocialLinksRow } from "../../../features/social-links/social-links-row/social-links-row";
 
@@ -9,5 +9,5 @@ import { SocialLinksRow } from "../../../features/social-links/social-links-row/
   styleUrl: './contact-section.scss',
 })
 export class ContactSection {
-
+  readonly glass = input(false);
 }

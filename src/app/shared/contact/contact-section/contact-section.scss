@@ -3,6 +3,7 @@
 }
 
 .contact-section {
+  background: var(--contact-section-background, #000);
   padding-block: var(--contact-section-padding, 8rem);
   scroll-margin-top: 6rem;
 }

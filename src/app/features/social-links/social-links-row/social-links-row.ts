@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { SocialLinksService } from '../../../core/services/social.links.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ApiState } from '../../../core/models/api.state';
@@ -12,6 +12,7 @@ import { ImageUrlPipe } from '../../../shared/pipes/image-url-pipe';
   styleUrl: './social-links-row.scss',
 })
 export class SocialLinksRow {
+  readonly glass = input(false);
   socialLinksService: SocialLinksService = inject(SocialLinksService);
   socialLinks = toSignal(
     this.socialLinksService.getAll(),
