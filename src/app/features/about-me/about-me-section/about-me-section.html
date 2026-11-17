@@ -6,28 +6,30 @@
       </header>
 
       <div class="about-sidebar">
-        <nav class="about-index" aria-labelledby="about-heading">
-          <div class="about-track" aria-hidden="true"><span class="about-fill"></span></div>
-          <ol>
-            <li>
-              <a class="about-index-link" href="#about-web" aria-controls="about-web">
-                <span class="about-index-title font-serif" i18n="@@about.card.web.title">Web Development</span>
-                <span class="about-index-arrow" aria-hidden="true">↗</span>
-              </a>
-            </li>
-            <li>
-              <a class="about-index-link" href="#about-apps" aria-controls="about-apps">
-                <span class="about-index-title font-serif" i18n="@@about.card.apps.title">Mobile &amp; Desktop Apps</span>
-                <span class="about-index-arrow" aria-hidden="true">↗</span>
-              </a>
-            </li>
-            <li>
-              <a class="about-index-link" href="#about-ai" aria-controls="about-ai">
-                <span class="about-index-title font-serif" i18n="@@about.card.ai.title">AI Implementation</span>
-                <span class="about-index-arrow" aria-hidden="true">↗</span>
-              </a>
-            </li>
-          </ol>
+        <nav class="about-index glass home-glass" aria-labelledby="about-heading">
+          <div class="about-index-inner">
+            <div class="about-track" aria-hidden="true"><span class="about-fill"></span></div>
+            <ol>
+              <li>
+                <a class="about-index-link" href="#about-web" aria-controls="about-web">
+                  <span class="about-index-title font-serif" i18n="@@about.card.web.title">Web Development</span>
+                  <span class="about-index-arrow" aria-hidden="true">↗</span>
+                </a>
+              </li>
+              <li>
+                <a class="about-index-link" href="#about-apps" aria-controls="about-apps">
+                  <span class="about-index-title font-serif" i18n="@@about.card.apps.title">Mobile &amp; Desktop Apps</span>
+                  <span class="about-index-arrow" aria-hidden="true">↗</span>
+                </a>
+              </li>
+              <li>
+                <a class="about-index-link" href="#about-ai" aria-controls="about-ai">
+                  <span class="about-index-title font-serif" i18n="@@about.card.ai.title">AI Implementation</span>
+                  <span class="about-index-arrow" aria-hidden="true">↗</span>
+                </a>
+              </li>
+            </ol>
+          </div>
         </nav>
       </div>
 
@@ -36,7 +38,7 @@
           <div class="about-visual about-web-visual" aria-hidden="true">
             <app-web-development-preview />
           </div>
-          <div class="about-panel-copy">
+          <div class="about-panel-copy glass home-glass home-copy-panel">
             <h3 id="about-web-title" class="font-serif" i18n="@@about.card.web.title">Web Development</h3>
             <p i18n="@@about.card.web.description">
               Modern websites that deliver results I create fast, responsive, and SEO-optimized websites and e-commerce
@@ -50,7 +52,7 @@
           <div class="about-visual about-apps-visual" aria-hidden="true">
             <app-apps-preview />
           </div>
-          <div class="about-panel-copy">
+          <div class="about-panel-copy glass home-glass home-copy-panel">
             <h3 id="about-apps-title" class="font-serif" i18n="@@about.card.apps.title">Mobile &amp; Desktop Apps</h3>
             <p i18n="@@about.card.apps.description">
               Software tailored to your needs I build high-performance native and cross-platform applications designed to
@@ -61,10 +63,10 @@
         </article>
 
         <article class="about-panel about-ai" id="about-ai" aria-labelledby="about-ai-title">
-          <div class="about-visual about-ai-visual" aria-hidden="true">
+          <div class="about-visual about-ai-visual glass home-glass" aria-hidden="true">
             <app-ai-workflow-preview />
           </div>
-          <div class="about-panel-copy">
+          <div class="about-panel-copy glass home-glass home-copy-panel">
             <h3 id="about-ai-title" class="font-serif" i18n="@@about.card.ai.title">AI Implementation</h3>
             <p i18n="@@about.card.ai.description">
               AI &amp; Automation for your business I help you leverage the power of AI to gain a competitive edge. From

@@ -49,6 +49,15 @@ describe('ProjectPreview', () => {
     expect(root.querySelector('.project-preview-description')?.textContent).toBe(project.shortDesc);
   });
 
+  it('uses a dark frosted surface without making the screenshot translucent', () => {
+    const card = root.querySelector<HTMLElement>('article')!;
+    expect(card.classList).toContain('glass');
+    expect(card.classList).toContain('home-glass');
+    expect(getComputedStyle(card).backdropFilter).toContain('blur(');
+    expect(getComputedStyle(card).borderTopStyle).toBe('solid');
+    expect(getComputedStyle(root.querySelector('img')!).opacity).toBe('1');
+  });
+
   it('puts the project title before its separate action links in tab order', () => {
     const links = root.querySelectorAll<HTMLAnchorElement>('a');
     expect(links[0].classList).toContain('project-preview-title-link');

@@ -31,15 +31,19 @@ describe('SectionAction', () => {
     expect(link.classList).toContain('section-action-archive');
   });
 
-  it('uses an outlined archive surface and an unfilled continuation variant', () => {
+  it('uses a glass archive chip and an unfilled continuation variant', () => {
     const surface = link.querySelector<HTMLElement>('.section-action-surface')!;
-    expect(getComputedStyle(surface).borderTopColor).not.toBe('rgba(0, 0, 0, 0)');
+    const chip = link.querySelector<HTMLElement>('.section-action-chip')!;
+    expect(chip.classList).toContain('glass');
+    expect(chip.classList).toContain('home-glass');
+    expect(chip.classList).toContain('home-glass-chip');
     expect(link.querySelector('path')?.getAttribute('d')).toContain('17 7');
     surface.style.transition = 'none';
     fixture.componentInstance.variant = 'continue';
     fixture.detectChanges();
     expect(link.classList).toContain('section-action-continue');
     expect(link.classList).not.toContain('section-action-archive');
+    expect(link.querySelector('.section-action-chip')?.classList.contains('glass')).toBeFalse();
     expect(getComputedStyle(surface).backgroundColor).toBe('rgba(0, 0, 0, 0)');
     expect(link.querySelector('path')?.getAttribute('d')).toContain('12 4');
   });

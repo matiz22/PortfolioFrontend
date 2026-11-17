@@ -2,7 +2,7 @@
   <div class="education-shell">
     <header class="education-header">
       <h2 id="education-heading" class="section-heading" i18n="@@education.heading">Education</h2>
-      <p i18n="@@education.description">
+      <p class="glass home-glass home-copy-panel" i18n="@@education.description">
         My academic background and the foundations of my knowledge in computer science and software engineering.
       </p>
     </header>
@@ -21,7 +21,7 @@
         @for (item of entries(); track item.id) {
         <li class="education-entry">
           <div class="education-motion">
-            <article class="education-card" [attr.aria-labelledby]="'education-title-' + item.id">
+            <article class="education-card glass home-glass" [attr.aria-labelledby]="'education-title-' + item.id">
               @if (item.thumbnail) {
               <div class="education-media">
                 <img [src]="item.thumbnail | imageUrl" alt="" loading="lazy" />

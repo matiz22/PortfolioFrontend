@@ -2,6 +2,7 @@ import {
   afterRenderEffect,
   ChangeDetectionStrategy,
   Component,
+  computed,
   DestroyRef,
   ElementRef,
   inject,
@@ -23,9 +24,13 @@ import type { gsap } from 'gsap';
 })
 export class SectionAction {
   readonly variant = input<'archive' | 'continue'>('archive');
+  /** Frost the chip: archives always, continuation when hosted on the homepage. */
+  readonly glass = input(false);
   private readonly element = inject<ElementRef<HTMLAnchorElement>>(ElementRef);
   private readonly destroyRef = inject(DestroyRef);
   private readonly zone = inject(NgZone);
+
+  protected readonly chipGlass = computed(() => this.variant() === 'archive' || this.glass());
 
   constructor() {
     afterRenderEffect((onCleanup) => {

@@ -37,11 +37,20 @@ describe('SectionNext', () => {
     expect(link.getAttribute('href')).toBe('#projects');
   });
 
+  it('frosts the next-chapter surface as a shared home glass chip', () => {
+    const chip = link.querySelector<HTMLElement>('.section-action-chip')!;
+    expect(chip.classList).toContain('glass');
+    expect(chip.classList).toContain('home-glass');
+    expect(chip.classList).toContain('home-glass-chip');
+    expect(getComputedStyle(chip).backdropFilter).toContain('blur(');
+    expect(getComputedStyle(chip).borderTopStyle).toBe('solid');
+    expect(getComputedStyle(chip).backgroundColor).not.toBe('rgba(0, 0, 0, 0)');
+  });
+
   it('keeps a generous hit area without a pill or looping animation', () => {
     const style = getComputedStyle(link);
     expect(parseFloat(style.minHeight)).toBeGreaterThanOrEqual(44);
     expect(parseFloat(style.minWidth)).toBeGreaterThanOrEqual(44);
-    expect(style.backgroundColor).toBe('rgba(0, 0, 0, 0)');
     expect(getComputedStyle(link.querySelector('svg')!).animationName).toBe('none');
   });
 });

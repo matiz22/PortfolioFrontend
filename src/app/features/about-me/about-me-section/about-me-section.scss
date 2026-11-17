@@ -35,7 +35,7 @@
 .about-panel-copy p {
   font-size: 0.875rem;
   line-height: 1.9;
-  color: color-mix(in srgb, var(--color-base-content) 70%, transparent);
+  color: color-mix(in srgb, var(--color-base-content) 88%, transparent);
   text-wrap: pretty;
 }
 
@@ -84,6 +84,18 @@
 .about-ai-visual {
   height: clamp(15rem, 40svh, 20rem);
   overflow: visible;
+}
+
+// Only the AI scene sits on glass: the mockups are already self-contained cards.
+// No padding: the workflow measures its own container to place every element.
+.about-ai-visual.home-glass {
+  border-radius: 1rem;
+  overflow: hidden;
+
+  .ai-workflow {
+    position: relative;
+    z-index: 1;
+  }
 }
 
 .about-apps-visual,
@@ -157,7 +169,7 @@
   .about-index {
     position: relative;
     display: block;
-    padding-left: 1.75rem;
+    padding: 1rem 1.25rem;
 
     ol {
       margin: 0;
@@ -168,6 +180,15 @@
     li + li {
       border-top: 1px solid rgb(255 255 255 / 7%);
     }
+  }
+
+  .about-index.home-glass {
+    border-radius: 1rem;
+  }
+
+  .about-index-inner {
+    position: relative;
+    padding-left: 1.25rem;
   }
 
   .about-track {
@@ -191,7 +212,7 @@
     align-items: baseline;
     column-gap: 1rem;
     padding-block: 1.1rem;
-    color: color-mix(in srgb, var(--color-base-content) 45%, transparent);
+    color: color-mix(in srgb, var(--color-base-content) 70%, transparent);
     text-decoration: none;
     transition: color 200ms ease;
 
@@ -306,7 +327,7 @@
     }
 
     .about-index {
-      padding: 0 0 0.5rem;
+      padding: 0.75rem;
 
       ol {
         display: grid;
@@ -317,6 +338,10 @@
       li + li {
         border: 0;
       }
+    }
+
+    .about-index-inner {
+      padding-left: 0;
     }
 
     .about-track {
@@ -332,7 +357,6 @@
       justify-content: space-between;
       min-height: 2.75rem;
       padding: 0.5rem 0.75rem;
-      border: 1px solid rgb(255 255 255 / 12%);
       border-radius: 0.5rem;
     }
 

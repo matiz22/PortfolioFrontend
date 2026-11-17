@@ -32,6 +32,29 @@
   transition: color 180ms ease, border-color 180ms ease, background-color 180ms ease;
 }
 
+// The chip wraps the label and arrow; glass styling comes from the global
+// dark-glass variant so both shared button variants stay consistent.
+.section-action-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 2.75rem;
+}
+
+:host(.section-action-archive) .section-action-surface {
+  padding: 0.5rem;
+}
+
+:host(.section-action-archive) .section-action-chip {
+  padding-inline: 1rem;
+}
+
+// The continuation chip needs its own inset so the glass border never
+// sits on the label or arrow.
+:host(.section-action-continue) .section-action-chip {
+  padding-inline: 0.875rem;
+}
+
 .section-action-label {
   text-wrap: balance;
 }
@@ -41,19 +64,8 @@
   color: var(--color-primary);
 }
 
-:host(.section-action-archive) .section-action-surface {
-  padding-inline: 1rem;
-  border-color: rgb(255 255 255 / 16%);
-  background: rgb(255 255 255 / 2%);
-}
-
 :host(:is(:hover, :focus-visible)) .section-action-surface {
   color: var(--color-base-content);
-}
-
-:host(.section-action-archive:is(:hover, :focus-visible)) .section-action-surface {
-  border-color: color-mix(in srgb, var(--color-primary) 50%, transparent);
-  background: color-mix(in srgb, var(--color-primary) 7%, transparent);
 }
 
 @media (prefers-reduced-motion: reduce) {
