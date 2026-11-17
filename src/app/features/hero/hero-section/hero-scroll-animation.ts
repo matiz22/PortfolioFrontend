@@ -51,20 +51,6 @@ export function animateHeroScroll(root: HTMLElement): gsap.MatchMedia {
     // Follow the actual container-query layout, not an approximate viewport breakpoint.
     const isWide = () => view.getComputedStyle(layout).gridTemplateAreas === '"copy portrait"';
 
-    const atmosphere = root.querySelector<HTMLElement>('.hero-atmosphere');
-    if (atmosphere) {
-      gsap.to(atmosphere, {
-        opacity: 0.5,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: section,
-          start: 'top top',
-          end: 'bottom top',
-          scrub: 0.6,
-        },
-      });
-    }
-
     for (const config of EXIT_LAYERS) {
       const layer = root.querySelector<HTMLElement>(config.selector);
       if (!layer) {

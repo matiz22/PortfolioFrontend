@@ -26,22 +26,12 @@ export class HeroSection {
   private readonly destroyRef = inject(DestroyRef);
   private readonly zone = inject(NgZone);
   private motion?: gsap.MatchMedia;
-  private gradientMotion?: gsap.MatchMedia;
   private scrollMotion?: gsap.MatchMedia;
 
   constructor() {
     afterNextRender(() => {
       this.zone.runOutsideAngular(() => {
         const root = this.element.nativeElement;
-        // Render the static dither on every device; only enable mouse motion when appropriate.
-        void import('./hero-gradient-animation').then(({ animateHeroGradient }) => {
-          if (!this.destroyRef.destroyed && root.isConnected) {
-            this.gradientMotion = animateHeroGradient(root);
-          }
-        }).catch((error: unknown) => {
-          console.warn('Hero gradient interaction could not be loaded.', error);
-        });
-
         if (root.ownerDocument.defaultView?.matchMedia('(prefers-reduced-motion: reduce)').matches) {
           return;
         }
@@ -74,7 +64,6 @@ export class HeroSection {
     this.destroyRef.onDestroy(() => {
       this.scrollMotion?.revert();
       this.motion?.revert();
-      this.gradientMotion?.revert();
     });
   }
 }
