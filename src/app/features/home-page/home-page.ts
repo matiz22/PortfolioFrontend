@@ -11,10 +11,11 @@ import { RealizationsHomeSection } from "../realizations/realizations-home-secti
 import { ProjectsHomeSection } from "../projects/projects-home-section/projects-home-section";
 import { JobTimelineSection } from "../jobs/job-timeline-section/job-timeline-section";
 import { SectionNext } from '../../shared/section-next/section-next';
+import { GrainGradient } from '../../shared/grain-gradient/grain-gradient';
 
 @Component({
   selector: 'app-home-page',
-  imports: [Footer, HeroSection, AboutMeSection, Header, ContactSection, EducationSection, CertificationsSection, RealizationsHomeSection, ProjectsHomeSection, JobTimelineSection, SectionNext],
+  imports: [Footer, HeroSection, AboutMeSection, Header, ContactSection, EducationSection, CertificationsSection, RealizationsHomeSection, ProjectsHomeSection, JobTimelineSection, SectionNext, GrainGradient],
   templateUrl: './home-page.html',
   styleUrl: './home-page.scss',
 })

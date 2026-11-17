@@ -26,6 +26,56 @@ describe('HomePage', () => {
     expect(component).toBeTruthy();
   });
 
+  it('keeps one decorative background outside the main chapter order', () => {
+    const root: HTMLElement = fixture.nativeElement;
+    expect(root.querySelectorAll('.home-page > app-grain-gradient').length).toBe(1);
+    expect(root.querySelector('main app-grain-gradient')).toBeNull();
+  });
+
+  it('frosts every chapter navigation and the closing footer without frosting headings', async () => {
+    const blocks = await fixture.getDeferBlocks();
+    for (const block of blocks) {
+      await block.render(DeferBlockState.Complete);
+    }
+    await fixture.whenStable();
+
+    const root: HTMLElement = fixture.nativeElement;
+    const next = root.querySelectorAll('app-section-next .section-action-chip.glass');
+    expect(next.length).toBe(7);
+    // Archive chips live inside section components, which this test renders as
+    // unknown elements; SectionAction's own spec covers the archive variant.
+    expect(root.querySelector('h1.home-glass, h2.home-glass')).toBeNull();
+    expect(root.querySelector('.hero-portrait .home-glass')).toBeNull();
+  });
+
+  it('lets the same background show through every chapter and the closing area', () => {
+    const root: HTMLElement = fixture.nativeElement;
+    const style = getComputedStyle(root);
+
+    expect(style.getPropertyValue('--home-section-background').trim()).toBe('transparent');
+    expect(style.getPropertyValue('--contact-section-background').trim()).toBe('transparent');
+    expect(getComputedStyle(root.querySelector('.home-closing')!).backgroundColor)
+      .toBe('rgba(0, 0, 0, 0)');
+  });
+
+  it('disables scrolling section noise only inside the homepage', () => {
+    const root: HTMLElement = fixture.nativeElement;
+    const section = document.createElement('section');
+    section.className = 'section-noise';
+    root.querySelector('main')!.appendChild(section);
+
+    expect(getComputedStyle(section, '::before').content).toBe('none');
+
+    const otherPageSection = document.createElement('section');
+    otherPageSection.className = 'section-noise';
+    document.body.appendChild(otherPageSection);
+    try {
+      expect(getComputedStyle(otherPageSection, '::before').content).toBe('""');
+    } finally {
+      otherPageSection.remove();
+    }
+  });
+
   it('keeps contact and the site footer in the same closing chapter', async () => {
     const blocks = await fixture.getDeferBlocks();
     await blocks[blocks.length - 1].render(DeferBlockState.Complete);

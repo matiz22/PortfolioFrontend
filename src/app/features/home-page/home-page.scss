@@ -5,19 +5,26 @@
   --contact-section-padding: var(--home-chapter-space);
   --contact-card-padding: clamp(1.5rem, 2.5vw, 2.5rem);
   --contact-copy-position: static;
+  // All chapters share the fixed gradient and grain; only their content scrolls.
+  --home-section-background: transparent;
+  --contact-section-background: transparent;
+  --section-noise-content: none;
 }
 
 .home-page {
+  position: relative;
+  isolation: isolate;
   display: flex;
   flex-direction: column;
   min-height: 100svh;
+  background: #000;
 }
 
 .home-closing {
   display: flex;
   flex-direction: column;
   min-height: var(--home-showcase-min-height);
-  background: #000;
+  background: var(--home-section-background);
 }
 
 .home-contact,

@@ -172,7 +172,7 @@ body {
 }
 
 .section-noise::before {
-  content: '';
+  content: var(--section-noise-content, '');
   position: absolute;
   inset: 0;
   pointer-events: none;
