@@ -1355,6 +1355,11 @@
     proc-log "^5.0.0"
     which "^5.0.0"
 
+"@paper-design/shaders@0.0.82":
+  version "0.0.82"
+  resolved "https://registry.yarnpkg.com/@paper-design/shaders/-/shaders-0.0.82.tgz#ace6b4d3faf50c8c2303d46db61464be45c4e2a6"
+  integrity sha512-eCxYQrrCxRVc4KG8sLSQecsq8Ymstbaq/FqZjq/fhOa6UiR1ZZfdMO5IJpHmwL0GYmfzvZVQ4l8ZOLux0uLVdg==
+
 "@parcel/watcher-android-arm64@2.5.1":
   version "2.5.1"
   resolved "https://registry.yarnpkg.com/@parcel/watcher-android-arm64/-/watcher-android-arm64-2.5.1.tgz#507f836d7e2042f798c7d07ad19c3546f9848ac1"
