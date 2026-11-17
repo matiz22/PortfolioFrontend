@@ -169,7 +169,7 @@
 
 .realizations-skeleton {
   height: clamp(14rem, 34svh, 18rem);
-  border-radius: 0.75rem;
+  border-radius: var(--radius);
   background: rgb(255 255 255 / 4%);
 }
 

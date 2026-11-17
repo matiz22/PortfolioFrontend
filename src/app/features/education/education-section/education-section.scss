@@ -63,7 +63,7 @@
   display: grid;
   grid-template-columns: clamp(7.5rem, 14vw, 12rem) minmax(0, 1fr);
   border: 1px solid rgb(255 255 255 / 8%);
-  border-radius: 0.75rem;
+  border-radius: var(--radius);
   background: #101010;
   overflow: clip;
   will-change: transform;
@@ -148,7 +148,7 @@
   li {
     padding: 0.15rem 0.5rem;
     border: 1px solid rgb(255 255 255 / 10%);
-    border-radius: 0.25rem;
+    border-radius: var(--radius);
     color: #b9bfb9;
     font-size: 0.6875rem;
     line-height: 1.5;

@@ -89,7 +89,7 @@
 // Only the AI scene sits on glass: the mockups are already self-contained cards.
 // No padding: the workflow measures its own container to place every element.
 .about-ai-visual.home-glass {
-  border-radius: 1rem;
+  border-radius: var(--radius);
   overflow: hidden;
 
   .ai-workflow {
@@ -183,7 +183,7 @@
   }
 
   .about-index.home-glass {
-    border-radius: 1rem;
+    border-radius: var(--radius);
   }
 
   .about-index-inner {
@@ -224,7 +224,7 @@
     &:focus-visible {
       outline: 2px solid var(--color-primary);
       outline-offset: 6px;
-      border-radius: 2px;
+      border-radius: var(--radius);
     }
   }
 
@@ -357,7 +357,7 @@
       justify-content: space-between;
       min-height: 2.75rem;
       padding: 0.5rem 0.75rem;
-      border-radius: 0.5rem;
+      border-radius: var(--radius);
     }
 
     .about-index-title {

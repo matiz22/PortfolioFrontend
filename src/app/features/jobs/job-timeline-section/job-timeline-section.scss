@@ -115,7 +115,7 @@
 
 .jobs-card {
   display: block;
-  border-radius: 0.25rem;
+  border-radius: var(--radius);
   outline-offset: 0.5rem;
   text-decoration: none;
 
@@ -184,7 +184,7 @@
   padding: 0.2rem 0.45rem;
   overflow: hidden;
   border: 1px solid rgb(255 255 255 / 9%);
-  border-radius: 0.2rem;
+  border-radius: var(--radius);
   color: color-mix(in srgb, var(--color-accent) 75%, white);
   font-size: 0.6875rem;
   line-height: 1.3;

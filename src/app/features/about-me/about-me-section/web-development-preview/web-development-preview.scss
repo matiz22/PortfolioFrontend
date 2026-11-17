@@ -88,7 +88,7 @@
 .preview-logo {
   width: 14%;
   height: 60%;
-  border-radius: 2px;
+  border-radius: var(--radius);
   background: var(--color-primary);
 }
 
@@ -99,7 +99,7 @@
   span {
     width: 1.25rem;
     height: 3px;
-    border-radius: 2px;
+    border-radius: var(--radius);
     background: color-mix(in srgb, var(--color-base-content) 20%, transparent);
   }
 }
@@ -137,7 +137,7 @@
 .preview-heading-line {
   height: clamp(3px, 3cqh, 7px);
   width: 90%;
-  border-radius: 2px;
+  border-radius: var(--radius);
   background: color-mix(in srgb, var(--color-base-content) 80%, transparent);
 
   &:last-child {
@@ -148,7 +148,7 @@
 
 .preview-copy-line {
   height: clamp(2px, 1.25cqh, 3px);
-  border-radius: 2px;
+  border-radius: var(--radius);
   background: color-mix(in srgb, var(--color-base-content) 20%, transparent);
 
   &:last-child {
@@ -160,7 +160,7 @@
   width: 32%;
   height: 12%;
   min-height: 4px;
-  border-radius: 3px;
+  border-radius: var(--radius);
   background: var(--color-primary);
 }
 
@@ -170,7 +170,7 @@
   place-items: center;
   overflow: hidden;
   border: 1px solid color-mix(in srgb, var(--color-primary) 20%, transparent);
-  border-radius: 6px;
+  border-radius: var(--radius);
   background: color-mix(in srgb, var(--color-primary) 7%, var(--color-base-200));
 }
 
@@ -178,7 +178,7 @@
   height: 50%;
   aspect-ratio: 1;
   border: 1px solid var(--color-primary);
-  border-radius: 22%;
+  border-radius: var(--radius);
   transform: rotate(-15deg);
   box-shadow: 8px 8px 0 color-mix(in srgb, var(--color-primary) 12%, transparent);
 }
@@ -198,13 +198,13 @@
   gap: 12%;
   padding: 7%;
   border: 1px solid color-mix(in srgb, var(--color-base-content) 8%, transparent);
-  border-radius: 5px;
+  border-radius: var(--radius);
   background: var(--color-base-200);
 }
 
 .preview-card-thumb {
   height: 100%;
-  border-radius: 2px;
+  border-radius: var(--radius);
   background: color-mix(in srgb, var(--color-primary) 18%, transparent);
 }
 
@@ -214,7 +214,7 @@
 
   span {
     height: 2px;
-    border-radius: 2px;
+    border-radius: var(--radius);
     background: color-mix(in srgb, var(--color-base-content) 25%, transparent);
 
     &:last-child {

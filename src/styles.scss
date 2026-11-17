@@ -3,6 +3,22 @@
 @use "./styles/home-glass"; // Dark, readable content surfaces over the homepage shader.
 @plugin "@tailwindcss/typography";
 
+/* Shared corner radius; circles and pills keep their semantic shapes. */
+:root {
+  --radius: 1rem;
+}
+
+@theme inline {
+  --radius-xs: var(--radius);
+  --radius-sm: var(--radius);
+  --radius-md: var(--radius);
+  --radius-lg: var(--radius);
+  --radius-xl: var(--radius);
+  --radius-2xl: var(--radius);
+  --radius-3xl: var(--radius);
+  --radius-4xl: var(--radius);
+}
+
 @plugin "daisyui" {
   themes: dark;
 }
@@ -32,9 +48,9 @@
   --color-warning-content: oklch(41% 0.112 45.904);
   --color-error: oklch(71% 0.194 13.428);
   --color-error-content: oklch(27% 0.105 12.094);
-  --radius-selector: 0.5rem;
-  --radius-field: 0.5rem;
-  --radius-box: 0.75rem;
+  --radius-selector: var(--radius);
+  --radius-field: var(--radius);
+  --radius-box: var(--radius);
   --size-selector: 0.25rem;
   --size-field: 0.28125rem;
   --border: 1px;

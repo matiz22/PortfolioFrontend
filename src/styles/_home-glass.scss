@@ -35,7 +35,7 @@
 
 :root .home-glass.glass.home-copy-panel {
   padding: clamp(1rem, 2vw, 1.5rem);
-  border-radius: 1rem;
+  border-radius: var(--radius);
 }
 
 @media (max-width: 47.999rem) {
@@ -62,7 +62,7 @@
 // Small glass chips: navigation links and pill buttons stay airy on the shader.
 :root .home-glass.home-glass-chip.glass {
   --glass-blur: 10px;
-  border-radius: 0.75rem;
+  border-radius: var(--radius);
   box-shadow: inset 0 1px 0 rgb(255 255 255 / 4%), 0 4px 14px rgb(0 0 0 / 14%);
 
   &:is(:hover, :focus-visible, :focus-within) {
