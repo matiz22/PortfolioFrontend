@@ -2,13 +2,16 @@
   aria-labelledby="realizations-heading">
   <div class="realizations-stage-wrap">
     <div class="realizations-stage">
-      <div class="realizations-text">
+      <div class="realizations-text glass home-glass home-copy-panel">
         <h2 id="realizations-heading"
           class="realizations-heading section-heading realizations-reveal" i18n="@@realizations.heading">Built for real
           businesses.</h2>
-        <p class="realizations-description realizations-reveal glass home-glass home-copy-panel" i18n="@@realizations.description">
+        <p class="realizations-description realizations-reveal" i18n="@@realizations.description">
           Websites and software built for clients, from first idea to launch.
         </p>
+        <a appSectionAction variant="cta" routerLink="/realizations" class="realizations-viewall">
+          <span i18n="@@realizations.viewall">View all realizations</span>
+        </a>
       </div>
 
       <div class="realizations-gallery-panel">
@@ -58,9 +61,6 @@
         }
       </div>
       <app-section-footer class="realizations-next">
-        <a appSectionAction routerLink="/realizations" class="realizations-viewall">
-          <span i18n="@@realizations.viewall">View all realizations</span>
-        </a>
         <ng-content select="[section-next]" />
       </app-section-footer>
     </div>
