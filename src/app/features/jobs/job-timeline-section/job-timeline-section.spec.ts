@@ -97,18 +97,18 @@ describe('JobTimelineSection', () => {
     expect(root.querySelector('[aria-busy="false"]')).not.toBeNull();
   });
 
-  it('keeps tag previews compact and indicates additional tags', async () => {
+  it('shows every technology and skill as a pill', async () => {
+    const technologies = Array.from({ length: 7 }, (_, id) => ({ id, name: `Technology ${id}` }));
+    const skills = Array.from({ length: 5 }, (_, id) => ({ id, name: `Skill ${id}` }));
     state.next(ApiState.success([{
-      ...job,
-      technologies: Array.from({ length: 7 }, (_, id) => ({ id, name: `Technology ${id}` })),
-      skills: Array.from({ length: 5 }, (_, id) => ({ id, name: `Skill ${id}` })),
+      ...job, technologies, skills,
     }]));
     await fixture.whenStable();
 
-    expect(root.querySelectorAll('.jobs-technologies .jobs-tag').length).toBe(5);
-    expect(root.querySelector('.jobs-technologies .jobs-tag-more')?.textContent?.trim()).toBe('+3');
-    expect(root.querySelectorAll('.jobs-skills .jobs-tag').length).toBe(4);
-    expect(root.querySelector('.jobs-skills .jobs-tag-more')?.textContent?.trim()).toBe('+2');
+    expect(Array.from(root.querySelectorAll('.jobs-technologies li'), pill => pill.textContent))
+      .toEqual(technologies.map(tech => tech.name));
+    expect(Array.from(root.querySelectorAll('.jobs-skills li'), pill => pill.textContent))
+      .toEqual(skills.map(skill => skill.name));
   });
 
   it('handles empty collections and missing optional dates and tag groups', async () => {

@@ -28,7 +28,7 @@
             }
         </div>
 
-        <div id="work" data-grain-chapter="work" tabindex="-1">
+        <div id="work" data-grain-chapter="work" tabindex="-1" [style.--home-metadata-accent]="chapterAccents.work">
             @defer (on idle; hydrate on idle) {
             <app-realizations-home-section>
                 <app-section-next section-next targetId="projects">
@@ -40,7 +40,7 @@
             }
         </div>
 
-        <div id="projects" data-grain-chapter="projects" tabindex="-1">
+        <div id="projects" data-grain-chapter="projects" tabindex="-1" [style.--home-metadata-accent]="chapterAccents.projects">
             @defer (on idle; hydrate on idle) {
             <app-projects-home-section>
                 <app-section-next section-next targetId="certifications">
@@ -52,7 +52,8 @@
             }
         </div>
 
-        <div id="certifications" data-grain-chapter="certifications" tabindex="-1">
+        <div id="certifications" data-grain-chapter="certifications" tabindex="-1"
+            [style.--home-metadata-accent]="chapterAccents.certifications">
             @defer (on idle; hydrate on idle) {
             <app-certifications-section>
                 <app-section-next section-next targetId="experience">
@@ -64,7 +65,7 @@
             }
         </div>
 
-        <div id="experience" data-grain-chapter="experience" tabindex="-1">
+        <div id="experience" data-grain-chapter="experience" tabindex="-1" [style.--home-metadata-accent]="chapterAccents.experience">
             @defer (on idle; hydrate on idle) {
             <app-job-timeline-section>
                 <app-section-next section-next targetId="education">
@@ -76,7 +77,7 @@
             }
         </div>
 
-        <div id="education" data-grain-chapter="education" tabindex="-1">
+        <div id="education" data-grain-chapter="education" tabindex="-1" [style.--home-metadata-accent]="chapterAccents.education">
             @defer (on idle; hydrate on idle) {
             <app-education-section>
                 <app-section-next section-next targetId="contact">

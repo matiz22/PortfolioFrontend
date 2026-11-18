@@ -157,34 +157,15 @@
     color: var(--color-primary);
   }
 
-  &:hover .jobs-arrow,
-  &:focus-visible .jobs-arrow {
-    color: var(--color-primary);
-    transform: translate(3px, -3px);
-  }
-
   &:focus-visible {
     outline: 2px solid var(--color-primary);
   }
 }
 
-.jobs-card-top {
-  display: flex;
-  align-items: baseline;
-  gap: 0.75rem;
-  font-size: 0.75rem;
-}
-
 .jobs-company {
   color: rgb(255 255 255 / 85%);
+  font-size: 0.75rem;
   overflow-wrap: anywhere;
-}
-
-.jobs-arrow {
-  margin-left: auto;
-  color: rgb(255 255 255 / 35%);
-  font-size: 1rem;
-  transition: transform 200ms, color 200ms;
 }
 
 .jobs-location {
@@ -195,39 +176,7 @@
 }
 
 .jobs-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.375rem;
   margin-top: 0.5rem;
-}
-
-.jobs-tag {
-  max-width: 100%;
-  padding: 0.2rem 0.45rem;
-  overflow: hidden;
-  border: 1px solid rgb(255 255 255 / 9%);
-  border-radius: var(--radius);
-  color: color-mix(in srgb, var(--color-accent) 75%, white);
-  font-size: 0.6875rem;
-  line-height: 1.3;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.jobs-skills .jobs-tag {
-  border-color: transparent;
-  padding-inline: 0;
-  color: rgb(255 255 255 / 40%);
-
-  & + .jobs-tag::before {
-    content: '/';
-    margin-right: 0.375rem;
-    color: rgb(255 255 255 / 20%);
-  }
-}
-
-.jobs-tag-more {
-  color: rgb(255 255 255 / 40%);
 }
 
 .jobs-state,
@@ -388,7 +337,6 @@
 
 @media (prefers-reduced-motion: reduce) {
   .jobs-card h3,
-  .jobs-arrow,
   .jobs-dot {
     transition: none;
   }

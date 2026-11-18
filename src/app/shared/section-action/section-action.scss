@@ -32,7 +32,7 @@
   transition: color 180ms ease, border-color 180ms ease, background-color 180ms ease;
 }
 
-// The chip wraps the label and arrow inside the moving surface.
+// Keep the chip inside the moving surface so the link's hit area stays stationary.
 .section-action-chip {
   display: inline-flex;
   align-items: center;
@@ -48,10 +48,14 @@
   padding-inline: 1rem;
 }
 
-// The continuation chip needs its own inset so the glass border never
-// sits on the label or arrow.
 :host(.section-action-continue) .section-action-chip {
-  padding-inline: 0.875rem;
+  padding-inline: 1rem;
+}
+
+:host(.section-action-continue:hover) .section-action-chip.glass,
+:host(.section-action-continue:focus-visible) .section-action-chip.glass {
+  border-color: color-mix(in srgb, var(--color-primary) 45%, transparent);
+  color: var(--color-primary);
 }
 
 :host(.section-action-cta) {
@@ -64,7 +68,6 @@
 }
 
 :host(.section-action-cta) .section-action-chip {
-  gap: 0.375rem;
   box-shadow: none;
 }
 
@@ -81,10 +84,6 @@
 .section-action-arrow {
   flex-shrink: 0;
   color: var(--color-primary);
-}
-
-:host(.section-action-cta) .section-action-arrow {
-  color: currentColor;
 }
 
 :host(:is(:hover, :focus-visible)) .section-action-surface {

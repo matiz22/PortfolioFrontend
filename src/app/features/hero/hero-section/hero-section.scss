@@ -95,71 +95,6 @@
     }
 }
 
-.hero-cta {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.75rem;
-    min-height: 3.5rem;
-    padding: 0.75rem 1.25rem;
-    border: 1px solid transparent;
-    border-radius: var(--radius);
-    font-size: 0.8125rem;
-    font-weight: 600;
-    text-decoration: none;
-    transition: transform 200ms ease, background-color 200ms ease, box-shadow 200ms ease;
-
-    &:focus-visible {
-        outline: 2px solid var(--color-primary);
-        outline-offset: 5px;
-    }
-}
-
-.hero-cta-primary {
-    color: var(--color-primary-content);
-    background: var(--color-primary);
-    box-shadow: 0 6px 24px color-mix(in srgb, var(--color-primary) 15%, transparent);
-
-    &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 32px color-mix(in srgb, var(--color-primary) 25%, transparent);
-    }
-
-    &:hover svg,
-    &:focus-visible svg {
-        transform: translate(2px, 2px);
-    }
-}
-
-.hero-cta-icon {
-    display: grid;
-    place-items: center;
-    width: 2rem;
-    height: 2rem;
-    border-radius: 50%;
-    background: color-mix(in srgb, var(--color-primary-content) 10%, transparent);
-
-    svg {
-        transition: transform 200ms ease;
-    }
-}
-
-.hero-cta-secondary {
-    gap: 0.5rem;
-    padding-inline: 0;
-    border-radius: 0;
-    color: var(--color-base-content);
-    font-weight: 400;
-    text-decoration: underline;
-    text-underline-offset: 0.4em;
-    text-decoration-color: color-mix(in srgb, var(--color-base-content) 30%, transparent);
-
-    &:hover {
-        color: var(--color-primary);
-        text-decoration-color: currentColor;
-    }
-}
-
 /* Horizontal blind slats lift in sequence, revealing the portrait beneath. */
 @keyframes blind-lift {
     from {
@@ -195,20 +130,11 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .hero-photo > img,
-    .hero-cta,
-    .hero-cta-icon svg {
+    .hero-photo > img {
         animation: none;
-        transition: none;
     }
 
     .hero-photo-blinds {
         display: none;
-    }
-
-    .hero-cta-primary:hover,
-    .hero-cta-primary:hover svg,
-    .hero-cta-primary:focus-visible svg {
-        transform: none;
     }
 }

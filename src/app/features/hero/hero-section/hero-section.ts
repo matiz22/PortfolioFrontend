@@ -9,11 +9,13 @@ import {
 } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import type { gsap } from 'gsap';
+import { SectionAction } from '../../../shared/section-action/section-action';
 
 @Component({
   selector: 'app-hero-section',
   imports: [
     NgOptimizedImage,
+    SectionAction,
   ],
   templateUrl: './hero-section.html',
   styleUrl: './hero-section.scss',

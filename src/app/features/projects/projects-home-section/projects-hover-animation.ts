@@ -9,11 +9,10 @@ export function animateProjectDrawers(root: HTMLElement, context: gsap.Context):
       const brief = card.querySelector<HTMLElement>('.project-preview-brief');
       const art = card.querySelector<HTMLElement>('.project-preview-art');
       const shade = card.querySelector<HTMLElement>('.project-preview-shade');
-      const arrow = card.querySelector<SVGElement>('.project-preview-arrow');
       const details = card.querySelectorAll<HTMLElement>(
         '.project-preview-description, .project-preview-actions',
       );
-      if (!drawer || !brief || !art || !shade || !arrow) {
+      if (!drawer || !brief || !art || !shade) {
         return () => {};
       }
 
@@ -74,9 +73,6 @@ export function animateProjectDrawers(root: HTMLElement, context: gsap.Context):
             }, open ? 0.1 : 0)
             .to(art, { scale: open ? 1.025 : 1, duration, ease: 'power2.out' }, 0)
             .to(shade, { opacity: open ? 0.12 : 0.25, duration }, 0)
-            .to(arrow, {
-              x: open ? 3 : 0, y: open ? -3 : 0, duration: 0.3, ease: 'power2.out',
-            }, 0)
             .to(card, {
               rotation: open ? -0.3 : 0.18, duration: duration * 0.4, ease: 'sine.out',
             }, 0)

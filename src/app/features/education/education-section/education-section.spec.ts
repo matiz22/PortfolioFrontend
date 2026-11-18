@@ -110,15 +110,39 @@ describe('EducationSection', () => {
     expect(root.querySelector('#education-title-1')?.textContent).toBe(degree.degree);
     expect(root.querySelector('.education-detail-link')?.getAttribute('aria-labelledby'))
       .toBe('education-explore-1 education-title-1');
+    const link = root.querySelector('.education-detail-link')!;
+    expect(link.querySelector('[aria-hidden]')).toBeNull();
+    expect(getComputedStyle(link).textDecorationLine).toBe('underline');
     expect(root.querySelector('article')?.getAttribute('aria-labelledby')).toBe('education-title-1');
     expect(root.querySelector('.education-media img')?.getAttribute('alt')).toBe('');
   });
 
-  it('shows at most six technology tags with a summarised remainder', () => {
+  it('extends the existing detail link over the whole card without adding another tab stop', () => {
+    const root = render(ApiState.success([{ ...degree, thumbnail: '/example.png' }]));
+    const card = root.querySelector('.education-card')!;
+    const links = card.querySelectorAll('a');
+    expect(links.length).toBe(1);
+    expect(links[0].getAttribute('href')).toBe('/education/computer-science');
+    expect(links[0].tabIndex).toBe(0);
+    expect(card.hasAttribute('tabindex')).toBeFalse();
+    expect(getComputedStyle(card).position).toBe('relative');
+    const target = getComputedStyle(links[0], '::after');
+    expect(target.position).toBe('absolute');
+    expect([target.top, target.right, target.bottom, target.left]).toEqual(['0px', '0px', '0px', '0px']);
+  });
+
+  it('shows every technology without a summarised remainder', () => {
     const technologies = Array.from({ length: 8 }, (unused, number) => ({ id: number + 1, name: `Tech ${number + 1}` }));
     const root = render(ApiState.success([{ ...degree, technologies }]));
-    expect(root.querySelectorAll('.education-tags li').length).toBe(7);
-    expect(root.querySelector('.education-tags-more')?.textContent).toBe('2+');
+    expect(Array.from(root.querySelectorAll('.education-tags li'), pill => pill.textContent))
+      .toEqual(technologies.map(tech => tech.name));
+  });
+
+  it('shows skills even when the degree has no technologies', () => {
+    const root = render(ApiState.success([{ ...degree, skills: [{ id: 1, name: 'Research' }] }]));
+    expect(root.querySelector('.education-tags[aria-label="Technologies"]')).toBeNull();
+    expect(root.querySelector('.education-skills[aria-label="Skills"] .home-metadata-pill')?.textContent)
+      .toBe('Research');
   });
 
   it('hides the technology list when a degree has none', () => {

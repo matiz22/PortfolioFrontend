@@ -46,9 +46,7 @@ describe('projects animation', () => {
         <div class="projects-home-slot">
           <div class="projects-home-motion">
             <article class="project-preview">
-              <h3><a href="#project" class="project-preview-title-link">Developer Toolkit
-                <svg class="project-preview-arrow"></svg>
-              </a></h3>
+               <h3><a href="#project" class="project-preview-title-link">Developer Toolkit</a></h3>
               <div class="project-preview-art"></div>
               <div class="project-preview-shade"></div>
               <div class="project-preview-drawer">

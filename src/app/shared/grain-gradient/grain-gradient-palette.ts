@@ -14,6 +14,11 @@ const palettes = {
 
 export const HERO_PALETTE: GrainPalette = palettes.hero;
 
+// Reuse the brighter glow as a stable chapter accent, independent of the scroll blend.
+export const GRAIN_CHAPTER_ACCENTS = Object.fromEntries(
+  Object.entries(palettes).map(([chapter, [, accent]]) => [chapter, `rgb(${accent.join(' ')})`]),
+) as Record<keyof typeof palettes, string>;
+
 function paletteOf(chapter: string): GrainPalette | undefined {
   return Object.hasOwn(palettes, chapter) ? palettes[chapter as keyof typeof palettes] : undefined;
 }

@@ -12,9 +12,7 @@ describe('horizontal project rows', () => {
   function slot(index: number): string {
     return `<div class="projects-home-slot"><div class="projects-home-motion">
       <article class="project-preview">
-        <h3><a href="#project-${index}" class="project-preview-title-link">Project ${index}
-          <svg class="project-preview-arrow"></svg>
-        </a></h3>
+        <h3><a href="#project-${index}" class="project-preview-title-link">Project ${index}</a></h3>
         <div class="project-preview-art"></div><div class="project-preview-shade"></div>
         <div class="project-preview-drawer"><div class="project-preview-brief">
           <p class="project-preview-description">A personal developer project.</p>

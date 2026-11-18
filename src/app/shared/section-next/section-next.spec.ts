@@ -28,7 +28,7 @@ describe('SectionNext', () => {
     expect(link.textContent?.trim()).toBe('Client work');
     expect(link.hasAttribute('role')).toBeFalse();
     expect(link.hasAttribute('tabindex')).toBeFalse();
-    expect(link.querySelector('svg')?.getAttribute('aria-hidden')).toBe('true');
+    expect(link.querySelector('svg')).toBeNull();
   });
 
   it('updates the destination when its input changes', () => {
@@ -51,6 +51,6 @@ describe('SectionNext', () => {
     const style = getComputedStyle(link);
     expect(parseFloat(style.minHeight)).toBeGreaterThanOrEqual(44);
     expect(parseFloat(style.minWidth)).toBeGreaterThanOrEqual(44);
-    expect(getComputedStyle(link.querySelector('svg')!).animationName).toBe('none');
+    expect(getComputedStyle(link.querySelector('.section-action-chip')!).animationName).toBe('none');
   });
 });

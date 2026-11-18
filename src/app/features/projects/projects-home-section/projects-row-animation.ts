@@ -7,7 +7,6 @@ interface RowCard {
   drawer: HTMLElement;
   art: HTMLElement;
   shade: HTMLElement;
-  arrow: SVGElement;
   details: NodeListOf<HTMLElement>;
   originalInert: boolean;
   originalHidden: string | null;
@@ -27,9 +26,8 @@ export function animateProjectRows(root: HTMLElement, context: gsap.Context): ()
         const drawer = card.querySelector<HTMLElement>('.project-preview-drawer');
         const art = card.querySelector<HTMLElement>('.project-preview-art');
         const shade = card.querySelector<HTMLElement>('.project-preview-shade');
-        const arrow = card.querySelector<SVGElement>('.project-preview-arrow');
-        return drawer && art && shade && arrow ? [{
-          card, drawer, art, shade, arrow,
+        return drawer && art && shade ? [{
+          card, drawer, art, shade,
           details: card.querySelectorAll<HTMLElement>('.project-preview-description, .project-preview-actions'),
           originalInert: drawer.inert,
           originalHidden: drawer.getAttribute('aria-hidden'),
@@ -126,10 +124,7 @@ export function animateProjectRows(root: HTMLElement, context: gsap.Context): ()
               duration: open ? 0.28 : 0.18, stagger: 0.035, ease: 'power2.out',
             }, open ? 0.12 : 0)
             .to(item.art, { scale: open ? 1.025 : 1, duration, ease: 'power2.out' }, 0)
-            .to(item.shade, { opacity: open ? 0.12 : 0.25, duration }, 0)
-            .to(item.arrow, {
-              x: open ? 3 : 0, y: open ? -3 : 0, duration: 0.3, ease: 'power2.out',
-            }, 0);
+            .to(item.shade, { opacity: open ? 0.12 : 0.25, duration }, 0);
         }
         if (immediate) {
           transition.progress(1).pause();

@@ -17,7 +17,7 @@
 
   &:hover,
   &:focus-within {
-    border-color: color-mix(in srgb, var(--color-secondary) 50%, transparent);
+    border-color: color-mix(in srgb, var(--color-primary) 50%, transparent);
     background: rgb(255 255 255 / 4%);
   }
 }
@@ -40,16 +40,9 @@
   }
 
   &:focus-visible::after {
-    outline: 2px solid var(--color-secondary);
+    outline: 2px solid var(--color-primary);
     outline-offset: -3px;
   }
-}
-
-.realization-card-heading {
-  display: flex;
-  align-items: baseline;
-  gap: 0.6rem;
-  min-width: 0;
 }
 
 .realization-card-title {
@@ -63,22 +56,9 @@
   transition: color 250ms ease;
 }
 
-.realization-card-arrow {
-  flex-shrink: 0;
-  margin-left: auto;
-  font-size: 0.875rem;
-  transition: transform 250ms ease, color 250ms ease;
-}
-
-.realization-card-link:hover .realization-card-arrow,
-.realization-card-link:focus-within .realization-card-arrow {
-  transform: translate(3px, -3px);
-  color: var(--color-secondary);
-}
-
 .realization-card-link:hover .realization-card-title,
 .realization-card-link:focus-within .realization-card-title {
-  color: var(--color-secondary);
+  color: var(--color-primary);
 }
 
 .realization-card-client {
@@ -99,7 +79,7 @@
 
 .realization-card-client a:hover,
 .realization-card-client a:focus-visible {
-  color: var(--color-secondary);
+  color: var(--color-primary);
 }
 
 .realization-card-location::before {
@@ -149,28 +129,21 @@
   color: color-mix(in srgb, var(--color-base-content) 88%, transparent);
 }
 
-.realization-card-tech {
+.realization-card-metadata {
+  display: grid;
+  gap: 0.375rem;
   margin-top: 0.8rem;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.5625rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: color-mix(in srgb, var(--color-base-content) 75%, transparent);
 }
 
 @media (prefers-reduced-motion: reduce) {
   .realization-card-link,
   .realization-card-title,
-  .realization-card-arrow,
   .realization-card-client a,
   .realization-card-image {
     transition: none;
   }
 
-  .realization-card-link:is(:hover, :focus-within) {
-    .realization-card-image,
-    .realization-card-arrow {
-      transform: none;
-    }
+  .realization-card-link:is(:hover, :focus-within) .realization-card-image {
+    transform: none;
   }
 }

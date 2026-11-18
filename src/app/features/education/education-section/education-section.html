@@ -40,15 +40,11 @@
                   <p class="education-institution">{{ item.institution }}</p>
                   @if (item.technologies.length > 0) {
                   <p class="education-tech" i18n="@@education.technologies">Key technologies</p>
-                  <ul class="education-tags">
-                    @for (tech of item.technologies.slice(0, 6); track tech.id) {
-                    <li>{{ tech.name }}</li>
-                    }
-                    @if (item.technologies.length > 6) {
-                    <li class="education-tags-more" i18n="@@education.moreTags" i18n-title="@@education.moreTags"
-                      title="More technologies">{{ item.technologies.length - 6 }}+</li>
-                    }
-                  </ul>
+                  <ul appHomeMetadataPills class="education-tags" [items]="item.technologies"></ul>
+                  }
+                  @if (item.skills.length > 0) {
+                  <p class="education-tech" i18n="@@home.metadata.skills">Skills</p>
+                  <ul appHomeMetadataPills class="education-tags education-skills" kind="skills" [items]="item.skills"></ul>
                   }
                 </div>
 
@@ -67,10 +63,9 @@
                   @if (item.grade) {
                   <p class="education-grade"><span i18n="@@education.grade">Grade</span> · {{ item.grade }}</p>
                   }
-                  <a class="education-link education-detail-link" [routerLink]="['/education', item.slug]"
+                  <a class="education-link education-detail-link home-text-action" [routerLink]="['/education', item.slug]"
                     [attr.aria-labelledby]="'education-explore-' + item.id + ' education-title-' + item.id">
                     <span [id]="'education-explore-' + item.id" i18n="@@education.explore">Details</span>
-                    <span class="education-link-arrow" aria-hidden="true">↗</span>
                   </a>
                 </div>
               </div>

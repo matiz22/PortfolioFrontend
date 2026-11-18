@@ -45,41 +45,18 @@
               </div>
 
               <a class="jobs-card glass home-glass home-copy-panel" [routerLink]="['/job', job.slug]" [attr.aria-labelledby]="'experience-role-' + job.id">
-                <div class="jobs-card-top">
-                  <span class="jobs-company">{{ job.companyName }}</span>
-                  <span class="jobs-arrow" aria-hidden="true">↗</span>
-                </div>
+                <div class="jobs-company">{{ job.companyName }}</div>
                 <h3 [id]="'experience-role-' + job.id" [title]="job.title">{{ job.title }}</h3>
                 @if (job.location) {
                 <p class="jobs-location">{{ job.location }}</p>
                 }
 
                 @if (job.technologies.length > 0) {
-                <div class="jobs-tags jobs-technologies">
-                  <span class="sr-only" i18n="@@jobs.label.technologies">Technologies:</span>
-                  @for (tech of job.technologies.slice(0, 4); track tech.id) {
-                  <span class="jobs-tag" [title]="tech.name">{{ tech.name }}</span>
-                  }
-                  @if (job.technologies.length > 4) {
-                  <span class="jobs-tag jobs-tag-more" title="More on the role page" i18n-title="@@jobs.moreTags">
-                    +{{ job.technologies.length - 4 }}
-                  </span>
-                  }
-                </div>
+                <ul appHomeMetadataPills class="jobs-tags jobs-technologies" [items]="job.technologies"></ul>
                 }
 
                 @if (job.skills.length > 0) {
-                <div class="jobs-tags jobs-skills">
-                  <span class="sr-only" i18n="@@jobs.label.skills">Skills:</span>
-                  @for (skill of job.skills.slice(0, 3); track skill.id) {
-                  <span class="jobs-tag" [title]="skill.name">{{ skill.name }}</span>
-                  }
-                  @if (job.skills.length > 3) {
-                  <span class="jobs-tag jobs-tag-more" title="More on the role page" i18n-title="@@jobs.moreTags">
-                    +{{ job.skills.length - 3 }}
-                  </span>
-                  }
-                </div>
+                <ul appHomeMetadataPills class="jobs-tags jobs-skills" kind="skills" [items]="job.skills"></ul>
                 }
               </a>
             </li>

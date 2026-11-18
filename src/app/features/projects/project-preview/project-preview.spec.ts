@@ -81,11 +81,34 @@ describe('ProjectPreview', () => {
     expect(root.querySelector('.project-preview-visual')?.contains(drawer)).toBeFalse();
   });
 
-  it('shows a compact stack while preserving the remaining technology names', () => {
+  it('keeps the title arrow-free and drawer actions as underlined text links', () => {
+    expect(root.querySelector('svg, .project-preview-actions [aria-hidden]')).toBeNull();
+    for (const link of root.querySelectorAll<HTMLAnchorElement>('.project-preview-actions a')) {
+      expect(link.classList).toContain('home-text-action');
+      expect(getComputedStyle(link).textDecorationLine).toBe('underline');
+    }
+  });
+
+  it('renders every technology as a visible pill', () => {
     const technologies = root.querySelectorAll('.project-preview-technologies li');
-    expect(technologies.length).toBe(4);
-    expect(technologies[3].textContent).toContain('+1');
-    expect(technologies[3].querySelector('.sr-only')?.textContent).toBe('GSAP');
+    expect(Array.from(technologies).every(pill => pill.classList.contains('home-metadata-pill'))).toBeTrue();
+    expect(Array.from(technologies, pill => pill.textContent))
+      .toEqual(project.technologies.map(technology => technology.name));
+  });
+
+  it('makes room for extra pill rows even in a narrow horizontal caption', async () => {
+    const technologies = Array.from({ length: 12 }, (_, id) => ({ id, name: `Technology ${id}` }));
+    fixture.componentRef.setInput('project', { ...project, technologies });
+    await fixture.whenStable();
+    root.style.width = '180px';
+    root.querySelector('.project-preview')!.classList.add('project-preview-horizontal');
+
+    const caption = root.querySelector('.project-preview-caption')!.getBoundingClientRect();
+    const pills = Array.from(root.querySelectorAll('.project-preview-technologies li'));
+    expect(pills.length).toBe(technologies.length);
+    const last = pills[pills.length - 1].getBoundingClientRect();
+    expect(last.top).toBeGreaterThan(pills[0].getBoundingClientRect().top);
+    expect(last.bottom).toBeLessThanOrEqual(caption.bottom);
   });
 
   it('omits unavailable external actions and renders a missing-thumbnail fallback', async () => {

@@ -210,17 +210,15 @@
   }
 
   .about-index-link {
-    display: grid;
-    grid-template-columns: 1fr 1.25rem;
-    align-items: baseline;
-    column-gap: 1rem;
+    display: block;
     padding-block: 1.1rem;
     color: color-mix(in srgb, var(--color-base-content) 70%, transparent);
     text-decoration: none;
     transition: color 200ms ease;
 
     &[aria-current="step"],
-    &:hover {
+    &:hover,
+    &:focus-visible {
       color: var(--color-primary);
     }
 
@@ -236,21 +234,6 @@
     font-style: italic;
     line-height: 1.12;
     letter-spacing: -0.02em;
-  }
-
-  .about-index-arrow {
-    align-self: center;
-    font-size: 1.125rem;
-    opacity: 0;
-    transform: translate(-4px, 4px);
-    transition: opacity 200ms ease, transform 200ms ease;
-  }
-
-  .about-index-link[aria-current="step"] .about-index-arrow,
-  .about-index-link:hover .about-index-arrow,
-  .about-index-link:focus-visible .about-index-arrow {
-    opacity: 1;
-    transform: none;
   }
 
   .about-panels {
@@ -354,7 +337,6 @@
       position: relative;
       display: flex;
       align-items: center;
-      justify-content: space-between;
       min-height: 2.75rem;
       padding: 0.5rem 0.75rem;
       border-radius: var(--radius);
@@ -364,10 +346,6 @@
       font-size: clamp(0.75rem, 2.5vw, 1rem);
       line-height: 1.25;
       overflow-wrap: anywhere;
-    }
-
-    .about-index-arrow {
-      display: none;
     }
 
     .about-visual {

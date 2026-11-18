@@ -4,23 +4,11 @@
     <h3 class="project-preview-title" [id]="'project-preview-title-' + item.id">
       <a [routerLink]="['/project', item.slug]" class="project-preview-title-link">
         <span>{{ item.title }}</span>
-        <svg class="project-preview-arrow" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-          viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-          <path d="M5 19 19 5M5 5h14v14" />
-        </svg>
       </a>
     </h3>
-    <ul class="project-preview-technologies" aria-label="Technologies" i18n-aria-label="@@projectPreview.technologies">
-      @for (technology of visibleTechnologies(); track technology.id) {
-      <li>{{ technology.name }}</li>
-      }
-      @if (remainingTechnologies()) {
-      <li [title]="remainingTechnologies()">
-        <span aria-hidden="true">+{{ item.technologies.length - visibleTechnologies().length }}</span>
-        <span class="sr-only">{{ remainingTechnologies() }}</span>
-      </li>
-      }
-    </ul>
+    @if (item.technologies.length) {
+    <ul appHomeMetadataPills class="project-preview-technologies" [items]="item.technologies"></ul>
+    }
   </div>
 
   <div class="project-preview-visual">
@@ -43,20 +31,17 @@
     <div class="project-preview-brief">
       <p class="project-preview-description">{{ item.shortDesc }}</p>
       <div class="project-preview-actions">
-        <a [routerLink]="['/project', item.slug]" class="project-preview-action project-preview-action-primary">
+        <a [routerLink]="['/project', item.slug]" class="project-preview-action home-text-action">
           <span i18n="@@projectPreview.viewProject">View project</span>
-          <span aria-hidden="true">↗</span>
         </a>
         @if (item.liveUrl) {
-        <a [href]="item.liveUrl" class="project-preview-action" target="_blank" rel="noopener noreferrer">
+        <a [href]="item.liveUrl" class="project-preview-action home-text-action" target="_blank" rel="noopener noreferrer">
           <span i18n="@@projectPreview.liveDemo">Live demo</span>
-          <span aria-hidden="true">↗</span>
         </a>
         }
         @if (item.repoUrl) {
-        <a [href]="item.repoUrl" class="project-preview-action" target="_blank" rel="noopener noreferrer">
+        <a [href]="item.repoUrl" class="project-preview-action home-text-action" target="_blank" rel="noopener noreferrer">
           <span i18n="@@projectPreview.source">Source</span>
-          <span aria-hidden="true">↗</span>
         </a>
         }
       </div>

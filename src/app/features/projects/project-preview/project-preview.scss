@@ -18,6 +18,10 @@
   &:hover,
   &:focus-within {
     border-color: color-mix(in srgb, var(--color-primary) 45%, transparent);
+
+    .project-preview-title-link {
+      color: var(--color-primary);
+    }
   }
 }
 
@@ -112,25 +116,8 @@
 .project-preview-action {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
   min-height: 2.75rem;
-  color: rgb(255 255 255 / 80%);
   font-size: 0.6875rem;
-  text-decoration: none;
-
-  &:hover {
-    color: var(--color-primary);
-  }
-
-  &:focus-visible {
-    outline: 2px solid var(--color-primary);
-    outline-offset: 4px;
-    border-radius: var(--radius);
-  }
-}
-
-.project-preview-action-primary {
-  color: var(--color-primary);
 }
 
 .project-preview-caption {
@@ -147,13 +134,11 @@
 }
 
 .project-preview-title-link {
-  display: flex;
-  align-items: start;
-  justify-content: space-between;
-  gap: 1rem;
+  display: block;
   color: var(--color-base-content);
   text-decoration: none;
   overflow-wrap: anywhere;
+  transition: color 200ms ease;
 
   // Stretch only the project link, keeping demo/source links as siblings.
   &::after {
@@ -174,35 +159,15 @@
   }
 }
 
-.project-preview-arrow {
-  flex-shrink: 0;
-  width: 1.25rem;
-  height: 1.25rem;
-  margin-top: 0.2rem;
-  color: var(--color-primary);
-}
-
 .project-preview-technologies {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem 1rem;
-  margin: 1rem 0 0;
-  padding: 0;
-  list-style: none;
-  color: rgb(255 255 255 / 75%);
-  font-size: 0.625rem;
-  line-height: 1.7;
-
-  li {
-    overflow-wrap: anywhere;
-  }
+  margin-top: 0.625rem;
 }
 
 .project-preview-horizontal {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  grid-template-rows: minmax(0, 1fr) 9rem;
-  height: 27rem;
+  grid-template-rows: minmax(12rem, 1fr) minmax(9rem, auto);
+  min-height: 27rem;
 
   .project-preview-visual {
     grid-area: 1 / 1;
@@ -213,7 +178,6 @@
   .project-preview-caption {
     grid-area: 2 / 1;
     min-width: 0;
-    overflow: hidden;
     padding: 1.25rem;
   }
 
@@ -261,7 +225,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .project-preview {
+  .project-preview,
+  .project-preview-title-link {
     transition: none;
   }
 }

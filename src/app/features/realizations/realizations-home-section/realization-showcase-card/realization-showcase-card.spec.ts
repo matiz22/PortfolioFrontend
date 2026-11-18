@@ -36,8 +36,26 @@ describe('RealizationShowcaseCard', () => {
   it('presents the work without decorative numbering', () => {
     expect(root.querySelector('h3')?.textContent).toContain(realization.title);
     expect(root.querySelector('.realization-card-number')).toBeNull();
+    expect(root.querySelector('.realization-card-arrow, h3 svg')).toBeNull();
     expect(root.querySelector('.realization-card-desc')?.textContent).toBe(realization.shortDesc);
     expect(root.querySelector('img')?.getAttribute('src')).toBe(realization.thumbnail);
+  });
+
+  it('renders the tech stack and available skills as separate pill groups', () => {
+    const technologies = [
+      ...realization.technologies, { id: 2, name: 'TypeScript' }, { id: 3, name: 'GSAP' },
+      { id: 4, name: 'Sass' },
+    ];
+    fixture.componentRef.setInput('realization', { ...realization, technologies, skills: [
+      { id: 1, name: 'Accessibility' },
+    ] });
+    fixture.detectChanges();
+    const metadata = root.querySelector('.realization-card-metadata')!;
+    const stack = metadata.querySelector('[aria-label="Technologies"]')!;
+    expect(Array.from(stack.querySelectorAll('.home-metadata-pill'), pill => pill.textContent))
+      .toEqual(technologies.map(tech => tech.name));
+    expect(metadata.querySelector('[aria-label="Skills"] .home-metadata-pill')?.textContent)
+      .toBe('Accessibility');
   });
 
   it('keeps the whole-card detail link separate from the external client link', () => {

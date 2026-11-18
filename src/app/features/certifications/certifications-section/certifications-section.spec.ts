@@ -90,6 +90,7 @@ describe('CertificationsSection', () => {
     expect(root.querySelector('.certifications-wall')?.getAttribute('data-count')).toBe('2');
     expect(root.querySelector('.certifications-wall')?.getAttribute('aria-busy')).toBe('false');
     expect(root.querySelector('.certificate-caption')?.textContent).toContain('Example Academy');
+    expect(root.querySelector('.certificate-caption [aria-hidden].certificate-caption-arrow')).toBeNull();
     expect(root.querySelector('.certificate-index')).toBeNull();
     expect(root.querySelector('time')?.getAttribute('datetime')).toBe('2025-06-12');
   });
@@ -101,6 +102,21 @@ describe('CertificationsSection', () => {
     const link = root.querySelector('.certificate-link')!;
     expect(link.getAttribute('aria-labelledby')).toBe('certificate-title-1');
     expect(root.querySelector('#certificate-title-1')?.textContent).toBe(certificate.name);
+    expect(root.querySelector('.certificate-metadata')).toBeNull();
+  });
+
+  it('pairs available technology and skill pills with the certificate metadata', () => {
+    const root = render(ApiState.success([{
+      ...certificate,
+      technologies: [{ id: 1, name: 'Angular' }],
+      skills: [{ id: 2, name: 'Testing' }],
+    }]));
+    const metadata = root.querySelector('.certificate-metadata')!;
+    expect(metadata.querySelector('[aria-label="Technologies"] .home-metadata-pill')?.textContent)
+      .toBe('Angular');
+    expect(metadata.querySelector('[aria-label="Skills"] .home-metadata-pill')?.textContent)
+      .toBe('Testing');
+    expect(root.querySelector('.certificate-link')?.getAttribute('aria-describedby')).toBe('certificate-meta-1');
   });
 
   it('shows uncropped artwork and falls back when the image fails', () => {

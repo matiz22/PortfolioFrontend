@@ -2,6 +2,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, DeferBlockBehavior, DeferBlockState, TestBed } from '@angular/core/testing';
 
 import { HomePage } from './home-page';
+import { GRAIN_CHAPTER_ACCENTS } from '../../shared/grain-gradient/grain-gradient-palette';
 import { SectionNext } from '../../shared/section-next/section-next';
 
 describe('HomePage', () => {
@@ -120,6 +121,17 @@ describe('HomePage', () => {
       expect(chapter.getAttribute('tabindex')).toBe('-1');
       expect(getComputedStyle(chapter).scrollMarginTop).toBe('96px');
     }
+  });
+
+  it('sets stable metadata accents on only the five portfolio chapters before hydration', () => {
+    const root: HTMLElement = fixture.nativeElement;
+    const chapters = ['work', 'projects', 'certifications', 'experience', 'education'] as const;
+    for (const chapter of chapters) {
+      expect(root.querySelector<HTMLElement>(`#${chapter}`)?.style.getPropertyValue('--home-metadata-accent'))
+        .toBe(GRAIN_CHAPTER_ACCENTS[chapter]);
+    }
+    expect(root.querySelectorAll('[data-grain-chapter][style*="--home-metadata-accent"]').length)
+      .toBe(chapters.length);
   });
 
   it('links each chapter to the next one without changing the section order', async () => {

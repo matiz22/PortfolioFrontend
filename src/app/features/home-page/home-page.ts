@@ -12,6 +12,7 @@ import { ProjectsHomeSection } from "../projects/projects-home-section/projects-
 import { JobTimelineSection } from "../jobs/job-timeline-section/job-timeline-section";
 import { SectionNext } from '../../shared/section-next/section-next';
 import { GrainGradient } from '../../shared/grain-gradient/grain-gradient';
+import { GRAIN_CHAPTER_ACCENTS } from '../../shared/grain-gradient/grain-gradient-palette';
 
 @Component({
   selector: 'app-home-page',
@@ -20,6 +21,7 @@ import { GrainGradient } from '../../shared/grain-gradient/grain-gradient';
   styleUrl: './home-page.scss',
 })
 export class HomePage implements OnInit {
+  protected readonly chapterAccents = GRAIN_CHAPTER_ACCENTS;
   private readonly document = inject(DOCUMENT);
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly viewportScroller = inject(ViewportScroller);

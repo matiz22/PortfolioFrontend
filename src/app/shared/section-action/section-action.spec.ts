@@ -45,7 +45,7 @@ describe('SectionAction', () => {
     expect(link.classList).not.toContain('section-action-archive');
     expect(link.querySelector('.section-action-chip')?.classList.contains('glass')).toBeFalse();
     expect(getComputedStyle(surface).backgroundColor).toBe('rgba(0, 0, 0, 0)');
-    expect(link.querySelector('path')?.getAttribute('d')).toContain('12 4');
+    expect(link.querySelector('svg')).toBeNull();
   });
 
   it('reserves a stationary hit area around its non-interactive motion surface', () => {
@@ -67,6 +67,6 @@ describe('SectionAction', () => {
     expect(chip.classList).toContain('btn-primary');
     expect(chip.classList).not.toContain('glass');
     expect(getComputedStyle(chip).pointerEvents).toBe('none');
-    expect(chip.querySelector('path')?.getAttribute('d')).toContain('M5 12h14');
+    expect(chip.querySelector('svg')).toBeNull();
   });
 });

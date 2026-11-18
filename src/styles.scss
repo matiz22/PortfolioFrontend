@@ -93,6 +93,25 @@ body {
   font-family: "JetBrains Mono", monospace;
 }
 
+/* Quiet, text-only actions inside homepage cards. */
+.home-text-action {
+  color: var(--color-base-content);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
+  text-underline-offset: 0.25em;
+
+  &:is(:hover, :focus-visible) {
+    color: var(--color-primary);
+    text-decoration-color: currentColor;
+  }
+
+  &:focus-visible {
+    border-radius: 0.125rem;
+    outline: 2px solid var(--color-primary);
+    outline-offset: 0.25rem;
+  }
+}
+
 /* Fade-in Animation to prevent flickering */
 @keyframes fadeIn {
   from {
