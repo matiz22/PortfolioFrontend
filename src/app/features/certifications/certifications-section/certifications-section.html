@@ -1,13 +1,15 @@
 <section class="certifications-section section-noise" id="certifications"
   aria-labelledby="certifications-heading">
   <div class="certifications-shell">
-    <header class="certifications-header">
+    <header class="certifications-header glass home-glass home-copy-panel">
       <h2 id="certifications-heading" class="section-heading" i18n="@@certifications.heading">
         Certifications</h2>
-      <p class="glass home-glass home-copy-panel" i18n="@@certifications.description">
-        A collection of my professional certifications and achievements, validating my commitment to
-        continuous learning and excellence.
+      <p i18n="@@certifications.description">
+        Credentials I’ve earned through training and professional development.
       </p>
+      <a appSectionAction variant="cta" routerLink="/certifications" class="certifications-viewall">
+        <span i18n="@@certifications.viewall">View all certifications</span>
+      </a>
     </header>
 
     @let state = certifications();
@@ -43,9 +45,6 @@
     </div>
 
     <app-section-footer class="certifications-footer">
-      <a appSectionAction routerLink="/certifications" class="certifications-viewall">
-        <span i18n="@@certifications.viewall">View all certifications</span>
-      </a>
       <ng-content select="[section-next]" />
     </app-section-footer>
   </div>

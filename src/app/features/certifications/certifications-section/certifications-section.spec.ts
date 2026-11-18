@@ -60,6 +60,17 @@ describe('CertificationsSection', () => {
     expect(service.getHomeSummaryItems).toHaveBeenCalledTimes(1);
   });
 
+  it('groups the intro and primary catalogue CTA in one glass panel above the wall', () => {
+    const root = fixture.nativeElement as HTMLElement;
+    const header = root.querySelector('.certifications-header')!;
+
+    expect(header.classList).toContain('home-copy-panel');
+    expect(header.querySelector('#certifications-heading')).not.toBeNull();
+    expect(header.querySelector('p')?.classList).not.toContain('glass');
+    expect(header.querySelector('.certifications-viewall')?.classList).toContain('section-action-cta');
+    expect(header.nextElementSibling?.classList).toContain('certifications-wall');
+  });
+
   it('reserves document space and announces loading', () => {
     const root = fixture.nativeElement as HTMLElement;
     expect(root.querySelector('.certifications-wall')?.getAttribute('aria-busy')).toBe('true');
