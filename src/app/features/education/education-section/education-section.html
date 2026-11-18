@@ -1,10 +1,13 @@
 <section class="education-section" id="education" aria-labelledby="education-heading">
   <div class="education-shell">
-    <header class="education-header">
+    <header class="education-header glass home-glass home-copy-panel">
       <h2 id="education-heading" class="section-heading" i18n="@@education.heading">Education</h2>
-      <p class="glass home-glass home-copy-panel" i18n="@@education.description">
-        My academic background and the foundations of my knowledge in computer science and software engineering.
+      <p i18n="@@education.description">
+        My studies in computer science and software engineering.
       </p>
+      <a appSectionAction variant="cta" routerLink="/education" class="education-viewall">
+        <span i18n="@@education.viewall">View academic record</span>
+      </a>
     </header>
 
     @let state = education();
@@ -88,9 +91,6 @@
     </div>
 
     <app-section-footer class="education-footer">
-      <a appSectionAction routerLink="/education">
-        <span i18n="@@education.viewall">View all education</span>
-      </a>
       <ng-content select="[section-next]" />
     </app-section-footer>
   </div>

@@ -66,6 +66,19 @@ describe('EducationSection', () => {
     expect(service.getHomeSummaryItems).toHaveBeenCalledTimes(1);
   });
 
+  it('places the primary academic record link inside the glass intro panel', () => {
+    const root = fixture.nativeElement as HTMLElement;
+    const header = root.querySelector('.education-header')!;
+    const link = header.querySelector('.education-viewall');
+
+    expect(header.classList).toContain('home-copy-panel');
+    expect(header.querySelector('#education-heading')).not.toBeNull();
+    expect(header.querySelector('p')?.classList).not.toContain('glass');
+    expect(link?.classList).toContain('section-action-cta');
+    expect(link?.getAttribute('href')).toBe('/education');
+    expect(header.nextElementSibling?.classList).toContain('education-record');
+  });
+
   it('reserves space for the cards and announces loading', () => {
     const root = fixture.nativeElement as HTMLElement;
     expect(root.querySelector('.education-record')?.getAttribute('aria-busy')).toBe('true');
@@ -145,7 +158,7 @@ describe('EducationSection', () => {
   it('renders the empty state and preserves the catalogue link', () => {
     const root = render(ApiState.success([]));
     expect(root.querySelector('.education-state')?.textContent).toContain('New chapters');
-    expect(root.querySelector('.education-footer a')?.getAttribute('href')).toBe('/education');
+    expect(root.querySelector('.education-viewall')?.getAttribute('href')).toBe('/education');
     expect(root.querySelector('.education-entry')).toBeNull();
   });
 
