@@ -1,5 +1,5 @@
 .realizations-section {
-  --realizations-inset: clamp(1.5rem, 4vw, 4rem);
+  --realizations-inset: var(--home-showcase-inset, clamp(1.5rem, 4vw, 4rem));
   scroll-margin-top: 6rem;
   border-top: 1px solid rgb(255 255 255 / 6%);
   background: var(--home-section-background, #080b0a);
@@ -177,7 +177,7 @@
   // Give the work twice the space of the introduction, without fixed widths.
   .realizations-stage {
     grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
-    max-width: 88rem;
+    max-width: var(--home-showcase-width, 88rem);
     margin-inline: auto;
   }
 
