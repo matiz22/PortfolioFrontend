@@ -1,5 +1,5 @@
-import { Component, OnInit, inject } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
+import { Component, ElementRef, OnInit, inject } from '@angular/core';
+import { DOCUMENT, ViewportScroller } from '@angular/common';
 import { Footer } from "../../shared/footer/footer";
 import { HeroSection } from "../hero/hero-section/hero-section";
 import { AboutMeSection } from "../about-me/about-me-section/about-me-section";
@@ -21,11 +21,20 @@ import { GrainGradient } from '../../shared/grain-gradient/grain-gradient';
 })
 export class HomePage implements OnInit {
   private readonly document = inject(DOCUMENT);
-
-  constructor() { }
+  private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
+  private readonly viewportScroller = inject(ViewportScroller);
 
   ngOnInit(): void {
     this.addHreflangLinks();
+    // Router-driven fragment restoration should land where native links do.
+    this.viewportScroller.setOffset(() => {
+      const chapter = this.host.nativeElement.querySelector<HTMLElement>('[data-grain-chapter]');
+      const view = this.document.defaultView;
+      const offset = view && chapter?.isConnected
+        ? parseFloat(view.getComputedStyle(chapter).scrollMarginTop) || 0
+        : 0;
+      return [0, offset];
+    });
   }
 
   private addHreflangLinks(): void {

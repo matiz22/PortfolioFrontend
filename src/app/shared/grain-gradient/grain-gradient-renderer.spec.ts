@@ -26,8 +26,7 @@ describe('grain gradient renderer fallback', () => {
     const context = spyOn(HTMLCanvasElement.prototype, 'getContext').and.returnValue(null);
     const mounting = mountGrainGradient(surface, root);
     root.remove();
-    const dispose = await mounting;
-    dispose();
+    await expectAsync(mounting).toBeResolvedTo(undefined);
 
     expect(context).not.toHaveBeenCalled();
     expect(surface.querySelector('canvas')).toBeNull();

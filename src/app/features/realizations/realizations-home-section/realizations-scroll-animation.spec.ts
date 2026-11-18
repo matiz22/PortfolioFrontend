@@ -105,7 +105,7 @@ describe('realizations navigation without a numeric counter', () => {
       window.dispatchEvent(new Event('scroll'));
       gsap.getTweensOf(gallery).forEach((tween) => tween.progress(1));
     };
-    top = -864; // 324px leading hold + 540px horizontal overflow.
+    top = -702; // 162px leading hold + 540px horizontal overflow.
     finishScroll();
     expect(edgeAlpha()).toBe(1);
     top = 0;

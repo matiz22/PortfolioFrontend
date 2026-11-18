@@ -2,89 +2,98 @@
     <app-grain-gradient></app-grain-gradient>
 
     <!-- Header -->
-    <app-header></app-header>
+    <app-header [homeSections]="true"></app-header>
 
     <!-- Main Content -->
     <main>
         <!-- Hero Section -->
-        <app-hero-section>
-            <app-section-next section-next targetId="about">
-                <span i18n="@@home.next.about">About me</span>
-            </app-section-next>
-        </app-hero-section>
+        <div id="home" data-grain-chapter="hero" tabindex="-1">
+            <app-hero-section>
+                <app-section-next section-next targetId="about">
+                    <span i18n="@@home.next.about">About me</span>
+                </app-section-next>
+            </app-hero-section>
+        </div>
 
-        <!-- About Section -->
-        @defer (on idle; hydrate on idle) {
-        <app-about-me-section>
-            <app-section-next section-next targetId="work">
-                <span i18n="@@home.next.work">Client work</span>
-            </app-section-next>
-        </app-about-me-section>
-        } @placeholder {
-        <div class="min-h-64"></div>
-        }
+        <!-- Keep the anchor and chapter bounds outside the lazy content. -->
+        <div id="about" data-grain-chapter="about" tabindex="-1">
+            @defer (on idle; hydrate on idle) {
+            <app-about-me-section>
+                <app-section-next section-next targetId="work">
+                    <span i18n="@@home.next.work">Client work</span>
+                </app-section-next>
+            </app-about-me-section>
+            } @placeholder {
+            <div class="min-h-64"></div>
+            }
+        </div>
 
-      <!-- Realizations Section (featured client work) -->
-        @defer (on idle; hydrate on idle) {
-        <app-realizations-home-section>
-            <app-section-next section-next targetId="projects">
-                <span i18n="@@home.next.projects">Projects</span>
-            </app-section-next>
-        </app-realizations-home-section>
-        } @placeholder {
-        <div class="min-h-64"></div>
-        }
+        <div id="work" data-grain-chapter="work" tabindex="-1">
+            @defer (on idle; hydrate on idle) {
+            <app-realizations-home-section>
+                <app-section-next section-next targetId="projects">
+                    <span i18n="@@home.next.projects">Projects</span>
+                </app-section-next>
+            </app-realizations-home-section>
+            } @placeholder {
+            <div class="min-h-64"></div>
+            }
+        </div>
 
-        <!-- Projects Section -->
-        @defer (on idle; hydrate on idle) {
-        <app-projects-home-section>
-            <app-section-next section-next targetId="certifications">
-                <span i18n="@@home.next.certificates">Certificates</span>
-            </app-section-next>
-        </app-projects-home-section>
-        } @placeholder {
-        <div class="min-h-64"></div>
-        }
+        <div id="projects" data-grain-chapter="projects" tabindex="-1">
+            @defer (on idle; hydrate on idle) {
+            <app-projects-home-section>
+                <app-section-next section-next targetId="certifications">
+                    <span i18n="@@home.next.certificates">Certificates</span>
+                </app-section-next>
+            </app-projects-home-section>
+            } @placeholder {
+            <div class="min-h-64"></div>
+            }
+        </div>
 
-        <!-- Certificates Section -->
-        @defer (on idle; hydrate on idle) {
-        <app-certifications-section>
-            <app-section-next section-next targetId="experience">
-                <span i18n="@@home.next.experience">Experience</span>
-            </app-section-next>
-        </app-certifications-section>
-        } @placeholder {
-        <div class="min-h-64"></div>
-        }
+        <div id="certifications" data-grain-chapter="certifications" tabindex="-1">
+            @defer (on idle; hydrate on idle) {
+            <app-certifications-section>
+                <app-section-next section-next targetId="experience">
+                    <span i18n="@@home.next.experience">Experience</span>
+                </app-section-next>
+            </app-certifications-section>
+            } @placeholder {
+            <div class="min-h-64"></div>
+            }
+        </div>
 
-        <!-- Experience Section (Jobs Timeline) -->
-        @defer (on idle; hydrate on idle) {
-        <app-job-timeline-section>
-            <app-section-next section-next targetId="education">
-                <span i18n="@@home.next.education">Education</span>
-            </app-section-next>
-        </app-job-timeline-section>
-        } @placeholder {
-        <div class="min-h-64"></div>
-        }
+        <div id="experience" data-grain-chapter="experience" tabindex="-1">
+            @defer (on idle; hydrate on idle) {
+            <app-job-timeline-section>
+                <app-section-next section-next targetId="education">
+                    <span i18n="@@home.next.education">Education</span>
+                </app-section-next>
+            </app-job-timeline-section>
+            } @placeholder {
+            <div class="min-h-64"></div>
+            }
+        </div>
 
-        <!-- Education Section -->
-        @defer (on idle; hydrate on idle) {
-        <app-education-section>
-            <app-section-next section-next targetId="contact">
-                <span i18n="@@home.next.contact">Let’s talk</span>
-            </app-section-next>
-        </app-education-section>
-        } @placeholder {
-        <div class="min-h-64"></div>
-        }
+        <div id="education" data-grain-chapter="education" tabindex="-1">
+            @defer (on idle; hydrate on idle) {
+            <app-education-section>
+                <app-section-next section-next targetId="contact">
+                    <span i18n="@@home.next.contact">Let’s talk</span>
+                </app-section-next>
+            </app-education-section>
+            } @placeholder {
+            <div class="min-h-64"></div>
+            }
+        </div>
 
     </main>
 
     <!-- Contact and site footer form one closing chapter. -->
-    <div class="home-closing">
+    <div id="contact" class="home-closing" data-grain-chapter="contact" tabindex="-1">
         @defer (on idle; hydrate on idle) {
-        <app-contact-section class="home-contact" [glass]="true"></app-contact-section>
+        <app-contact-section class="home-contact" [glass]="true" [sectionId]="null"></app-contact-section>
         } @placeholder {
         <div class="home-contact-placeholder" aria-hidden="true"></div>
         }

@@ -1,25 +1,32 @@
+<ng-template #navLinks let-linkClass let-itemClass="itemClass">
+  @for (link of navigation(); track link.chapter) {
+    <li [class]="itemClass">
+      @if (homeSections()) {
+        <a [href]="'#' + link.chapter" [class]="linkClass">{{ link.label }}</a>
+      } @else {
+        <a [routerLink]="[link.route]" [class]="linkClass">{{ link.label }}</a>
+      }
+    </li>
+  }
+</ng-template>
+
 <div class="fixed top-0 left-0 right-0 z-[9999] flex justify-center pointer-events-none">
   <nav
     class="mt-4 w-full max-w-[95%] lg:w-fit bg-base-200/80 backdrop-blur-xl border border-primary/30 text-base-content py-2 rounded-full pointer-events-auto transition-colors duration-300 overflow-visible">
     <div class="max-w-7xl mx-auto px-6 flex justify-between items-center gap-10">
-      <a [routerLink]="['/']" title="Mateusz Malich - Home" class="pl-2">
+      <ng-template #brand>
         <span class="block font-serif italic text-xl text-base-content hover:text-primary transition-colors">Malich.dev</span>
-      </a>
+      </ng-template>
+      @if (homeSections()) {
+        <a href="#home" title="Mateusz Malich - Home" class="pl-2"><ng-container *ngTemplateOutlet="brand" /></a>
+      } @else {
+        <a [routerLink]="['/']" title="Mateusz Malich - Home" class="pl-2"><ng-container *ngTemplateOutlet="brand" /></a>
+      }
 
       <!-- Desktop Navigation -->
       <div class="hidden lg:flex items-center space-x-2">
         <ul class="flex items-center space-x-1 list-none m-0 p-0 text-xs font-medium">
-          <li><a [routerLink]="['/projects']" i18n="@@header.nav.projects" title="Projects"
-              class="px-4 py-2 rounded-full text-base-content/70 hover:text-primary hover:bg-white/5 transition-all uppercase tracking-widest">Projects</a></li>
-          <li><a [routerLink]="['/realizations']" i18n="@@header.nav.realizations" title="Realizations"
-              class="px-4 py-2 rounded-full text-base-content/70 hover:text-primary hover:bg-white/5 transition-all uppercase tracking-widest">Realizations</a>
-          </li>
-          <li><a [routerLink]="['/education']" i18n="@@header.nav.education" title="Education"
-              class="px-4 py-2 rounded-full text-base-content/70 hover:text-primary hover:bg-white/5 transition-all uppercase tracking-widest">Education</a></li>
-          <li><a [routerLink]="['/certifications']" i18n="@@header.nav.certificates" title="Certifications"
-              class="px-4 py-2 rounded-full text-base-content/70 hover:text-primary hover:bg-white/5 transition-all uppercase tracking-widest">Certificates</a></li>
-          <li><a [routerLink]="['/jobs']" i18n="@@header.nav.jobs" title="Work Experience"
-              class="px-4 py-2 rounded-full text-base-content/70 hover:text-primary hover:bg-white/5 transition-all uppercase tracking-widest">Jobs</a></li>
+          <ng-container *ngTemplateOutlet="navLinks; context: { $implicit: 'px-4 py-2 rounded-full text-base-content/70 hover:text-primary hover:bg-white/5 transition-colors uppercase tracking-widest' }" />
         </ul>
         <app-languages-switcher class="ml-4 flex-shrink-0 self-center" />
       </div>
@@ -37,16 +44,7 @@
               </summary>
 
               <ul class="fixed top-20 left-0 right-0 bg-base-200/98 backdrop-blur-3xl border-b border-white/10 text-base-content z-[999] shadow-[0_30px_60px_rgba(0,0,0,0.6)] p-4 flex flex-col gap-1 animate-fade-in">
-                <li class="w-full"><a [routerLink]="['/projects']" i18n="@@header.nav.projects" title="Projects"
-                    class="block py-4 px-8 rounded-2xl hover:bg-primary/10 hover:text-primary transition-colors text-lg font-medium whitespace-nowrap">Projects</a></li>
-                <li class="w-full"><a [routerLink]="['/realizations']" i18n="@@header.nav.realizations" title="Realizations"
-                    class="block py-4 px-8 rounded-2xl hover:bg-primary/10 hover:text-primary transition-colors text-lg font-medium whitespace-nowrap">Realizations</a></li>
-                <li class="w-full"><a [routerLink]="['/education']" i18n="@@header.nav.education" title="Education"
-                    class="block py-4 px-8 rounded-2xl hover:bg-primary/10 hover:text-primary transition-colors text-lg font-medium whitespace-nowrap">Education</a></li>
-                <li class="w-full"><a [routerLink]="['/certifications']" i18n="@@header.nav.certifications" title="Certifications"
-                    class="block py-4 px-8 rounded-2xl hover:bg-primary/10 hover:text-primary transition-colors text-lg font-medium whitespace-nowrap">Certifications</a></li>
-                <li class="w-full"><a [routerLink]="['/jobs']" i18n="@@header.nav.jobs" title="Work Experience"
-                    class="block py-4 px-8 rounded-2xl hover:bg-primary/10 hover:text-primary transition-colors text-lg font-medium whitespace-nowrap">Jobs</a></li>
+                <ng-container *ngTemplateOutlet="navLinks; context: { $implicit: 'block py-4 px-8 rounded-2xl hover:bg-primary/10 hover:text-primary transition-colors text-lg font-medium whitespace-nowrap', itemClass: 'w-full' }" />
                 <li class="border-t border-white/5 mt-4 pt-4 px-6 w-full">
                   <app-languages-switcher mode="inline" />
                 </li>

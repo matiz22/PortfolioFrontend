@@ -6,6 +6,7 @@ gsap.registerPlugin(ScrollTrigger);
 const READING_HOLD = 1;
 const TRANSITION_DURATION = 0.24;
 const SERVICE_STEP = READING_HOLD + TRANSITION_DURATION;
+const SCROLL_DISTANCE_SCALE = 0.65;
 
 export function animateAboutMeScroll(root: HTMLElement): gsap.MatchMedia {
   const motion = gsap.matchMedia();
@@ -100,9 +101,8 @@ export function animateAboutMeScroll(root: HTMLElement): gsap.MatchMedia {
       trigger: stage,
       animation: timeline,
       start: 'top 96px',
-      // Each hold gets one viewport of scrolling, with extra distance for
-      // transitions. Preserve the existing stage sizing and navigation clearance.
-      end: () => `+=${Math.round(timeline.duration() * (stage.offsetHeight + 96))}`,
+      // Keep each service readable without requiring a full viewport of travel per hold.
+      end: () => `+=${Math.round(timeline.duration() * (stage.offsetHeight + 96) * SCROLL_DISTANCE_SCALE)}`,
       pin: true,
       scrub: true,
       invalidateOnRefresh: true,

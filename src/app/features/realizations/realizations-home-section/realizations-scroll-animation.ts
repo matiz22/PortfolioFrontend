@@ -117,8 +117,8 @@ export function animateRealizationsScroll(root: HTMLElement): gsap.MatchMedia {
 
           // Symmetric holds around the scrub: the composition rests pinned
           // before the strip starts moving and after the last card settles.
-          const TAIL_RATIO = 0.6;
-          const TAIL_MIN = 160;
+          const TAIL_RATIO = 0.3;
+          const TAIL_MIN = 96;
           const hold = () => Math.max(TAIL_MIN, Math.round(overflow() * TAIL_RATIO));
           // Scrub range plus the trailing hold.
           const scrollRange = () => overflow() + hold();
@@ -136,9 +136,10 @@ export function animateRealizationsScroll(root: HTMLElement): gsap.MatchMedia {
           };
           applyHeadroom();
 
-          const trackTo = gsap.quickTo(track, 'x', { duration: 0.5, ease: 'power2.out' });
-          const fillTo = fill ? gsap.quickTo(fill, 'scaleX', { duration: 0.5, ease: 'power2.out' }) : undefined;
-          const edgeTo = gsap.quickTo(gallery, edgeProperty, { duration: 0.5, ease: 'power2.out' });
+          const scrubEase = { duration: 0.28, ease: 'power2.out' };
+          const trackTo = gsap.quickTo(track, 'x', scrubEase);
+          const fillTo = fill ? gsap.quickTo(fill, 'scaleX', scrubEase) : undefined;
+          const edgeTo = gsap.quickTo(gallery, edgeProperty, scrubEase);
 
           // Cards hop while the strip travels: each one starts offset to the
           // right and slightly low, then lifts and settles into place as it
@@ -150,8 +151,8 @@ export function animateRealizationsScroll(root: HTMLElement): gsap.MatchMedia {
           const smooth = (value: number) => value * value * (3 - 2 * value);
 
           const cardTweens = cards.map((card) => ({
-            x: gsap.quickTo(card, 'x', { duration: 0.5, ease: 'power2.out' }),
-            y: gsap.quickTo(card, 'y', { duration: 0.5, ease: 'power2.out' }),
+            x: gsap.quickTo(card, 'x', scrubEase),
+            y: gsap.quickTo(card, 'y', scrubEase),
           }));
 
           const updateCardEntries = (targetX: number) => {

@@ -97,7 +97,7 @@ describe('HomePage', () => {
     await fixture.whenStable();
 
     const root: HTMLElement = fixture.nativeElement;
-    const chapters = Array.from(root.querySelector('main')!.children, (child) => child.tagName);
+    const chapters = Array.from(root.querySelector('main')!.children, (chapter) => chapter.firstElementChild?.tagName);
     expect(chapters).toEqual([
       'APP-HERO-SECTION',
       'APP-ABOUT-ME-SECTION',
@@ -107,6 +107,19 @@ describe('HomePage', () => {
       'APP-JOB-TIMELINE-SECTION',
       'APP-EDUCATION-SECTION',
     ]);
+  });
+
+  it('keeps a focusable anchor for each chapter before deferred content loads', () => {
+    const root: HTMLElement = fixture.nativeElement;
+    const chapters = Array.from(root.querySelectorAll<HTMLElement>('[data-grain-chapter]'));
+    expect(chapters.map((chapter) => chapter.id)).toEqual([
+      'home', 'about', 'work', 'projects', 'certifications', 'experience', 'education', 'contact',
+    ]);
+    expect(root.querySelector('app-about-me-section')).toBeNull();
+    for (const chapter of chapters) {
+      expect(chapter.getAttribute('tabindex')).toBe('-1');
+      expect(getComputedStyle(chapter).scrollMarginTop).toBe('96px');
+    }
   });
 
   it('links each chapter to the next one without changing the section order', async () => {

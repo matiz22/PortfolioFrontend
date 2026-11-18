@@ -82,7 +82,7 @@ describe('About Me scroll animation', () => {
     expect(trigger().vars.start).toBe('top 96px');
     expect(trigger().vars.scrub).toBeTrue();
     expect(timeline().duration()).toBeCloseTo(3.48, 2);
-    expect(trigger().end - trigger().start).toBeCloseTo(3132, 0);
+    expect(trigger().end - trigger().start).toBeCloseTo(2036, 0);
   });
 
   it('keeps the first item visible on entry and after layout refreshes', () => {

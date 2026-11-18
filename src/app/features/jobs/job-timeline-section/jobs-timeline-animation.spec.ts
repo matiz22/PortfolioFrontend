@@ -88,7 +88,7 @@ describe('jobs timeline animation', () => {
     expect(trigger.pin).toBe(section);
     expect(trigger.vars.start).toBe('top top');
     expect(trigger.vars.scrub).toBeTrue();
-    expect(trigger.end - trigger.start).toBeCloseTo(4800, 0);
+    expect(trigger.end - trigger.start).toBeCloseTo(3442, 0);
     expect(timeline.getChildren()[0].vars['ease']).toBe('none');
 
     timeline.progress(1);
@@ -111,7 +111,7 @@ describe('jobs timeline animation', () => {
     expect(Number(gsap.getProperty(fill, 'scaleX'))).toBe(0);
     expect(root.querySelectorAll('.jobs-entry')[0].classList.contains('jobs-entry-active')).toBeTrue();
 
-    timeline.progress(0.6);
+    timeline.progress(0.57);
     expect(Number(gsap.getProperty(track, 'x'))).toBeCloseTo(-800, 0);
     expect(Number(gsap.getProperty(fill, 'scaleX'))).toBeCloseTo(0.5, 2);
 
@@ -126,19 +126,19 @@ describe('jobs timeline animation', () => {
     const entries = root.querySelectorAll('.jobs-entry');
 
     // The second card can be emphasized before the line reaches its marker.
-    timeline.progress(0.46);
+    timeline.progress(0.42);
     expect(entries[1].classList.contains('jobs-entry-active')).toBeTrue();
     expect(entries[0].classList.contains('jobs-entry-reached')).toBeTrue();
     expect(entries[1].classList.contains('jobs-entry-reached')).toBeFalse();
 
-    timeline.progress(0.48);
+    timeline.progress(0.44);
     expect(entries[1].classList.contains('jobs-entry-reached')).toBeTrue();
     expect(entries[2].classList.contains('jobs-entry-reached')).toBeFalse();
 
     timeline.progress(1);
     expect(root.querySelectorAll('.jobs-entry-reached').length).toBe(4);
 
-    timeline.progress(0.46);
+    timeline.progress(0.42);
     expect(entries[1].classList.contains('jobs-entry-reached')).toBeFalse();
     expect(root.querySelectorAll('.jobs-entry-reached').length).toBe(1);
   });
@@ -150,7 +150,7 @@ describe('jobs timeline animation', () => {
     travel().progress(1);
     expect(Number(gsap.getProperty(track, 'x'))).toBeCloseTo(-2000, 0);
     const trigger = travel().scrollTrigger!;
-    expect(trigger.end - trigger.start).toBeCloseTo(6000, 0);
+    expect(trigger.end - trigger.start).toBeCloseTo(4302, 0);
   });
 
   it('gives short timelines a minimum scroll range without adding horizontal travel', () => {
@@ -159,7 +159,7 @@ describe('jobs timeline animation', () => {
     ScrollTrigger.refresh();
     const timeline = travel();
     const trigger = timeline.scrollTrigger!;
-    expect(trigger.end - trigger.start).toBeCloseTo(937.5, 1);
+    expect(trigger.end - trigger.start).toBeCloseTo(698, 0);
     timeline.progress(1);
     expect(Number(gsap.getProperty(track, 'x'))).toBeCloseTo(-100, 0);
   });

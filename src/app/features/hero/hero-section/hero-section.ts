@@ -7,14 +7,12 @@ import {
   inject,
   NgZone,
 } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { NgOptimizedImage } from '@angular/common';
 import type { gsap } from 'gsap';
 
 @Component({
   selector: 'app-hero-section',
   imports: [
-    RouterLink,
     NgOptimizedImage,
   ],
   templateUrl: './hero-section.html',

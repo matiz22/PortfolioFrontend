@@ -71,7 +71,8 @@ html:active-view-transition {
 
 @media (prefers-reduced-motion: reduce) {
   html {
-    scroll-behavior: auto;
+    // ScrollTrigger can restore an inline smooth value after a layout refresh.
+    scroll-behavior: auto !important;
   }
 }
 

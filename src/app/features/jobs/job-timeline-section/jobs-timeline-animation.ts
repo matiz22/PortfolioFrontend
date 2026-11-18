@@ -6,9 +6,9 @@ gsap.registerPlugin(ScrollTrigger);
 const HORIZONTAL_QUERY = '(min-width: 64rem) and (min-height: 48rem)';
 const MOTION_QUERY = '(prefers-reduced-motion: no-preference)';
 const NAV_CLEARANCE = 80;
-const SCROLL_DISTANCE_MULTIPLIER = 2.4;
-const MIN_SCROLL_VIEWPORT_RATIO = 0.75;
-const INITIAL_HOLD_RATIO = 0.2;
+const SCROLL_DISTANCE_MULTIPLIER = 1.85;
+const MIN_SCROLL_VIEWPORT_RATIO = 0.6;
+const INITIAL_HOLD_RATIO = 0.14;
 
 export function animateJobsTimeline(root: HTMLElement): gsap.MatchMedia {
   const motion = gsap.matchMedia();
@@ -144,7 +144,6 @@ export function animateJobsTimeline(root: HTMLElement): gsap.MatchMedia {
             behavior: 'instant',
           });
           ScrollTrigger.update();
-          scroll.getTween()?.progress(1);
           travel.progress(progress);
         };
         track.addEventListener('focusin', onFocus);

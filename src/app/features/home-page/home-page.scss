@@ -22,6 +22,10 @@
   background: #000;
 }
 
+[data-grain-chapter] {
+  scroll-margin-top: 6rem;
+}
+
 .home-closing {
   display: flex;
   flex-direction: column;

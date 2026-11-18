@@ -8,6 +8,8 @@ import {
   NgZone,
   viewChild,
 } from '@angular/core';
+import { HERO_PALETTE, watchGrainGradientPalette } from './grain-gradient-palette';
+import type { GrainRenderer } from './grain-gradient-renderer';
 
 @Component({
   selector: 'app-grain-gradient',
@@ -23,23 +25,35 @@ export class GrainGradient {
   private readonly surface = viewChild.required<ElementRef<HTMLDivElement>>('surface');
 
   constructor() {
-    let dispose: (() => void) | undefined;
-    this.destroyRef.onDestroy(() => dispose?.());
+    let renderer: GrainRenderer | undefined;
+    let stopPalette: (() => void) | undefined;
+    this.destroyRef.onDestroy(() => {
+      stopPalette?.();
+      renderer?.dispose();
+    });
 
     // Keep WebGL out of SSR and its render loop out of Angular change detection.
     afterNextRender(() => this.zone.runOutsideAngular(() => {
+      const surface = this.surface().nativeElement;
+      const interactionRoot = this.element.nativeElement.parentElement!;
+      let palette = HERO_PALETTE;
+      stopPalette = watchGrainGradientPalette(interactionRoot, (next) => {
+        palette = next;
+        surface.style.setProperty('--grain-bottom', palette[1].join(' '));
+        surface.style.setProperty('--grain-top', palette[2].join(' '));
+        renderer?.setPalette(palette);
+      });
+
       void import('./grain-gradient-renderer').then(async ({ mountGrainGradient }) => {
         if (this.destroyRef.destroyed) {
           return;
         }
 
-        const surface = this.surface().nativeElement;
-        const interactionRoot = this.element.nativeElement.parentElement!;
-        const cleanup = await mountGrainGradient(surface, interactionRoot);
+        const mounted = await mountGrainGradient(surface, interactionRoot, () => palette);
         if (this.destroyRef.destroyed) {
-          cleanup();
+          mounted?.dispose();
         } else {
-          dispose = cleanup;
+          renderer = mounted;
         }
       }).catch((error: unknown) => {
         // The CSS gradient remains visible when WebGL or the optional chunk fails.

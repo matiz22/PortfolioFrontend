@@ -9,21 +9,31 @@ import {
 } from '@paper-design/shaders';
 
 import { attachGrainGradientMotion } from './grain-gradient-motion';
+import { HERO_PALETTE, type GrainPalette } from './grain-gradient-palette';
+
+function shaderColors(palette: GrainPalette): GrainGradientUniforms['u_colors'] {
+  return palette.map(([r, g, b]) => [r / 255, g / 255, b / 255, 1]);
+}
+
+export interface GrainRenderer {
+  setPalette(palette: GrainPalette): void;
+  dispose(): void;
+}
 
 export async function mountGrainGradient(
   surface: HTMLDivElement,
   interactionRoot: HTMLElement,
-): Promise<() => void> {
+  currentPalette: () => GrainPalette = () => HERO_PALETTE,
+): Promise<GrainRenderer | undefined> {
   // Paper requires a fully loaded image before uploading its noise texture.
   const noise = getShaderNoiseTexture();
   await noise?.decode();
   if (!surface.isConnected) {
-    return () => {};
+    return;
   }
 
-  // Paper's default corners preset, with green/cyan instead of purple/blue.
   // Keep the background genuinely black: no permanent glow or gray grain lift.
-  const colors = ['#005c39', '#00d37f', '#00bfd1', '#007f86'].map(getShaderColorFromString);
+  const colors = shaderColors(currentPalette());
   const uniforms = {
     u_colorBack: getShaderColorFromString('#000000'),
     u_colors: colors,
@@ -82,5 +92,12 @@ export async function mountGrainGradient(
 
   // Retain the CSS fallback if the GPU context is lost rather than showing black.
   mount.canvasElement.addEventListener('webglcontextlost', dispose);
-  return dispose;
+  return {
+    dispose,
+    setPalette: (palette) => {
+      if (!disposed) {
+        mount.setUniforms({ u_colors: shaderColors(palette) });
+      }
+    },
+  };
 }
