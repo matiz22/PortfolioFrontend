@@ -1,13 +1,17 @@
 <section class="projects-home-section relative border-y border-white/5" id="projects"
   aria-labelledby="projects-home-heading">
-  <div class="projects-home-content relative z-10 container mx-auto px-6 max-w-7xl">
-    <div class="projects-home-header flex flex-col md:flex-row md:items-end justify-between gap-6">
-      <h2 id="projects-home-heading" class="projects-home-reveal section-heading text-4xl md:text-5xl lg:text-6xl"
-        i18n="@@projects.home.heading">Projects</h2>
-      <p class="projects-home-reveal glass home-glass home-copy-panel md:w-2/5 text-base text-left"
-        i18n="@@projects.home.description">
-        Personal builds, experiments and open-source work — designed and developed with modern technology.
-      </p>
+  <div class="projects-home-content relative z-10">
+    <div class="projects-home-header glass home-glass home-copy-panel">
+      <div class="projects-home-intro">
+        <h2 id="projects-home-heading" class="projects-home-reveal section-heading text-4xl md:text-5xl lg:text-6xl"
+          i18n="@@projects.home.heading">Projects</h2>
+        <p class="projects-home-reveal projects-home-description" i18n="@@projects.home.description">
+          Personal builds, experiments and open-source work — designed and developed with modern technology.
+        </p>
+      </div>
+      <a appSectionAction variant="cta" routerLink="/projects" class="projects-home-viewall">
+        <ng-container i18n="@@projects.home.viewall">View all projects</ng-container>
+      </a>
     </div>
 
     <div class="projects-home-grid" [attr.aria-busy]="projects().status === 'loading'">
@@ -46,9 +50,6 @@
     </div>
 
     <app-section-footer class="projects-home-footer">
-      <a appSectionAction routerLink="/projects">
-        <ng-container i18n="@@projects.home.viewall">View all projects</ng-container>
-      </a>
       <ng-content select="[section-next]" />
     </app-section-footer>
   </div>
