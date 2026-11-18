@@ -1,5 +1,9 @@
+@let isCta = variant() === 'cta';
 <span class="section-action-surface">
   <span class="section-action-chip"
+    [class.btn]="isCta"
+    [class.btn-primary]="isCta"
+    [class.rounded-full]="isCta"
     [class.glass]="chipGlass()"
     [class.home-glass]="chipGlass()"
     [class.home-glass-chip]="chipGlass()">
@@ -9,6 +13,8 @@
       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       @if (variant() === 'archive') {
       <path d="M7 17 17 7M7 7h10v10" />
+      } @else if (isCta) {
+      <path d="M5 12h14m-7-7 7 7-7 7" />
       } @else {
       <path d="M12 4v16m-6-6 6 6 6-6" />
       }

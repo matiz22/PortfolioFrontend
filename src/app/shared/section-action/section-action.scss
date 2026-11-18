@@ -32,8 +32,7 @@
   transition: color 180ms ease, border-color 180ms ease, background-color 180ms ease;
 }
 
-// The chip wraps the label and arrow; glass styling comes from the global
-// dark-glass variant so both shared button variants stay consistent.
+// The chip wraps the label and arrow inside the moving surface.
 .section-action-chip {
   display: inline-flex;
   align-items: center;
@@ -55,6 +54,26 @@
   padding-inline: 0.875rem;
 }
 
+:host(.section-action-cta) {
+  border-radius: 999px;
+}
+
+:host(.section-action-cta) .section-action-surface {
+  padding: 0;
+  border: 0;
+}
+
+:host(.section-action-cta) .section-action-chip {
+  gap: 0.375rem;
+  box-shadow: none;
+}
+
+@media (hover: hover) {
+  :host(.section-action-cta:hover:not(:focus-visible)) .section-action-chip {
+    box-shadow: 0 0 1.25rem color-mix(in srgb, var(--color-primary) 45%, transparent);
+  }
+}
+
 .section-action-label {
   text-wrap: balance;
 }
@@ -64,12 +83,17 @@
   color: var(--color-primary);
 }
 
+:host(.section-action-cta) .section-action-arrow {
+  color: currentColor;
+}
+
 :host(:is(:hover, :focus-visible)) .section-action-surface {
   color: var(--color-base-content);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .section-action-surface {
+  .section-action-surface,
+  :host(.section-action-cta) .section-action-chip {
     transition: none;
   }
 }

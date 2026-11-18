@@ -7,7 +7,7 @@ import { SectionAction } from './section-action';
   template: `<a appSectionAction [variant]="variant" href="#destination">View all projects</a>`,
 })
 class TestHost {
-  variant: 'archive' | 'continue' = 'archive';
+  variant: 'archive' | 'continue' | 'cta' = 'archive';
 }
 
 describe('SectionAction', () => {
@@ -55,5 +55,18 @@ describe('SectionAction', () => {
     expect(parseFloat(style.paddingTop)).toBe(8);
     expect(getComputedStyle(link.querySelector('.section-action-surface')!).pointerEvents).toBe('none');
     expect(getComputedStyle(link.querySelector('svg')!).animationName).toBe('none');
+  });
+
+  it('puts the solid CTA inside the magnetic surface without frosting the chip', () => {
+    fixture.componentInstance.variant = 'cta';
+    fixture.detectChanges();
+
+    const chip = link.querySelector<HTMLElement>('.section-action-surface .section-action-chip')!;
+    expect(link.classList).toContain('section-action-cta');
+    expect(link.classList).not.toContain('btn');
+    expect(chip.classList).toContain('btn-primary');
+    expect(chip.classList).not.toContain('glass');
+    expect(getComputedStyle(chip).pointerEvents).toBe('none');
+    expect(chip.querySelector('path')?.getAttribute('d')).toContain('M5 12h14');
   });
 });
