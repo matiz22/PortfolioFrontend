@@ -59,6 +59,9 @@
 
 .about-panel {
   --service-accent: var(--color-primary);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: 1.5rem;
   min-width: 0;
   scroll-margin-top: 7rem;
 }
@@ -103,9 +106,11 @@
   width: 100%;
 }
 
-.about-panel-copy {
-  padding-top: 1.5rem;
+.about-apps-visual {
+  --apps-preview-align: end;
+}
 
+.about-panel-copy {
   h3 {
     margin-bottom: 0.75rem;
     font-size: clamp(2rem, 3vw, 2.5rem);
@@ -118,14 +123,13 @@
 
 @media (min-width: 48rem) {
   .about-panel {
-    display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: center;
-    gap: 2.5rem;
+    column-gap: 2.5rem;
   }
 
-  .about-panel-copy {
-    padding-top: 0;
+  .about-section:not(.about-is-pinned) .about-apps-visual {
+    --apps-preview-align: center;
   }
 }
 
@@ -259,17 +263,14 @@
   .about-panel {
     // All panels size the same grid cell; even the longest translation fits.
     grid-area: 1 / 1;
-    display: block;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: stretch;
   }
 
   .about-web-visual,
   .about-apps-visual,
   .about-ai-visual {
     height: clamp(15rem, 40svh, 24rem);
-  }
-
-  .about-panel-copy {
-    padding-top: 1.5rem;
   }
 }
 
@@ -287,8 +288,8 @@
       height: clamp(12rem, 30svh, 17rem);
     }
 
-    .about-panel-copy {
-      padding-top: 1rem;
+    .about-panel {
+      row-gap: 1rem;
     }
   }
 }
@@ -378,9 +379,11 @@
       height: clamp(14rem, 32svh, 19rem);
     }
 
-    .about-panel-copy {
-      padding-top: 0.875rem;
+    .about-panel {
+      row-gap: 0.875rem;
+    }
 
+    .about-panel-copy {
       h3 {
         margin-bottom: 0.5rem;
         font-size: clamp(1.75rem, 6vw, 2rem);
@@ -447,10 +450,6 @@
     // Prioritize the full service description over decorative artwork on short screens.
     .about-visual {
       display: none;
-    }
-
-    .about-panel-copy {
-      padding-top: 0;
     }
   }
 }
