@@ -57,9 +57,21 @@ describe('JobTimelineSection', () => {
     expect(root.querySelector('.jobs-track')).toBeNull();
   });
 
-  it('keeps footer navigation in the stage without the old scroll instructions', () => {
+  it('groups the intro and work history CTA in one glass panel above the timeline', () => {
+    const header = root.querySelector('.jobs-header')!;
+    const link = header.querySelector('.jobs-viewall');
+
+    expect(header.classList).toContain('home-copy-panel');
+    expect(header.querySelector('#experience-heading')).not.toBeNull();
+    expect(header.querySelector('.jobs-intro')?.classList).not.toContain('glass');
+    expect(link?.classList).toContain('section-action-cta');
+    expect(link?.getAttribute('href')).toBe('/jobs');
+    expect(header.nextElementSibling?.classList).toContain('jobs-viewport');
+  });
+
+  it('keeps next-section navigation in the stage without archive or scroll controls', () => {
     expect(root.querySelector('.jobs-stage app-section-footer.jobs-bottom')).not.toBeNull();
-    expect(root.querySelector('.jobs-bottom a[appSectionAction]')?.getAttribute('href')).toBe('/jobs');
+    expect(root.querySelector('.jobs-bottom .jobs-viewall')).toBeNull();
     expect(root.querySelector('.jobs-scroll-guide, .jobs-skip, #experience-end')).toBeNull();
     expect(root.textContent).not.toContain('Scroll to follow the journey');
   });

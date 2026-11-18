@@ -1,14 +1,16 @@
 <section class="jobs-section section-noise" id="experience" aria-labelledby="experience-heading">
   <div class="jobs-shell">
     <div class="jobs-stage">
-      <header class="jobs-header">
-        <div>
+      <header class="jobs-header glass home-glass home-copy-panel">
+        <div class="jobs-copy">
           <h2 id="experience-heading" class="section-heading" i18n="@@jobs.heading">Work Experience</h2>
+          <p class="jobs-intro" i18n="@@jobs.description">
+            Past and current roles, teams, and the technologies I worked with.
+          </p>
         </div>
-        <p class="jobs-intro glass home-glass home-copy-panel" i18n="@@jobs.description">
-          A journey through my professional career, showcasing the roles and responsibilities I've held across various
-          organizations.
-        </p>
+        <a appSectionAction variant="cta" routerLink="/jobs" class="jobs-viewall">
+          <span i18n="@@jobs.viewall">View full work history</span>
+        </a>
       </header>
 
       @let state = jobs();
@@ -95,9 +97,6 @@
       </div>
 
       <app-section-footer class="jobs-bottom">
-        <a appSectionAction routerLink="/jobs" class="jobs-viewall">
-          <span i18n="@@jobs.viewall">View all jobs</span>
-        </a>
         <ng-content select="[section-next]" />
       </app-section-footer>
     </div>

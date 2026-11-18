@@ -8,9 +8,9 @@
 
 .jobs-shell {
   position: relative;
-  max-width: 80rem;
+  max-width: var(--home-showcase-width, 88rem);
   margin-inline: auto;
-  padding-inline: clamp(1.5rem, 4vw, 3rem);
+  padding-inline: var(--home-showcase-inset, clamp(1.5rem, 4vw, 4rem));
 }
 
 .jobs-stage {
@@ -18,24 +18,47 @@
 }
 
 .jobs-header {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: end;
-  gap: 1.5rem 3rem;
+  display: grid;
+  gap: 0.75rem;
+  width: min(100%, 48rem);
   margin-bottom: clamp(2.5rem, 5vw, 4rem);
 
   h2 {
-    font-size: clamp(2.5rem, 4.5vw, 4rem);
+    font-size: clamp(2.25rem, 3.5vw, 3.25rem);
     line-height: 1.05;
   }
 }
 
+.jobs-copy {
+  display: grid;
+  gap: 0.5rem;
+}
+
 .jobs-intro {
-  max-width: 25rem;
-  color: rgb(255 255 255 / 45%);
-  font-size: 0.8125rem;
-  line-height: 1.8;
+  max-width: 44ch;
+  color: color-mix(in srgb, var(--color-base-content) 75%, transparent);
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+.jobs-viewall {
+  position: relative;
+  z-index: 1;
+  justify-self: start;
+  margin-inline-start: -0.5rem;
+}
+
+@media (min-width: 48rem) {
+  .jobs-header {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    column-gap: clamp(1rem, 3vw, 2rem);
+  }
+
+  .jobs-viewall {
+    justify-self: end;
+    margin-inline: 0 -0.5rem;
+  }
 }
 
 .jobs-track {
@@ -225,7 +248,11 @@
   --job-width: clamp(32rem, 66vw, 54rem);
 
   .jobs-header {
-    margin-bottom: 2rem;
+    margin-bottom: 1.25rem;
+
+    h2 {
+      font-size: clamp(2.125rem, 3vw, 2.75rem);
+    }
   }
 
   .jobs-viewport {
