@@ -1,64 +1,45 @@
+<app-grain-gradient chapter="certifications"></app-grain-gradient>
 <app-header></app-header>
 
 <main>
-    <!-- Distinctive Page Header -->
-    <header
-        class="py-24 md:py-32 bg-[radial-gradient(oklch(79%_0.209_151.711_/_0.15)_1.5px,transparent_1.5px)] [background-size:24px_24px] relative">
-        <div class="container mx-auto px-6 max-w-7xl relative z-10">
-            <div class="inline-flex items-center gap-3 mb-6">
-                <div class="w-1.5 h-1.5 bg-secondary rounded-full animate-pulse"></div>
-                <span class="text-xs font-mono tracking-widest uppercase text-secondary">Certifications</span>
-            </div>
-            <h1 class="text-5xl md:text-7xl lg:text-8xl font-serif italic tracking-tight m-0 leading-[0.9]"
-                i18n="@@certificationsPage.heading">
-                All Certifications
-            </h1>
+    <header class="archive-header">
+        <div class="archive-container">
+            <h1 class="archive-title section-heading" i18n="@@certificationsPage.heading">All Certifications</h1>
         </div>
     </header>
-    <div class="divider m-0 opacity-10"></div>
 
-    <section class="py-20 lg:py-24 relative z-10">
-        <div class="container mx-auto px-6 max-w-7xl">
+    <section class="archive-list">
+        <div class="archive-container">
             @defer (hydrate on idle) {
-            <div class="flex flex-row flex-wrap justify-center gap-4 animate-[fadeSlideIn_0.4s_ease-out_both]">
-                @let certificationItems = certifications();
-                @switch (certificationItems.status) {
-                @case ('loading') {
-                <app-loading-items [count]="3" variant="cover"></app-loading-items>
+                @let entries = certifications();
+                @switch (entries.status) {
+                    @case ('loading') {
+                        <app-loading-items [count]="3"></app-loading-items>
+                    }
+                    @case ('success') {
+                        @if (entries.data.length) {
+                            <div class="archive-grid">
+                                @for (entry of entries.data; track entry.id) {
+                                    <app-certification-item [certification]="entry"></app-certification-item>
+                                }
+                            </div>
+                        } @else {
+                            <p class="archive-state" i18n="@@certificationsPage.empty">No certifications available at the moment.</p>
+                        }
+                    }
+                    @case ('error') {
+                        <p class="archive-state text-error" role="alert" i18n="@@certificationsPage.error">Error loading certifications. Please try again later.</p>
+                    }
                 }
-                @case ('success') {
-                @if (certificationItems.data.length > 0) {
-                @for (certification of certificationItems.data; track certification.id) {
-                <app-certification-item [certification]="certification"
-                    class="flex-1 min-w-full md:min-w-[calc(50%-0.5rem)] lg:min-w-[calc(33.333%-0.67rem)] md:max-w-[calc(50%-0.5rem)] lg:max-w-[calc(33.333%-0.67rem)]">
-                </app-certification-item>
-                }
-                } @else {
-                <div class="text-center w-full">
-                    <p class="text-lg" i18n="@@certificationsPage.empty">No certifications available at the moment.</p>
-                </div>
-                }
-                }
-                @case ('error') {
-                <div class="text-center w-full">
-                    <p class="text-lg text-error" i18n="@@certificationsPage.error">Error loading certifications. Please
-                        try again later.</p>
-                </div>
-                }
-                }
-            </div>
-
-            <!-- Pagination Controls -->
-            <app-pagination-tiles [pageNumbers]="pageNumbers" [currentPage]="currentPage"
-                (pageChange)="goToPage($event)">
-            </app-pagination-tiles>
+                <app-pagination-tiles class="pagination-themed" [pageNumbers]="pageNumbers" [currentPage]="currentPage"
+                    (pageChange)="goToPage($event)"></app-pagination-tiles>
             } @placeholder {
-            <app-loading-items [count]="3" variant="cover"></app-loading-items>
+                <app-loading-items [count]="3"></app-loading-items>
             }
         </div>
     </section>
 
-    <app-contact-section></app-contact-section>
+    <app-contact-section class="contact-blended" [glass]="true"></app-contact-section>
 </main>
 
 <app-footer></app-footer>

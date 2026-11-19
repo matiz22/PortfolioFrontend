@@ -1,7 +1,6 @@
 import { Component, computed, inject } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { switchMap } from 'rxjs/operators';
-import { ActivatedRoute } from '@angular/router';
 import { CertificationsService } from '../../../core/services/certifications.service';
 import { Certification } from '../../../core/models/certification';
 import { ApiState } from '../../../core/models/api.state';
@@ -13,17 +12,17 @@ import { CertificationItem } from '../certification-item/certification-item';
 import { LoadingItems } from '../../../shared/loading/loading-items/loading-items';
 import { PaginationService } from '../../../shared/pagination/pagination.service';
 import { PaginationTiles } from '../../../shared/pagination/pagination-tiles/pagination-tiles';
+import { GrainGradient } from '../../../shared/grain-gradient/grain-gradient';
 
 @Component({
   selector: 'app-certifications-page',
-  imports: [Header, Footer, ContactSection, CertificationItem, LoadingItems, PaginationTiles],
+  imports: [Header, Footer, ContactSection, CertificationItem, LoadingItems, PaginationTiles, GrainGradient],
   providers: [PaginationService],
   templateUrl: './certifications-page.html',
   styleUrl: './certifications-page.scss',
 })
 export class CertificationsPage {
   private certificationsService = inject(CertificationsService);
-  private route = inject(ActivatedRoute);
   protected pagination = inject(PaginationService);
 
   // Fetch paginated response based on current page

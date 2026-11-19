@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import { Certification } from '../../../core/models/certification';
 import { CertificationSummary } from '../../../core/models/summary/certification';
 import { ImageUrlPipe } from '../../../shared/pipes/image-url-pipe';
+import { uniquePortfolioItems } from '../../../shared/portfolio/portfolio-metadata';
 
 @Component({
   selector: 'app-certification-item',
@@ -13,4 +14,8 @@ import { ImageUrlPipe } from '../../../shared/pipes/image-url-pipe';
 })
 export class CertificationItem {
   @Input({ required: true }) certification!: Certification | CertificationSummary;
+
+  protected get tags() {
+    return uniquePortfolioItems([...this.certification.technologies, ...this.certification.skills]);
+  }
 }

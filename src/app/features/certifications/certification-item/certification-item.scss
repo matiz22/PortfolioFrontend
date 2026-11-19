@@ -1,0 +1,12 @@
+@use '../../../shared/portfolio/archive-card';
+
+.certification-issuer {
+  color: var(--portfolio-ink);
+  font-size: 0.875rem;
+}
+
+.certification-card-media {
+  aspect-ratio: auto;
+  height: clamp(7rem, 14vw, 10rem);
+  margin-block: 0.25rem;
+}
