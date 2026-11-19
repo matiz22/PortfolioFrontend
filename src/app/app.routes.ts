@@ -42,6 +42,7 @@ export const routes: Routes = [
     },
     {
         path: 'project/:slug',
+        data: { skipViewTransition: true },
         loadComponent: () =>
             import('./features/projects/project-details-page/project-details-page').then(
                 (m) => m.ProjectDetailsPage
@@ -69,6 +70,7 @@ export const routes: Routes = [
     },
     {
         path: 'realization/:slug',
+        data: { skipViewTransition: true },
         loadComponent: () =>
             import('./features/realizations/realization-details-page/realization-details-page').then(
                 (m) => m.RealizationDetailsPage
@@ -96,6 +98,7 @@ export const routes: Routes = [
     },
     {
         path: 'education/:slug',
+        data: { skipViewTransition: true },
         loadComponent: () =>
             import('./features/education/education-details-page/education-details-page').then(
                 (m) => m.EducationDetailsPage
@@ -123,6 +126,7 @@ export const routes: Routes = [
     },
     {
         path: 'certification/:slug',
+        data: { skipViewTransition: true },
         loadComponent: () =>
             import('./features/certifications/certification-detail-page/certification-detail-page').then(
                 (m) => m.CertificationDetailPage
@@ -148,6 +152,7 @@ export const routes: Routes = [
     },
     {
         path: 'job/:slug',
+        data: { skipViewTransition: true },
         loadComponent: () =>
             import('./features/jobs/job-details-page/job-details-page').then(
                 (m) => m.JobDetailsPage

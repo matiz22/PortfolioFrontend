@@ -17,7 +17,13 @@ export const appConfig: ApplicationConfig = {
       routes,
       withViewTransitions({
         skipInitialTransition: true,
-        onViewTransitionCreated: ({ transition }) => {
+        onViewTransitionCreated: ({ transition, to }) => {
+          // Let routes with their own entrance animate without a page snapshot over them.
+          if (to.firstChild?.data['skipViewTransition']) {
+            transition.skipTransition();
+            return;
+          }
+
           const router = inject(Router);
           const targetUrl = router.currentNavigation()!.finalUrl!;
           // Skip transition if only fragment or query params change
@@ -49,4 +55,3 @@ export const appConfig: ApplicationConfig = {
     { provide: TitleStrategy, useClass: AppTitleStrategy },
   ]
 };
-
