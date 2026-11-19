@@ -134,7 +134,6 @@
 .preview-chart-bar {
   flex: 1;
   height: var(--bar-height);
-  border-radius: var(--radius) var(--radius) 0 0;
   background: color-mix(in srgb, var(--preview-accent) 75%, transparent);
 }
 
