@@ -1,11 +1,9 @@
-import { Component, computed, inject } from '@angular/core';
+import { afterRenderEffect, Component, computed, ElementRef, inject, NgZone } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { DecimalPipe } from '@angular/common';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ApiState } from '../../../core/models/api.state';
 import { Realization } from '../../../core/models/realization';
 import { map } from 'rxjs/operators';
-import { Link } from '../../../shared/models/link';
 import { ImageUrlPipe } from '../../../shared/pipes/image-url-pipe';
 import { Header } from '../../../shared/header/header';
 import { Footer } from '../../../shared/footer/footer';
@@ -14,16 +12,32 @@ import { ContactSection } from '../../../shared/contact/contact-section/contact-
 import { LoadingDetailsPage } from '../../../shared/loading/loading-details-page/loading-details-page';
 import { SeoService } from '../../../core/services/seo.service';
 import { buildSeoFromModel } from '../../../core/resolvers/seo.resolver';
+import { GrainGradient } from '../../../shared/grain-gradient/grain-gradient';
+import { PortfolioGallery } from '../../../shared/portfolio/portfolio-gallery/portfolio-gallery';
+import { animatePortfolioHero } from '../../../shared/portfolio/portfolio-hero-motion';
+import { uniquePortfolioItems } from '../../../shared/portfolio/portfolio-metadata';
 
 @Component({
   selector: 'app-realization-details-page',
-  imports: [ImageUrlPipe, DecimalPipe, RouterLink, Header, Footer, DescriptionMd, ContactSection, LoadingDetailsPage],
+  imports: [
+    ImageUrlPipe,
+    RouterLink,
+    Header,
+    Footer,
+    DescriptionMd,
+    ContactSection,
+    LoadingDetailsPage,
+    GrainGradient,
+    PortfolioGallery,
+  ],
   templateUrl: './realization-details-page.html',
   styleUrl: './realization-details-page.scss',
 })
 export class RealizationDetailsPage {
   private readonly route = inject(ActivatedRoute);
   private readonly seoService = inject(SeoService);
+  private readonly element = inject<ElementRef<HTMLElement>>(ElementRef);
+  private readonly zone = inject(NgZone);
 
   constructor() {
     const state = this.route.snapshot.data['realizationState'] as ApiState<Realization>;
@@ -31,6 +45,14 @@ export class RealizationDetailsPage {
       const seo = buildSeoFromModel(state.data, `${state.data.title}`);
       this.seoService.updateMeta(seo);
     }
+
+    // Load the motion with the lazy route so there is no extra request after render.
+    afterRenderEffect((onCleanup) => {
+      if (this.realization().status !== 'success') return;
+
+      const revert = this.zone.runOutsideAngular(() => animatePortfolioHero(this.element.nativeElement));
+      onCleanup(() => this.zone.runOutsideAngular(revert));
+    });
   }
 
   // Data is now provided by the resolver to ensure SSR captures SEO tags
@@ -39,53 +61,18 @@ export class RealizationDetailsPage {
     { initialValue: ApiState.loading<Realization>() }
   );
 
-  private readonly realizationData = computed(() => {
+  protected readonly expertise = computed(() => {
     const state = this.realization();
-    return state.status === 'success' ? state.data : null;
-  });
-
-  private readonly clientButtonLabel = $localize`:@@clientButton:Client website`;
-  links = computed<Link[]>(() => {
-    const realizationState = this.realization();
-
-    if (realizationState.status === 'success' && realizationState.data.clientUrl) {
-      return [{
-        name: this.clientButtonLabel,
-        url: realizationState.data.clientUrl,
-        mat_icon: 'contacts_product'
-      }];
+    if (state.status !== 'success') {
+      return [];
     }
 
-    return [];
+    const usedNames = new Set<string>();
+    const stack = uniquePortfolioItems(state.data.technologies, usedNames);
+    const skills = uniquePortfolioItems(state.data.skills, usedNames);
+    return [
+      { key: 'skills', label: $localize`:@@realizationDetails.skills.heading:Skills used`, items: skills },
+      { key: 'stack', label: $localize`:@@portfolio.techStack:Tech stack`, items: stack },
+    ].filter(({ items }) => items.length > 0);
   });
-
-  // Carousel drag functionality
-  private isDragging = false;
-  private startX = 0;
-  private scrollLeft = 0;
-
-  onMouseDown(event: MouseEvent, carousel: HTMLElement): void {
-    this.isDragging = true;
-    carousel.classList.add('cursor-grabbing');
-    this.startX = event.pageX - carousel.offsetLeft;
-    this.scrollLeft = carousel.scrollLeft;
-  }
-
-  onMouseMove(event: MouseEvent, carousel: HTMLElement): void {
-    if (!this.isDragging) return;
-    event.preventDefault();
-    const x = event.pageX - carousel.offsetLeft;
-    const walk = (x - this.startX) * 2; // Scroll speed multiplier
-    carousel.scrollLeft = this.scrollLeft - walk;
-  }
-
-  onMouseUp(carousel: HTMLElement): void {
-    this.isDragging = false;
-    carousel.classList.remove('cursor-grabbing');
-  }
-
-  onMouseLeave(carousel: HTMLElement): void {
-    this.isDragging = false;
-    carousel.classList.remove('cursor-grabbing');
-  }
 }

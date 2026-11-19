@@ -13,6 +13,7 @@ import { Footer } from '../../../shared/footer/footer';
 import { LoadingItems } from '../../../shared/loading/loading-items/loading-items';
 import { PaginationService } from '../../../shared/pagination/pagination.service';
 import { PaginationTiles } from '../../../shared/pagination/pagination-tiles/pagination-tiles';
+import { GrainGradient } from '../../../shared/grain-gradient/grain-gradient';
 
 @Component({
   selector: 'app-realizations-page',
@@ -22,7 +23,8 @@ import { PaginationTiles } from '../../../shared/pagination/pagination-tiles/pag
     ContactSection,
     Footer,
     LoadingItems,
-    PaginationTiles
+    PaginationTiles,
+    GrainGradient,
   ],
   providers: [PaginationService],
   templateUrl: './realizations-page.html',
