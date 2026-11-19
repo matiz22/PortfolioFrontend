@@ -1,0 +1,52 @@
+@use './theme';
+
+:host {
+  @include theme.shell;
+}
+
+.archive-container {
+  @include theme.container;
+}
+
+.archive-header {
+  padding-block: clamp(8.5rem, 14vw, 13rem) clamp(2.75rem, 6vw, 5.25rem);
+}
+
+.archive-title {
+  font-size: clamp(3.5rem, 9vw, 8rem);
+  line-height: 0.96;
+  text-wrap: balance;
+}
+
+.archive-list {
+  padding-block: clamp(2rem, 5vw, 4rem) clamp(4.5rem, 9vw, 8rem);
+}
+
+.archive-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(1rem, 2vw, 1.75rem);
+
+  @media (min-width: 44rem) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    // Every row shares the height of the tallest one, so all cards match.
+    grid-auto-rows: 1fr;
+  }
+
+  @media (min-width: 68rem) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.archive-state {
+  padding-block: 2rem;
+  text-align: center;
+}
+
+.pagination-themed {
+  --pagination-accent: var(--portfolio-ink);
+  --pagination-selected: var(--portfolio-accent);
+  --pagination-border: var(--portfolio-border);
+  --pagination-tint: var(--portfolio-tint);
+}

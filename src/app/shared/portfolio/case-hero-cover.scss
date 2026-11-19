@@ -1,0 +1,29 @@
+:host {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  display: block;
+  overflow: hidden;
+  isolation: isolate;
+  pointer-events: none;
+  // Fully visible at the top, becoming translucent toward the bottom.
+  mask-image: linear-gradient(180deg, #000 0%, #000 40%, transparent 100%);
+}
+
+img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  // Lightness only, heavily dimmed: the chapter tint supplies all of the color.
+  filter: grayscale(1) brightness(0.5);
+}
+
+// Duotone colorize pass over the photo.
+:host::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--wash-accent);
+  mix-blend-mode: color;
+}
