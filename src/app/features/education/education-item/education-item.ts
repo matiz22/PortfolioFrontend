@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, signal } from '@angular/core';
 import { Education } from '../../../core/models/education';
 import { EducationSummary } from '../../../core/models/summary/education';
 import { ImageUrlPipe } from '../../../shared/pipes/image-url-pipe';
@@ -13,4 +13,5 @@ import { PortfolioPeriod } from '../../../shared/portfolio/portfolio-period';
 })
 export class EducationItem {
   @Input({ required: true }) education!: Education | EducationSummary;
+  protected readonly failedThumbnail = signal<string | null>(null);
 }

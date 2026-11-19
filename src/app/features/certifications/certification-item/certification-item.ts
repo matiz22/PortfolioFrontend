@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Certification } from '../../../core/models/certification';
@@ -14,6 +14,7 @@ import { uniquePortfolioItems } from '../../../shared/portfolio/portfolio-metada
 })
 export class CertificationItem {
   @Input({ required: true }) certification!: Certification | CertificationSummary;
+  protected readonly failedThumbnail = signal<string | null>(null);
 
   protected get tags() {
     return uniquePortfolioItems([...this.certification.technologies, ...this.certification.skills]);

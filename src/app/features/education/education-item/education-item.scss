@@ -1,6 +1,17 @@
-@use '../../../shared/portfolio/archive-card';
+@use '../../../../styles/portfolio-card' as portfolio-card;
+@use '../../../shared/portfolio/archive-card' with ($compact-preview: true);
+@use '../education-cover';
+
+.education-cover {
+  justify-content: flex-end;
+
+  .archive-card-technologies {
+    margin-block-start: 0;
+  }
+}
 
 .education-institution {
+  @include portfolio-card.lines(1);
   color: var(--portfolio-ink);
   font-size: 0.875rem;
 }
@@ -14,12 +25,7 @@
 }
 
 .education-grade {
+  @include portfolio-card.lines(1);
   color: rgb(255 255 255 / 76%);
   font-size: 0.75rem;
-}
-
-.education-card-media {
-  aspect-ratio: auto;
-  height: clamp(6.5rem, 14vw, 9.5rem);
-  margin-block: 0.25rem;
 }

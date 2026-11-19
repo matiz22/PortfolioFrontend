@@ -38,7 +38,25 @@ describe('EducationItem', () => {
     expect(root.querySelector('.education-institution')?.textContent).toBe(education.institution);
     expect(root.querySelector('time')?.getAttribute('datetime')).toBe('2024-01-01');
     expect(root.querySelector('app-portfolio-period')?.textContent).toContain('Present');
-    expect(root.querySelector('.archive-card-media, .education-grade')).toBeNull();
+    expect(root.querySelector('.education-cover-image, .education-grade')).toBeNull();
+  });
+
+  it('shows full-bleed decorative artwork and falls back without resizing the card', () => {
+    fixture.componentRef.setInput('education', { ...education, thumbnail: 'https://example.com/studies.png' });
+    fixture.detectChanges();
+    const root: HTMLElement = fixture.nativeElement;
+    const card = root.querySelector<HTMLElement>('.archive-card')!;
+    const image = card.querySelector<HTMLImageElement>(':scope > .education-cover-image')!;
+    const height = card.offsetHeight;
+    expect(getComputedStyle(image).objectFit).toBe('cover');
+    expect(image.getAttribute('alt')).toBe('');
+
+    image.dispatchEvent(new Event('error'));
+    fixture.detectChanges();
+
+    expect(card.querySelector('img')).toBeNull();
+    expect(card.querySelector('h2')?.textContent).toBe(education.degree);
+    expect(card.offsetHeight).toBe(height);
   });
 
   it('omits the range separator if no end date is available for a past record', () => {

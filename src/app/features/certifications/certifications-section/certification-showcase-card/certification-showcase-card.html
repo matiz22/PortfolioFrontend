@@ -1,37 +1,30 @@
 @let item = certification();
-<a class="certificate-link glass home-glass" [routerLink]="['/certification', item.slug]"
+<a class="certificate-link certificate-cover glass home-glass" [routerLink]="['/certification', item.slug]"
   [attr.aria-labelledby]="'certificate-title-' + item.id"
   [attr.aria-describedby]="'certificate-meta-' + item.id">
-  <div class="certificate-art" aria-hidden="true">
-    @if (item.thumbnail && failedThumbnail() !== item.thumbnail) {
-    <img class="certificate-image" [src]="item.thumbnail | imageUrl" alt=""
+  @if (item.thumbnail && failedThumbnail() !== item.thumbnail) {
+    <img class="certificate-cover-image" [src]="item.thumbnail | imageUrl" alt=""
       loading="lazy" decoding="async" (error)="failedThumbnail.set(item.thumbnail)" />
-    } @else {
-    <div class="certificate-fallback">
-      <span class="certificate-fallback-issuer">{{ item.issuingOrganization }}</span>
-      <span class="certificate-fallback-title">{{ item.name }}</span>
-      <span class="certificate-fallback-rule"></span>
-      <span class="certificate-fallback-year">{{ item.issueDate | date:'yyyy' }}</span>
+  }
+
+  <div class="certificate-cover-copy">
+    <div class="certificate-caption">
+      <h3 [id]="'certificate-title-' + item.id">{{ item.name }}</h3>
+      <p [id]="'certificate-meta-' + item.id">
+        <span>{{ item.issuingOrganization }}</span>
+        <span class="certificate-meta-dot" aria-hidden="true">·</span>
+        <time [attr.datetime]="item.issueDate | date:'yyyy-MM-dd'">{{ item.issueDate | date:'yyyy' }}</time>
+      </p>
+    </div>
+    @if (item.technologies.length || item.skills.length) {
+    <div class="certificate-metadata">
+      @if (item.technologies.length) {
+      <ul appHomeMetadataPills [items]="item.technologies"></ul>
+      }
+      @if (item.skills.length) {
+      <ul appHomeMetadataPills kind="skills" [items]="item.skills"></ul>
+      }
     </div>
     }
   </div>
-
-  <div class="certificate-caption">
-    <h3 [id]="'certificate-title-' + item.id">{{ item.name }}</h3>
-    <p [id]="'certificate-meta-' + item.id">
-      <span>{{ item.issuingOrganization }}</span>
-      <span class="certificate-meta-dot" aria-hidden="true">·</span>
-      <time [attr.datetime]="item.issueDate | date:'yyyy-MM-dd'">{{ item.issueDate | date:'yyyy' }}</time>
-    </p>
-  </div>
-  @if (item.technologies.length || item.skills.length) {
-  <div class="certificate-metadata">
-    @if (item.technologies.length) {
-    <ul appHomeMetadataPills [items]="item.technologies"></ul>
-    }
-    @if (item.skills.length) {
-    <ul appHomeMetadataPills kind="skills" [items]="item.skills"></ul>
-    }
-  </div>
-  }
 </a>

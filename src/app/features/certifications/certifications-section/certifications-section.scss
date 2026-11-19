@@ -63,6 +63,7 @@
 .certifications-wall {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
+  grid-auto-rows: 1fr;
   gap: 3rem;
   margin: 3rem auto 0;
   max-width: 30rem;
@@ -70,7 +71,12 @@
 
 .certifications-slot {
   min-width: 0;
-  --art-angle: 0deg;
+}
+
+.certifications-slot:not(.certifications-skeleton),
+.certifications-motion {
+  display: grid;
+  min-inline-size: 0;
 }
 
 .certifications-motion {
@@ -97,11 +103,13 @@
 }
 
 .certifications-skeleton {
+  align-content: end;
+  min-block-size: 16rem;
   padding: 1rem;
   border: 1px solid rgb(255 255 255 / 0.1);
   border-radius: var(--radius);
   background: color-mix(in srgb, var(--color-base-200) 15%, transparent);
-  transform: rotate(var(--art-angle));
+  overflow: hidden;
 }
 
 .certifications-skeleton-art {
@@ -121,7 +129,6 @@
   .certifications-wall:has(> .certifications-slot + .certifications-slot) {
     @include mobile-rail.viewport;
     @include mobile-rail.columns;
-    align-items: start;
     max-width: none;
     padding-block: 0.75rem 1rem;
 
@@ -138,21 +145,9 @@
 
   .certifications-wall {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    align-items: start;
     gap: 3rem 2.5rem;
     max-width: none;
     margin-top: 3.5rem;
-  }
-
-  .certifications-slot {
-    &:nth-child(2n + 1) {
-      --art-angle: -1.5deg;
-    }
-
-    &:nth-child(2n) {
-      --art-angle: 1.5deg;
-      margin-top: 3.5rem;
-    }
   }
 
   .certifications-wall[data-count='1'] {
@@ -170,27 +165,6 @@
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 4rem 2.5rem;
     padding-inline: 0.75rem;
-  }
-
-  .certifications-slot {
-    &:nth-child(n) {
-      margin-top: 0;
-    }
-
-    &:nth-child(3n + 1) {
-      --art-angle: -1.5deg;
-      margin-top: 1rem;
-    }
-
-    &:nth-child(3n + 2) {
-      --art-angle: 1deg;
-      margin-top: 5rem;
-    }
-
-    &:nth-child(3n) {
-      --art-angle: -1deg;
-      margin-top: 2rem;
-    }
   }
 
   .certifications-wall[data-count='2'] {

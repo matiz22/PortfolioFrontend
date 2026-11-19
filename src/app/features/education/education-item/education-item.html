@@ -1,4 +1,9 @@
-<a class="archive-card" [routerLink]="['/education', education.slug]">
+<a class="archive-card education-cover" [routerLink]="['/education', education.slug]">
+  @if (education.thumbnail && failedThumbnail() !== education.thumbnail) {
+    <img class="education-cover-image" [src]="education.thumbnail | imageUrl" alt=""
+      loading="lazy" decoding="async" (error)="failedThumbnail.set(education.thumbnail)">
+  }
+
   <div class="archive-card-header">
     <h2 class="archive-card-title section-heading">{{ education.degree }}</h2>
   </div>
@@ -14,12 +19,6 @@
       <p class="education-grade"><span i18n="@@education.grade">Grade</span>: {{ education.grade }}</p>
     }
   </div>
-
-  @if (education.thumbnail) {
-    <div class="archive-card-media education-card-media">
-      <img class="archive-card-cover" [src]="education.thumbnail | imageUrl" alt="" loading="lazy" decoding="async">
-    </div>
-  }
 
   @if (education.technologies.length) {
     <ul class="archive-card-technologies" role="list">

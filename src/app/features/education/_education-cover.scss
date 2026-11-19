@@ -1,0 +1,37 @@
+.education-cover {
+  isolation: isolate;
+  min-block-size: clamp(14rem, 27vw, 18rem);
+
+  &:has(> .education-cover-image)::before {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(
+      rgb(4 8 6 / 24%),
+      rgb(4 8 6 / 76%) 40%,
+      rgb(4 8 6 / 95%)
+    );
+    content: '';
+    pointer-events: none;
+  }
+}
+
+.education-cover-image {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .education-cover-image {
+    transition: transform 300ms ease;
+  }
+
+  .education-cover:is(:hover, :focus-within) .education-cover-image {
+    transform: scale(1.04);
+  }
+}

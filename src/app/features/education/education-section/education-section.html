@@ -24,11 +24,10 @@
         @for (item of entries(); track item.id) {
         <li class="education-entry">
           <div class="education-motion">
-            <article class="education-card glass home-glass" [attr.aria-labelledby]="'education-title-' + item.id">
-              @if (item.thumbnail) {
-              <div class="education-media">
-                <img [src]="item.thumbnail | imageUrl" alt="" loading="lazy" />
-              </div>
+            <article class="education-card education-cover glass home-glass" [attr.aria-labelledby]="'education-title-' + item.id">
+              @if (item.thumbnail && !failedThumbnails().has(item.thumbnail)) {
+              <img class="education-cover-image" [src]="item.thumbnail | imageUrl" alt=""
+                loading="lazy" decoding="async" (error)="hideThumbnail(item.thumbnail)" />
               }
 
               <div class="education-body">

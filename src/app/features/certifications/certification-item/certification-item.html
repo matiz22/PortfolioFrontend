@@ -1,26 +1,27 @@
-<a class="archive-card" [routerLink]="['/certification', certification.slug]">
-  <div class="archive-card-header">
-    <h2 class="archive-card-title section-heading">{{ certification.name }}</h2>
-  </div>
+<a class="archive-card certificate-cover" [routerLink]="['/certification', certification.slug]">
+  @if (certification.thumbnail && failedThumbnail() !== certification.thumbnail) {
+    <img class="certificate-cover-image" [src]="certification.thumbnail | imageUrl" alt=""
+      loading="lazy" decoding="async" (error)="failedThumbnail.set(certification.thumbnail)">
+  }
 
-  <p class="certification-issuer">{{ certification.issuingOrganization }}</p>
-  <p class="archive-card-meta flex flex-wrap items-baseline gap-x-1.5">
-    <span i18n="@@certificationDetails.badge.issued">Issued:</span>
-    <time [attr.datetime]="certification.issueDate | date:'yyyy-MM-dd':'UTC'">{{ certification.issueDate | date:'MMM yyyy':'UTC' }}</time>
-  </p>
-
-  @if (certification.thumbnail) {
-    <div class="archive-card-media certification-card-media">
-      <img class="archive-card-cover" [src]="certification.thumbnail | imageUrl" alt="" loading="lazy" decoding="async">
+  <div class="certificate-cover-copy">
+    <div class="archive-card-header">
+      <h2 class="archive-card-title section-heading">{{ certification.name }}</h2>
     </div>
-  }
 
-  @let items = tags;
-  @if (items.length) {
-    <ul class="archive-card-technologies" role="list">
-      @for (tag of items; track tag.name) {
-        <li>{{ tag.name }}</li>
-      }
-    </ul>
-  }
+    <p class="certification-issuer">{{ certification.issuingOrganization }}</p>
+    <p class="archive-card-meta flex flex-wrap items-baseline gap-x-1.5">
+      <span i18n="@@certificationDetails.badge.issued">Issued:</span>
+      <time [attr.datetime]="certification.issueDate | date:'yyyy-MM-dd':'UTC'">{{ certification.issueDate | date:'MMM yyyy':'UTC' }}</time>
+    </p>
+
+    @let items = tags;
+    @if (items.length) {
+      <ul class="archive-card-technologies" role="list">
+        @for (tag of items; track tag.name) {
+          <li>{{ tag.name }}</li>
+        }
+      </ul>
+    }
+  </div>
 </a>

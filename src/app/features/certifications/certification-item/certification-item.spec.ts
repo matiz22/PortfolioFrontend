@@ -39,6 +39,22 @@ describe('CertificationItem', () => {
     expect(root.querySelector('.archive-card-media')).toBeNull();
   });
 
+  it('uses the thumbnail as a decorative cover and retains the card when the image fails', () => {
+    const root: HTMLElement = fixture.nativeElement;
+    const thumbnail = 'https://example.com/cloud.png';
+    fixture.componentRef.setInput('certification', { ...certification, thumbnail });
+    fixture.detectChanges();
+
+    const image = root.querySelector<HTMLImageElement>('.certificate-cover > .certificate-cover-image')!;
+    expect(image.getAttribute('src')).toBe(thumbnail);
+    expect(image.getAttribute('alt')).toBe('');
+    image.dispatchEvent(new Event('error'));
+    fixture.detectChanges();
+
+    expect(root.querySelector('.certificate-cover-image')).toBeNull();
+    expect(root.querySelector('.certificate-cover-copy h2')?.textContent).toBe(certification.name);
+  });
+
   it('displays each tag once even when both skill and technology lists include it', () => {
     const root: HTMLElement = fixture.nativeElement;
     expect(Array.from(root.querySelectorAll('.archive-card-technologies li'), (item) => item.textContent?.trim()))

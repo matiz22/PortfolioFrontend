@@ -101,7 +101,7 @@ describe('EducationSection', () => {
     expect(root.querySelector('.education-subject')?.textContent).toBe(degree.fieldOfStudy);
     expect(root.querySelector('.education-grade')?.textContent).toContain('5.0');
     expect(root.querySelectorAll('.education-card').length).toBe(2);
-    expect(root.querySelectorAll('.education-media img').length).toBe(1);
+    expect(root.querySelectorAll('.education-card > .education-cover-image').length).toBe(1);
     expect(root.querySelector('.education-record')?.getAttribute('aria-busy')).toBe('false');
   });
 
@@ -114,7 +114,7 @@ describe('EducationSection', () => {
     expect(link.querySelector('[aria-hidden]')).toBeNull();
     expect(getComputedStyle(link).textDecorationLine).toBe('underline');
     expect(root.querySelector('article')?.getAttribute('aria-labelledby')).toBe('education-title-1');
-    expect(root.querySelector('.education-media img')?.getAttribute('alt')).toBe('');
+    expect(root.querySelector('.education-cover-image')?.getAttribute('alt')).toBe('');
   });
 
   it('extends the existing detail link over the whole card without adding another tab stop', () => {
@@ -171,12 +171,28 @@ describe('EducationSection', () => {
     expect(root.querySelectorAll('time').length).toBe(1);
   });
 
-  it('omits the media column instead of substituting a decorative number', () => {
+  it('keeps the card without a decorative image when no thumbnail is available', () => {
     const root = render(ApiState.success([degree]));
-    expect(root.querySelector('.education-media')).toBeNull();
-    expect(root.querySelector('.education-media-fallback')).toBeNull();
+    expect(root.querySelector('.education-cover-image')).toBeNull();
     expect(root.querySelector('.education-record-label')).toBeNull();
     expect(root.textContent).not.toContain('The learning continues.');
+  });
+
+  it('places the thumbnail behind the whole card and keeps its height if the image fails', () => {
+    const root = render(ApiState.success([{ ...degree, thumbnail: '/example.png' }]));
+    const card = root.querySelector<HTMLElement>('.education-card')!;
+    const image = card.querySelector<HTMLImageElement>(':scope > .education-cover-image')!;
+    const height = card.offsetHeight;
+    expect(getComputedStyle(image).position).toBe('absolute');
+    expect(getComputedStyle(image).objectFit).toBe('cover');
+    expect(getComputedStyle(card, '::before').backgroundImage).toContain('linear-gradient');
+
+    image.dispatchEvent(new Event('error'));
+    fixture.detectChanges();
+
+    expect(card.querySelector('.education-cover-image')).toBeNull();
+    expect(card.querySelector('.education-degree')?.textContent).toBe(degree.degree);
+    expect(card.offsetHeight).toBe(height);
   });
 
   it('renders the empty state and preserves the catalogue link', () => {

@@ -7,6 +7,7 @@ import {
   ElementRef,
   inject,
   NgZone,
+  signal,
 } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
@@ -31,6 +32,8 @@ export class EducationSection {
   private readonly element = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly destroyRef = inject(DestroyRef);
   private readonly zone = inject(NgZone);
+
+  protected readonly failedThumbnails = signal<ReadonlySet<string>>(new Set());
 
   readonly education = toSignal(this.educationService.getHomeSummaryItems(), {
     initialValue: ApiState.loading<EducationSummary[]>(),
@@ -71,5 +74,9 @@ export class EducationSection {
         console.warn('Education animation could not be loaded.', error);
       });
     });
+  }
+
+  protected hideThumbnail(thumbnail: string): void {
+    this.failedThumbnails.update((failed) => new Set(failed).add(thumbnail));
   }
 }

@@ -95,11 +95,11 @@ describe('CertificationsSection', () => {
     expect(root.querySelector('time')?.getAttribute('datetime')).toBe('2025-06-12');
   });
 
-  it('provides a document fallback without inventing a credential', () => {
+  it('keeps the cover layout and real metadata when there is no thumbnail', () => {
     const root = render(ApiState.success([certificate]));
-    expect(root.querySelector('.certificate-fallback-title')?.textContent).toBe(certificate.name);
-    expect(root.querySelector('.certificate-fallback-issuer')?.textContent).toBe(certificate.issuingOrganization);
-    const link = root.querySelector('.certificate-link')!;
+    const link = root.querySelector('.certificate-link.certificate-cover')!;
+    expect(link.querySelector('.certificate-cover-image')).toBeNull();
+    expect(link.querySelector('.certificate-cover-copy')?.textContent).toContain(certificate.issuingOrganization);
     expect(link.getAttribute('aria-labelledby')).toBe('certificate-title-1');
     expect(root.querySelector('#certificate-title-1')?.textContent).toBe(certificate.name);
     expect(root.querySelector('.certificate-metadata')).toBeNull();
@@ -119,16 +119,16 @@ describe('CertificationsSection', () => {
     expect(root.querySelector('.certificate-link')?.getAttribute('aria-describedby')).toBe('certificate-meta-1');
   });
 
-  it('shows uncropped artwork and falls back when the image fails', () => {
+  it('uses a decorative background image and retains the caption if it fails', () => {
     const root = render(ApiState.success([{ ...certificate, thumbnail: 'https://example.com/certificate.png' }]));
-    const image = root.querySelector<HTMLImageElement>('.certificate-image')!;
+    const image = root.querySelector<HTMLImageElement>('.certificate-cover > .certificate-cover-image')!;
     expect(image.getAttribute('src')).toBe('https://example.com/certificate.png');
     expect(image.getAttribute('loading')).toBe('lazy');
     expect(image.getAttribute('alt')).toBe('');
     image.dispatchEvent(new Event('error'));
     fixture.detectChanges();
-    expect(root.querySelector('.certificate-image')).toBeNull();
-    expect(root.querySelector('.certificate-fallback-title')?.textContent).toBe(certificate.name);
+    expect(root.querySelector('.certificate-cover-image')).toBeNull();
+    expect(root.querySelector('.certificate-cover-copy h3')?.textContent).toBe(certificate.name);
   });
 
   it('renders an empty state and keeps the full catalogue link', () => {

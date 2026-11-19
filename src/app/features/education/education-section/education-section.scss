@@ -1,4 +1,6 @@
 @use '../../../../styles/home-mobile-rail' as mobile-rail;
+@use '../../../../styles/portfolio-card' as portfolio-card;
+@use '../education-cover';
 
 :host {
   display: block;
@@ -53,21 +55,30 @@
 
 .education-entries {
   display: grid;
+  grid-auto-rows: 1fr;
   gap: clamp(1.5rem, 3vw, 2.25rem);
   margin: 0;
   padding-block: clamp(3rem, 6vw, 5rem) 0;
   list-style: none;
 }
 
+.education-entry,
 .education-motion {
-  display: block;
+  display: grid;
+  min-inline-size: 0;
+}
+
+.education-motion {
   will-change: transform, opacity;
 }
 
 .education-card {
+  @include portfolio-card.compact-pills;
   position: relative;
   display: grid;
-  grid-template-columns: clamp(7.5rem, 14vw, 12rem) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
+  align-items: end;
   border: 1px solid rgb(255 255 255 / 8%);
   border-radius: var(--radius);
   background: #101010;
@@ -75,10 +86,6 @@
   will-change: transform;
   transform-style: preserve-3d;
   transition: border-color 200ms ease, background-color 200ms ease;
-
-  &:not(:has(.education-media)) {
-    grid-template-columns: minmax(0, 1fr);
-  }
 
   &:hover,
   &:focus-within {
@@ -91,39 +98,23 @@
   }
 }
 
-.education-media {
-  min-height: 11rem;
-  background: #181818;
-
-  img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    will-change: transform;
-    backface-visibility: hidden;
-    transition: transform 300ms ease;
-  }
-}
-
-.education-card:hover .education-media img,
-.education-card:focus-within .education-media img {
-  transform: scale(1.04);
-}
-
 .education-body {
   display: flex;
   justify-content: space-between;
-  gap: 1.5rem;
-  padding: clamp(1.25rem, 2.5vw, 2rem);
+  gap: 1rem;
+  min-block-size: 0;
+  max-block-size: 100%;
+  padding: clamp(0.875rem, 2.5vw, 2rem);
 }
 
 .education-main {
   min-width: 0;
-  overflow-wrap: anywhere;
+  min-block-size: 0;
+  overflow: hidden;
 }
 
 .education-degree {
+  @include portfolio-card.lines(2);
   font-size: clamp(1.5rem, 2.4vw, 2.1rem);
   font-weight: 400;
   letter-spacing: -0.03em;
@@ -132,20 +123,22 @@
 }
 
 .education-subject {
+  @include portfolio-card.lines(1);
   margin-top: 0.4rem;
   color: #b9bfb9;
   font-size: 0.9375rem;
 }
 
 .education-institution {
-  margin-top: 0.75rem;
+  @include portfolio-card.lines(1);
+  margin-top: 0.4rem;
   color: #8a928b;
   font-size: 0.75rem;
   line-height: 1.7;
 }
 
 .education-tech {
-  margin-top: 1.25rem;
+  margin-top: 0.55rem;
 }
 
 .education-tags {
@@ -156,8 +149,10 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  justify-content: flex-end;
   gap: 0.4rem;
   flex-shrink: 0;
+  max-inline-size: 42%;
   text-align: right;
 }
 
@@ -180,7 +175,7 @@
 }
 
 .education-grade {
-  margin-top: auto;
+  @include portfolio-card.lines(1);
 }
 
 .education-link {
@@ -231,7 +226,6 @@
   .education-entries:has(> .education-entry + .education-entry) {
     @include mobile-rail.viewport;
     @include mobile-rail.columns;
-    align-items: start;
     margin-block-start: 3rem;
     padding-block: 0.5rem 1rem;
 
@@ -240,27 +234,22 @@
     }
   }
 
-  .education-card {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .education-media {
-    min-height: 9rem;
-  }
-
   .education-body {
     flex-direction: column;
+    justify-content: flex-start;
+    gap: 0.625rem;
   }
 
   .education-aside {
     align-items: flex-start;
+    gap: 0.15rem;
+    max-inline-size: none;
     text-align: left;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .education-card,
-  .education-card .education-media img,
   .education-degree {
     transition: none;
   }
