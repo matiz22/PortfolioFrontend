@@ -89,26 +89,29 @@ describe('ProjectPreview', () => {
     }
   });
 
-  it('renders every technology as a visible pill', () => {
+  it('keeps the technology names in the preview list', () => {
     const technologies = root.querySelectorAll('.project-preview-technologies li');
     expect(Array.from(technologies).every(pill => pill.classList.contains('home-metadata-pill'))).toBeTrue();
     expect(Array.from(technologies, pill => pill.textContent))
       .toEqual(project.technologies.map(technology => technology.name));
   });
 
-  it('makes room for extra pill rows even in a narrow horizontal caption', async () => {
+  it('keeps a narrow preview compact even when it has extra pill rows', async () => {
+    const card = root.querySelector<HTMLElement>('.project-preview')!;
+    root.style.width = '180px';
+    card.classList.add('project-preview-horizontal');
+    const initialHeight = card.offsetHeight;
     const technologies = Array.from({ length: 12 }, (_, id) => ({ id, name: `Technology ${id}` }));
     fixture.componentRef.setInput('project', { ...project, technologies });
     await fixture.whenStable();
-    root.style.width = '180px';
-    root.querySelector('.project-preview')!.classList.add('project-preview-horizontal');
-
-    const caption = root.querySelector('.project-preview-caption')!.getBoundingClientRect();
+    const list = root.querySelector<HTMLElement>('.project-preview-technologies')!;
     const pills = Array.from(root.querySelectorAll('.project-preview-technologies li'));
     expect(pills.length).toBe(technologies.length);
-    const last = pills[pills.length - 1].getBoundingClientRect();
-    expect(last.top).toBeGreaterThan(pills[0].getBoundingClientRect().top);
-    expect(last.bottom).toBeLessThanOrEqual(caption.bottom);
+    expect(card.offsetHeight).toBe(initialHeight);
+    expect(initialHeight).toBeGreaterThan(0);
+    expect(getComputedStyle(list).overflowY).toBe('hidden');
+    expect(pills[0].getBoundingClientRect().bottom).toBeLessThanOrEqual(list.getBoundingClientRect().bottom);
+    expect(list.scrollHeight).toBeGreaterThan(list.clientHeight);
   });
 
   it('omits unavailable external actions and renders a missing-thumbnail fallback', async () => {

@@ -1,4 +1,5 @@
 @use '../../../../styles/home-mobile-rail' as mobile-rail;
+@use '../../../../styles/portfolio-card' as portfolio-card;
 
 .jobs-section {
   position: relative;
@@ -85,7 +86,8 @@
 
 .jobs-list {
   display: grid;
-  gap: 3.5rem;
+  // Dates take their natural height; only the card rows share a height.
+  grid-auto-rows: auto 1fr;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -93,6 +95,9 @@
 
 .jobs-entry {
   position: relative;
+  display: grid;
+  grid-row: span 2;
+  grid-template-rows: subgrid;
   min-width: 0;
   padding-left: 2.5rem;
 }
@@ -103,6 +108,10 @@
   align-items: center;
   min-height: 1rem;
   margin-bottom: 1rem;
+}
+
+:where(.jobs-entry + .jobs-entry) .jobs-point {
+  margin-block-start: 3.5rem;
 }
 
 .jobs-dot {
@@ -138,19 +147,21 @@
 }
 
 .jobs-card {
+  @include portfolio-card.compact-pills;
   display: block;
   border-radius: var(--radius);
   outline-offset: 0.5rem;
+  overflow: hidden;
   text-decoration: none;
 
   h3 {
+    @include portfolio-card.lines(2);
     margin-block: 0.65rem 0.5rem;
     color: var(--color-base-content);
     font-family: "Instrument Serif", serif;
     font-size: clamp(2rem, 2.7vw, 2.5rem);
     font-weight: 400;
     line-height: 1.08;
-    overflow-wrap: anywhere;
     transition: color 200ms;
   }
 
@@ -165,16 +176,16 @@
 }
 
 .jobs-company {
+  @include portfolio-card.lines(1);
   color: rgb(255 255 255 / 85%);
   font-size: 0.75rem;
-  overflow-wrap: anywhere;
 }
 
 .jobs-location {
+  @include portfolio-card.lines(1);
   margin-bottom: 1rem;
   color: rgb(255 255 255 / 75%);
   font-size: 0.75rem;
-  overflow-wrap: anywhere;
 }
 
 .jobs-tags {
@@ -229,7 +240,6 @@
 
   .jobs-card {
     grid-row: 1;
-    align-self: end;
     max-width: 25rem;
     margin-bottom: 1rem;
     padding-right: 0.5rem;
@@ -238,7 +248,6 @@
   .jobs-entry:nth-child(even) {
     .jobs-card {
       grid-row: 3;
-      align-self: start;
       margin-top: 1rem;
       margin-bottom: 0;
     }
@@ -258,7 +267,7 @@
 
     .jobs-list {
       @include mobile-rail.columns;
-      grid-template-rows: auto 3rem auto;
+      grid-template-rows: 1fr 3rem 1fr;
       row-gap: 0;
     }
 

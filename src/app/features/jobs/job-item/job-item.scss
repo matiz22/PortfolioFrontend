@@ -1,12 +1,8 @@
-@use '../../../shared/portfolio/archive-card';
+@use '../../../../styles/portfolio-card' as portfolio-card;
+@use '../../../shared/portfolio/archive-card' with ($compact-preview: true);
 
 .job-company {
+  @include portfolio-card.lines(1);
   color: var(--portfolio-ink);
   font-size: 0.875rem;
-}
-
-.job-card-media {
-  aspect-ratio: auto;
-  height: clamp(6.5rem, 14vw, 9.5rem);
-  margin-block: 0.25rem;
 }

@@ -14,7 +14,7 @@
       </header>
 
       @let state = jobs();
-      <div class="jobs-viewport" [attr.aria-busy]="state.status === 'loading'">
+      <div class="jobs-viewport" [attr.aria-busy]="state.status === 'loading'" (focusin)="revealFocusedRole($event)">
         @switch (state.status) {
         @case ('loading') {
         <div class="jobs-loading" role="status">

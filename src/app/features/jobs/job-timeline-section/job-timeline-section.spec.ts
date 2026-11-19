@@ -111,6 +111,27 @@ describe('JobTimelineSection', () => {
       .toEqual(skills.map(skill => skill.name));
   });
 
+  it('brings a partly visible keyboard-focused role into the native rail', async () => {
+    state.next(ApiState.success([job, { ...job, id: 2, slug: 'second-role' }]));
+    await fixture.whenStable();
+    const viewport = root.querySelector<HTMLElement>('.jobs-viewport')!;
+    const role = root.querySelectorAll<HTMLElement>('.jobs-card')[1];
+    Object.defineProperties(viewport, {
+      clientWidth: { value: 320 },
+      scrollWidth: { value: 544 },
+    });
+    viewport.style.overflowX = 'auto';
+    viewport.style.scrollPaddingLeft = '24px';
+    spyOn(role, 'matches').and.callThrough().withArgs('.jobs-card:focus-visible').and.returnValue(true);
+    spyOn(role, 'getBoundingClientRect').and.returnValue(new DOMRect(292, 0, 252, 150));
+    spyOn(viewport, 'getBoundingClientRect').and.returnValue(new DOMRect(0, 0, 320, 220));
+    const scroll = spyOn(viewport, 'scrollBy');
+
+    role.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
+
+    expect(scroll.calls.allArgs() as unknown[]).toEqual([[{ left: 268, behavior: 'instant' }]]);
+  });
+
   it('handles empty collections and missing optional dates and tag groups', async () => {
     state.next(ApiState.success([{ ...job, technologies: [], skills: [], location: '',
       isCurrent: false, endDate: null }]));

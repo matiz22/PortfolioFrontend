@@ -1,4 +1,8 @@
-@use '../../../shared/portfolio/archive-card';
+@use '../../../shared/portfolio/archive-card' with ($compact-preview: true);
+
+.archive-card-media {
+  flex-basis: clamp(7rem, 13vw, 10rem);
+}
 
 .project-card-link {
   &::after {
@@ -15,13 +19,14 @@
 
   &:focus-visible::after {
     outline: 2px solid var(--portfolio-ink);
-    outline-offset: 3px;
+    outline-offset: -3px;
   }
 }
 
 .project-card-live {
   position: relative;
   z-index: 2;
+  flex-shrink: 0;
   align-self: flex-start;
   margin-top: 0.25rem;
   color: var(--portfolio-ink);

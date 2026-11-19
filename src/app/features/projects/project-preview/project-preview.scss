@@ -1,12 +1,16 @@
+@use '../../../../styles/portfolio-card' as portfolio-card;
+
 :host {
-  display: block;
+  display: grid;
   min-width: 0;
 }
 
 .project-preview {
+  @include portfolio-card.compact-pills;
   position: relative;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: 1fr auto auto;
   overflow: hidden;
   isolation: isolate;
   border: 1px solid rgb(255 255 255 / 9%);
@@ -27,10 +31,8 @@
 
 .project-preview-visual {
   position: relative;
-  order: 1;
-  flex-shrink: 0;
-  aspect-ratio: 16 / 10;
-  min-height: clamp(14rem, 26vw, 19rem);
+  grid-area: 1 / 1;
+  min-block-size: clamp(12rem, 24vw, 18rem);
   overflow: hidden;
   border-bottom: 1px solid rgb(255 255 255 / 7%);
 }
@@ -84,33 +86,33 @@
 }
 
 .project-preview-drawer {
-  // Motion enhances this into a real, height-changing drawer on desktop.
+  // Desktop motion overlays the preview image without changing the card footprint.
   // Touch, SSR, reduced motion and failed JS loading keep it fully open.
   position: relative;
   z-index: 2;
-  order: 3;
+  grid-area: 3 / 1;
   overflow: hidden;
 }
 
 .project-preview-brief {
-  padding: 1.25rem 1.5rem;
+  padding: 0.75rem 1rem;
   border-top: 1px solid rgb(255 255 255 / 9%);
   background: rgb(0 0 0 / 20%);
 }
 
 .project-preview-description {
+  @include portfolio-card.lines(2);
   margin: 0;
   color: rgb(255 255 255 / 88%);
   font-size: 0.8125rem;
   line-height: 1.8;
-  overflow-wrap: anywhere;
 }
 
 .project-preview-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 0.25rem 1rem;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
 }
 
 .project-preview-action {
@@ -122,8 +124,8 @@
 
 .project-preview-caption {
   // Title comes first in DOM/tab order, ahead of the revealed action links.
-  order: 2;
-  padding: 1.5rem;
+  grid-area: 2 / 1;
+  padding: 0.875rem 1rem;
 }
 
 .project-preview-title {
@@ -134,10 +136,9 @@
 }
 
 .project-preview-title-link {
-  display: block;
+  @include portfolio-card.lines(2);
   color: var(--color-base-content);
   text-decoration: none;
-  overflow-wrap: anywhere;
   transition: color 200ms ease;
 
   // Stretch only the project link, keeping demo/source links as siblings.
@@ -163,39 +164,30 @@
   margin-top: 0.625rem;
 }
 
+.project-preview-interactive,
 .project-preview-horizontal {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  grid-template-rows: minmax(12rem, 1fr) minmax(9rem, auto);
-  min-height: 27rem;
-
-  .project-preview-visual {
-    grid-area: 1 / 1;
-    min-height: 0;
-    aspect-ratio: auto;
-  }
-
-  .project-preview-caption {
-    grid-area: 2 / 1;
-    min-width: 0;
-    padding: 1.25rem;
-  }
-
-  .project-preview-title {
-    font-size: 1.125rem;
-  }
-
-  .project-preview-title-link > span {
-    display: -webkit-box;
-    overflow: hidden;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-  }
+  grid-template-rows: 1fr auto;
 
   .project-preview-drawer {
-    grid-area: 1 / 2 / 3 / 3;
+    position: absolute;
+    grid-area: 1 / 1 / 2 / 2;
+    background: #101211;
+  }
+}
+
+.project-preview-interactive {
+  .project-preview-drawer {
+    inset: auto 0 0;
+    max-height: 100%;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+}
+
+.project-preview-horizontal {
+  .project-preview-drawer {
+    inset: 0 0 0 auto;
     width: 0;
-    min-width: 0;
     height: 100%;
   }
 

@@ -66,4 +66,26 @@ export class JobTimelineSection {
       });
     });
   }
+
+  protected revealFocusedRole(event: FocusEvent): void {
+    const target = event.target;
+    const viewport = event.currentTarget;
+    if (!(target instanceof HTMLElement) || !target.matches('.jobs-card:focus-visible') ||
+      !(viewport instanceof HTMLElement) || viewport.scrollWidth <= viewport.clientWidth) {
+      return;
+    }
+
+    const style = viewport.ownerDocument.defaultView?.getComputedStyle(viewport);
+    if (style?.overflowX !== 'auto') {
+      return; // The pinned desktop timeline has its own keyboard scroll handling.
+    }
+
+    const card = target.getBoundingClientRect();
+    const bounds = viewport.getBoundingClientRect();
+    if (card.left < bounds.left || card.right > bounds.right) {
+      // The browser can consider a partly visible card already in view.
+      const inset = parseFloat(style.scrollPaddingLeft) || 0;
+      viewport.scrollBy({ left: card.left - bounds.left - inset, behavior: 'instant' });
+    }
+  }
 }

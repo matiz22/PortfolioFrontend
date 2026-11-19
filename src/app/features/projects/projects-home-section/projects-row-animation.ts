@@ -1,6 +1,5 @@
 import { gsap } from 'gsap';
 import { PROJECT_INTERACTION_EVENT } from './projects-hover-animation';
-import { projectRowWeights } from './projects-layout';
 
 interface RowCard {
   card: HTMLElement;
@@ -39,7 +38,6 @@ export function animateProjectRows(root: HTMLElement, context: gsap.Context): ()
       return () => {};
     }
 
-    const hadRowClass = row.classList.contains('projects-home-row-horizontal');
     let active: RowCard | undefined;
     let pointerCard: RowCard | undefined;
     let intent: gsap.core.Tween | undefined;
@@ -53,8 +51,6 @@ export function animateProjectRows(root: HTMLElement, context: gsap.Context): ()
     const cardAt = (target: EventTarget | null) =>
       cards.find(({ card }) => target instanceof view.Node && card.contains(target));
 
-    row.classList.add('projects-home-row-horizontal');
-    gsap.set(row, { '--project-left': '1fr', '--project-middle': '1fr', '--project-right': '1fr' });
     for (const item of cards) {
       item.card.classList.add('project-preview-horizontal');
       gsap.set(item.drawer, { width: 0, autoAlpha: 0 });
@@ -66,15 +62,12 @@ export function animateProjectRows(root: HTMLElement, context: gsap.Context): ()
     }
 
     const measure = () => {
-      const width = row.clientWidth;
+      const width = cards[0].card.clientWidth;
       if (width === previousWidth) {
         return false;
       }
       previousWidth = width;
-      const gap = parseFloat(view.getComputedStyle(row).columnGap) || 0;
-      const expandedShare = projectRowWeights(cards.length, 0)[0] / cards.length;
-      const expandedWidth = (width - gap * (cards.length - 1)) * expandedShare;
-      briefWidth = Math.round(Math.min(256, Math.max(208, expandedWidth * 0.36)));
+      briefWidth = Math.min(width, Math.round(Math.min(256, Math.max(184, width * 0.65))));
       context.add(() => gsap.set(cards.map(({ card }) => card), {
         '--project-brief-width': `${briefWidth}px`,
       }));
@@ -99,18 +92,8 @@ export function animateProjectRows(root: HTMLElement, context: gsap.Context): ()
       }
 
       context.add(() => {
-        const weights = projectRowWeights(cards.length, next ? cards.indexOf(next) : -1);
-        const left = weights[0];
-        const middle = cards.length === 3 ? weights[1] : 1;
-        const right = cards.length === 3 ? weights[2] : (weights[1] ?? 1);
         const duration = next ? 0.52 : 0.38;
-        transition = gsap.timeline({ paused: true })
-          .to(row, {
-            '--project-left': `${left}fr`,
-            '--project-middle': `${middle}fr`,
-            '--project-right': `${right}fr`,
-            duration, ease: 'back.out(1.1)',
-          }, 0);
+        transition = gsap.timeline({ paused: true });
 
         for (const item of cards) {
           const open = item === next;
@@ -155,8 +138,7 @@ export function animateProjectRows(root: HTMLElement, context: gsap.Context): ()
       });
     };
 
-    // Listen to physical pointer movement at the stable row, not enter/leave
-    // events on cards that can fire merely because their widths are changing.
+    // Use physical pointer movement to choose which card's drawer to reveal.
     const onPointerMove = (event: PointerEvent) => {
       if (event.pointerType === 'touch') {
         return;
@@ -203,7 +185,7 @@ export function animateProjectRows(root: HTMLElement, context: gsap.Context): ()
         activate(active, true, true);
       }
     }) : undefined;
-    resize?.observe(row);
+    resize?.observe(cards[0].card);
     row.addEventListener('pointermove', onPointerMove);
     row.addEventListener('pointerleave', onPointerLeave);
     row.addEventListener('pointerdown', onPointerDown);
@@ -227,9 +209,6 @@ export function animateProjectRows(root: HTMLElement, context: gsap.Context): ()
       row.removeEventListener('pointerdown', onPointerDown);
       row.removeEventListener('focusin', onFocus);
       row.removeEventListener('focusout', onFocusOut);
-      if (!hadRowClass) {
-        row.classList.remove('projects-home-row-horizontal');
-      }
       for (const item of cards) {
         if (!item.hadHorizontalClass) {
           item.card.classList.remove('project-preview-horizontal');

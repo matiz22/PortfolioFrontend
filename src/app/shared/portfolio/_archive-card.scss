@@ -1,7 +1,10 @@
 @use './theme';
+@use '../../../styles/portfolio-card' as portfolio-card;
+
+$compact-preview: false !default;
 
 :host {
-  display: block;
+  display: grid;
   min-width: 0;
 }
 
@@ -11,7 +14,6 @@
   display: flex;
   flex-direction: column;
   gap: 0.65rem;
-  height: 100%;
   padding: clamp(1rem, 1.8vw, 1.5rem);
   border: 1px solid var(--portfolio-border-muted);
   border-radius: var(--radius);
@@ -133,6 +135,46 @@
 
   li {
     @include theme.chip;
+  }
+}
+
+@if $compact-preview {
+  .archive-card {
+    gap: 0.5rem;
+    padding: clamp(0.875rem, 1.2vw, 1.25rem);
+    overflow: hidden;
+  }
+
+  .archive-card-title {
+    @include portfolio-card.lines(2);
+    font-size: clamp(1.5rem, 2.1vw, 2rem);
+  }
+
+  .archive-card-summary {
+    @include portfolio-card.lines(2);
+  }
+
+  .archive-card-media {
+    flex: 1 0 3rem;
+    min-block-size: 0;
+    aspect-ratio: auto;
+    margin-block: 0;
+  }
+
+  .archive-card-technologies {
+    // Keep full pills in the preview; later rows stay on the detail page.
+    flex: 0 0 auto;
+    max-block-size: calc(0.6875rem * 1.4 + 0.7rem + 2px);
+    padding-block: 0;
+    overflow: hidden;
+
+    li {
+      display: block;
+      max-inline-size: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
   }
 }
 

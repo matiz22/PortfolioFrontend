@@ -25,13 +25,12 @@
 .archive-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
+  // Equalize only the rows in this collection.
+  grid-auto-rows: 1fr;
   gap: clamp(1rem, 2vw, 1.75rem);
 
   @media (min-width: 44rem) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-
-    // Every row shares the height of the tallest one, so all cards match.
-    grid-auto-rows: 1fr;
   }
 
   @media (min-width: 68rem) {

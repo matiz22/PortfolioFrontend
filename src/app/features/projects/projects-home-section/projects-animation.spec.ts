@@ -161,6 +161,7 @@ describe('projects animation', () => {
   it('waits for hover intent, then animates the drawer actual height', () => {
     motion = animateProjects(root);
     const drawer = element('.project-preview-drawer');
+    expect(element('.project-preview').classList).toContain('project-preview-interactive');
     expect(drawer.style.height).toBe('0px');
     expect(drawer.inert).toBeTrue();
     enter();
@@ -259,7 +260,6 @@ describe('projects animation', () => {
   it('selects the horizontal interaction on wide screens', () => {
     wideScreen = true;
     motion = animateProjects(root);
-    expect(element('.projects-home-row').classList).toContain('projects-home-row-horizontal');
     expect(element('.project-preview').classList).toContain('project-preview-horizontal');
     expect(element('.project-preview-drawer').style.width).toBe('0px');
     expect(element('.project-preview-drawer').style.height).toBe('');
@@ -302,6 +302,7 @@ describe('projects animation', () => {
     expect(element('.projects-home-motion').style.transform).toBe('');
     expect(element('.projects-home-motion').style.opacity).toBe('');
     expect(element('.project-preview-drawer').style.height).toBe('');
+    expect(element('.project-preview').classList).not.toContain('project-preview-interactive');
     expect(element('.project-preview-drawer').inert).toBeFalse();
     expect(element('.project-preview-drawer').hasAttribute('aria-hidden')).toBeFalse();
     expect(element('.project-preview').hasAttribute('data-project-expanded')).toBeFalse();

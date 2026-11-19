@@ -19,6 +19,7 @@ export function animateProjectDrawers(root: HTMLElement, context: gsap.Context):
       const originalInert = drawer.inert;
       const originalHidden = drawer.getAttribute('aria-hidden');
       const originalExpanded = card.getAttribute('data-project-expanded');
+      const hadInteractiveClass = card.classList.contains('project-preview-interactive');
       const initiallyFocused = card.contains(root.ownerDocument.activeElement);
       let expanded = false;
       let pointerInside = card.matches(':hover');
@@ -26,6 +27,7 @@ export function animateProjectDrawers(root: HTMLElement, context: gsap.Context):
       let intent: gsap.core.Tween | undefined;
       let transition: gsap.core.Timeline | undefined;
 
+      card.classList.add('project-preview-interactive');
       gsap.set(drawer, { height: 0, autoAlpha: 0 });
       gsap.set(details, { opacity: 0, y: 8 });
       if (!initiallyFocused) {
@@ -62,8 +64,7 @@ export function animateProjectDrawers(root: HTMLElement, context: gsap.Context):
               }
             },
           })
-            // This bounded height tween deliberately reflows the small grid.
-            // Scaling the card would only overlap its neighbours and stretch text.
+            // Reveal the drawer over the image without reflowing the grid.
             .to(drawer, {
               height, autoAlpha: open ? 1 : 0, duration, ease: 'power3.inOut',
             }, 0)
@@ -151,6 +152,9 @@ export function animateProjectDrawers(root: HTMLElement, context: gsap.Context):
 
       return () => {
         cancelIntent();
+        if (!hadInteractiveClass) {
+          card.classList.remove('project-preview-interactive');
+        }
         card.removeEventListener('pointerenter', onEnter);
         card.removeEventListener('pointerleave', onLeave);
         card.removeEventListener('pointerdown', onPointerDown);
