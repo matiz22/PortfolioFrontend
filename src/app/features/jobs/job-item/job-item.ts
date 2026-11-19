@@ -2,14 +2,14 @@ import { Component, Input } from '@angular/core';
 import { Job } from '../../../core/models/job';
 import { ImageUrlPipe } from '../../../shared/pipes/image-url-pipe';
 import { RouterLink } from '@angular/router';
-import { DatePipe } from '@angular/common';
+import { PortfolioPeriod } from '../../../shared/portfolio/portfolio-period';
 
 @Component({
   selector: 'app-job-item',
   imports: [
     ImageUrlPipe,
     RouterLink,
-    DatePipe
+    PortfolioPeriod,
   ],
   templateUrl: './job-item.html',
   styleUrl: './job-item.scss',

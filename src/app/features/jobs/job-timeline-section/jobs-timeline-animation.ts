@@ -17,10 +17,11 @@ export function animateJobsTimeline(root: HTMLElement): gsap.MatchMedia {
   const stage = root.querySelector<HTMLElement>('.jobs-stage');
   const viewport = root.querySelector<HTMLElement>('.jobs-viewport');
   const track = root.querySelector<HTMLElement>('.jobs-track');
+  const rail = root.querySelector<HTMLElement>('.jobs-rail');
   const fill = root.querySelector<HTMLElement>('.jobs-rail-fill');
   const entries = Array.from(root.querySelectorAll<HTMLElement>('.jobs-entry'));
 
-  if (!view || !section || !stage || !viewport || !track || !fill || !entries.length) {
+  if (!view || !section || !stage || !viewport || !track || !rail || !fill || !entries.length) {
     return motion;
   }
 
@@ -73,6 +74,32 @@ export function animateJobsTimeline(root: HTMLElement): gsap.MatchMedia {
           stage.classList.remove('jobs-horizontal', 'jobs-scrollable');
         }
       }
+
+      const headerBits = section.querySelectorAll<HTMLElement>('.jobs-copy > *, .jobs-viewall');
+      const intro = gsap.timeline({
+        defaults: { ease: 'power3.out', immediateRender: true },
+        scrollTrigger: { trigger: section, start: 'top 82%', once: true },
+      });
+      if (headerBits.length) {
+        intro.from(headerBits, { opacity: 0, y: 24, duration: 0.7, stagger: 0.09 }, 0);
+      }
+      // Draw the rail itself; the pinned timeline still owns the colored fill.
+      intro.from(rail, { [horizontal ? 'scaleX' : 'scaleY']: 0, duration: 0.9 }, 0.2);
+      if (horizontal) {
+        // Leave card opacity to the active, hover, and focus styles.
+        intro.from(entries, { opacity: 0, y: 24, duration: 0.65, stagger: 0.08 }, 0.3);
+      }
+
+      context.add(() => {
+        // A keyboard user can reach the links before the entrance completes.
+        const onIntroFocus = (event: FocusEvent) => {
+          if (event.target instanceof view.HTMLElement && event.target.matches(':focus-visible')) {
+            intro.progress(1);
+          }
+        };
+        section.addEventListener('focusin', onIntroFocus);
+        return () => section.removeEventListener('focusin', onIntroFocus);
+      });
 
       if (horizontal && overflow() > 0) {
         // Pin the complete section, including its background, lower border,
@@ -176,11 +203,14 @@ export function animateJobsTimeline(root: HTMLElement): gsap.MatchMedia {
         };
       }
 
-      // Compact screens and non-overflowing timelines never acquire a scroll pin.
-      for (const entry of entries) {
-        const card = entry.querySelector<HTMLElement>('.jobs-card');
-        if (card) {
-          gsap.from(card, {
+      // In the vertical layout, reveal each point together with its card.
+      if (!horizontal) {
+        for (const entry of entries) {
+          const parts = entry.querySelectorAll<HTMLElement>('.jobs-point, .jobs-card');
+          if (!parts.length) {
+            continue;
+          }
+          gsap.from(parts, {
             opacity: 0.4,
             y: 18,
             duration: 0.65,

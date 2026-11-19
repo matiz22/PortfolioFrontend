@@ -2,7 +2,6 @@ import { Component, computed, inject } from '@angular/core';
 import { JobsService } from '../../../core/services/jobs.service';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { switchMap } from 'rxjs/operators';
-import { ActivatedRoute } from '@angular/router';
 import { ApiState } from '../../../core/models/api.state';
 import { Job } from '../../../core/models/job';
 import { PaginationMeta } from '../../../core/models/pagination-meta';
@@ -13,6 +12,7 @@ import { Footer } from '../../../shared/footer/footer';
 import { LoadingItems } from '../../../shared/loading/loading-items/loading-items';
 import { PaginationService } from '../../../shared/pagination/pagination.service';
 import { PaginationTiles } from '../../../shared/pagination/pagination-tiles/pagination-tiles';
+import { GrainGradient } from '../../../shared/grain-gradient/grain-gradient';
 
 @Component({
   selector: 'app-jobs-page',
@@ -22,7 +22,8 @@ import { PaginationTiles } from '../../../shared/pagination/pagination-tiles/pag
     ContactSection,
     Footer,
     LoadingItems,
-    PaginationTiles
+    PaginationTiles,
+    GrainGradient,
   ],
   providers: [PaginationService],
   templateUrl: './jobs-page.html',
@@ -30,7 +31,6 @@ import { PaginationTiles } from '../../../shared/pagination/pagination-tiles/pag
 })
 export class JobsPage {
   jobsService: JobsService = inject(JobsService);
-  private route = inject(ActivatedRoute);
   protected pagination = inject(PaginationService);
 
   // Fetch paginated response based on current page

@@ -36,12 +36,17 @@ describe('jobs timeline animation', () => {
     root.innerHTML = `
       <section class="jobs-section">
       <div class="jobs-stage">
+        <header class="jobs-header">
+          <div class="jobs-copy"><h2>Work Experience</h2><p>Past and current roles.</p></div>
+          <a class="jobs-viewall" href="#jobs">View full work history</a>
+        </header>
         <div class="jobs-viewport">
           <div class="jobs-track">
             <div class="jobs-rail"><span class="jobs-rail-fill"></span></div>
             <ol class="jobs-list">
               ${[0, 1, 2, 3].map((index) => `
                 <li class="jobs-entry">
+                  <div class="jobs-point"><span class="jobs-dot"></span><time>Jan 2025</time></div>
                   <a class="jobs-card" href="#role-${index}">Role ${index}</a>
                 </li>
               `).join('')}
@@ -73,6 +78,64 @@ describe('jobs timeline animation', () => {
   function travel(): gsap.core.Timeline {
     return gsap.getTweensOf(track)[0].parent!;
   }
+
+  function entrance(): gsap.core.Timeline {
+    return ScrollTrigger.getAll().find((trigger) => trigger.trigger === section && trigger.vars.once)!
+      .animation as gsap.core.Timeline;
+  }
+
+  it('reveals the horizontal header, rail, and entries without advancing scroll progress', () => {
+    root.style.paddingTop = 'calc(100vh + 50px)';
+    motion = animateJobsTimeline(root);
+    const intro = entrance();
+    const trigger = intro.scrollTrigger!;
+    const title = root.querySelector('.jobs-copy h2');
+    const rail = root.querySelector('.jobs-rail');
+    const fill = root.querySelector('.jobs-rail-fill');
+    const entry = root.querySelector('.jobs-entry');
+    const card = root.querySelector<HTMLElement>('.jobs-card')!;
+    const [headerTween, , entriesTween] = intro.getChildren(false, true, false);
+
+    expect(trigger.vars.start).toBe('top 82%');
+    expect(headerTween.vars['stagger']).toBe(0.09);
+    expect(entriesTween.vars['stagger']).toBe(0.08);
+    expect(gsap.getProperty(title, 'opacity')).toBe(0);
+    expect(gsap.getProperty(rail, 'scaleX')).toBe(0);
+    expect(gsap.getProperty(entry, 'opacity')).toBe(0);
+
+    ScrollTrigger.refresh();
+    const initialScroll = trigger.scroll();
+    try {
+      trigger.scroll(Math.ceil(trigger.start) + 1);
+      ScrollTrigger.update();
+      expect(intro.paused()).toBeFalse();
+      intro.progress(1);
+    } finally {
+      trigger.scroll(initialScroll);
+      ScrollTrigger.update();
+    }
+
+    expect(gsap.getProperty(title, 'opacity')).toBe(1);
+    expect(gsap.getProperty(rail, 'scaleX')).toBe(1);
+    expect(gsap.getProperty(entry, 'opacity')).toBe(1);
+    expect(card.style.opacity).toBe('');
+    expect(gsap.getProperty(track, 'x')).toBe(0);
+    expect(gsap.getProperty(fill, 'scaleX')).toBe(0);
+  });
+
+  it('finishes the intro immediately if a keyboard user focuses the timeline', () => {
+    root.style.paddingTop = 'calc(100vh + 50px)';
+    motion = animateJobsTimeline(root);
+    const intro = entrance();
+    const cta = root.querySelector<HTMLElement>('.jobs-viewall')!;
+    spyOn(cta, 'matches').withArgs(':focus-visible').and.returnValue(true);
+
+    expect(intro.progress()).toBe(0);
+    cta.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
+
+    expect(intro.progress()).toBe(1);
+    expect(gsap.getProperty(cta, 'opacity')).toBe(1);
+  });
 
   it('pins the entire section and scrubs only the timeline contents in both directions', () => {
     motion = animateJobsTimeline(root);
@@ -178,6 +241,7 @@ describe('jobs timeline animation', () => {
     expect(stage.classList.contains('jobs-scrollable')).toBeFalse();
     expect(stage.classList.contains('jobs-pinned')).toBeFalse();
     expect(ScrollTrigger.getAll().some((trigger) => trigger.pin === section)).toBeFalse();
+    expect(gsap.getTweensOf(root.querySelector('.jobs-entry'))[0].parent).toBe(entrance());
   });
 
   it('uses a vertical unpinned list on compact screens', () => {
@@ -187,6 +251,25 @@ describe('jobs timeline animation', () => {
     expect(stage.classList.contains('jobs-pinned')).toBeFalse();
     expect(stage.style.getPropertyValue('--jobs-nav-clearance')).toBe('');
     expect(ScrollTrigger.getAll().some((trigger) => trigger.pin === section)).toBeFalse();
+  });
+
+  it('draws the vertical rail down and reveals each point with its card', () => {
+    wide = false;
+    motion = animateJobsTimeline(root);
+    const intro = entrance();
+    const rail = root.querySelector('.jobs-rail');
+    const entry = root.querySelector('.jobs-entry')!;
+    const parts = Array.from(entry.querySelectorAll('.jobs-point, .jobs-card'));
+    const [reveal] = gsap.getTweensOf(parts);
+
+    expect(gsap.getProperty(rail, 'scaleX')).toBe(1);
+    expect(gsap.getProperty(rail, 'scaleY')).toBe(0);
+    expect(reveal.targets()).toEqual(parts);
+    expect(reveal.scrollTrigger!.trigger).toBe(entry);
+    expect(reveal.scrollTrigger!.vars.once).toBeTrue();
+
+    intro.progress(1);
+    expect(gsap.getProperty(rail, 'scaleY')).toBe(1);
   });
 
   it('falls back to vertical if the content would exceed the available height', () => {
@@ -200,7 +283,10 @@ describe('jobs timeline animation', () => {
     canAnimate = false;
     motion = animateJobsTimeline(root);
     expect(stage.classList.contains('jobs-horizontal')).toBeFalse();
-    expect(gsap.getTweensOf(root.querySelectorAll('.jobs-card')).length).toBe(0);
+    const revealTargets = root.querySelectorAll(
+      '.jobs-copy > *, .jobs-viewall, .jobs-rail, .jobs-entry, .jobs-point, .jobs-card',
+    );
+    expect(gsap.getTweensOf(revealTargets).length).toBe(0);
     expect(ScrollTrigger.getAll().some((trigger) => root.contains(trigger.trigger!))).toBeFalse();
   });
 
@@ -237,6 +323,7 @@ describe('jobs timeline animation', () => {
     document.body.appendChild(elsewhere);
     const unrelated = ScrollTrigger.create({ trigger: elsewhere });
     motion = animateJobsTimeline(root);
+    entrance().progress(0.5);
     travel().progress(0.5);
     motion.revert();
     motion = undefined;
@@ -249,6 +336,12 @@ describe('jobs timeline animation', () => {
     expect(track.style.transform).toBe('');
     expect(root.querySelector('.jobs-entry-active')).toBeNull();
     expect(root.querySelector('.jobs-entry-reached')).toBeNull();
+    for (const target of root.querySelectorAll<HTMLElement>(
+      '.jobs-copy > *, .jobs-viewall, .jobs-rail, .jobs-entry',
+    )) {
+      expect(target.style.opacity).toBe('');
+      expect(target.style.transform).toBe('');
+    }
     expect(ScrollTrigger.getAll()).toContain(unrelated);
     expect(ScrollTrigger.getAll().some((trigger) => trigger.pin === section)).toBeFalse();
 

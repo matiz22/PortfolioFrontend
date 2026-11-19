@@ -1,0 +1,12 @@
+@use '../../../shared/portfolio/archive-card';
+
+.job-company {
+  color: var(--portfolio-ink);
+  font-size: 0.875rem;
+}
+
+.job-card-media {
+  aspect-ratio: auto;
+  height: clamp(6.5rem, 14vw, 9.5rem);
+  margin-block: 0.25rem;
+}

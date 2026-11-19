@@ -71,6 +71,7 @@
   left: 0.5rem;
   width: 1px;
   background: rgb(255 255 255 / 15%);
+  transform-origin: top center;
 }
 
 .jobs-rail-fill {
@@ -227,6 +228,7 @@
     bottom: auto;
     width: auto;
     height: 1px;
+    transform-origin: left center;
   }
 
   .jobs-card {
