@@ -1,5 +1,6 @@
-import { Component, ElementRef, OnInit, inject } from '@angular/core';
+import { afterNextRender, Component, DestroyRef, ElementRef, NgZone, OnInit, inject } from '@angular/core';
 import { DOCUMENT, ViewportScroller } from '@angular/common';
+import type { gsap } from 'gsap';
 import { Footer } from "../../shared/footer/footer";
 import { HeroSection } from "../hero/hero-section/hero-section";
 import { AboutMeSection } from "../about-me/about-me-section/about-me-section";
@@ -26,6 +27,26 @@ export class HomePage implements OnInit {
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly viewportScroller = inject(ViewportScroller);
 
+  constructor() {
+    const destroyRef = inject(DestroyRef);
+    const zone = inject(NgZone);
+    let motion: gsap.MatchMedia | undefined;
+    afterNextRender(() => {
+      zone.runOutsideAngular(() => {
+        const root = this.host.nativeElement;
+        this.scrollToInitialFragment(root);
+        void Promise.all([import('./home-text-motion'), this.document.fonts.ready])
+          .then(([{ animateHomeText }]) => {
+            if (!destroyRef.destroyed && root.isConnected) {
+              motion = animateHomeText(root);
+            }
+          })
+          .catch((error: unknown) => console.warn('Home text animation could not be loaded.', error));
+      });
+    });
+    destroyRef.onDestroy(() => motion?.revert());
+  }
+
   ngOnInit(): void {
     this.addHreflangLinks();
     // Router-driven fragment restoration should land where native links do.
@@ -37,6 +58,26 @@ export class HomePage implements OnInit {
         : 0;
       return [0, offset];
     });
+  }
+
+  private scrollToInitialFragment(root: HTMLElement): void {
+    const hash = this.document.defaultView?.location.hash;
+    if (!hash) {
+      return;
+    }
+
+    let id: string;
+    try {
+      id = decodeURIComponent(hash.slice(1));
+    } catch {
+      return;
+    }
+    const target = this.document.getElementById(id);
+    if (target && root.contains(target)) {
+      // The first ScrollTrigger refresh can interrupt a smooth scroll already
+      // in flight. Land on initial deep links before loading the motion code.
+      this.viewportScroller.scrollToAnchor(id, { behavior: 'instant' });
+    }
   }
 
   private addHreflangLinks(): void {

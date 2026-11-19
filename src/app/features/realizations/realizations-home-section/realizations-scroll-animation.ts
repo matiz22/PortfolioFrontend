@@ -7,7 +7,6 @@ export function animateRealizationsScroll(root: HTMLElement): gsap.MatchMedia {
   const motion = gsap.matchMedia();
   const view = root.ownerDocument.defaultView;
   const section = root.querySelector<HTMLElement>('.realizations-section');
-  const text = root.querySelector<HTMLElement>('.realizations-text');
   const wrap = root.querySelector<HTMLElement>('.realizations-stage-wrap');
   const stage = root.querySelector<HTMLElement>('.realizations-stage');
   const gallery = root.querySelector<HTMLElement>('.realizations-gallery');
@@ -91,23 +90,6 @@ export function animateRealizationsScroll(root: HTMLElement): gsap.MatchMedia {
       let refreshGallery = onNativeScroll;
 
       if (canAnimate) {
-        const textBits = text ? Array.from(text.querySelectorAll<HTMLElement>('.realizations-reveal')) : [];
-        if (textBits.length > 0) {
-          gsap.set(textBits, { autoAlpha: 0, y: 22 });
-          gsap.to(textBits, {
-            autoAlpha: 1,
-            y: 0,
-            duration: 0.7,
-            stagger: 0.08,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: text,
-              start: 'top 85%',
-              once: true,
-            },
-          });
-        }
-
         // Desktop only: the full-viewport stage turns sticky at the viewport
         // top, and vertical scrolling scrubs the track sideways. The headroom
         // equals the actual overflow, so the section never grows beyond what

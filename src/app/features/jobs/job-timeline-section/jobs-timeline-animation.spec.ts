@@ -84,7 +84,7 @@ describe('jobs timeline animation', () => {
       .animation as gsap.core.Timeline;
   }
 
-  it('reveals the horizontal header, rail, and entries without advancing scroll progress', () => {
+  it('reveals the horizontal rail and entries without animating the header or advancing scroll progress', () => {
     root.style.paddingTop = 'calc(100vh + 50px)';
     motion = animateJobsTimeline(root);
     const intro = entrance();
@@ -94,12 +94,11 @@ describe('jobs timeline animation', () => {
     const fill = root.querySelector('.jobs-rail-fill');
     const entry = root.querySelector('.jobs-entry');
     const card = root.querySelector<HTMLElement>('.jobs-card')!;
-    const [headerTween, , entriesTween] = intro.getChildren(false, true, false);
+    const [, entriesTween] = intro.getChildren(false, true, false);
 
     expect(trigger.vars.start).toBe('top 82%');
-    expect(headerTween.vars['stagger']).toBe(0.09);
     expect(entriesTween.vars['stagger']).toBe(0.08);
-    expect(gsap.getProperty(title, 'opacity')).toBe(0);
+    expect(gsap.getProperty(title, 'opacity')).toBe(1);
     expect(gsap.getProperty(rail, 'scaleX')).toBe(0);
     expect(gsap.getProperty(entry, 'opacity')).toBe(0);
 

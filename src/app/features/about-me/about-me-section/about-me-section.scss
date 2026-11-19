@@ -10,6 +10,10 @@
 .about-section.about-is-pinned {
   // The pinned stage already provides its own viewport spacing.
   padding-block: 0;
+
+  .about-panel-copy > :is(h3, p) {
+    translate: 0 var(--about-text-offset, 0px);
+  }
 }
 
 .about-sidebar {

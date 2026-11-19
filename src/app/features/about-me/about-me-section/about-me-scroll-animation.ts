@@ -74,10 +74,13 @@ export function animateAboutMeScroll(root: HTMLElement): gsap.MatchMedia {
           // Swap opacity in the same render rather than crossfading copy.
           // There is always exactly one fully readable service, even when
           // scrolling stops at the boundary or reverses across it.
+          .fromTo(panels[i - 1], { '--about-text-offset': '0px' }, {
+            '--about-text-offset': '-6px', duration: TRANSITION_DURATION / 2, immediateRender: false,
+          }, transitionStart)
           .set(panels[i - 1], { autoAlpha: 0, immediateRender: false }, switchAt)
           .set(panel, { autoAlpha: 1, immediateRender: false }, switchAt)
-          .fromTo(panel, { y: 14 }, {
-            y: 0, duration: TRANSITION_DURATION / 2, immediateRender: false,
+          .fromTo(panel, { y: 14, '--about-text-offset': '6px' }, {
+            y: 0, '--about-text-offset': '0px', duration: TRANSITION_DURATION / 2, immediateRender: false,
           }, switchAt)
           .to(fill, {
             scaleX: isDesktop ? 1 : coverage,

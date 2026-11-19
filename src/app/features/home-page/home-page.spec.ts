@@ -1,3 +1,4 @@
+import { ViewportScroller } from '@angular/common';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, DeferBlockBehavior, DeferBlockState, TestBed } from '@angular/core/testing';
 
@@ -25,6 +26,22 @@ describe('HomePage', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('lands on an initial homepage fragment without waiting for a smooth scroll', async () => {
+    const originalUrl = location.href;
+    const scroll = spyOn(TestBed.inject(ViewportScroller), 'scrollToAnchor');
+    fixture.destroy();
+    try {
+      history.replaceState(null, '', '#contact');
+      fixture = TestBed.createComponent(HomePage);
+      fixture.autoDetectChanges();
+      await fixture.whenStable();
+
+      expect(scroll).toHaveBeenCalledOnceWith('contact', { behavior: 'instant' });
+    } finally {
+      history.replaceState(null, '', originalUrl);
+    }
   });
 
   it('keeps one decorative background outside the main chapter order', () => {

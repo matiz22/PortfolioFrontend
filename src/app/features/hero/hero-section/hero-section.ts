@@ -32,10 +32,6 @@ export class HeroSection {
     afterNextRender(() => {
       this.zone.runOutsideAngular(() => {
         const root = this.element.nativeElement;
-        if (root.ownerDocument.defaultView?.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-          return;
-        }
-
         void Promise.all([
           import('./hero-scroll-animation'),
           root.ownerDocument.fonts.ready,

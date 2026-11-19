@@ -11,7 +11,6 @@ interface Reveal {
   target: HTMLElement;
   surface: HTMLElement;
   tilt: number;
-  heading: boolean;
   visible: boolean;
   entry?: IntersectionObserverEntry;
   animation?: gsap.core.Timeline;
@@ -30,29 +29,20 @@ export function animateProjects(root: HTMLElement): gsap.MatchMedia {
         return;
       }
 
-      const reveals: Reveal[] = [
-        ...Array.from(root.querySelectorAll<HTMLElement>('.projects-home-reveal'))
-          .filter((target) => target.getBoundingClientRect().bottom > 0)
-          .map((target) => ({
-            target, surface: target, tilt: 0, heading: true, visible: false,
-          })),
-        ...Array.from(root.querySelectorAll<HTMLElement>('.projects-home-slot'))
-          .flatMap((target, index) => {
-            const surface = target.querySelector<HTMLElement>('.projects-home-motion');
-            return surface ? [{
-              target, surface, tilt: index % 2 === 0 ? -2.2 : 2.2,
-              heading: false, visible: false,
-            }] : [];
-          }),
-      ];
+      const reveals: Reveal[] = Array.from(root.querySelectorAll<HTMLElement>('.projects-home-slot'))
+        .flatMap((target, index) => {
+          const surface = target.querySelector<HTMLElement>('.projects-home-motion');
+          return surface ? [{
+            target, surface, tilt: index % 2 === 0 ? -2.2 : 2.2, visible: false,
+          }] : [];
+        });
       const byTarget = new Map(reveals.map((reveal) => [reveal.target, reveal]));
       let disposed = false;
 
       for (const reveal of reveals) {
         // Keep links focusable before observation; only the visual layer moves.
         gsap.set(reveal.surface, {
-          opacity: 0, y: reveal.heading ? 16 : 30,
-          scale: reveal.heading ? 1 : 0.96, rotation: reveal.tilt,
+          opacity: 0, y: 30, scale: 0.96, rotation: reveal.tilt,
         });
       }
 
@@ -69,10 +59,10 @@ export function animateProjects(root: HTMLElement): gsap.MatchMedia {
         context.add(() => {
           const timeline = gsap.timeline({ delay });
           reveal.animation = timeline;
-          if (reveal.heading || immediate) {
+          if (immediate) {
             timeline.to(reveal.surface, {
               opacity: 1, y: 0, scale: 1, rotation: 0,
-              duration: immediate ? 0 : 0.6, ease: 'power3.out',
+              duration: 0,
               clearProps: 'transform,opacity',
             });
           } else {
@@ -99,7 +89,7 @@ export function animateProjects(root: HTMLElement): gsap.MatchMedia {
       };
 
       const exit = (reveal: Reveal) => {
-        if (!reveal.visible || reveal.heading || pinned(reveal)) {
+        if (!reveal.visible || pinned(reveal)) {
           return;
         }
         reveal.visible = false;
@@ -131,9 +121,6 @@ export function animateProjects(root: HTMLElement): gsap.MatchMedia {
           } else if (entry.isIntersecting && entry.intersectionRatio >= ENTER_RATIO) {
             if (!reveal.visible) {
               enter(reveal, Math.min(stagger++, 3) * 0.08);
-            }
-            if (reveal.heading) {
-              observer.unobserve(reveal.target);
             }
           } else if (!entry.isIntersecting || entry.intersectionRatio <= EXIT_RATIO) {
             exit(reveal);

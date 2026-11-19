@@ -144,6 +144,22 @@ describe('About Me scroll animation', () => {
     expect(Number(gsap.getProperty(panels[1], 'opacity'))).toBe(1);
   });
 
+  it('lifts outgoing and incoming copy around the existing switch without dimming the active panel', () => {
+    motion = animateAboutMeScroll(root);
+    const animation = timeline();
+    const offset = (panel: HTMLElement) => parseFloat(panel.style.getPropertyValue('--about-text-offset'));
+    animation.time(1.06);
+    expect(offset(panels[0])).toBeCloseTo(-3, 1);
+    expect(Number(gsap.getProperty(panels[0], 'opacity'))).toBe(1);
+    animation.time(1.18);
+    expect(offset(panels[1])).toBeCloseTo(3, 1);
+    expect(Number(gsap.getProperty(panels[1], 'opacity'))).toBe(1);
+    animation.time(1.4);
+    expect(offset(panels[1])).toBe(0);
+    animation.time(1.06);
+    expect(offset(panels[0])).toBeCloseTo(-3, 1);
+  });
+
   it('restores the previous service and its accessible state when scrolling back', () => {
     motion = animateAboutMeScroll(root);
     timeline().progress(1);

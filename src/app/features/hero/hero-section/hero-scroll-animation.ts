@@ -17,10 +17,6 @@ const EXIT_LAYERS = [
     startWith: '.hero-headline',
     compact: { x: -24, y: 0, rotation: 0, scale: 1 },
   },
-  {
-    selector: '.hero-scroll-actions', x: 0, y: -18, rotation: 0, scale: 1,
-    compact: { x: -8, y: 0, rotation: 0, scale: 1 },
-  },
 ] as const;
 
 // Offset geometry stays stable while GSAP transforms the layers and their descendants.
@@ -95,7 +91,7 @@ export function animateHeroScroll(root: HTMLElement): gsap.MatchMedia {
           scale: () => isWide() ? config.scale : config.compact.scale,
           duration: 1,
         }, 0)
-        // Keep the copy and actions readable until the final part of their exit.
+        // Keep the copy readable until the final part of its exit.
         .to(layer, { autoAlpha: 0, duration: 0.28 }, 0.72);
     }
 

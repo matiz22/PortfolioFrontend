@@ -75,14 +75,10 @@ export function animateJobsTimeline(root: HTMLElement): gsap.MatchMedia {
         }
       }
 
-      const headerBits = section.querySelectorAll<HTMLElement>('.jobs-copy > *, .jobs-viewall');
       const intro = gsap.timeline({
         defaults: { ease: 'power3.out', immediateRender: true },
         scrollTrigger: { trigger: section, start: 'top 82%', once: true },
       });
-      if (headerBits.length) {
-        intro.from(headerBits, { opacity: 0, y: 24, duration: 0.7, stagger: 0.09 }, 0);
-      }
       // Draw the rail itself; the pinned timeline still owns the colored fill.
       intro.from(rail, { [horizontal ? 'scaleX' : 'scaleY']: 0, duration: 0.9 }, 0.2);
       if (horizontal) {

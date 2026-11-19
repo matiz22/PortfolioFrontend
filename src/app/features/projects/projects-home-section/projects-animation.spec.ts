@@ -149,12 +149,11 @@ describe('projects animation', () => {
     expect(animation('.projects-home-motion').duration()).toBeCloseTo(0.74, 2);
   });
 
-  it('reveals the heading once without wobbling or observing it again', () => {
+  it('leaves heading motion to the home page text controller', () => {
     motion = animateProjects(root);
     const heading = element('.projects-home-reveal');
-    intersect(heading);
-    animation('.projects-home-reveal').progress(1);
-    expect(unobserve).toHaveBeenCalledWith(heading);
+    expect(observe).not.toHaveBeenCalledWith(heading);
+    expect(gsap.getTweensOf(heading)).toEqual([]);
     expect(heading.style.transform).toBe('');
   });
 

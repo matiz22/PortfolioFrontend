@@ -44,7 +44,7 @@ describe('hero text animation', () => {
   });
 
   function timeline(): gsap.core.Timeline {
-    return gsap.getTweensOf(root.querySelector('.hero-actions'))[0].parent!;
+    return gsap.getTweensOf(root.querySelector('.hero-description'))[0].parent!;
   }
 
   function enterAccent(pointerType = 'mouse'): void {
@@ -87,7 +87,8 @@ describe('hero text animation', () => {
       expect(main.textContent).toBe(mainText);
       expect(accent.textContent).toBe(accentText);
       expect(timeline().repeat()).toBe(0);
-      expect(timeline().duration()).toBeCloseTo(1.28, 2);
+      expect(timeline().duration()).toBeCloseTo(1.18, 2);
+      expect(gsap.getTweensOf(root.querySelector('.hero-actions')).length).toBe(0);
 
       timeline().progress(1);
 
@@ -114,7 +115,7 @@ describe('hero text animation', () => {
     enterAccent();
 
     expect(root.innerHTML).toBe(original);
-    expect(gsap.getTweensOf(root.querySelector('.hero-actions')).length).toBe(0);
+    expect(gsap.getTweensOf(root.querySelector('.hero-description')).length).toBe(0);
   });
 
   it('restores text and inline styles when reverted during the reveal', () => {
@@ -144,6 +145,65 @@ describe('hero text animation', () => {
       expect(gsap.getTweensOf(otherDescription).length).toBe(0);
     } finally {
       otherDescription.remove();
+    }
+  });
+
+  function observeHero() {
+    root.innerHTML = `<section class="hero-section">${root.innerHTML}</section>`;
+    const section = root.querySelector('.hero-section')!;
+    spyOn(section, 'getBoundingClientRect').and.returnValue({ bottom: 600 } as DOMRect);
+    const disconnect = jasmine.createSpy('disconnect');
+    let onIntersection!: IntersectionObserverCallback;
+    spyOn(window, 'IntersectionObserver').and.callFake(function (callback) {
+      onIntersection = callback;
+      return { observe: () => {}, disconnect } as unknown as IntersectionObserver;
+    });
+    const intersect = (intersectionRatio: number) => onIntersection(
+      [{
+        target: section, intersectionRatio, boundingClientRect: { height: window.innerHeight },
+      } as IntersectionObserverEntry], {} as IntersectionObserver,
+    );
+    return { intersect, disconnect };
+  }
+
+  it('replays when scrolling away and coming back into the hero', () => {
+    const { intersect, disconnect } = observeHero();
+    motion = animateHeroText(root);
+    const originalIntro = timeline();
+    originalIntro.progress(1);
+    intersect(0.6);
+    expect(root.querySelector('.hero-build-word')).toBeNull();
+
+    enterAccent();
+    intersect(0.05);
+    expect(root.querySelector('.hero-ripple-char')).toBeNull();
+    intersect(0.25);
+    expect(root.querySelector('.hero-build-word')).toBeNull();
+    intersect(0.6);
+    expect(timeline()).not.toBe(originalIntro);
+    expect(root.querySelector('.hero-build-word')).not.toBeNull();
+    timeline().progress(1);
+    expect(root.querySelector('.hero-build-word')).toBeNull();
+
+    motion.revert();
+    expect(disconnect).toHaveBeenCalled();
+  });
+
+  it('replays when navigating to #home even if the hero is already in view', () => {
+    const { intersect } = observeHero();
+    const originalUrl = location.href;
+    try {
+      motion = animateHeroText(root);
+      const intro = timeline();
+      intro.progress(1);
+      intersect(0.6);
+      history.replaceState(null, '', '#home');
+      window.dispatchEvent(new HashChangeEvent('hashchange'));
+
+      expect(timeline()).not.toBe(intro);
+      expect(root.querySelector('.hero-build-word')).not.toBeNull();
+    } finally {
+      history.replaceState(null, '', originalUrl);
     }
   });
 

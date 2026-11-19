@@ -5,83 +5,148 @@ gsap.registerPlugin(SplitText);
 
 export function animateHeroText(root: HTMLElement): gsap.MatchMedia {
   const motion = gsap.matchMedia();
+  const mainHeading = root.querySelector<HTMLElement>('.hero-headline-main');
+  const accentHeading = root.querySelector<HTMLElement>('.hero-headline-accent');
+  if (!mainHeading || !accentHeading) {
+    return motion;
+  }
   let introFinished = false;
+  let resetHover = () => {};
 
   motion.add('(prefers-reduced-motion: no-preference)', () => {
-    introFinished = false;
-    const main = SplitText.create(root.querySelector('.hero-headline-main'), {
-      type: 'words',
-      mask: 'words',
-      tag: 'span',
-      wordsClass: 'hero-build-word',
-    });
-    const accent = SplitText.create(root.querySelector('.hero-headline-accent'), {
-      type: 'words,chars',
-      tag: 'span',
-      wordsClass: 'hero-flow-word',
-      charsClass: 'hero-flow-char',
-    });
+    let introMotion: gsap.Context | undefined;
+    const playIntro = () => {
+      resetHover();
+      introMotion?.revert();
+      introFinished = false;
+      introMotion = gsap.context(() => {
+        const main = SplitText.create(mainHeading, {
+          type: 'words',
+          mask: 'words',
+          tag: 'span',
+          wordsClass: 'hero-build-word',
+        });
+        const accent = SplitText.create(accentHeading, {
+          type: 'words,chars',
+          tag: 'span',
+          wordsClass: 'hero-flow-word',
+          charsClass: 'hero-flow-char',
+        });
 
-    // SplitText's generated spans don't inherit Angular's scoped style attributes.
-    gsap.set([...main.words, ...main.masks, ...accent.words, ...accent.chars], {
-      display: 'inline-block',
-    });
-    gsap.set(main.masks, {
-      verticalAlign: 'baseline',
-      padding: '0.14em 0.04em',
-      margin: '-0.14em -0.04em',
-    });
-    gsap.set(accent.words, { whiteSpace: 'nowrap' });
+        // SplitText's generated spans don't inherit Angular's scoped style attributes.
+        gsap.set([...main.words, ...main.masks, ...accent.words, ...accent.chars], {
+          display: 'inline-block',
+        });
+        gsap.set(main.masks, {
+          verticalAlign: 'baseline',
+          padding: '0.14em 0.04em',
+          margin: '-0.14em -0.04em',
+        });
+        gsap.set(accent.words, { whiteSpace: 'nowrap' });
 
-    gsap.timeline({
-      defaults: { ease: 'power3.out' },
-      onComplete: () => {
-        // Restore normal text flow and semantics once the one-shot reveal ends.
-        main.revert();
-        accent.revert();
-        introFinished = true;
-      },
-    })
-      .addLabel('construct', 0)
-      .from(main.words, {
-        yPercent: 110,
-        autoAlpha: 0,
-        duration: 0.72,
-        stagger: 0.1,
-      }, 'construct')
-      .addLabel('streamline', 0.28)
-      .from(accent.chars, {
-        x: (index) => (index % 3 - 1) * 4,
-        y: (index) => index % 3 === 0 ? -8 : 14,
-        autoAlpha: 0,
-        duration: 0.58,
-        stagger: { amount: 0.32, from: 'start' },
-      }, 'streamline')
-      .from('.hero-role-caption', {
-        y: 10,
-        autoAlpha: 0,
-        duration: 0.5,
-        clearProps: 'transform,opacity,visibility',
-      }, 0.44)
-      .from('.hero-description', {
-        y: 10,
-        autoAlpha: 0,
-        duration: 0.45,
-        clearProps: 'transform,opacity,visibility',
-      }, 0.66)
-      .from('.hero-actions', {
-        y: 8,
-        autoAlpha: 0,
-        duration: 0.45,
-        clearProps: 'transform,opacity,visibility',
-      }, 0.83);
+        gsap.timeline({
+          defaults: { ease: 'power3.out' },
+          onComplete: () => {
+            main.revert();
+            accent.revert();
+            introFinished = true;
+          },
+        })
+          .from(main.words, {
+            yPercent: 110,
+            opacity: 0,
+            duration: 0.72,
+            stagger: 0.1,
+          }, 0)
+          .from(accent.chars, {
+            x: (index) => (index % 3 - 1) * 4,
+            y: (index) => index % 3 === 0 ? -8 : 14,
+            opacity: 0,
+            duration: 0.58,
+            stagger: { amount: 0.32, from: 'start' },
+          }, 0.28)
+          .from('.hero-role-caption', {
+            y: 10,
+            opacity: 0,
+            duration: 0.5,
+            clearProps: 'transform,opacity',
+          }, 0.44)
+          .from('.hero-description', {
+            y: 10,
+            opacity: 0,
+            duration: 0.45,
+            clearProps: 'transform,opacity',
+          }, 0.66);
+      }, root);
+    };
+
+    const section = root.querySelector('.hero-section');
+    const view = root.ownerDocument.defaultView;
+    const hasHeroAnchor = () => {
+      const hash = view?.location.hash;
+      return hash === '#home' || hash === '#hero-headline';
+    };
+    let armed = false;
+    let inView = false;
+    let disposed = false;
+    if (!section || !view?.IntersectionObserver || (
+      (!view.location.hash || hasHeroAnchor()) && section.getBoundingClientRect().bottom > 0
+    )) {
+      playIntro();
+    }
+    const enter = () => {
+      armed = false;
+      if (!introMotion || introFinished) {
+        playIntro();
+      }
+    };
+    const onAnchor = () => {
+      if (!hasHeroAnchor()) {
+        return;
+      }
+      if (inView) {
+        enter();
+      } else {
+        armed = true;
+      }
+    };
+    // The existing scrub handles the exit. Rearm the intro only after a real
+    // departure, then replay it as the top of the page comes back into view.
+    const observer = section && view?.IntersectionObserver
+      ? new view.IntersectionObserver(([entry]) => {
+        if (disposed || !entry) {
+          return;
+        }
+        const tall = entry.boundingClientRect.height > view.innerHeight * 2;
+        inView = entry.intersectionRatio >= (tall ? 0.2 : 0.4);
+        if (entry.intersectionRatio <= (tall ? 0.08 : 0.12)) {
+          armed = true;
+          introFinished = false;
+          resetHover();
+          introMotion?.revert();
+          introMotion = undefined;
+        } else if (armed && inView) {
+          enter();
+        }
+      }, { threshold: [0.08, 0.12, 0.2, 0.4] })
+      : undefined;
+    if (observer && section) {
+      observer.observe(section);
+      view?.addEventListener('hashchange', onAnchor);
+    }
+    return () => {
+      disposed = true;
+      observer?.disconnect();
+      view?.removeEventListener('hashchange', onAnchor);
+      introMotion?.revert();
+    };
   }, root);
 
   motion.add(
     '(prefers-reduced-motion: no-preference) and (hover: hover) and (pointer: fine)',
     () => {
-      const main = root.querySelector<HTMLElement>('.hero-headline-main')!;
-      const accent = root.querySelector<HTMLElement>('.hero-headline-accent')!;
+      const main = mainHeading;
+      const accent = accentHeading;
       let mainSplit: SplitText | undefined;
       let accentSplit: SplitText | undefined;
       const glide = gsap.timeline({
@@ -98,6 +163,13 @@ export function animateHeroText(root: HTMLElement): gsap.MatchMedia {
           accentSplit = undefined;
         },
       });
+      resetHover = () => {
+        glide.pause().clear();
+        ripple.pause().clear();
+        mainSplit?.revert();
+        accentSplit?.revert();
+        mainSplit = accentSplit = undefined;
+      };
 
       const onMainPointerEnter = (event: PointerEvent) => {
         if (!introFinished || mainSplit || event.pointerType === 'touch') {
@@ -152,10 +224,8 @@ export function animateHeroText(root: HTMLElement): gsap.MatchMedia {
       return () => {
         main.removeEventListener('pointerenter', onMainPointerEnter);
         accent.removeEventListener('pointerenter', onAccentPointerEnter);
-        glide.kill();
-        ripple.kill();
-        mainSplit?.revert();
-        accentSplit?.revert();
+        resetHover();
+        resetHover = () => {};
       };
     },
     root,
