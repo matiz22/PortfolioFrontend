@@ -24,7 +24,7 @@ export function animateProjects(root: HTMLElement): gsap.MatchMedia {
   }
 
   try {
-    motion.add('(prefers-reduced-motion: no-preference)', (context) => {
+    motion.add('(min-width: 48rem) and (prefers-reduced-motion: no-preference)', (context) => {
       if (!view.IntersectionObserver) {
         return;
       }

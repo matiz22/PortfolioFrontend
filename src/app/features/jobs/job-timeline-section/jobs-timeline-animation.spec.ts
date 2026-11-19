@@ -10,6 +10,7 @@ describe('jobs timeline animation', () => {
   let track: HTMLElement;
   let motion: gsap.MatchMedia | undefined;
   let wide: boolean;
+  let mobile: boolean;
   let canAnimate: boolean;
   let trackWidth: number;
   let stageHeight: number;
@@ -17,6 +18,7 @@ describe('jobs timeline animation', () => {
 
   beforeEach(() => {
     wide = true;
+    mobile = false;
     canAnimate = true;
     trackWidth = 2400;
     stageHeight = 300;
@@ -27,7 +29,7 @@ describe('jobs timeline animation', () => {
     spyOn(window, 'matchMedia').and.callFake((query) => {
       const media = matchMedia(query);
       Object.defineProperty(media, 'matches', {
-        value: query.includes('min-width') ? wide : canAnimate,
+        value: query.includes('min-width') ? wide : query.includes('width <') ? mobile : canAnimate,
       });
       return media;
     });
@@ -243,13 +245,23 @@ describe('jobs timeline animation', () => {
     expect(gsap.getTweensOf(root.querySelector('.jobs-entry'))[0].parent).toBe(entrance());
   });
 
-  it('uses a vertical unpinned list on compact screens', () => {
+  it('uses a vertical unpinned list on intermediate screens', () => {
     wide = false;
     motion = animateJobsTimeline(root);
     expect(stage.classList.contains('jobs-horizontal')).toBeFalse();
     expect(stage.classList.contains('jobs-pinned')).toBeFalse();
     expect(stage.style.getPropertyValue('--jobs-nav-clearance')).toBe('');
     expect(ScrollTrigger.getAll().some((trigger) => trigger.pin === section)).toBeFalse();
+  });
+
+  it('leaves the mobile timeline to native scrolling without a pin, reveal or track transform', () => {
+    wide = false;
+    mobile = true;
+    motion = animateJobsTimeline(root);
+    expect(stage.classList.contains('jobs-horizontal')).toBeFalse();
+    expect(ScrollTrigger.getAll().some((trigger) => root.contains(trigger.trigger!))).toBeFalse();
+    expect(gsap.getTweensOf(root.querySelectorAll('.jobs-rail, .jobs-card, .jobs-track')).length)
+      .toBe(0);
   });
 
   it('draws the vertical rail down and reveals each point with its card', () => {

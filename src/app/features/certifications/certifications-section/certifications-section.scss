@@ -1,3 +1,5 @@
+@use '../../../../styles/home-mobile-rail' as mobile-rail;
+
 :host {
   display: block;
 }
@@ -113,6 +115,20 @@
   height: 0.7rem;
   margin-top: 1.5rem;
   background: rgb(255 255 255 / 0.07);
+}
+
+@media (width < 48rem) {
+  .certifications-wall:has(> .certifications-slot + .certifications-slot) {
+    @include mobile-rail.viewport;
+    @include mobile-rail.columns;
+    align-items: start;
+    max-width: none;
+    padding-block: 0.75rem 1rem;
+
+    .certifications-slot {
+      @include mobile-rail.item;
+    }
+  }
 }
 
 @media (min-width: 48rem) {

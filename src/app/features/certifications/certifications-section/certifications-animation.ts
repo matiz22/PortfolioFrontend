@@ -7,19 +7,11 @@ export function animateCertifications(root: HTMLElement): gsap.MatchMedia {
   const motion = gsap.matchMedia();
 
   try {
-    motion.add({
-      animate: '(prefers-reduced-motion: no-preference)',
-      desktop: '(min-width: 48rem)',
-    }, (context) => {
-      if (!context.conditions?.['animate']) {
-        return;
-      }
-
+    motion.add('(min-width: 48rem) and (prefers-reduced-motion: no-preference)', (context) => {
       const wall = root.querySelector<HTMLElement>('.certifications-wall');
       if (!wall) {
         return;
       }
-      const desktop = context.conditions['desktop'];
       const wallBounds = wall.getBoundingClientRect();
       const wallCenter = wallBounds.left + wallBounds.width / 2;
       const slots = Array.from(wall.querySelectorAll<HTMLElement>('.certifications-slot'));
@@ -36,13 +28,11 @@ export function animateCertifications(root: HTMLElement): gsap.MatchMedia {
           slot,
           surface,
           aboveViewport: bounds.bottom <= 0,
-          x: desktop
-            ? gsap.utils.clamp(-36, 36, (wallCenter - bounds.left - bounds.width / 2) * 0.12)
-            : 0,
+          x: gsap.utils.clamp(-36, 36, (wallCenter - bounds.left - bounds.width / 2) * 0.12),
         }];
       });
       const surfaces = new Map(entries.map((entry) => [entry.slot, entry]));
-      const distance = desktop ? 18 : 14;
+      const distance = 18;
 
       for (const entry of entries) {
         // Opacity, not visibility: keyboard users can still reach every link.

@@ -1,3 +1,5 @@
+@use '../../../../styles/home-mobile-rail' as mobile-rail;
+
 :host {
   display: block;
 }
@@ -81,6 +83,24 @@
   padding-block: 2rem;
   color: color-mix(in srgb, var(--color-base-content) 50%, transparent);
   font-size: 0.875rem;
+}
+
+@media (width < 48rem) {
+  .projects-home-grid:has(.projects-home-row-loading, .projects-home-slot + .projects-home-slot) {
+    @include mobile-rail.viewport;
+    @include mobile-rail.columns;
+    padding-block: 0.5rem 1rem;
+
+    // Keep the desktop row grouping in the DOM but lay out all cards in one strip.
+    .projects-home-row {
+      display: contents;
+    }
+
+    .projects-home-slot,
+    .projects-home-skeleton {
+      @include mobile-rail.item;
+    }
+  }
 }
 
 @media (min-width: 48rem) {

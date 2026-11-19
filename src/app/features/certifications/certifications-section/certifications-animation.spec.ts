@@ -17,7 +17,7 @@ describe('certifications wall animation', () => {
     spyOn(window, 'matchMedia').and.callFake((query) => {
       const media = matchMedia(query);
       Object.defineProperty(media, 'matches', {
-        value: query === '(min-width: 48rem)' ? desktop : !reducedMotion,
+        value: desktop && !reducedMotion,
       });
       return media;
     });
@@ -145,12 +145,12 @@ describe('certifications wall animation', () => {
     expect(surface().style.transform).toBe('');
   });
 
-  it('uses a simple vertical entrance on small screens', () => {
+  it('leaves cards visible and unanimated on the mobile rail', () => {
     desktop = false;
     motion = animateCertifications(root);
-    expect(Number(gsap.getProperty(surface(), 'x'))).toBe(0);
-    expect(Number(gsap.getProperty(surface(), 'rotation'))).toBe(0);
-    expect(Number(gsap.getProperty(surface(), 'scale'))).toBe(1);
+    expect(batch).not.toHaveBeenCalled();
+    expect(surface().style.opacity).toBe('');
+    expect(surface().style.transform).toBe('');
   });
 
   it('immediately exposes focused links, even during their entrance', () => {

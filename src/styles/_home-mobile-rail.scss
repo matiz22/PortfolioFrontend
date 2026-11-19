@@ -1,0 +1,29 @@
+@mixin viewport {
+  --home-rail-inset: var(--home-showcase-inset, clamp(1.5rem, 4vw, 4rem));
+  --home-rail-gap: 1rem;
+
+  // Align the first card with the header while letting the next card peek at the edge.
+  min-inline-size: 0;
+  margin-inline: calc(-1 * var(--home-rail-inset));
+  padding-inline: var(--home-rail-inset);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-padding-inline: var(--home-rail-inset);
+  scroll-snap-type: x proximity;
+
+  @media (prefers-reduced-motion: reduce) {
+    scroll-snap-type: none;
+  }
+}
+
+@mixin columns {
+  grid-auto-flow: column;
+  grid-auto-columns: min(calc(100% - 1.25rem), 26rem);
+  grid-template-columns: none;
+  gap: var(--home-rail-gap);
+}
+
+@mixin item {
+  min-inline-size: 0;
+  scroll-snap-align: start;
+}

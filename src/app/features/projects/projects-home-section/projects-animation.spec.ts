@@ -6,6 +6,7 @@ describe('projects animation', () => {
   let motion: gsap.MatchMedia | undefined;
   let reducedMotion: boolean;
   let hoverCapable: boolean;
+  let desktop: boolean;
   let wideScreen: boolean;
   let observe: jasmine.Spy;
   let unobserve: jasmine.Spy;
@@ -16,14 +17,14 @@ describe('projects animation', () => {
   beforeEach(() => {
     reducedMotion = false;
     hoverCapable = true;
+    desktop = true;
     wideScreen = false;
     const matchMedia = window.matchMedia.bind(window);
     spyOn(window, 'matchMedia').and.callFake((query) => {
       const media = matchMedia(query);
       Object.defineProperty(media, 'matches', {
-        value: query === '(min-width: 64rem)' ? wideScreen : !reducedMotion && (
-          query === '(prefers-reduced-motion: no-preference)' ||
-          (hoverCapable && query.includes('(hover: hover)'))
+        value: query === '(min-width: 64rem)' ? wideScreen : desktop && !reducedMotion && (
+          !query.includes('(hover: hover)') || hoverCapable
         ),
       });
       return media;
@@ -245,6 +246,14 @@ describe('projects animation', () => {
     expect(element('.project-preview-drawer').style.height).toBe('');
     expect(element('.project-preview-drawer').inert).toBeFalse();
     expect(element('.project-preview-drawer').hasAttribute('aria-hidden')).toBeFalse();
+  });
+
+  it('does not hide cards or collapse details on the mobile rail', () => {
+    desktop = false;
+    const original = root.innerHTML;
+    motion = animateProjects(root);
+    expect(root.innerHTML).toBe(original);
+    expect(observe).not.toHaveBeenCalled();
   });
 
   it('selects the horizontal interaction on wide screens', () => {

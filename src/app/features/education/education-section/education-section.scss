@@ -1,3 +1,5 @@
+@use '../../../../styles/home-mobile-rail' as mobile-rail;
+
 :host {
   display: block;
 }
@@ -225,7 +227,19 @@
   color: var(--color-primary);
 }
 
-@media (max-width: 47.99rem) {
+@media (width < 48rem) {
+  .education-entries:has(> .education-entry + .education-entry) {
+    @include mobile-rail.viewport;
+    @include mobile-rail.columns;
+    align-items: start;
+    margin-block-start: 3rem;
+    padding-block: 0.5rem 1rem;
+
+    .education-entry {
+      @include mobile-rail.item;
+    }
+  }
+
   .education-card {
     grid-template-columns: minmax(0, 1fr);
   }

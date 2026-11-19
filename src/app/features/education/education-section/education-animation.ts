@@ -11,7 +11,7 @@ export function animateEducationCards(root: HTMLElement): () => void {
 
   try {
     motion.add({
-      animate: '(prefers-reduced-motion: no-preference)',
+      animate: '(min-width: 48rem) and (prefers-reduced-motion: no-preference)',
       hover: '(hover: hover) and (pointer: fine)',
     }, (context) => {
       if (!context.conditions?.['animate']) {

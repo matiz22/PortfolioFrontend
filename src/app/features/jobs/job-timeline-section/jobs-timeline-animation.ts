@@ -4,6 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 const HORIZONTAL_QUERY = '(min-width: 64rem) and (min-height: 48rem)';
+const MOBILE_QUERY = '(width < 48rem)';
 const MOTION_QUERY = '(prefers-reduced-motion: no-preference)';
 const NAV_CLEARANCE = 80;
 const SCROLL_DISTANCE_MULTIPLIER = 1.85;
@@ -28,9 +29,11 @@ export function animateJobsTimeline(root: HTMLElement): gsap.MatchMedia {
   try {
     motion.add({
       wide: HORIZONTAL_QUERY,
+      mobile: MOBILE_QUERY,
       canAnimate: MOTION_QUERY,
     }, (context) => {
-      if (!context.conditions?.['canAnimate']) {
+      // The native mobile rail is entirely CSS-driven.
+      if (!context.conditions?.['canAnimate'] || context.conditions['mobile']) {
         return;
       }
 
