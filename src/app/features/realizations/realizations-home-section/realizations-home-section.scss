@@ -1,6 +1,5 @@
 .realizations-section {
   --realizations-inset: var(--home-showcase-inset, clamp(1.5rem, 4vw, 4rem));
-  border-top: 1px solid rgb(255 255 255 / 6%);
   background: var(--home-section-background, #080b0a);
   // Clip the gallery bleed without creating a scroll container (sticky safe).
   overflow-x: clip;

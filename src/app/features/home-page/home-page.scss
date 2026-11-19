@@ -47,6 +47,7 @@
 }
 
 .home-closing app-footer {
+  --footer-divider-width: 0;
   display: block;
   flex-shrink: 0;
 }
