@@ -7,6 +7,7 @@ import { SocialLinksRow } from "../../../features/social-links/social-links-row/
   imports: [ContactForm, SocialLinksRow],
   templateUrl: './contact-section.html',
   styleUrl: './contact-section.scss',
+  host: { '[class.contact-glass]': 'glass()' },
 })
 export class ContactSection {
   readonly glass = input(false);

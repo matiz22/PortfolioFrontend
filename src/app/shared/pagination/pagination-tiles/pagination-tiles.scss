@@ -1,0 +1,32 @@
+:host(.pagination-themed) {
+  .btn {
+    border-color: var(--pagination-border);
+    background: rgb(10 15 25 / 90%);
+    color: var(--pagination-accent);
+
+    &:hover:not(:checked) {
+      background: var(--pagination-tint);
+    }
+
+    &:checked {
+      background: var(--pagination-selected, var(--pagination-accent));
+      color: var(--color-primary-content);
+    }
+
+    &:focus-visible {
+      z-index: 1;
+      outline: 2px solid var(--pagination-accent);
+      outline-offset: 3px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
+  }
+
+  .join {
+    max-width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}

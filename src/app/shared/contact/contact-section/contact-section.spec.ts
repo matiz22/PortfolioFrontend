@@ -64,6 +64,21 @@ describe('ContactSection', () => {
     expect(getComputedStyle(email).borderTopStyle).toBe('solid');
   });
 
+  it('keeps the glass form card over a transparent, divider-free section', async () => {
+    const host: HTMLElement = fixture.nativeElement;
+    host.classList.add('contact-blended');
+    fixture.componentRef.setInput('glass', true);
+    await fixture.whenStable();
+
+    const section = getComputedStyle(host.querySelector('.contact-section')!);
+    const card = getComputedStyle(host.querySelector('.contact-form-card')!);
+    expect(section.backgroundColor).toBe('rgba(0, 0, 0, 0)');
+    expect(section.borderTopWidth).toBe('0px');
+    expect(card.backgroundColor).not.toBe(section.backgroundColor);
+    expect(card.borderTopWidth).toBe('1px');
+    expect(card.backdropFilter).toContain('blur(');
+  });
+
   it('allows the home page to compact the layout without changing its content', () => {
     const host: HTMLElement = fixture.nativeElement;
     host.style.setProperty('--contact-section-padding', '3rem');

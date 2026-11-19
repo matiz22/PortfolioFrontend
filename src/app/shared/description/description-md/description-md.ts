@@ -10,5 +10,5 @@ import { MarkdownComponent, provideMarkdown } from 'ngx-markdown';
 })
 export class DescriptionMd {
   description = input.required<string>();
+  readonly showGlow = input(true);
 }
-
