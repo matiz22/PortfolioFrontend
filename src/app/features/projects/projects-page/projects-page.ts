@@ -2,7 +2,6 @@ import { Component, computed, inject } from '@angular/core';
 import { ProjectsService } from '../../../core/services/projects.service';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { switchMap } from 'rxjs/operators';
-import { ActivatedRoute } from '@angular/router';
 import { ApiState } from '../../../core/models/api.state';
 import { Project } from '../../../core/models/project';
 import { PaginationMeta } from '../../../core/models/pagination-meta';
@@ -13,6 +12,7 @@ import { Footer } from '../../../shared/footer/footer';
 import { LoadingItems } from '../../../shared/loading/loading-items/loading-items';
 import { PaginationService } from '../../../shared/pagination/pagination.service';
 import { PaginationTiles } from '../../../shared/pagination/pagination-tiles/pagination-tiles';
+import { GrainGradient } from '../../../shared/grain-gradient/grain-gradient';
 
 @Component({
   selector: 'app-projects-page',
@@ -22,7 +22,8 @@ import { PaginationTiles } from '../../../shared/pagination/pagination-tiles/pag
     ContactSection,
     Footer,
     LoadingItems,
-    PaginationTiles
+    PaginationTiles,
+    GrainGradient,
   ],
   providers: [PaginationService],
   templateUrl: './projects-page.html',
@@ -30,7 +31,6 @@ import { PaginationTiles } from '../../../shared/pagination/pagination-tiles/pag
 })
 export class ProjectsPage {
   projectsService: ProjectsService = inject(ProjectsService);
-  private route = inject(ActivatedRoute);
   protected pagination = inject(PaginationService);
 
   // Fetch paginated response based on current page

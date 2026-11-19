@@ -1,25 +1,35 @@
-<a [routerLink]="['/project', project.slug]" [title]="project.title"
-  [class]="project.thumbnail
-    ? 'card image-full border border-white/5 hover:border-primary/30 transition-all duration-300 ease-out hover:-translate-y-1 h-full min-h-64 overflow-hidden'
-    : 'card bg-base-200/50 border border-white/5 hover:border-primary/30 transition-all duration-300 ease-out hover:-translate-y-1 h-full min-h-64 overflow-hidden'">
-  @if (project.thumbnail) {
-  <figure>
-    <img [alt]="project.title" [src]="project.thumbnail | imageUrl" />
-  </figure>
-  }
-  <div class="card-body" [class.before:absolute]="project.thumbnail" [class.before:inset-0]="project.thumbnail" [class.before:bg-black/60]="project.thumbnail" [class.before:-z-10]="project.thumbnail">
-    <h3 class="card-title font-mono tracking-tight">{{ project.title }}</h3>
-    <p class="text-sm text-base-content/50">{{ project.shortDesc }}</p>
-    <div class="flex gap-1.5 flex-wrap mt-4">
-      @for (technology of project.technologies; track technology.id) {
-      <div class="badge badge-primary badge-outline badge-sm">{{ technology.name }}</div>
-      }
-    </div>
-    <div class="card-actions justify-end mt-auto">
-      @if (project.liveUrl) {
-      <a [href]="project.liveUrl" class="btn btn-primary btn-sm" rel="noopener noreferrer" target="_blank"
-        i18n="@@projectItem.btn.viewLive">View Live</a>
-      }
-    </div>
+<article class="archive-card">
+  <div class="archive-card-media" aria-hidden="true">
+    @if (project.thumbnail) {
+      <img class="archive-card-cover" [src]="project.thumbnail | imageUrl" alt="" loading="lazy" decoding="async">
+    } @else {
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+        stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m8 6-6 6 6 6m8-12 6 6-6 6m-2-14-4 16" />
+      </svg>
+    }
   </div>
-</a>
+
+  <div class="archive-card-header">
+    <h2 class="archive-card-title section-heading">
+      <a class="project-card-link" [routerLink]="['/project', project.slug]">{{ project.title }}</a>
+    </h2>
+  </div>
+
+  @if (project.shortDesc) {
+    <p class="archive-card-summary">{{ project.shortDesc }}</p>
+  }
+
+  @if (project.technologies.length) {
+    <ul class="archive-card-technologies" role="list">
+      @for (technology of project.technologies; track technology.id) {
+        <li>{{ technology.name }}</li>
+      }
+    </ul>
+  }
+
+  @if (project.liveUrl) {
+    <a class="project-card-live home-text-action" [href]="project.liveUrl" rel="noopener noreferrer" target="_blank"
+      i18n="@@projectItem.btn.viewLive">View Live</a>
+  }
+</article>
