@@ -5,8 +5,6 @@
   --home-showcase-inset: clamp(1.5rem, 4vw, 4rem);
   --home-showcase-width: 88rem;
   --contact-section-padding: var(--home-chapter-space);
-  --contact-card-padding: clamp(1.5rem, 2.5vw, 2.5rem);
-  --contact-copy-position: static;
   // All chapters share the fixed gradient and grain; only their content scrolls.
   --home-section-background: transparent;
   --contact-section-background: transparent;
@@ -58,6 +56,5 @@
   :host {
     --home-showcase-min-height: 100svh;
     --contact-section-padding: 6rem clamp(3rem, 5vh, 4rem);
-    --contact-form-columns: repeat(2, minmax(0, 1fr));
   }
 }

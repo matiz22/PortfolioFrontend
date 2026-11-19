@@ -24,11 +24,12 @@ export async function mountGrainGradient(
   surface: HTMLDivElement,
   interactionRoot: HTMLElement,
   currentPalette: () => GrainPalette = () => HERO_PALETTE,
+  signal?: AbortSignal,
 ): Promise<GrainRenderer | undefined> {
   // Paper requires a fully loaded image before uploading its noise texture.
   const noise = getShaderNoiseTexture();
   await noise?.decode();
-  if (!surface.isConnected) {
+  if (signal?.aborted || !surface.isConnected) {
     return;
   }
 

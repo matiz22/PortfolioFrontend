@@ -22,6 +22,19 @@
   }
 }
 
+// Keep some texture on fixed-palette pages until the real shader is ready.
+:host(.has-fixed-palette) .grain-surface:not(.is-ready)::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.86' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grain)'/%3E%3C/svg%3E");
+  mask-image:
+    radial-gradient(ellipse at 100% 0%, #000, transparent 46%),
+    radial-gradient(ellipse at 0% 100%, #000, transparent 46%);
+  mix-blend-mode: soft-light;
+  opacity: 0.55;
+}
+
 // Widen the dark space between the two corner glows: the corners shape keeps
 // its edge bands bright, so the center diagonal is dimmed from above instead.
 .grain-gap {

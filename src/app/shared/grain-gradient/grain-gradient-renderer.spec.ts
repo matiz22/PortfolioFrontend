@@ -31,4 +31,17 @@ describe('grain gradient renderer fallback', () => {
     expect(context).not.toHaveBeenCalled();
     expect(surface.querySelector('canvas')).toBeNull();
   });
+
+  it('does not finish a cancelled mount if a cached background has already reattached', async () => {
+    const context = spyOn(HTMLCanvasElement.prototype, 'getContext').and.returnValue(null);
+    const request = new AbortController();
+    const mounting = mountGrainGradient(surface, root, undefined, request.signal);
+    root.remove();
+    request.abort();
+    document.body.appendChild(root);
+    await expectAsync(mounting).toBeResolvedTo(undefined);
+
+    expect(context).not.toHaveBeenCalled();
+    expect(surface.querySelector('canvas')).toBeNull();
+  });
 });

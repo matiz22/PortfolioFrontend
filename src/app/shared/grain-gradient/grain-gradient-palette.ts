@@ -1,7 +1,7 @@
 type Rgb = readonly [number, number, number];
 export type GrainPalette = readonly [Rgb, Rgb, Rgb, Rgb];
 
-const palettes = {
+export const GRAIN_CHAPTER_PALETTES = {
   hero: [[0, 92, 57], [0, 211, 127], [0, 191, 209], [0, 127, 134]],
   about: [[0, 78, 68], [23, 179, 147], [57, 193, 177], [0, 109, 116]],
   work: [[14, 55, 141], [67, 128, 231], [43, 169, 221], [24, 94, 152]],
@@ -12,15 +12,19 @@ const palettes = {
   contact: [[0, 86, 54], [39, 185, 120], [61, 177, 151], [0, 118, 98]],
 } as const satisfies Record<string, GrainPalette>;
 
-export const HERO_PALETTE: GrainPalette = palettes.hero;
+export type GrainChapter = keyof typeof GRAIN_CHAPTER_PALETTES;
+
+export const HERO_PALETTE: GrainPalette = GRAIN_CHAPTER_PALETTES.hero;
 
 // Reuse the brighter glow as a stable chapter accent, independent of the scroll blend.
 export const GRAIN_CHAPTER_ACCENTS = Object.fromEntries(
-  Object.entries(palettes).map(([chapter, [, accent]]) => [chapter, `rgb(${accent.join(' ')})`]),
-) as Record<keyof typeof palettes, string>;
+  Object.entries(GRAIN_CHAPTER_PALETTES).map(([chapter, [, accent]]) => [chapter, `rgb(${accent.join(' ')})`]),
+) as Record<GrainChapter, string>;
 
 function paletteOf(chapter: string): GrainPalette | undefined {
-  return Object.hasOwn(palettes, chapter) ? palettes[chapter as keyof typeof palettes] : undefined;
+  return Object.hasOwn(GRAIN_CHAPTER_PALETTES, chapter)
+    ? GRAIN_CHAPTER_PALETTES[chapter as GrainChapter]
+    : undefined;
 }
 
 export function mixPalettes(from: GrainPalette, to: GrainPalette, amount: number): GrainPalette {
