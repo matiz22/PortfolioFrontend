@@ -1,37 +1,31 @@
-<a [routerLink]="['/education', education.slug]" [title]="education.degree"
-  [class]="education.thumbnail
-    ? 'card image-full border border-white/5 hover:border-accent/30 transition-all duration-300 ease-out hover:-translate-y-1 h-full min-h-64 overflow-hidden'
-    : 'card bg-base-200/50 border border-white/5 hover:border-accent/30 transition-all duration-300 ease-out hover:-translate-y-1 h-full min-h-64 overflow-hidden'">
-  @if (education.thumbnail) {
-  <figure>
-    <img [alt]="education.institution" [src]="education.thumbnail | imageUrl" />
-  </figure>
-  }
-  <div class="card-body" [class.before:absolute]="education.thumbnail" [class.before:inset-0]="education.thumbnail" [class.before:bg-black/60]="education.thumbnail" [class.before:-z-10]="education.thumbnail">
-    <div class="flex flex-col">
-      <h3 class="card-title font-mono tracking-tight">{{ education.degree }}</h3>
-      <p class="text-sm text-base-content/60 mt-1">{{ education.institution }}</p>
-      @if (education.fieldOfStudy) {
-      <p class="text-sm text-base-content/60">{{ education.fieldOfStudy }}</p>
-      }
-    </div>
-    @if (education.technologies.length > 0) {
-    <div class="mt-4">
-      <div class="flex gap-1.5 flex-wrap">
-        @for (tech of education.technologies; track tech.id) {
-        <div class="badge badge-accent badge-outline badge-sm">{{ tech.name }}</div>
-        }
-      </div>
-    </div>
-    }
-    <div class="card-actions justify-between items-center mt-auto">
-      <div class="badge badge-accent badge-sm font-mono">
-        {{ education.startDate | date:'yyyy' }} - {{ education.isCurrent ? 'Present' : (education.endDate |
-        date:'yyyy') }}
-      </div>
-      @if (education.grade) {
-      <p class="font-medium text-sm text-base-content/60">{{ education.grade }}</p>
-      }
-    </div>
+<a class="archive-card" [routerLink]="['/education', education.slug]">
+  <div class="archive-card-header">
+    <h2 class="archive-card-title section-heading">{{ education.degree }}</h2>
   </div>
+
+  <p class="education-institution">{{ education.institution }}</p>
+  @if (education.fieldOfStudy) {
+    <p class="archive-card-summary">{{ education.fieldOfStudy }}</p>
+  }
+
+  <div class="education-card-meta">
+    <app-portfolio-period class="archive-card-meta" [period]="education"></app-portfolio-period>
+    @if (education.grade) {
+      <p class="education-grade"><span i18n="@@education.grade">Grade</span>: {{ education.grade }}</p>
+    }
+  </div>
+
+  @if (education.thumbnail) {
+    <div class="archive-card-media education-card-media">
+      <img class="archive-card-cover" [src]="education.thumbnail | imageUrl" alt="" loading="lazy" decoding="async">
+    </div>
+  }
+
+  @if (education.technologies.length) {
+    <ul class="archive-card-technologies" role="list">
+      @for (tech of education.technologies; track tech.id) {
+        <li>{{ tech.name }}</li>
+      }
+    </ul>
+  }
 </a>

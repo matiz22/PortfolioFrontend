@@ -1,0 +1,25 @@
+@use '../../../shared/portfolio/archive-card';
+
+.education-institution {
+  color: var(--portfolio-ink);
+  font-size: 0.875rem;
+}
+
+.education-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.35rem 1rem;
+}
+
+.education-grade {
+  color: rgb(255 255 255 / 76%);
+  font-size: 0.75rem;
+}
+
+.education-card-media {
+  aspect-ratio: auto;
+  height: clamp(6.5rem, 14vw, 9.5rem);
+  margin-block: 0.25rem;
+}
