@@ -1,4 +1,4 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChangeDetection, inject } from '@angular/core';
+import { ApplicationConfig, provideBrowserGlobalErrorListeners, inject } from '@angular/core';
 import { provideRouter, RouteReuseStrategy, withInMemoryScrolling, withViewTransitions, Router } from '@angular/router';
 
 import { routes } from './app.routes';
@@ -12,7 +12,6 @@ import { AppTitleStrategy } from './core/strategies/title.strategy';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
-    provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(
       routes,
       withViewTransitions({

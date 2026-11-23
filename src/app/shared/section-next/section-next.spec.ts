@@ -1,14 +1,14 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SectionNext } from './section-next';
 
 @Component({
   imports: [SectionNext],
   changeDetection: ChangeDetectionStrategy.Eager,
-  template: `<app-section-next [targetId]="target">Client work</app-section-next>`,
+  template: `<app-section-next [targetId]="target()">Client work</app-section-next>`,
 })
 class TestHost {
-  target = 'work';
+  readonly target = input('work');
 }
 
 describe('SectionNext', () => {
@@ -20,7 +20,7 @@ describe('SectionNext', () => {
       imports: [TestHost],
     }).compileComponents();
     fixture = TestBed.createComponent(TestHost);
-    fixture.detectChanges();
+    await fixture.whenStable();
     link = fixture.nativeElement.querySelector('a');
   });
 
@@ -32,9 +32,9 @@ describe('SectionNext', () => {
     expect(link.querySelector('svg')).toBeNull();
   });
 
-  it('updates the destination when its input changes', () => {
-    fixture.componentInstance.target = 'projects';
-    fixture.detectChanges();
+  it('updates the destination when its input changes', async () => {
+    fixture.componentRef.setInput('target', 'projects');
+    await fixture.whenStable();
     expect(link.getAttribute('href')).toBe('#projects');
   });
 

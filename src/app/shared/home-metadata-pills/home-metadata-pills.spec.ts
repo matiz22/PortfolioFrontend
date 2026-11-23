@@ -1,17 +1,17 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HomeMetadataPills } from './home-metadata-pills';
 
 @Component({
   imports: [HomeMetadataPills],
   changeDetection: ChangeDetectionStrategy.Eager,
-  template: '<ul appHomeMetadataPills [items]="items" [kind]="kind"></ul>',
+  template: '<ul appHomeMetadataPills [items]="items" [kind]="kind()"></ul>',
 })
 class MetadataPreview {
   readonly items = [
     { id: 1, name: 'Angular' }, { id: 2, name: 'TypeScript' }, { id: 3, name: 'GSAP' },
   ];
-  kind: 'technologies' | 'skills' = 'technologies';
+  readonly kind = input<'technologies' | 'skills'>('technologies');
 }
 
 describe('HomeMetadataPills', () => {
@@ -21,7 +21,7 @@ describe('HomeMetadataPills', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({ imports: [MetadataPreview] }).compileComponents();
     fixture = TestBed.createComponent(MetadataPreview);
-    fixture.detectChanges();
+    await fixture.whenStable();
     list = fixture.nativeElement.querySelector('ul');
   });
 
@@ -44,7 +44,7 @@ describe('HomeMetadataPills', () => {
     expect(pills[1].scrollWidth).toBeLessThanOrEqual(pills[1].clientWidth);
   });
 
-  it('uses the chapter accent for both groups and gives skills a quieter fill', () => {
+  it('uses the chapter accent for both groups and gives skills a quieter fill', async () => {
     const pill = list.querySelector('li')!;
     const fill = () => getComputedStyle(pill).backgroundColor;
     list.parentElement!.style.setProperty('--home-metadata-accent', 'rgb(67 128 231)');
@@ -53,8 +53,8 @@ describe('HomeMetadataPills', () => {
     const violet = fill();
     expect(violet).not.toBe(blue);
     const violetText = getComputedStyle(pill).color;
-    fixture.componentInstance.kind = 'skills';
-    fixture.detectChanges();
+    fixture.componentRef.setInput('kind', 'skills');
+    await fixture.whenStable();
     expect(list.getAttribute('aria-label')).toBe('Skills');
     expect(fill()).not.toBe(violet);
     expect(getComputedStyle(pill).color).toBe(violetText);

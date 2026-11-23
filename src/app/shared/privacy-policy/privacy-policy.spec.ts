@@ -1,6 +1,6 @@
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import { LOCALE_ID, provideZonelessChangeDetection } from '@angular/core';
+import { LOCALE_ID } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { of } from 'rxjs';
@@ -17,7 +17,6 @@ describe('PrivacyPolicy', () => {
     await TestBed.configureTestingModule({
       imports: [PrivacyPolicy],
       providers: [
-        provideZonelessChangeDetection(),
         provideRouter([]),
         provideHttpClient(),
         provideHttpClientTesting(),

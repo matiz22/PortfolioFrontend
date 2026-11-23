@@ -1,4 +1,4 @@
-import {Component, provideZonelessChangeDetection} from '@angular/core';
+import {Component} from '@angular/core';
 import {TestBed} from '@angular/core/testing';
 import {provideRouter, Router} from '@angular/router';
 import {App} from './app';
@@ -10,7 +10,7 @@ describe('App', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [App],
-      providers: [provideZonelessChangeDetection(), provideRouter([{path: 'test', component: TestPage}])],
+      providers: [provideRouter([{path: 'test', component: TestPage}])],
     }).compileComponents();
   });
 

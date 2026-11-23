@@ -1,14 +1,14 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SectionAction } from './section-action';
 
 @Component({
   imports: [SectionAction],
   changeDetection: ChangeDetectionStrategy.Eager,
-  template: `<a appSectionAction [variant]="variant" href="#destination">View all projects</a>`,
+  template: `<a appSectionAction [variant]="variant()" href="#destination">View all projects</a>`,
 })
 class TestHost {
-  variant: 'archive' | 'continue' | 'cta' = 'archive';
+  readonly variant = input<'archive' | 'continue' | 'cta'>('archive');
 }
 
 describe('SectionAction', () => {
@@ -20,7 +20,7 @@ describe('SectionAction', () => {
       imports: [TestHost],
     }).compileComponents();
     fixture = TestBed.createComponent(TestHost);
-    fixture.detectChanges();
+    await fixture.whenStable();
     link = fixture.nativeElement.querySelector('a');
   });
 
@@ -32,7 +32,7 @@ describe('SectionAction', () => {
     expect(link.classList).toContain('section-action-archive');
   });
 
-  it('uses a glass archive chip and an unfilled continuation variant', () => {
+  it('uses a glass archive chip and an unfilled continuation variant', async () => {
     const surface = link.querySelector<HTMLElement>('.section-action-surface')!;
     const chip = link.querySelector<HTMLElement>('.section-action-chip')!;
     expect(chip.classList).toContain('glass');
@@ -40,8 +40,8 @@ describe('SectionAction', () => {
     expect(chip.classList).toContain('home-glass-chip');
     expect(link.querySelector('path')?.getAttribute('d')).toContain('17 7');
     surface.style.transition = 'none';
-    fixture.componentInstance.variant = 'continue';
-    fixture.detectChanges();
+    fixture.componentRef.setInput('variant', 'continue');
+    await fixture.whenStable();
     expect(link.classList).toContain('section-action-continue');
     expect(link.classList).not.toContain('section-action-archive');
     const continuationChip = link.querySelector('.section-action-chip')!;
@@ -61,9 +61,9 @@ describe('SectionAction', () => {
     expect(getComputedStyle(link.querySelector('svg')!).animationName).toBe('none');
   });
 
-  it('puts the solid CTA inside the magnetic surface without frosting the chip', () => {
-    fixture.componentInstance.variant = 'cta';
-    fixture.detectChanges();
+  it('puts the solid CTA inside the magnetic surface without frosting the chip', async () => {
+    fixture.componentRef.setInput('variant', 'cta');
+    await fixture.whenStable();
 
     const chip = link.querySelector<HTMLElement>('.section-action-surface .section-action-chip')!;
     expect(link.classList).toContain('section-action-cta');
