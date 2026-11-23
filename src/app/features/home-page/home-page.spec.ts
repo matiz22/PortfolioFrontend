@@ -1,9 +1,14 @@
 import { ViewportScroller } from '@angular/common';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, DeferBlockBehavior, DeferBlockState, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
+import { of } from 'rxjs';
 
 import { HomePage } from './home-page';
+import { CertificationsSection } from '../certifications/certifications-section/certifications-section';
 import { HeroSection } from '../hero/hero-section/hero-section';
+import { ApiState } from '../../core/models/api.state';
+import { CertificationsService } from '../../core/services/certifications.service';
 import { GRAIN_CHAPTER_ACCENTS } from '../../shared/grain-gradient/grain-gradient-palette';
 import { SectionNext } from '../../shared/section-next/section-next';
 
@@ -15,8 +20,14 @@ describe('HomePage', () => {
     await TestBed.configureTestingModule({
       imports: [HomePage],
       deferBlockBehavior: DeferBlockBehavior.Manual,
+      providers: [
+        provideRouter([]),
+        { provide: CertificationsService, useValue: { getHomeSummaryItems: () => of(ApiState.success([])) } },
+      ],
     })
-    .overrideComponent(HomePage, { set: { imports: [HeroSection, SectionNext], schemas: [NO_ERRORS_SCHEMA] } })
+    .overrideComponent(HomePage, {
+      set: { imports: [CertificationsSection, HeroSection, SectionNext], schemas: [NO_ERRORS_SCHEMA] },
+    })
     .compileComponents();
 
     fixture = TestBed.createComponent(HomePage);
@@ -141,17 +152,32 @@ describe('HomePage', () => {
     }
   });
 
-  it('marks keyboard focus on a chapter without drawing a full-width outline', () => {
+  it('keeps focus visible without a corner mark while each chapter is deferred', () => {
     const root: HTMLElement = fixture.nativeElement;
-    const chapter = root.querySelector<HTMLElement>('#projects')!;
+    for (const chapter of root.querySelectorAll<HTMLElement>('[data-grain-chapter]:not(#home)')) {
+      chapter.focus({ preventScroll: true });
+      expect(chapter.matches(':focus-visible')).withContext(chapter.id).toBeTrue();
+      expect(getComputedStyle(chapter, '::before').content).withContext(chapter.id).toBe('none');
+      expect(getComputedStyle(chapter).outlineOffset).withContext(chapter.id).toBe('-2px');
+      chapter.blur();
+    }
+  });
 
-    chapter.focus({ preventScroll: true });
-    expect(chapter.matches(':focus-visible')).toBeTrue();
-    expect(getComputedStyle(chapter).outlineStyle).toBe('none');
-    const marker = getComputedStyle(chapter, '::before');
-    expect(marker.borderBlockStartWidth).toBe('2px');
-    expect(marker.inlineSize).toBe('12px');
-    chapter.blur();
+  it('moves the focus outline to the certifications heading once it renders', async () => {
+    const root: HTMLElement = fixture.nativeElement;
+    const certifications = root.querySelector<HTMLElement>('#certifications')!;
+    certifications.focus({ preventScroll: true });
+    for (const block of await fixture.getDeferBlocks()) {
+      await block.render(DeferBlockState.Complete);
+    }
+    await fixture.whenStable();
+
+    const heading = certifications.querySelector('#certifications-heading')!;
+    expect(document.activeElement).toBe(certifications);
+    expect(getComputedStyle(certifications, '::before').content).toBe('none');
+    expect(getComputedStyle(certifications).outlineStyle).toBe('none');
+    expect(getComputedStyle(heading).outlineStyle).toBe('solid');
+    certifications.blur();
   });
 
   it('outlines the hero heading on keyboard focus instead of drawing a corner mark', () => {
