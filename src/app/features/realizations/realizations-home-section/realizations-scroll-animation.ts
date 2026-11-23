@@ -22,12 +22,17 @@ export function animateRealizationsScroll(root: HTMLElement): gsap.MatchMedia {
 
   motion.add(
     {
-      // Navigation still needs listeners on small screens with reduced motion.
-      all: 'all',
+      // Phones use the shared CSS-only swipe rail. Wider layouts still need
+      // navigation when reduced motion disables the pinned animation.
+      isWide: '(min-width: 48rem)',
       isDesktop: '(min-width: 64rem) and (min-height: 48rem)',
       canAnimate: '(prefers-reduced-motion: no-preference)',
     },
     (context) => {
+      if (!context.conditions?.['isWide']) {
+        return;
+      }
+
       const canAnimate = context.conditions?.['canAnimate'] === true;
       const isDesktop = context.conditions?.['isDesktop'] === true;
 
@@ -80,7 +85,7 @@ export function animateRealizationsScroll(root: HTMLElement): gsap.MatchMedia {
       const onPrev = () => step(-1);
       const onNext = () => step(1);
 
-      // Native swipe progress (mobile, reduced motion, and pre-hydration).
+      // Track native swipe progress whenever the wide gallery is not pinned.
       gallery.addEventListener('scroll', onNativeScroll, { passive: true });
       prevButton?.addEventListener('click', onPrev);
       nextButton?.addEventListener('click', onNext);
@@ -184,7 +189,7 @@ export function animateRealizationsScroll(root: HTMLElement): gsap.MatchMedia {
 
           onScroll();
         } else {
-          // Native gallery (mobile swipe or everything fits): one restrained
+          // Native gallery (tablet swipe or everything fits): one restrained
           // entrance instead of the scroll-driven hop.
           gsap.from(cards, {
             autoAlpha: 0,

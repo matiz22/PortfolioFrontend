@@ -1,3 +1,4 @@
+@use '../../../../styles/home-mobile-rail' as mobile-rail;
 @use '../../../../styles/home-stage' as stage;
 
 .realizations-section {
@@ -54,41 +55,67 @@
   min-width: 0;
 }
 
-.realizations-gallery {
-  // Bleed into the stage's right inset so cards clip at the viewport edge.
-  margin-right: calc(-1 * var(--realizations-inset));
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  overscroll-behavior-x: contain;
-  scrollbar-width: none;
-
-  // Only veil incoming work. The edge becomes fully opaque as the final card
-  // settles; without JS, everything remains readable.
-  -webkit-mask-image: linear-gradient(to right, #000 55%, rgb(0 0 0 / var(--realizations-edge-alpha, 1)) 95%);
-  mask-image: linear-gradient(to right, #000 55%, rgb(0 0 0 / var(--realizations-edge-alpha, 1)) 95%);
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-}
-
 .realizations-track {
   position: relative;
-  display: flex;
-  gap: 1.5rem;
   width: 100%;
 }
 
-.realizations-track > * {
-  flex: 0 0 min(86%, 24rem);
-  scroll-snap-align: start;
-}
-
 .realizations-state {
-  flex: 0 0 100%;
   padding-block: 2rem;
   font-size: 0.875rem;
   color: color-mix(in srgb, var(--color-base-content) 50%, transparent);
+}
+
+@media (width < 48rem) {
+  .realizations-gallery:has(.realizations-track > :nth-child(2)) {
+    display: grid;
+    @include mobile-rail.viewport;
+    @include mobile-rail.columns;
+    padding-block: 0.5rem 1rem;
+
+    // Let the scrolling grid include the trailing inset after the last card.
+    .realizations-track {
+      display: contents;
+    }
+
+    .realizations-track > * {
+      @include mobile-rail.item;
+    }
+  }
+}
+
+@media (min-width: 48rem) {
+  .realizations-gallery {
+    // Bleed into the stage's right inset so cards clip at the viewport edge.
+    margin-right: calc(-1 * var(--realizations-inset));
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+
+    // Only veil incoming work. The edge becomes fully opaque as the final card
+    // settles; without JS, everything remains readable.
+    -webkit-mask-image: linear-gradient(to right, #000 55%, rgb(0 0 0 / var(--realizations-edge-alpha, 1)) 95%);
+    mask-image: linear-gradient(to right, #000 55%, rgb(0 0 0 / var(--realizations-edge-alpha, 1)) 95%);
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  .realizations-track {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .realizations-track > * {
+    flex: 0 0 min(86%, 24rem);
+    scroll-snap-align: start;
+  }
+
+  .realizations-state {
+    flex-basis: 100%;
+  }
 }
 
 // Scrubbed desktop mode: native swiping is replaced by the scroll-driven
@@ -115,10 +142,14 @@
 }
 
 .realizations-progress {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-top: 1rem;
+  display: none;
+
+  @media (min-width: 48rem) {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
 }
 
 .realizations-rail {

@@ -266,12 +266,12 @@
 
 @media (width < 48rem) {
   .jobs-viewport:has(.jobs-entry + .jobs-entry) {
-    @include mobile-rail.viewport;
     @include horizontal-entries;
-    padding-block: 0.75rem 1rem;
 
     .jobs-list {
+      @include mobile-rail.viewport;
       @include mobile-rail.columns;
+      padding-block: 0.75rem 1rem;
       grid-template-rows: 1fr 3rem 1fr;
       row-gap: 0;
     }

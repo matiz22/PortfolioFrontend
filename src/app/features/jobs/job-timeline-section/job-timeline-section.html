@@ -14,7 +14,7 @@
       </header>
 
       @let state = jobs();
-      <div class="jobs-viewport" [attr.aria-busy]="state.status === 'loading'" (focusin)="revealFocusedRole($event)">
+      <div class="jobs-viewport" [attr.aria-busy]="state.status === 'loading'">
         @switch (state.status) {
         @case ('loading') {
         <div class="jobs-loading" role="status">
@@ -26,9 +26,9 @@
         @if (state.data.length > 0) {
         <div class="jobs-track" [style.--job-columns]="state.data.length - 1">
           <div class="jobs-rail" aria-hidden="true"><span class="jobs-rail-fill"></span></div>
-          <ol class="jobs-list" role="list">
+          <ol #jobsRail id="home-experience-rail" class="jobs-list" role="list" (focusin)="revealFocusedRole($event)">
             @for (job of state.data; track job.id) {
-            <li class="jobs-entry" [class.jobs-entry-current]="job.isCurrent">
+            <li class="jobs-entry" data-home-rail-item [class.jobs-entry-current]="job.isCurrent">
               <div class="jobs-point">
                 <span class="jobs-dot" aria-hidden="true"></span>
                 <div class="jobs-dates">
@@ -60,6 +60,7 @@
             </li>
             }
           </ol>
+          <app-home-rail-controls [viewport]="jobsRail" headingId="experience-heading" />
         </div>
         } @else {
         <p class="jobs-state" i18n="@@jobs.empty">No work experience available.</p>

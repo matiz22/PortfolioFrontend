@@ -15,12 +15,13 @@ import { RealizationsService } from '../../../core/services/realizations.service
 import { ApiState } from '../../../core/models/api.state';
 import { RealizationSummary } from '../../../core/models/summary/realization';
 import { RealizationShowcaseCard } from './realization-showcase-card/realization-showcase-card';
+import { HomeRailControls } from '../../../shared/home-rail-controls/home-rail-controls';
 import { SectionAction } from '../../../shared/section-action/section-action';
 import { SectionFooter } from '../../../shared/section-footer/section-footer';
 
 @Component({
   selector: 'app-realizations-home-section',
-  imports: [RouterLink, RealizationShowcaseCard, SectionAction, SectionFooter],
+  imports: [RouterLink, RealizationShowcaseCard, HomeRailControls, SectionAction, SectionFooter],
   templateUrl: './realizations-home-section.html',
   styleUrl: './realizations-home-section.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

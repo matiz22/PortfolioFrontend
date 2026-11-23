@@ -16,13 +16,14 @@ import { ApiState } from '../../../core/models/api.state';
 import { EducationSummary } from '../../../core/models/summary/education';
 import { EducationService } from '../../../core/services/education.service';
 import { HomeMetadataPills } from '../../../shared/home-metadata-pills/home-metadata-pills';
+import { HomeRailControls } from '../../../shared/home-rail-controls/home-rail-controls';
 import { ImageUrlPipe } from '../../../shared/pipes/image-url-pipe';
 import { SectionAction } from '../../../shared/section-action/section-action';
 import { SectionFooter } from '../../../shared/section-footer/section-footer';
 
 @Component({
   selector: 'app-education-section',
-  imports: [DatePipe, RouterLink, ImageUrlPipe, SectionAction, SectionFooter, HomeMetadataPills],
+  imports: [DatePipe, RouterLink, ImageUrlPipe, SectionAction, SectionFooter, HomeMetadataPills, HomeRailControls],
   templateUrl: './education-section.html',
   styleUrl: './education-section.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

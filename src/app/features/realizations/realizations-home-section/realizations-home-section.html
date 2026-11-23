@@ -15,7 +15,7 @@
         </div>
 
         <div class="realizations-gallery-panel">
-          <div class="realizations-gallery">
+          <div #workRail id="home-work-rail" class="realizations-gallery">
             <div class="realizations-track">
               @let realizationItems = realizations();
               @switch (realizationItems.status) {
@@ -26,7 +26,7 @@
               @case ('success') {
               @if (realizationItems.data.length > 0) {
               @for (realization of realizationItems.data; track realization.id) {
-              <app-realization-showcase-card [realization]="realization" />
+               <app-realization-showcase-card data-home-rail-item [realization]="realization" />
               }
               } @else {
               <p class="realizations-state" i18n="@@realizations.empty">No realizations to show yet.</p>
@@ -39,6 +39,7 @@
               }
             </div>
           </div>
+          <app-home-rail-controls [viewport]="workRail" headingId="realizations-heading" />
 
           @if (hasItems()) {
           <div class="realizations-progress">

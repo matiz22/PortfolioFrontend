@@ -1,0 +1,50 @@
+:host {
+  display: block;
+}
+
+@media (min-width: 48rem) {
+  :host {
+    display: none;
+  }
+}
+
+.rail-controls {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+button {
+  display: grid;
+  place-items: center;
+  inline-size: max(44px, 2.75rem);
+  block-size: max(44px, 2.75rem);
+  border: 1px solid rgb(255 255 255 / 22%);
+  border-radius: 50%;
+  background: rgb(255 255 255 / 4%);
+  color: var(--color-base-content);
+  cursor: pointer;
+
+  &[aria-disabled='true'] {
+    opacity: 0.4;
+    cursor: default;
+  }
+
+  &:active:not([aria-disabled='true']) {
+    background: rgb(255 255 255 / 13%);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+}
+
+svg {
+  inline-size: 1rem;
+  block-size: 1rem;
+}
+
+:host-context([dir='rtl']) svg {
+  transform: scaleX(-1);
+}

@@ -8,18 +8,21 @@ describe('realizations navigation without a numeric counter', () => {
   let next: HTMLButtonElement;
   let motion: gsap.MatchMedia | undefined;
   let scrollTo: jasmine.Spy;
+  let wide: boolean;
   let desktop: boolean;
   let canAnimate: boolean;
 
   beforeEach(() => {
+    wide = true;
     desktop = false;
     canAnimate = false;
     const matchMedia = window.matchMedia.bind(window);
     spyOn(window, 'matchMedia').and.callFake((query) => {
       const media = matchMedia(query);
-      Object.defineProperty(media, 'matches', {
-        value: query.includes('min-width') ? desktop : canAnimate,
-      });
+      const matches = query === '(min-width: 48rem)' ? wide
+        : query.includes('min-width') ? desktop
+        : canAnimate;
+      Object.defineProperty(media, 'matches', { value: matches });
       return media;
     });
     root = document.createElement('div');
@@ -71,6 +74,18 @@ describe('realizations navigation without a numeric counter', () => {
   function edgeAlpha(): number {
     return Number(gallery.style.getPropertyValue('--realizations-edge-alpha'));
   }
+
+  it('leaves phone swipe rails to the browser even when motion is allowed', () => {
+    wide = false;
+    canAnimate = true;
+    motion = animateRealizationsScroll(root);
+    scroll(270);
+    next.click();
+
+    expect(scrollTo).not.toHaveBeenCalled();
+    expect(gallery.style.getPropertyValue('--realizations-edge-alpha')).toBe('');
+    expect(gsap.getTweensOf(root.querySelectorAll('.realization-showcase'))).toEqual([]);
+  });
 
   it('removes the right-edge fade near the last card and restores it scrolling back', () => {
     motion = animateRealizationsScroll(root);

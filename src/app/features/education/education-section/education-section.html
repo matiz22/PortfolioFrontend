@@ -20,9 +20,9 @@
       </div>
       }
       @case ('success') {
-      <ol class="education-entries" role="list">
+      <ol #educationRail id="home-education-rail" class="education-entries" role="list">
         @for (item of entries(); track item.id) {
-        <li class="education-entry">
+        <li class="education-entry" data-home-rail-item>
           <div class="education-motion">
             <article class="education-card education-cover glass home-glass" [attr.aria-labelledby]="'education-title-' + item.id">
               @if (item.thumbnail && !failedThumbnails().has(item.thumbnail)) {
@@ -73,6 +73,7 @@
         <li class="education-state" i18n="@@education.empty">New chapters in my education will appear here.</li>
         }
       </ol>
+      <app-home-rail-controls [viewport]="educationRail" headingId="education-heading" />
       }
       @case ('error') {
       <p class="education-state" role="status" i18n="@@education.error">

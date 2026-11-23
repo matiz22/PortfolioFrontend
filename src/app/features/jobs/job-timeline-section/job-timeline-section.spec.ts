@@ -115,7 +115,7 @@ describe('JobTimelineSection', () => {
   it('brings a partly visible keyboard-focused role into the native rail', async () => {
     state.next(ApiState.success([job, { ...job, id: 2, slug: 'second-role' }]));
     await fixture.whenStable();
-    const viewport = root.querySelector<HTMLElement>('.jobs-viewport')!;
+    const viewport = root.querySelector<HTMLElement>('.jobs-list')!;
     const role = root.querySelectorAll<HTMLElement>('.jobs-card')[1];
     Object.defineProperties(viewport, {
       clientWidth: { value: 320 },

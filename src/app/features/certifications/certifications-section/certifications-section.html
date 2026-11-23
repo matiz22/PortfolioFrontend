@@ -13,7 +13,7 @@
     </header>
 
     @let state = certifications();
-    <div class="certifications-wall" [attr.aria-busy]="state.status === 'loading'"
+    <div #certificationsRail id="home-certifications-rail" class="certifications-wall" [attr.aria-busy]="state.status === 'loading'"
       [attr.data-count]="state.status === 'success' ? state.data.length : null">
       @switch (state.status) {
       @case ('loading') {
@@ -28,7 +28,7 @@
       }
       @case ('success') {
       @for (item of state.data; track item.id) {
-      <div class="certifications-slot">
+      <div class="certifications-slot" data-home-rail-item>
         <div class="certifications-motion">
           <app-certification-showcase-card [certification]="item" />
         </div>
@@ -43,6 +43,7 @@
       }
       }
     </div>
+    <app-home-rail-controls [viewport]="certificationsRail" headingId="certifications-heading" />
   </div>
   <app-section-footer class="certifications-footer">
     <ng-content select="[section-next]" />

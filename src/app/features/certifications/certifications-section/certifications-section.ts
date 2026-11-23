@@ -14,12 +14,13 @@ import { ApiState } from '../../../core/models/api.state';
 import { CertificationSummary } from '../../../core/models/summary/certification';
 import { RouterLink } from '@angular/router';
 import { CertificationShowcaseCard } from './certification-showcase-card/certification-showcase-card';
+import { HomeRailControls } from '../../../shared/home-rail-controls/home-rail-controls';
 import { SectionAction } from '../../../shared/section-action/section-action';
 import { SectionFooter } from '../../../shared/section-footer/section-footer';
 
 @Component({
   selector: 'app-certifications-section',
-  imports: [CertificationShowcaseCard, RouterLink, SectionAction, SectionFooter],
+  imports: [CertificationShowcaseCard, RouterLink, HomeRailControls, SectionAction, SectionFooter],
   templateUrl: './certifications-section.html',
   styleUrl: './certifications-section.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

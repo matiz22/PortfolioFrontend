@@ -18,12 +18,13 @@ import { ApiState } from '../../../core/models/api.state';
 import { ProjectSummary } from '../../../core/models/summary/project';
 import { ProjectPreview } from '../project-preview/project-preview';
 import { groupProjects, THREE_PROJECTS_QUERY } from './projects-layout';
+import { HomeRailControls } from '../../../shared/home-rail-controls/home-rail-controls';
 import { SectionAction } from '../../../shared/section-action/section-action';
 import { SectionFooter } from '../../../shared/section-footer/section-footer';
 
 @Component({
   selector: 'app-projects-home-section',
-  imports: [RouterLink, ProjectPreview, SectionAction, SectionFooter],
+  imports: [RouterLink, ProjectPreview, HomeRailControls, SectionAction, SectionFooter],
   templateUrl: './projects-home-section.html',
   styleUrl: './projects-home-section.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
