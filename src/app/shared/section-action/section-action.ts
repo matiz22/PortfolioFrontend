@@ -21,12 +21,14 @@ import type { gsap } from 'gsap';
     '[class.section-action-archive]': "variant() === 'archive'",
     '[class.section-action-continue]': "variant() === 'continue'",
     '[class.section-action-cta]': "variant() === 'cta'",
+    '[class.section-action-scroll-cue]': 'scrollCue()',
   },
 })
 export class SectionAction {
   readonly variant = input<'archive' | 'continue' | 'cta'>('archive');
   /** Frost the chip: archives always, continuation when hosted on the homepage. */
   readonly glass = input(false);
+  readonly scrollCue = input(false);
   private readonly element = inject<ElementRef<HTMLAnchorElement>>(ElementRef);
   private readonly destroyRef = inject(DestroyRef);
   private readonly zone = inject(NgZone);

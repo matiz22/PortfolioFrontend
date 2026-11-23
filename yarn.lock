@@ -3077,10 +3077,10 @@ dagre-d3-es@7.0.13:
     d3 "^7.9.0"
     lodash-es "^4.17.21"
 
-daisyui@^5.5.5:
-  version "5.5.5"
-  resolved "https://registry.yarnpkg.com/daisyui/-/daisyui-5.5.5.tgz#900ae8a83fc46fbf7db02b0230988d5801c56d74"
-  integrity sha512-ekvI93ZkWIJoCOtDl0D2QMxnWvTejk9V5nWBqRv+7t0xjiBXqAK5U6o6JE2RPvlIC3EqwNyUoIZSdHX9MZK3nw==
+daisyui@~5.6.22:
+  version "5.6.22"
+  resolved "https://registry.npmjs.org/daisyui/-/daisyui-5.6.22.tgz#796b498512f00c4ef99e30c3cd8696624999dd97"
+  integrity sha512-V5OWQSty2aNGiHxvLIDq3hGkV9MQLZfZdcFUm4t7raz3va2a85dMBbW17s6X7VNoDyFAm5c6y+NQHWC7u8ZP+A==
 
 date-format@^4.0.14:
   version "4.0.14"

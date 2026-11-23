@@ -37,21 +37,16 @@ describe('SectionFooter', () => {
     expect(links[1].classList).toContain('section-action-continue');
   });
 
-  it('aligns archive left and continuation right in one row when there is room', () => {
-    footer.style.width = '600px';
-    const archive = links[0].getBoundingClientRect();
-    const next = links[1].getBoundingClientRect();
-    const bounds = footer.getBoundingClientRect();
-    expect(archive.left).toBeCloseTo(bounds.left, 1);
-    expect(next.right).toBeCloseTo(bounds.right, 1);
-    expect(archive.top).toBeCloseTo(next.top, 1);
-  });
+  for (const width of [280, 600]) {
+    it(`centers the continuation below the left-aligned archive at ${width}px`, () => {
+      footer.style.width = `${width}px`;
+      const archive = links[0].getBoundingClientRect();
+      const next = links[1].getBoundingClientRect();
+      const bounds = footer.getBoundingClientRect();
 
-  it('wraps gracefully while keeping the continuation right-aligned on small screens', () => {
-    footer.style.width = '280px';
-    const archive = links[0].getBoundingClientRect();
-    const next = links[1].getBoundingClientRect();
-    expect(next.top).toBeGreaterThanOrEqual(archive.bottom);
-    expect(next.right).toBeCloseTo(footer.getBoundingClientRect().right, 1);
-  });
+      expect(archive.left).toBeCloseTo(bounds.left, 1);
+      expect(next.top).toBeGreaterThanOrEqual(archive.bottom);
+      expect(next.left + next.width / 2).toBeCloseTo(bounds.left + bounds.width / 2, 1);
+    });
+  }
 });

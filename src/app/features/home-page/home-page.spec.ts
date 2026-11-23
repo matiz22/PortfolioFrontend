@@ -178,6 +178,9 @@ describe('HomePage', () => {
     expect(links.map((link) => link.textContent?.trim())).toEqual([
       'How I work', 'Client work', 'Projects', 'Certificates', 'Experience', 'Education', 'Let’s talk',
     ]);
+    expect(links.every((link) => link.classList.contains('section-action-scroll-cue'))).toBeTrue();
+    expect(root.querySelectorAll('app-section-next .aura.aura-glow').length).toBe(7);
+    expect(root.querySelector('app-section-next svg')).toBeNull();
     expect(root.querySelector('.home-closing app-section-next')).toBeNull();
   });
 });

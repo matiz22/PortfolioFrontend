@@ -1,8 +1,7 @@
 :host {
   position: relative;
   display: flex;
-  justify-content: flex-end;
-  width: var(--section-next-width, 100%);
-  margin-inline-start: auto;
+  justify-content: center;
+  width: 100%;
   padding-top: var(--section-next-space, clamp(1.5rem, 3vw, 2.5rem));
 }

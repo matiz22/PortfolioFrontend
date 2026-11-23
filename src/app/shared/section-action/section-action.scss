@@ -58,6 +58,29 @@
   color: var(--color-primary);
 }
 
+.section-action-decoration:not(.aura) {
+  display: contents;
+}
+
+.section-action-decoration.aura-glow {
+  --aura-radius: var(--radius);
+  color: color-mix(in srgb, var(--color-primary) 70%, transparent);
+}
+
+:host(.section-action-scroll-cue) .section-action-chip.glass {
+  min-block-size: 3rem;
+  padding-inline: 1.25rem;
+  background-color: color-mix(in srgb, var(--color-primary) 9%, rgb(4 10 8 / 94%));
+  border-color: color-mix(in srgb, var(--color-primary) 60%, transparent);
+  color: var(--color-base-content);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+:host(.section-action-scroll-cue:is(:hover, :focus-visible)) .section-action-chip.glass {
+  border-color: var(--color-primary);
+}
+
 :host(.section-action-cta) {
   border-radius: 999px;
 }
@@ -90,9 +113,33 @@
   color: var(--color-base-content);
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  .section-action-decoration.aura-glow {
+    // Move the button and glow together without moving the magnetic surface or hit area.
+    animation: section-action-scroll-dip 2.4s ease-in-out infinite;
+  }
+}
+
+@keyframes section-action-scroll-dip {
+  0%,
+  56%,
+  100% {
+    transform: translateY(0);
+  }
+
+  28% {
+    transform: translateY(6px);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .section-action-surface,
   :host(.section-action-cta) .section-action-chip {
     transition: none;
+  }
+
+  .section-action-decoration.aura-glow::before,
+  .section-action-decoration.aura-glow::after {
+    animation: none;
   }
 }

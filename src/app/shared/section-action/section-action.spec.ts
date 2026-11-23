@@ -43,7 +43,10 @@ describe('SectionAction', () => {
     fixture.detectChanges();
     expect(link.classList).toContain('section-action-continue');
     expect(link.classList).not.toContain('section-action-archive');
-    expect(link.querySelector('.section-action-chip')?.classList.contains('glass')).toBeFalse();
+    const continuationChip = link.querySelector('.section-action-chip')!;
+    expect(continuationChip.classList.contains('glass')).toBeFalse();
+    expect(getComputedStyle(continuationChip).animationName).toBe('none');
+    expect(link.querySelector('.aura')).toBeNull();
     expect(getComputedStyle(surface).backgroundColor).toBe('rgba(0, 0, 0, 0)');
     expect(link.querySelector('svg')).toBeNull();
   });
