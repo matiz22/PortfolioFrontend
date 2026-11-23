@@ -1,6 +1,5 @@
-import { afterNextRender, Component, DestroyRef, ElementRef, NgZone, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
+import { afterNextRender, Component, ElementRef, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { DOCUMENT, ViewportScroller } from '@angular/common';
-import type { gsap } from 'gsap';
 import { Footer } from "../../shared/footer/footer";
 import { HeroSection } from "../hero/hero-section/hero-section";
 import { AboutMeSection } from "../about-me/about-me-section/about-me-section";
@@ -14,38 +13,32 @@ import { JobTimelineSection } from "../jobs/job-timeline-section/job-timeline-se
 import { SectionNext } from '../../shared/section-next/section-next';
 import { GrainGradient } from '../../shared/grain-gradient/grain-gradient';
 import { GRAIN_CHAPTER_ACCENTS } from '../../shared/grain-gradient/grain-gradient-palette';
+import { HomeMotionLifecycle } from '../../shared/animations/home-motion-lifecycle';
+import { afterNextRenderMotion } from '../../shared/animations/lazy-motion';
 
 @Component({
   selector: 'app-home-page',
   imports: [Footer, HeroSection, AboutMeSection, Header, ContactSection, EducationSection, CertificationsSection, RealizationsHomeSection, ProjectsHomeSection, JobTimelineSection, SectionNext, GrainGradient],
+  providers: [HomeMotionLifecycle],
   templateUrl: './home-page.html',
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './home-page.scss',
 })
 export class HomePage implements OnInit {
+  readonly motionLifecycle = inject(HomeMotionLifecycle);
   protected readonly chapterAccents = GRAIN_CHAPTER_ACCENTS;
   private readonly document = inject(DOCUMENT);
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly viewportScroller = inject(ViewportScroller);
 
   constructor() {
-    const destroyRef = inject(DestroyRef);
-    const zone = inject(NgZone);
-    let motion: gsap.MatchMedia | undefined;
-    afterNextRender(() => {
-      zone.runOutsideAngular(() => {
-        const root = this.host.nativeElement;
-        this.scrollToInitialFragment(root);
-        void Promise.all([import('./home-text-motion'), this.document.fonts.ready])
-          .then(([{ animateHomeText }]) => {
-            if (!destroyRef.destroyed && root.isConnected) {
-              motion = animateHomeText(root);
-            }
-          })
-          .catch((error: unknown) => console.warn('Home text animation could not be loaded.', error));
-      });
-    });
-    destroyRef.onDestroy(() => motion?.revert());
+    afterNextRender(() => this.scrollToInitialFragment(this.host.nativeElement));
+    afterNextRenderMotion(async () => {
+      const [{ animateHomeText }] = await Promise.all([
+        import('./home-text-motion'), this.document.fonts.ready,
+      ]);
+      return animateHomeText;
+    }, 'Home text animation could not be loaded.');
   }
 
   ngOnInit(): void {

@@ -1,14 +1,6 @@
-import {
-  afterNextRender,
-  ChangeDetectionStrategy,
-  Component,
-  DestroyRef,
-  ElementRef,
-  inject,
-  NgZone,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
-import type { gsap } from 'gsap';
+import { afterNextRenderMotion } from '../../../../shared/animations/lazy-motion';
 
 @Component({
   selector: 'app-apps-preview',
@@ -24,25 +16,8 @@ import type { gsap } from 'gsap';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppsPreview {
-  private readonly element = inject<ElementRef<HTMLElement>>(ElementRef);
-  private readonly destroyRef = inject(DestroyRef);
-  private readonly zone = inject(NgZone);
-  private motion?: gsap.MatchMedia;
-
   constructor() {
-    afterNextRender(() => {
-      this.zone.runOutsideAngular(() => {
-        const root = this.element.nativeElement;
-        void import('./apps-preview-animation').then(({ animateAppsPreview }) => {
-          if (!this.destroyRef.destroyed && root.isConnected) {
-            this.motion = animateAppsPreview(root);
-          }
-        }).catch((error: unknown) => {
-          console.warn('Apps preview animation could not be loaded.', error);
-        });
-      });
-    });
-
-    this.destroyRef.onDestroy(() => this.motion?.revert());
+    afterNextRenderMotion(async () => (await import('./apps-preview-animation')).animateAppsPreview,
+      'Apps preview animation could not be loaded.');
   }
 }

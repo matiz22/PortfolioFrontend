@@ -1,13 +1,5 @@
-import {
-  afterNextRender,
-  ChangeDetectionStrategy,
-  Component,
-  DestroyRef,
-  ElementRef,
-  inject,
-  NgZone,
-} from '@angular/core';
-import type { gsap } from 'gsap';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { afterNextRenderMotion } from '../../../../shared/animations/lazy-motion';
 import { StorefrontPreview } from './storefront-preview/storefront-preview';
 import { DashboardPreview } from './dashboard-preview/dashboard-preview';
 
@@ -19,25 +11,8 @@ import { DashboardPreview } from './dashboard-preview/dashboard-preview';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WebDevelopmentPreview {
-  private readonly element = inject<ElementRef<HTMLElement>>(ElementRef);
-  private readonly destroyRef = inject(DestroyRef);
-  private readonly zone = inject(NgZone);
-  private motion?: gsap.MatchMedia;
-
   constructor() {
-    afterNextRender(() => {
-      this.zone.runOutsideAngular(() => {
-        const root = this.element.nativeElement;
-        void import('./web-preview-animation').then(({ animateWebPreview }) => {
-          if (!this.destroyRef.destroyed && root.isConnected) {
-            this.motion = animateWebPreview(root);
-          }
-        }).catch((error: unknown) => {
-          console.warn('Web Development preview animation could not be loaded.', error);
-        });
-      });
-    });
-
-    this.destroyRef.onDestroy(() => this.motion?.revert());
+    afterNextRenderMotion(async () => (await import('./web-preview-animation')).animateWebPreview,
+      'Web Development preview animation could not be loaded.');
   }
 }

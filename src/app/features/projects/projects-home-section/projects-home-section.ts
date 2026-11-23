@@ -3,7 +3,6 @@ import {
   Component,
   DestroyRef,
   ElementRef,
-  NgZone,
   afterNextRender,
   afterRenderEffect,
   computed,
@@ -12,7 +11,7 @@ import {
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
-import type { gsap } from 'gsap';
+import { injectLazyMotion } from '../../../shared/animations/lazy-motion';
 import { ProjectsService } from '../../../core/services/projects.service';
 import { ApiState } from '../../../core/models/api.state';
 import { ProjectSummary } from '../../../core/models/summary/project';
@@ -32,7 +31,6 @@ import { SectionFooter } from '../../../shared/section-footer/section-footer';
 export class ProjectsHomeSection {
   private readonly element = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly destroyRef = inject(DestroyRef);
-  private readonly zone = inject(NgZone);
   private pendingFocus: { heading: string; linkIndex: number; original: Element } | undefined;
 
   private readonly projectsService = inject(ProjectsService);
@@ -49,6 +47,7 @@ export class ProjectsHomeSection {
   });
 
   constructor() {
+    const mountMotion = injectLazyMotion();
     // Start with the same grouping on server/client, then adapt after hydration.
     afterNextRender(() => {
       const root = this.element.nativeElement;
@@ -107,25 +106,8 @@ export class ProjectsHomeSection {
           card?.querySelectorAll<HTMLAnchorElement>('a')[focus.linkIndex]?.focus({ preventScroll: true });
         }
       }
-      let motion: gsap.MatchMedia | undefined;
-      let disposed = false;
-
-      onCleanup(() => {
-        disposed = true;
-        motion?.revert();
-      });
-
-      void import('./projects-animation')
-        .then(({ animateProjects }) => {
-          if (!disposed && !this.destroyRef.destroyed && root.isConnected) {
-            this.zone.runOutsideAngular(() => {
-              motion = animateProjects(root);
-            });
-          }
-        })
-        .catch((error: unknown) => {
-          console.warn('Projects animation could not be loaded.', error);
-        });
+      onCleanup(mountMotion(async () => (await import('./projects-animation')).animateProjects,
+        'Projects animation could not be loaded.'));
     });
   }
 }

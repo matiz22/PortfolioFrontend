@@ -204,6 +204,22 @@ describe('About Me scroll animation', () => {
     }
   });
 
+  it('leaves scroll restoration to the router when motion remounts on a retained view', () => {
+    const { href } = location;
+    const scroll = spyOn(window as { scrollTo(options: ScrollToOptions): void }, 'scrollTo').and.callThrough();
+    try {
+      history.replaceState(history.state, '', '#service-2');
+      motion = animateAboutMeScroll(root, false);
+      expect(trigger().pin).toBe(stage);
+      expect(scroll.calls.allArgs() as unknown[]).not.toContain([
+        jasmine.objectContaining({ behavior: 'instant' }),
+      ]);
+      expect(document.activeElement).not.toBe(panels[2]);
+    } finally {
+      history.replaceState(history.state, '', href);
+    }
+  });
+
   it('returns to the same pinned service when an external fragment link is used again', () => {
     const { href } = location;
     const cta = document.createElement('a');

@@ -8,7 +8,7 @@ const TRANSITION_DURATION = 0.24;
 const SERVICE_STEP = READING_HOLD + TRANSITION_DURATION;
 const SCROLL_DISTANCE_SCALE = 0.65;
 
-export function animateAboutMeScroll(root: HTMLElement): gsap.MatchMedia {
+export function animateAboutMeScroll(root: HTMLElement, resolveInitialFragment = true): gsap.MatchMedia {
   const motion = gsap.matchMedia();
   const section = root.querySelector<HTMLElement>('.about-section');
   const stage = root.querySelector<HTMLElement>('.about-shell');
@@ -25,7 +25,7 @@ export function animateAboutMeScroll(root: HTMLElement): gsap.MatchMedia {
   }
 
   const fragmentIndex = () => panels.findIndex((panel) => `#${panel.id}` === view.location.hash);
-  let initialRender = true;
+  let initialRender = resolveInitialFragment;
   motion.add({
     isDesktop: '(min-width: 64rem) and (min-height: 48rem)',
     canAnimate: '(prefers-reduced-motion: no-preference)',
@@ -181,7 +181,7 @@ export function animateAboutMeScroll(root: HTMLElement): gsap.MatchMedia {
     };
   }, root);
   initialRender = false;
-  if (!section.classList.contains('about-is-pinned')) {
+  if (resolveInitialFragment && !section.classList.contains('about-is-pinned')) {
     // On a client render the native fragment may have been set before the deferred panel existed.
     const panel = panels[fragmentIndex()];
     panel?.scrollIntoView({ behavior: 'instant' });

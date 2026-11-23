@@ -1,12 +1,8 @@
 import {
-  afterNextRender,
   ChangeDetectionStrategy,
   Component,
   computed,
-  DestroyRef,
   ElementRef,
-  inject,
-  NgZone,
   signal,
   ViewEncapsulation,
   viewChild,
@@ -14,7 +10,7 @@ import {
 import { Blobatar } from '@blobatar/angular';
 import { BlobatarGaze, type GazeTarget } from '@blobatar/angular/gaze';
 import { happy, idle, surprised, thinking } from 'blobatar/expression';
-import type { gsap } from 'gsap';
+import { afterNextRenderMotion } from '../../../../shared/animations/lazy-motion';
 import { type WorkflowPhase, type WorkflowScene } from './ai-workflow-state';
 import { KnowledgePreview } from './knowledge-preview/knowledge-preview';
 import { OperationsPreview } from './operations-preview/operations-preview';
@@ -35,11 +31,6 @@ import { OperationsPreview } from './operations-preview/operations-preview';
   },
 })
 export class AiWorkflowPreview {
-  private readonly element = inject<ElementRef<HTMLElement>>(ElementRef);
-  private readonly destroyRef = inject(DestroyRef);
-  private readonly zone = inject(NgZone);
-  private motion?: gsap.MatchMedia;
-
   // A complete, motionless scene is also the SSR / failed-import fallback.
   readonly phase = signal<WorkflowPhase>('complete');
   readonly scene = signal<WorkflowScene>('team');
@@ -126,22 +117,13 @@ export class AiWorkflowPreview {
   });
 
   constructor() {
-    afterNextRender(() => {
-      this.zone.runOutsideAngular(() => {
-        const root = this.element.nativeElement;
-        void import('./ai-workflow-animation').then(({ animateAiWorkflow }) => {
-          if (!this.destroyRef.destroyed && root.isConnected) {
-            this.motion = animateAiWorkflow(root, {
-              phase: (phase) => this.phase.set(phase),
-              scene: (scene) => this.scene.set(scene),
-              playback: (playing) => this.playing.set(playing),
-            });
-          }
-        }).catch((error: unknown) => {
-          console.warn('AI workflow animation could not be loaded.', error);
-        });
+    afterNextRenderMotion(async () => {
+      const { animateAiWorkflow } = await import('./ai-workflow-animation');
+      return (root) => animateAiWorkflow(root, {
+        phase: (phase) => this.phase.set(phase),
+        scene: (scene) => this.scene.set(scene),
+        playback: (playing) => this.playing.set(playing),
       });
-    });
-    this.destroyRef.onDestroy(() => this.motion?.revert());
+    }, 'AI workflow animation could not be loaded.');
   }
 }

@@ -3,10 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
-  DestroyRef,
-  ElementRef,
   inject,
-  NgZone,
   signal,
 } from '@angular/core';
 import { DatePipe } from '@angular/common';
@@ -15,6 +12,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { ApiState } from '../../../core/models/api.state';
 import { EducationSummary } from '../../../core/models/summary/education';
 import { EducationService } from '../../../core/services/education.service';
+import { injectLazyMotion } from '../../../shared/animations/lazy-motion';
 import { HomeMetadataPills } from '../../../shared/home-metadata-pills/home-metadata-pills';
 import { HomeRailControls } from '../../../shared/home-rail-controls/home-rail-controls';
 import { ImageUrlPipe } from '../../../shared/pipes/image-url-pipe';
@@ -30,9 +28,6 @@ import { SectionFooter } from '../../../shared/section-footer/section-footer';
 })
 export class EducationSection {
   private readonly educationService = inject(EducationService);
-  private readonly element = inject<ElementRef<HTMLElement>>(ElementRef);
-  private readonly destroyRef = inject(DestroyRef);
-  private readonly zone = inject(NgZone);
 
   protected readonly failedThumbnails = signal<ReadonlySet<string>>(new Set());
 
@@ -46,34 +41,19 @@ export class EducationSection {
   });
 
   constructor() {
+    const mountMotion = injectLazyMotion();
     afterRenderEffect((onCleanup) => {
       if (this.entries().length === 0) {
         return;
       }
 
-      const root = this.element.nativeElement;
-      let revert: (() => void) | undefined;
-      let disposed = false;
-
-      onCleanup(() => {
-        disposed = true;
-        revert?.();
-      });
-
       // Cards reveal only after data, hydration, and fonts are ready.
-      void Promise.all([
-        import('./education-animation'),
-        root.ownerDocument.fonts.ready,
-      ]).then(([{ animateEducationCards }]) => {
-        if (!disposed && !this.destroyRef.destroyed && root.isConnected) {
-          this.zone.runOutsideAngular(() => {
-            revert = animateEducationCards(root);
-          });
-        }
-      }).catch((error: unknown) => {
-        // All content is visible by default; motion is only an enhancement.
-        console.warn('Education animation could not be loaded.', error);
-      });
+      onCleanup(mountMotion(async (root) => {
+        const [{ animateEducationCards }] = await Promise.all([
+          import('./education-animation'), root.ownerDocument.fonts.ready,
+        ]);
+        return animateEducationCards;
+      }, 'Education animation could not be loaded.'));
     });
   }
 

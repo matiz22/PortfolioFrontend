@@ -3,13 +3,9 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
-  DestroyRef,
-  ElementRef,
-  inject,
   input,
-  NgZone,
 } from '@angular/core';
-import type { gsap } from 'gsap';
+import { injectLazyMotion } from '../animations/lazy-motion';
 
 @Component({
   selector: 'a[appSectionAction]',
@@ -29,9 +25,6 @@ export class SectionAction {
   /** Frost the chip: archives always, continuation when hosted on the homepage. */
   readonly glass = input(false);
   readonly scrollCue = input(false);
-  private readonly element = inject<ElementRef<HTMLAnchorElement>>(ElementRef);
-  private readonly destroyRef = inject(DestroyRef);
-  private readonly zone = inject(NgZone);
 
   protected readonly chipGlass = computed(() => {
     const variant = this.variant();
@@ -39,28 +32,13 @@ export class SectionAction {
   });
 
   constructor() {
+    const mountMotion = injectLazyMotion<HTMLAnchorElement>();
     afterRenderEffect((onCleanup) => {
       const strength = this.variant() === 'continue' ? 4 : 8;
-      const root = this.element.nativeElement;
-      let motion: gsap.MatchMedia | undefined;
-      let disposed = false;
-      onCleanup(() => {
-        disposed = true;
-        motion?.revert();
-      });
-
-      void import('./section-action-magnet')
-        .then(({ animateSectionAction }) => {
-          if (!disposed && !this.destroyRef.destroyed && root.isConnected) {
-            this.zone.runOutsideAngular(() => {
-              motion = animateSectionAction(root, strength);
-            });
-          }
-        })
-        .catch((error: unknown) => {
-          // Routing, native anchors, and CSS focus states do not depend on motion.
-          console.warn('Section button interaction could not be loaded.', error);
-        });
+      onCleanup(mountMotion(async () => {
+        const { animateSectionAction } = await import('./section-action-magnet');
+        return (root) => animateSectionAction(root, strength);
+      }, 'Section button interaction could not be loaded.'));
     });
   }
 }

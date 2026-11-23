@@ -2,12 +2,9 @@ import {
   afterRenderEffect,
   ChangeDetectionStrategy,
   Component,
-  DestroyRef,
-  ElementRef,
   inject,
-  NgZone,
 } from '@angular/core';
-import type { gsap } from 'gsap';
+import { injectLazyMotion } from '../../../shared/animations/lazy-motion';
 import { CertificationsService } from '../../../core/services/certifications.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ApiState } from '../../../core/models/api.state';
@@ -27,15 +24,13 @@ import { SectionFooter } from '../../../shared/section-footer/section-footer';
 })
 export class CertificationsSection {
   private readonly certificationsService = inject(CertificationsService);
-  private readonly element = inject<ElementRef<HTMLElement>>(ElementRef);
-  private readonly destroyRef = inject(DestroyRef);
-  private readonly zone = inject(NgZone);
 
   readonly certifications = toSignal(this.certificationsService.getHomeSummaryItems(), {
     initialValue: ApiState.loading<CertificationSummary[]>(),
   });
 
   constructor() {
+    const mountMotion = injectLazyMotion();
     // Browser-only, and repeated if asynchronous data replaces the document nodes.
     afterRenderEffect((onCleanup) => {
       const state = this.certifications();
@@ -43,26 +38,8 @@ export class CertificationsSection {
         return;
       }
 
-      const root = this.element.nativeElement;
-      let motion: gsap.MatchMedia | undefined;
-      let disposed = false;
-      onCleanup(() => {
-        disposed = true;
-        motion?.revert();
-      });
-
-      void import('./certifications-animation')
-        .then(({ animateCertifications }) => {
-          if (!disposed && !this.destroyRef.destroyed && root.isConnected) {
-            this.zone.runOutsideAngular(() => {
-              motion = animateCertifications(root);
-            });
-          }
-        })
-        .catch((error: unknown) => {
-          // The document wall remains usable if the optional animation cannot load.
-          console.warn('Certifications animation could not be loaded.', error);
-        });
+      onCleanup(mountMotion(async () => (await import('./certifications-animation')).animateCertifications,
+        'Certifications animation could not be loaded.'));
     });
   }
 }

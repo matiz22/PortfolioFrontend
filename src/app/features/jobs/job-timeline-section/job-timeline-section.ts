@@ -2,15 +2,12 @@ import {
   afterRenderEffect,
   ChangeDetectionStrategy,
   Component,
-  DestroyRef,
-  ElementRef,
   inject,
-  NgZone,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import type { gsap } from 'gsap';
+import { injectLazyMotion } from '../../../shared/animations/lazy-motion';
 import { map } from 'rxjs';
 import { ApiState } from '../../../core/models/api.state';
 import { JobsService } from '../../../core/services/jobs.service';
@@ -28,9 +25,6 @@ import { SectionFooter } from '../../../shared/section-footer/section-footer';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class JobTimelineSection {
-  private readonly element = inject<ElementRef<HTMLElement>>(ElementRef);
-  private readonly destroyRef = inject(DestroyRef);
-  private readonly zone = inject(NgZone);
   private readonly jobsService = inject(JobsService);
 
   readonly jobs = toSignal(this.jobsService.getHomeSummaryItems().pipe(
@@ -42,6 +36,7 @@ export class JobTimelineSection {
   });
 
   constructor() {
+    const mountMotion = injectLazyMotion();
     // API data and deferred hydration must finish rendering before measuring the track.
     afterRenderEffect((onCleanup) => {
       const state = this.jobs();
@@ -49,27 +44,12 @@ export class JobTimelineSection {
         return;
       }
 
-      const root = this.element.nativeElement;
-      let motion: gsap.MatchMedia | undefined;
-      let disposed = false;
-
-      onCleanup(() => {
-        disposed = true;
-        motion?.revert();
-      });
-
-      void Promise.all([
-        import('./jobs-timeline-animation'),
-        root.ownerDocument.fonts.ready,
-      ]).then(([{ animateJobsTimeline }]) => {
-        if (!disposed && !this.destroyRef.destroyed && root.isConnected) {
-          this.zone.runOutsideAngular(() => {
-            motion = animateJobsTimeline(root);
-          });
-        }
-      }).catch((error: unknown) => {
-        console.warn('Experience animation could not be loaded.', error);
-      });
+      onCleanup(mountMotion(async (root) => {
+        const [{ animateJobsTimeline }] = await Promise.all([
+          import('./jobs-timeline-animation'), root.ownerDocument.fonts.ready,
+        ]);
+        return animateJobsTimeline;
+      }, 'Experience animation could not be loaded.'));
     });
   }
 
