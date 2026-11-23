@@ -96,9 +96,11 @@ describe('horizontal project rows', () => {
     move();
     finishIntent();
     const opening = animation();
+    expect(opening.duration()).toBe(0.52);
+    // The original ease moves quickly, then overshoots slightly before settling.
     opening.pause(0.26);
-    expect(parseFloat(tracks()[0])).toBeCloseTo(1.15, 3);
-    expect(parseFloat(tracks()[1])).toBeCloseTo(0.85, 3);
+    expect(parseFloat(tracks()[0])).toBeGreaterThan(1.3);
+    expect(parseFloat(tracks()[1])).toBeLessThan(0.7);
     opening.progress(1);
 
     expect(tracks()).toEqual(['1.3fr', '0.7fr']);
@@ -181,7 +183,9 @@ describe('horizontal project rows', () => {
     row().dispatchEvent(new PointerEvent('pointerleave'));
     expect(card().getAttribute('data-project-expanded')).toBe('true');
     finishIntent();
-    animation().progress(1);
+    const closing = animation();
+    expect(closing.duration()).toBe(0.38);
+    closing.progress(1);
     expect(tracks()).toEqual(['1fr', '1fr']);
     expect(drawer().style.width).toBe('0px');
     expect(drawer().inert).toBeTrue();

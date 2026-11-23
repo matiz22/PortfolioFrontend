@@ -101,11 +101,11 @@
 }
 
 .project-preview-description {
-  @include portfolio-card.lines(2);
   margin: 0;
   color: rgb(255 255 255 / 88%);
   font-size: 0.8125rem;
   line-height: 1.8;
+  overflow-wrap: anywhere;
 }
 
 .project-preview-actions {
@@ -136,8 +136,9 @@
 }
 
 .project-preview-title-link {
-  @include portfolio-card.lines(2);
+  display: block;
   color: var(--color-base-content);
+  overflow-wrap: anywhere;
   text-decoration: none;
   transition: color 200ms ease;
 
@@ -183,7 +184,7 @@
   grid-template-rows: 1fr auto;
 
   .project-preview-title {
-    // Titles can wrap as the tracks move without shifting other rows.
+    // Reserve room for two lines during the tween without capping longer titles.
     min-block-size: 2lh;
   }
 

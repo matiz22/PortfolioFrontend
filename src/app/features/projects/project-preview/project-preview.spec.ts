@@ -130,6 +130,33 @@ describe('ProjectPreview', () => {
     expect(card.offsetHeight).toBe(height);
   });
 
+  it('wraps long titles and keeps the full description readable in the desktop drawer', async () => {
+    fixture.componentRef.setInput('project', {
+      ...project,
+      title: 'A developer toolkit for everyday development and prototyping with many different frameworks',
+      shortDesc: project.shortDesc.repeat(8),
+    });
+    await fixture.whenStable();
+
+    root.style.width = '420px';
+    const card = root.querySelector<HTMLElement>('.project-preview')!;
+    const drawer = root.querySelector<HTMLElement>('.project-preview-drawer')!;
+    const brief = root.querySelector<HTMLElement>('.project-preview-brief')!;
+    const title = root.querySelector<HTMLElement>('.project-preview-title-link')!;
+    const description = root.querySelector<HTMLElement>('.project-preview-description')!;
+    card.classList.add('project-preview-horizontal');
+    card.style.setProperty('--project-brief-width', '220px');
+    drawer.style.width = '220px';
+
+    for (const text of [title, description]) {
+      expect(text.clientHeight).toBeGreaterThan(2 * parseFloat(getComputedStyle(text).lineHeight));
+      expect(text.scrollHeight).toBe(text.clientHeight);
+    }
+    expect(brief.scrollHeight).toBeGreaterThan(brief.clientHeight);
+    brief.scrollTop = brief.scrollHeight;
+    expect(description.getBoundingClientRect().bottom).toBeLessThan(brief.getBoundingClientRect().bottom);
+  });
+
   it('omits unavailable external actions and renders a missing-thumbnail fallback', async () => {
     fixture.componentRef.setInput('project', {
       ...project, thumbnail: null, liveUrl: null, repoUrl: null, technologies: [],

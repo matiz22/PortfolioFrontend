@@ -109,11 +109,10 @@ export function animateProjectRows(root: HTMLElement, context: gsap.Context): ()
 
       context.add(() => {
         const duration = next ? 0.52 : 0.38;
-        const ease = 'power3.inOut';
         transition = gsap.timeline({ paused: true });
         if (cards.length > 1) {
           transition.to(row, {
-            ...trackValues(next ? cards.indexOf(next) : -1), duration, ease,
+            ...trackValues(next ? cards.indexOf(next) : -1), duration, ease: 'back.out(1.1)',
           }, 0);
         }
 
@@ -122,7 +121,7 @@ export function animateProjectRows(root: HTMLElement, context: gsap.Context): ()
           transition
             .to(item.drawer, {
               width: open ? briefWidth : 0, autoAlpha: open ? 1 : 0,
-              duration, ease,
+              duration, ease: 'power3.inOut',
             }, 0)
             .to(item.details, {
               opacity: open ? 1 : 0, x: open ? 0 : 12,
