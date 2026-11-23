@@ -1,7 +1,10 @@
 import { gsap } from 'gsap';
 import type { WorkflowPhase } from '../ai-workflow-state';
 
-export function buildKnowledgeTimeline(root: HTMLElement, onPhase: (phase: WorkflowPhase) => void): gsap.core.Timeline {
+export function buildKnowledgeTimeline(
+  size: Readonly<{ width: number; height: number }>,
+  onPhase: (phase: WorkflowPhase) => void,
+): gsap.core.Timeline {
   const timeline = gsap.timeline({ defaults: { duration: 0.4, ease: 'power2.out' } });
   const phase = (name: WorkflowPhase, at: number) => {
     timeline.addLabel(name, at).call(() => onPhase(name), [], at);
@@ -33,8 +36,12 @@ export function buildKnowledgeTimeline(root: HTMLElement, onPhase: (phase: Workf
     timeline
       .set('.knowledge-fragment', { autoAlpha: 1, x: 0, y: 0 }, at)
       .to('.knowledge-fragment', {
-        x: (i) => root.clientWidth * (i === 0 ? 0.30 : -0.34),
-        y: () => -root.clientHeight * 0.24,
+        x: (i) => i === 0 ? 0.30 : -0.34,
+        y: -0.24,
+        modifiers: {
+          x: (value: string) => `${parseFloat(value) * size.width}px`,
+          y: (value: string) => `${parseFloat(value) * size.height}px`,
+        },
         duration: 0.7, stagger: 0.15, ease: 'power2.inOut',
       }, at)
       .to('.knowledge-fragment', { autoAlpha: 0, duration: 0.15 }, at + 0.85);

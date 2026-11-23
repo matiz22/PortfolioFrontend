@@ -14,8 +14,8 @@ export function animateAiWorkflow(root: HTMLElement, callbacks: WorkflowCallback
   const panel = root.closest<HTMLElement>('.about-panel');
   const document = root.ownerDocument;
   const main = root.querySelector<HTMLElement>('.workflow-main-anchor');
-  const anchors = Array.from(root.querySelectorAll<HTMLElement>('.workflow-helper-anchor'));
-  if (!main || anchors.length !== 2) return motion;
+  const helpers = Array.from(root.querySelectorAll<HTMLElement>('.workflow-helper-motion'));
+  if (!main || helpers.length !== 2) return motion;
 
   motion.add({
     animate: '(prefers-reduced-motion: no-preference)',
@@ -25,6 +25,20 @@ export function animateAiWorkflow(root: HTMLElement, callbacks: WorkflowCallback
     callbacks.scene('team');
     callbacks.phase('complete');
     if (context.conditions?.['reduce']) return;
+
+    const size = { width: 0, height: 0 };
+    const spawnOffsets = new Map<HTMLElement, { x: number; y: number }>();
+    const measure = () => {
+      size.width = root.clientWidth;
+      size.height = root.clientHeight;
+      const x = main.offsetLeft;
+      const y = main.offsetTop;
+      for (const helper of helpers) {
+        const anchor = helper.parentElement!;
+        spawnOffsets.set(helper, { x: x - anchor.offsetLeft, y: y - anchor.offsetTop });
+      }
+    };
+    measure();
 
     const timeline = gsap.timeline({
       paused: true,
@@ -59,14 +73,21 @@ export function animateAiWorkflow(root: HTMLElement, callbacks: WorkflowCallback
 
     phase('delegating', 3.3);
     timeline
+      // Scene CSS can also move the main anchor independently of a resize.
+      .call(measure, [], 'delegating')
       .to('.workflow-link', { autoAlpha: 0.35, strokeDashoffset: 0, duration: 0.7 }, 'delegating')
-      .fromTo('.workflow-helper-motion', {
+      .fromTo(helpers, {
         autoAlpha: 0,
         scale: 0.2,
-        x: (i) => main.offsetLeft - anchors[i].offsetLeft,
-        y: (i) => main.offsetTop - anchors[i].offsetTop,
+        x: 1,
+        y: 1,
       }, {
         autoAlpha: 1, scale: 1, x: 0, y: 0,
+        // Tween normalized distances so a resize never invalidates the style snapshots.
+        modifiers: {
+          x: (value: string, helper: HTMLElement) => `${parseFloat(value) * spawnOffsets.get(helper)!.x}px`,
+          y: (value: string, helper: HTMLElement) => `${parseFloat(value) * spawnOffsets.get(helper)!.y}px`,
+        },
         stagger: 0.18, duration: 0.7, ease: 'back.out(1.5)', immediateRender: false,
       }, 'delegating+=0.15')
       .to('.workflow-tool', {
@@ -118,7 +139,7 @@ export function animateAiWorkflow(root: HTMLElement, callbacks: WorkflowCallback
       .addLabel('knowledge', 14.4)
       .call(() => callbacks.scene('knowledge'), [], 'knowledge')
       .to('.workflow-knowledge-scene', { autoAlpha: 1 }, 'knowledge')
-      .add(buildKnowledgeTimeline(root, callbacks.phase), 'knowledge')
+      .add(buildKnowledgeTimeline(size, callbacks.phase), 'knowledge')
       .to('.workflow-knowledge-scene', { autoAlpha: 0 }, 27.4)
       .addLabel('operations', 28)
       .call(() => callbacks.scene('operations'), [], 'operations')
@@ -146,8 +167,9 @@ export function animateAiWorkflow(root: HTMLElement, callbacks: WorkflowCallback
     if (panel) selection.observe(panel, { attributes: true, attributeFilter: ['aria-hidden', 'inert'] });
     document.addEventListener('visibilitychange', syncPlayback);
 
-    // New layout measurements are used for the next spawn after a resize.
-    const resize = new ResizeObserver(() => timeline.invalidate());
+    const resize = new ResizeObserver(() => {
+      if (!disposed) measure();
+    });
     resize.observe(root);
 
     return () => {
