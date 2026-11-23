@@ -11,7 +11,7 @@ To start a local development server, run:
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application automatically reloads when source files change. HMR is off by default so `@defer` dependencies load on their normal triggers.
 
 ## Code scaffolding
 
