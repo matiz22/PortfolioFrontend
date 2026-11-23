@@ -5,7 +5,7 @@
         <div class="jobs-copy">
           <h2 id="experience-heading" class="section-heading" i18n="@@jobs.heading">Work Experience</h2>
           <p class="jobs-intro" i18n="@@jobs.description">
-            Past and current roles, teams, and the technologies I worked with.
+            The teams I’ve worked with, what I was responsible for, and the tools I used.
           </p>
         </div>
         <a appSectionAction variant="cta" routerLink="/jobs" class="jobs-viewall">
@@ -33,12 +33,10 @@
                 <span class="jobs-dot" aria-hidden="true"></span>
                 <div class="jobs-dates">
                   <time [attr.datetime]="job.startDate | date:'yyyy-MM'">{{ job.startDate | date:'MMM yyyy' }}</time>
-                  @if (job.isCurrent || job.endDate) {
-                  <span aria-hidden="true">—</span>
-                  }
                   @if (job.isCurrent) {
-                  <span class="jobs-present" i18n="@@jobs.present">Present</span>
+                  <span class="jobs-present" i18n="@@jobs.present">to present</span>
                   } @else if (job.endDate) {
+                  <span i18n="@@home.dates.to">to</span>
                   <time [attr.datetime]="job.endDate | date:'yyyy-MM'">{{ job.endDate | date:'MMM yyyy' }}</time>
                   }
                 </div>

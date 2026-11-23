@@ -71,10 +71,10 @@ export class AiWorkflowPreview {
   // [0.86, 0.915) slot of blobatar's weighted shape table.
   protected readonly mainTraits = { shape: 0.9 };
   protected readonly analystDone = computed(() =>
-    ['analyst-done', 'collecting', 'sending', 'complete'].includes(this.phase()),
+    ['analyst-done', 'collecting', 'drafting', 'complete'].includes(this.phase()),
   );
   protected readonly researcherDone = computed(() =>
-    ['collecting', 'sending', 'complete'].includes(this.phase()),
+    ['collecting', 'drafting', 'complete'].includes(this.phase()),
   );
   protected readonly analystExpression = computed(() => this.analystDone() ? happy : thinking);
   protected readonly researcherExpression = computed(() => this.researcherDone() ? happy : thinking);
@@ -110,7 +110,7 @@ export class AiWorkflowPreview {
       case 'tools':
       case 'analyst-done': return 'tool_use';
       case 'collecting': return $localize`:@@aiWorkflow.reviewing:Reviewing results`;
-      case 'sending': return 'email.send';
+      case 'drafting': return $localize`:@@aiWorkflow.drafting:Drafting report`;
       case 'complete': return $localize`:@@aiWorkflow.done:Done`;
       case 'question': return $localize`:@@aiWorkflow.ready:Ready`;
       case 'retrieving': return 'retrieve_context';

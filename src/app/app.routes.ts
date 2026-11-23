@@ -7,18 +7,21 @@ import { EducationService } from './core/services/education.service';
 import { CertificationsService } from './core/services/certifications.service';
 import { JobsService } from './core/services/jobs.service';
 
+const homeTitle = $localize`:@@homeTitleMeta:AI Integration & Workflow Automation`;
+
 export const routes: Routes = [
     // HomePage loads eagerly for fast initial load
     {
         path: '',
         component: HomePage,
-        title: $localize`:@@homeTitleMeta:Apps, Websites & AI Solutions`,
+        title: homeTitle,
         resolve: { seo: staticSeoResolver },
         data: {
             reuse: true,
             seo: {
-                title: $localize`:@@homeTitleMeta:Apps, Websites & AI Solutions`,
-                description: $localize`:@@homeDescriptionMeta:I build intelligent applications and modern websites that drive business. Leverage the potential of AI and modern technologies in your company. Check it out!`,
+                title: homeTitle,
+                description: $localize`:@@homeDescriptionMeta:I build AI assistants that draft reports and answer questions from company documents, with sources you can check and approval before reports go out.`,
+                ogImage: 'https://malich.dev/opengraph.png',
                 robots: 'index, follow'
             }
         },

@@ -163,7 +163,7 @@ describe('HomePage', () => {
       '#about', '#work', '#projects', '#certifications', '#experience', '#education', '#contact',
     ]);
     expect(links.map((link) => link.textContent?.trim())).toEqual([
-      'About me', 'Client work', 'Projects', 'Certificates', 'Experience', 'Education', 'Let’s talk',
+      'How I work', 'Client work', 'Projects', 'Certificates', 'Experience', 'Education', 'Let’s talk',
     ]);
     expect(root.querySelector('.home-closing app-section-next')).toBeNull();
   });

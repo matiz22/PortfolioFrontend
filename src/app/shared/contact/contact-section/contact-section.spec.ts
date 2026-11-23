@@ -38,6 +38,19 @@ describe('ContactSection', () => {
     expect(fixture.nativeElement.querySelector('.home-glass')).toBeNull();
   });
 
+  it('uses the AI-focused wording only for the home page', async () => {
+    const host: HTMLElement = fixture.nativeElement;
+    fixture.componentRef.setInput('glass', true);
+    await fixture.whenStable();
+    expect(host.querySelector('#contact-heading')?.textContent).toContain("Let's Build");
+    expect(host.querySelector('.contact-copy > p')?.textContent).toContain('Have a vision in mind?');
+
+    fixture.componentRef.setInput('homeCopy', true);
+    await fixture.whenStable();
+    expect(host.querySelector('#contact-heading')?.textContent).toContain('What would you hand off to AI?');
+    expect(host.querySelector('.contact-copy > p')?.textContent).toContain('before you sign off');
+  });
+
   it('opts the homepage copy and form into dark glass without frosting the section', async () => {
     fixture.componentRef.setInput('glass', true);
     await fixture.whenStable();

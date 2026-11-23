@@ -5,14 +5,26 @@
             
             <!-- Left Header & CTA Copy (Spans 5 columns) -->
             <div class="contact-copy lg:col-span-5 flex flex-col justify-center">
-                <h2 id="contact-heading" class="text-6xl md:text-7xl lg:text-8xl font-serif italic leading-[0.9] tracking-tight mb-8" i18n="@@contact.heading">
-                    Let's Build<br>Something.
+                <h2 id="contact-heading" class="text-6xl md:text-7xl lg:text-8xl font-serif italic leading-[0.9] tracking-tight mb-8">
+                    @if (homeCopy()) {
+                    <ng-container i18n="@@home.contact.heading">What would you hand off to AI?</ng-container>
+                    } @else {
+                    <ng-container i18n="@@contact.heading">Let's Build<br>Something.</ng-container>
+                    }
                 </h2>
                 
                 <p class="text-base-content/60 text-lg md:text-xl font-mono tracking-tight max-w-md mb-12"
-                    [class.glass]="glass()" [class.home-glass]="glass()" [class.home-copy-panel]="glass()"
-                    i18n="@@contact.description">
-                    Have a vision in mind? Let's engineer it together. Drop me a message and I'll get back to you as soon as possible.
+                    [class.glass]="glass()" [class.home-glass]="glass()" [class.home-copy-panel]="glass()">
+                    @if (homeCopy()) {
+                    <ng-container i18n="@@home.contact.description">
+                        Tell me about one task: where the data comes from, what your team does by hand, and what needs
+                        checking before you sign off. We can start there.
+                    </ng-container>
+                    } @else {
+                    <ng-container i18n="@@contact.description">
+                        Have a vision in mind? Let's engineer it together. Drop me a message and I'll get back to you as soon as possible.
+                    </ng-container>
+                    }
                 </p>
                 
                 <div class="flex flex-col gap-6">

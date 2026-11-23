@@ -12,4 +12,5 @@ import { SocialLinksRow } from "../../../features/social-links/social-links-row/
 export class ContactSection {
   readonly glass = input(false);
   readonly sectionId = input<string | null>('contact');
+  readonly homeCopy = input(false);
 }

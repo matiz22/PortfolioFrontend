@@ -188,6 +188,45 @@ describe('About Me scroll animation', () => {
       .toContain([jasmine.objectContaining({ top, behavior: 'smooth' })]);
   });
 
+  it('resolves an incoming service fragment to its pinned reading hold', () => {
+    const { href } = location;
+    const scroll = spyOn(window as { scrollTo(options: ScrollToOptions): void }, 'scrollTo');
+    try {
+      history.replaceState(history.state, '', '#service-2');
+      motion = animateAboutMeScroll(root);
+      const time = timeline().labels['service-2'] + 0.35;
+      const top = trigger().start + time / timeline().duration() * (trigger().end - trigger().start);
+      expect(scroll.calls.mostRecent().args[0]).toEqual({ top, behavior: 'instant' });
+    } finally {
+      history.replaceState(history.state, '', href);
+    }
+  });
+
+  it('returns to the same pinned service when an external fragment link is used again', () => {
+    const { href } = location;
+    const cta = document.createElement('a');
+    cta.href = '#service-2';
+    document.body.append(cta);
+    try {
+      motion = animateAboutMeScroll(root);
+      const scroll = spyOn(window as { scrollTo(options: ScrollToOptions): void }, 'scrollTo');
+      history.replaceState(history.state, '', '#service-2');
+      window.dispatchEvent(new HashChangeEvent('hashchange'));
+      const time = timeline().labels['service-2'] + 0.35;
+      const top = trigger().start + time / timeline().duration() * (trigger().end - trigger().start);
+      expect(scroll).toHaveBeenCalledOnceWith({ top, behavior: 'instant' });
+
+      const click = new MouseEvent('click', { bubbles: true, cancelable: true });
+      cta.dispatchEvent(click);
+      expect(click.defaultPrevented).toBeTrue();
+      expect(scroll.calls.mostRecent().args[0]).toEqual({ top, behavior: 'instant' });
+      expect(scroll.calls.count()).toBe(2);
+    } finally {
+      cta.remove();
+      history.replaceState(history.state, '', href);
+    }
+  });
+
   it('keeps mobile services in natural document flow', () => {
     isDesktop = false;
     motion = animateAboutMeScroll(root);

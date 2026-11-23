@@ -90,10 +90,11 @@ describe('JobTimelineSection', () => {
     expect(link.getAttribute('href')).toBe('/job/frontend-developer');
     expect(link.getAttribute('aria-labelledby')).toBe('experience-role-1');
     expect(root.querySelector('#experience-role-1')?.textContent).toBe(job.title);
-    expect(entries[0].querySelector('.jobs-present')?.textContent).toBe('Present');
+    expect(entries[0].querySelector('.jobs-present')?.textContent).toBe('to present');
     expect(entries[0].querySelector('time')?.getAttribute('datetime')).toBe('2024-01');
     expect(entries[1].querySelectorAll('time').length).toBe(2);
     expect(entries[1].querySelector('.jobs-present')).toBeNull();
+    expect(entries[1].querySelector('.jobs-dates span')?.textContent).toBe('to');
     expect(root.querySelector('[aria-busy="false"]')).not.toBeNull();
   });
 

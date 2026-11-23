@@ -3,7 +3,7 @@
     <header class="education-header glass home-glass home-copy-panel">
       <h2 id="education-heading" class="section-heading" i18n="@@education.heading">Education</h2>
       <p i18n="@@education.description">
-        My studies in computer science and software engineering.
+        Where I studied and how I got into computer science and software engineering.
       </p>
       <a appSectionAction variant="cta" routerLink="/education" class="education-viewall">
         <span i18n="@@education.viewall">View academic record</span>
@@ -50,12 +50,10 @@
                 <div class="education-aside">
                   <p class="education-dates">
                     <time [attr.datetime]="item.startDate | date:'yyyy-MM'">{{ item.startDate | date:'yyyy' }}</time>
-                    @if (item.isCurrent || item.endDate) {
-                    <span aria-hidden="true">—</span>
-                    }
                     @if (item.isCurrent) {
-                    <span class="education-current" i18n="@@education.present">Present</span>
+                    <span class="education-current" i18n="@@education.present">to present</span>
                     } @else if (item.endDate) {
+                    <span i18n="@@home.dates.to">to</span>
                     <time [attr.datetime]="item.endDate | date:'yyyy-MM'">{{ item.endDate | date:'yyyy' }}</time>
                     }
                   </p>

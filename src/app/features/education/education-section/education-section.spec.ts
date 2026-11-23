@@ -155,7 +155,13 @@ describe('EducationSection', () => {
     const root = render(ApiState.success([{ ...degree, isCurrent: true, endDate: null }]));
     expect(root.querySelectorAll('time').length).toBe(1);
     expect(root.querySelector('time')?.getAttribute('datetime')).toBe('2019-10');
-    expect(root.querySelector('.education-current')?.textContent).toContain('Present');
+    expect(root.querySelector('.education-current')?.textContent).toBe('to present');
+  });
+
+  it('uses a word rather than punctuation between study dates', () => {
+    const root = render(ApiState.success([degree]));
+    expect(root.querySelectorAll('.education-dates time').length).toBe(2);
+    expect(root.querySelector('.education-dates span')?.textContent).toBe('to');
   });
 
   it('omits missing optional information and an unknown end date', () => {
@@ -167,7 +173,7 @@ describe('EducationSection', () => {
     expect(root.querySelector('.education-grade')).toBeNull();
     expect(root.querySelector('.education-detail-link')?.hasAttribute('aria-describedby')).toBeFalse();
     expect(root.querySelector('.education-current')).toBeNull();
-    expect(root.querySelector('.education-dates')?.textContent).not.toContain('—');
+    expect(root.querySelector('.education-dates span')).toBeNull();
     expect(root.querySelectorAll('time').length).toBe(1);
   });
 

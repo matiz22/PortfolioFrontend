@@ -21,11 +21,15 @@ describe('AboutMeSection', () => {
     expect(component).toBeTruthy();
   });
 
-  it('keeps named service navigation without decorative numbers', () => {
+  it('presents web, apps, and AI in the same order in the service index and panels', () => {
     const root: HTMLElement = fixture.nativeElement;
     expect(root.querySelector('.about-index-number')).toBeNull();
     expect(root.querySelectorAll('.about-index-title').length).toBe(3);
-    expect(root.querySelector('.about-index-link')?.textContent).toContain('Web Development');
+    const links = Array.from(root.querySelectorAll('.about-index-link'));
+    const order = ['about-web', 'about-apps', 'about-ai'];
+    expect(links.map((link) => link.getAttribute('aria-controls'))).toEqual(order);
+    expect(Array.from(root.querySelectorAll('.about-panel'), (panel) => panel.id)).toEqual(order);
+    expect(root.querySelector('#about-ai app-ai-workflow-preview')).not.toBeNull();
     expect(root.querySelector('app-web-development-preview .input')?.textContent).toBe('https://your.company');
   });
 

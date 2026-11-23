@@ -24,6 +24,8 @@ export function animateAboutMeScroll(root: HTMLElement): gsap.MatchMedia {
     return motion;
   }
 
+  const fragmentIndex = () => panels.findIndex((panel) => `#${panel.id}` === view.location.hash);
+  let initialRender = true;
   motion.add({
     isDesktop: '(min-width: 64rem) and (min-height: 48rem)',
     canAnimate: '(prefers-reduced-motion: no-preference)',
@@ -111,22 +113,44 @@ export function animateAboutMeScroll(root: HTMLElement): gsap.MatchMedia {
       invalidateOnRefresh: true,
     });
 
+    const scrollToPanel = (index: number, behavior: ScrollBehavior) => {
+      // The panels share a grid cell while pinned; only the timeline distinguishes them.
+      const time = timeline.labels[`service-${index}`] + READING_HOLD * 0.35;
+      view.scrollTo({
+        top: trigger.start + time / timeline.duration() * (trigger.end - trigger.start),
+        behavior,
+      });
+    };
+    const isPlainClick = (event: MouseEvent) => !event.defaultPrevented &&
+      event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey;
     const listeners = links.map((link, i) => {
       const onClick = (event: MouseEvent) => {
-        if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) {
-          return;
+        if (isPlainClick(event)) {
+          event.preventDefault();
+          scrollToPanel(i, 'smooth');
         }
-        event.preventDefault();
-        // Seek into the selected service's settled hold, not its transition.
-        const time = timeline.labels[`service-${i}`] + READING_HOLD * 0.35;
-        view.scrollTo({
-          top: trigger.start + time / timeline.duration() * (trigger.end - trigger.start),
-          behavior: 'smooth',
-        });
       };
       link.addEventListener('click', onClick);
       return () => link.removeEventListener('click', onClick);
     });
+    const onFragment = () => {
+      const index = fragmentIndex();
+      if (index !== -1) {
+        scrollToPanel(index, 'instant');
+        ScrollTrigger.update();
+        panels[index].focus({ preventScroll: true });
+      }
+    };
+    const onFragmentClick = (event: MouseEvent) => {
+      const link = event.target instanceof Element ? event.target.closest('a[href^="#"]') : null;
+      // Clicking the current fragment again doesn't fire hashchange.
+      if (isPlainClick(event) && link?.getAttribute('href') === view.location.hash && fragmentIndex() !== -1) {
+        event.preventDefault();
+        onFragment();
+      }
+    };
+    view.addEventListener('hashchange', onFragment);
+    view.document.addEventListener('click', onFragmentClick);
 
     // Account for deferred rendering and translated/font-dependent dimensions.
     const observer = new ResizeObserver(() => ScrollTrigger.refresh());
@@ -135,10 +159,15 @@ export function animateAboutMeScroll(root: HTMLElement): gsap.MatchMedia {
       observer.observe(header);
     }
     ScrollTrigger.refresh();
+    if (initialRender) {
+      onFragment();
+    }
 
     return () => {
       observer.disconnect();
       listeners.forEach((remove) => remove());
+      view.removeEventListener('hashchange', onFragment);
+      view.document.removeEventListener('click', onFragmentClick);
       section.classList.remove('about-is-pinned');
       panels.forEach((panel) => {
         panel.removeAttribute('inert');
@@ -147,6 +176,13 @@ export function animateAboutMeScroll(root: HTMLElement): gsap.MatchMedia {
       links.forEach((link) => link.removeAttribute('aria-current'));
     };
   }, root);
+  initialRender = false;
+  if (!section.classList.contains('about-is-pinned')) {
+    // On a client render the native fragment may have been set before the deferred panel existed.
+    const panel = panels[fragmentIndex()];
+    panel?.scrollIntoView({ behavior: 'instant' });
+    panel?.focus({ preventScroll: true });
+  }
 
   return motion;
 }

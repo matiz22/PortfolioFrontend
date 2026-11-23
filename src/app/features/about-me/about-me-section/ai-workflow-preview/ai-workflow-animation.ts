@@ -97,11 +97,11 @@ export function animateAiWorkflow(root: HTMLElement, callbacks: WorkflowCallback
       .to('.workflow-helper-motion', { autoAlpha: 0, scale: 0.85, y: -5 }, 'collecting+=1.2')
       .to('.workflow-link', { autoAlpha: 0 }, 'collecting+=1.35');
 
-    phase('sending', 9.4);
+    phase('drafting', 9.4);
     timeline
-      .to('.workflow-request', { autoAlpha: 0, y: -8 }, 'sending')
-      .to('.workflow-main-motion', { scale: 1.05 }, 'sending')
-      .to('.workflow-main-motion', { scale: 1 }, 'sending+=0.4');
+      .to('.workflow-request', { autoAlpha: 0, y: -8 }, 'drafting')
+      .to('.workflow-main-motion', { scale: 1.05 }, 'drafting')
+      .to('.workflow-main-motion', { scale: 1 }, 'drafting+=0.4');
 
     phase('complete', 10.6);
     timeline
