@@ -21,7 +21,7 @@
   align-items: center;
   gap: 0.75rem;
   font-size: clamp(0.5rem, 2cqw, 0.625rem);
-  code { color: rgb(255 255 255 / 55%); font-family: inherit; }
+  code { color: rgb(255 255 255 / 55%); }
 }
 
 .operations-health-status {
@@ -63,7 +63,7 @@
   gap: clamp(1px, 0.8cqh, 3px);
   padding-left: 0.75rem;
   border-left: 1px solid color-mix(in srgb, var(--color-secondary) 50%, transparent);
-  code { color: rgb(255 255 255 / 80%); font-family: inherit; }
+  code { color: rgb(255 255 255 / 80%); }
   code span { color: var(--color-secondary); }
 }
 
@@ -78,7 +78,6 @@
   align-items: center;
   gap: 0.75rem;
   color: var(--color-primary);
-  code { font-family: inherit; }
   p { margin: 0; }
 }
 

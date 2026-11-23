@@ -23,7 +23,7 @@
 
 @mixin eyebrow {
   color: var(--portfolio-ink);
-  font: 500 0.75rem/1.5 'JetBrains Mono', monospace;
+  font: 500 0.75rem/1.5 var(--font-sans);
   letter-spacing: 0.18em;
   text-transform: uppercase;
 }

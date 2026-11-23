@@ -1,7 +1,7 @@
 @let item = project();
 <article class="project-preview glass home-glass" [attr.aria-labelledby]="'project-preview-title-' + item.id">
   <div class="project-preview-caption">
-    <h3 class="project-preview-title" [id]="'project-preview-title-' + item.id">
+    <h3 class="project-preview-title font-pixel" [id]="'project-preview-title-' + item.id">
       <a [routerLink]="['/project', item.slug]" class="project-preview-title-link">
         <span>{{ item.title }}</span>
       </a>
@@ -19,7 +19,7 @@
       } @else {
       <div class="project-preview-fallback">
         <span class="project-preview-code">&lt;/&gt;</span>
-        <span class="project-preview-fallback-title">{{ item.title }}</span>
+        <span class="project-preview-fallback-title font-pixel">{{ item.title }}</span>
       </div>
       }
     </div>

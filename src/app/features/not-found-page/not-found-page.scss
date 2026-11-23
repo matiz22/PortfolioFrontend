@@ -16,8 +16,6 @@
 .glitch-text {
   font-size: 15rem;
   line-height: 0.8;
-  font-family: "Instrument Serif", serif;
-  font-style: italic;
   font-weight: 400;
   color: var(--color-primary);
   position: relative;
@@ -29,13 +27,6 @@
   @media (max-width: 768px) {
     font-size: 8rem;
   }
-}
-
-.sub-heading {
-  font-family: "Instrument Serif", serif;
-  font-style: italic;
-  font-weight: 400;
-  letter-spacing: -0.02em;
 }
 
 @keyframes glitch {

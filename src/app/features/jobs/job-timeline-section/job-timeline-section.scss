@@ -25,6 +25,10 @@
   h2 {
     font-size: clamp(2.25rem, 3.5vw, 3.25rem);
     line-height: 1.05;
+
+    @media (max-width: 24rem) {
+      font-size: 1.875rem;
+    }
   }
 }
 
@@ -156,11 +160,14 @@
     @include portfolio-card.lines(2);
     margin-block: 0.65rem 0.5rem;
     color: var(--color-base-content);
-    font-family: "Instrument Serif", serif;
+    font-family: var(--font-pixel);
     font-size: clamp(2rem, 2.7vw, 2.5rem);
-    font-weight: 400;
     line-height: 1.08;
     transition: color 200ms;
+
+    @media (max-width: 24rem) {
+      font-size: 1.625rem;
+    }
   }
 
   &:hover h3,

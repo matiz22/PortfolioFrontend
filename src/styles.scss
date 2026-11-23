@@ -8,6 +8,11 @@
   --radius: 1rem;
 }
 
+@theme {
+  --font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
+  --font-pixel: "Geist Pixel", var(--font-sans);
+}
+
 @theme inline {
   --radius-xs: var(--radius);
   --radius-sm: var(--radius);
@@ -60,7 +65,7 @@
 
 
 html {
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-sans);
   font-size: 16px;
   scroll-behavior: smooth;
 }
@@ -74,23 +79,6 @@ html:active-view-transition {
     // ScrollTrigger can restore an inline smooth value after a layout refresh.
     scroll-behavior: auto !important;
   }
-}
-
-body {
-  font-family: "JetBrains Mono", monospace;
-}
-
-/* Font utility classes */
-.font-serif {
-  font-family: "Instrument Serif", serif;
-}
-
-.font-sans {
-  font-family: "JetBrains Mono", monospace;
-}
-
-.font-mono {
-  font-family: "JetBrains Mono", monospace;
 }
 
 /* Quiet, text-only actions inside homepage cards. */
@@ -188,12 +176,12 @@ body {
   opacity: 0;
 }
 
-/* Section headings — editorial style */
+/* Section headings */
 .section-heading {
-  font-family: "Instrument Serif", serif;
-  font-style: italic;
+  font-family: var(--font-pixel);
   font-weight: 400;
   letter-spacing: -0.02em;
+  overflow-wrap: anywhere;
 }
 
 /* Subtle divider line */

@@ -148,7 +148,6 @@
     color: rgb(255 255 255 / 60%);
     font-size: clamp(0.5625rem, 2.2cqw, 0.625rem);
 
-    code { font-family: inherit; }
     &.is-done { color: var(--workflow-mint); }
   }
 }

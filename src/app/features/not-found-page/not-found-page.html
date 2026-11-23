@@ -17,19 +17,19 @@
     <div class="container mx-auto px-6 max-w-7xl relative z-10 text-center">
       <div class="inline-flex items-center gap-3 mb-8 animate-fade-in">
         <div class="w-1.5 h-1.5 bg-error rounded-full animate-pulse"></div>
-        <span class="text-xs font-mono tracking-widest uppercase text-error" i18n="@@notFound.status">Error 404</span>
+        <span class="text-xs tracking-widest uppercase text-error" i18n="@@notFound.status">Error 404</span>
       </div>
 
       <div class="glitch-wrapper mb-8 animate-fade-in-scale" style="animation-delay: 200ms;">
-        <h1 class="glitch-text m-0">404</h1>
+        <h1 class="glitch-text font-pixel m-0">404</h1>
       </div>
 
-      <h2 class="text-3xl md:text-5xl sub-heading mb-6 animate-fade-in" style="animation-delay: 400ms;"
+      <h2 class="section-heading text-3xl md:text-5xl mb-6 animate-fade-in" style="animation-delay: 400ms;"
         i18n="@@notFound.heading">
         Lost in the void.
       </h2>
 
-      <p class="text-secondary-content/60 max-w-lg mx-auto mb-12 font-mono text-sm leading-relaxed animate-fade-in"
+      <p class="text-secondary-content/60 max-w-lg mx-auto mb-12 text-sm leading-relaxed animate-fade-in"
         style="animation-delay: 600ms;" i18n="@@notFound.description">
         The coordinates you provided led to a non-existent location in the digital expanse.
         The page may have been moved, deleted, or never existed in this reality.
@@ -38,7 +38,7 @@
       <div class="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in"
         style="animation-delay: 800ms;">
         <a routerLink="/" rel="nofollow"
-          class="btn btn-primary px-8 rounded-full font-mono uppercase text-xs tracking-widest group">
+          class="btn btn-primary px-8 rounded-full uppercase text-xs tracking-widest group">
           <span i18n="@@notFound.returnHome">Return to Home</span>
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -47,7 +47,7 @@
           </svg>
         </a>
         <a routerLink="/projects" rel="nofollow"
-          class="btn btn-ghost px-8 rounded-full font-mono uppercase text-xs tracking-widest border border-white/10">
+          class="btn btn-ghost px-8 rounded-full uppercase text-xs tracking-widest border border-white/10">
           <span i18n="@@notFound.viewProjects">Explore Projects</span>
         </a>
       </div>
