@@ -1,4 +1,4 @@
-import { Component, Inject, LOCALE_ID, Input } from '@angular/core';
+import { Component, Inject, LOCALE_ID, Input, ChangeDetectionStrategy } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { LanguageOption } from '../../../core/models/languages';
 
@@ -7,6 +7,7 @@ import { LanguageOption } from '../../../core/models/languages';
   standalone: true,
   imports: [],
   templateUrl: './languages-switcher.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './languages-switcher.scss',
 })
 export class LanguagesSwitcher {

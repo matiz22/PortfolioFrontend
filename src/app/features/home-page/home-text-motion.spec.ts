@@ -207,6 +207,7 @@ describe('homepage text motion', () => {
   });
 
   it('reveals native contact lines in two beats without touching the form or replacing nodes', () => {
+    spyOnProperty(document.scrollingElement!, 'scrollHeight').and.returnValue(window.scrollY + window.innerHeight);
     motion = animateHomeText(root);
     const title = element('.contact-copy h2');
     const lineBreak = title.querySelector('br');

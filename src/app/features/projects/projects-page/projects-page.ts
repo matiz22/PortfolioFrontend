@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ProjectsService } from '../../../core/services/projects.service';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { switchMap } from 'rxjs/operators';
@@ -27,6 +27,7 @@ import { GrainGradient } from '../../../shared/grain-gradient/grain-gradient';
   ],
   providers: [PaginationService],
   templateUrl: './projects-page.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './projects-page.scss',
 })
 export class ProjectsPage {

@@ -1,6 +1,7 @@
 # PortfolioFrontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.2.0.
+This project uses [Angular CLI](https://github.com/angular/angular-cli) 22 and Yarn Classic.
+Use Node.js 22.22.3+, 24.15.0+, or 26.x, as specified in `package.json`.
 
 ## Development server
 
@@ -35,6 +36,13 @@ ng build
 ```
 
 This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+
+## Running the SSR server
+
+After building, run `yarn serve:ssr:PortfolioFrontend`. The production host `malich.dev` and
+loopback hosts are allowed by default. Set `NG_ALLOWED_HOSTS` for additional deployment hosts.
+If a trusted reverse proxy validates and overwrites forwarding headers, set `NG_TRUST_PROXY_HEADERS`
+to the comma-separated headers it provides, such as `x-forwarded-host,x-forwarded-proto`.
 
 ## Running unit tests
 

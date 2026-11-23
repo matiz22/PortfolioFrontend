@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { Project } from '../../../core/models/project';
 import { ProjectSummary } from '../../../core/models/summary/project';
 import { ImageUrlPipe } from '../../../shared/pipes/image-url-pipe';
@@ -11,6 +11,7 @@ import { RouterLink } from '@angular/router';
     RouterLink
   ],
   templateUrl: './project-item.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './project-item.scss',
 })
 export class ProjectItem {

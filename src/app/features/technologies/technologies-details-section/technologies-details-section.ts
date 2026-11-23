@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, ChangeDetectionStrategy } from '@angular/core';
 import { ImageUrlPipe } from '../../../shared/pipes/image-url-pipe';
 import { Technology } from '../../../core/models/technology';
 
@@ -6,6 +6,7 @@ import { Technology } from '../../../core/models/technology';
   selector: 'app-technologies-details-section',
   imports: [ImageUrlPipe],
   templateUrl: './technologies-details-section.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './technologies-details-section.scss',
 })
 export class TechnologiesDetailsSection {

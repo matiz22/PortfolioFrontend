@@ -1,4 +1,4 @@
-import { Component, computed, inject, LOCALE_ID } from '@angular/core';
+import { Component, computed, inject, LOCALE_ID, ChangeDetectionStrategy } from '@angular/core';
 import { Header } from "../header/header";
 import { ContactSection } from "../contact/contact-section/contact-section";
 import { Footer } from "../footer/footer";
@@ -9,6 +9,7 @@ import { MarkdownComponent, provideMarkdown } from "ngx-markdown";
   imports: [Header, ContactSection, Footer, MarkdownComponent],
   providers: [provideMarkdown()],
   templateUrl: './privacy-policy.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './privacy-policy.scss',
 })
 export class PrivacyPolicy {

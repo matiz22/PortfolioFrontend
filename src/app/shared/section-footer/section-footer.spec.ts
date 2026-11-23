@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SectionFooter } from './section-footer';
 import { SectionAction } from '../section-action/section-action';
@@ -6,6 +6,7 @@ import { SectionNext } from '../section-next/section-next';
 
 @Component({
   imports: [SectionFooter, SectionAction, SectionNext],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <app-section-footer>
       <a appSectionAction href="/certifications">View all certifications</a>

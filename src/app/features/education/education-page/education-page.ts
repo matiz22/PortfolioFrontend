@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, ChangeDetectionStrategy } from '@angular/core';
 import { EducationService } from '../../../core/services/education.service';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { switchMap } from 'rxjs/operators';
@@ -19,6 +19,7 @@ import { GrainGradient } from '../../../shared/grain-gradient/grain-gradient';
   imports: [Header, Footer, ContactSection, EducationItem, LoadingItems, PaginationTiles, GrainGradient],
   providers: [PaginationService],
   templateUrl: './education-page.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './education-page.scss',
 })
 export class EducationPage {

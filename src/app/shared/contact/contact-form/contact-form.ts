@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { ContactService } from '../../../core/services/contact.service';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Contact } from '../../../core/models/contact';
@@ -7,6 +7,7 @@ import { Contact } from '../../../core/models/contact';
   selector: 'app-contact-form',
   imports: [ReactiveFormsModule],
   templateUrl: './contact-form.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './contact-form.scss',
 })
 export class ContactForm {

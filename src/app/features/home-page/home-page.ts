@@ -1,4 +1,4 @@
-import { afterNextRender, Component, DestroyRef, ElementRef, NgZone, OnInit, inject } from '@angular/core';
+import { afterNextRender, Component, DestroyRef, ElementRef, NgZone, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { DOCUMENT, ViewportScroller } from '@angular/common';
 import type { gsap } from 'gsap';
 import { Footer } from "../../shared/footer/footer";
@@ -19,6 +19,7 @@ import { GRAIN_CHAPTER_ACCENTS } from '../../shared/grain-gradient/grain-gradien
   selector: 'app-home-page',
   imports: [Footer, HeroSection, AboutMeSection, Header, ContactSection, EducationSection, CertificationsSection, RealizationsHomeSection, ProjectsHomeSection, JobTimelineSection, SectionNext, GrainGradient],
   templateUrl: './home-page.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './home-page.scss',
 })
 export class HomePage implements OnInit {

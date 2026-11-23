@@ -1,4 +1,4 @@
-import { afterRenderEffect, Component, computed, ElementRef, inject, NgZone } from '@angular/core';
+import { afterRenderEffect, Component, computed, ElementRef, inject, NgZone, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
@@ -33,6 +33,7 @@ import { PortfolioPeriod } from '../../../shared/portfolio/portfolio-period';
     CaseHeroCover,
   ],
   templateUrl: './education-details-page.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './education-details-page.scss'
 })
 export class EducationDetailsPage {

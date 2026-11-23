@@ -1,5 +1,5 @@
 import { NgTemplateOutlet } from '@angular/common';
-import { Component, computed, ElementRef, HostListener, input, ViewChild } from '@angular/core';
+import { Component, computed, ElementRef, HostListener, input, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { LanguagesSwitcher } from '../languages/languages-switcher/languages-switcher';
 
@@ -31,6 +31,7 @@ const chapterOrder = ['work', 'projects', 'certifications', 'experience', 'educa
   ],
   templateUrl: './header.html',
   styleUrl: './header.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   host: {
     class: 'relative z-[9999] block'
   }

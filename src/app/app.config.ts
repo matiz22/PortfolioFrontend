@@ -2,8 +2,8 @@ import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChang
 import { provideRouter, RouteReuseStrategy, withInMemoryScrolling, withViewTransitions, Router } from '@angular/router';
 
 import { routes } from './app.routes';
-import { provideClientHydration, withEventReplay, withI18nSupport, withIncrementalHydration } from '@angular/platform-browser';
-import { HTTP_INTERCEPTORS, provideHttpClient, withFetch, withInterceptorsFromDi } from '@angular/common/http';
+import { provideClientHydration, withEventReplay, withI18nSupport } from '@angular/platform-browser';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { LocaleInterceptor } from './core/interceptors/locale.interceptor';
 import { CustomRouteReuseStrategy } from './route.reuse.strategy';
 import { TitleStrategy } from '@angular/router';
@@ -42,15 +42,8 @@ export const appConfig: ApplicationConfig = {
       withInMemoryScrolling({ scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled' }),
     ),
     { provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy },
-    provideClientHydration(
-      withIncrementalHydration(),
-      withI18nSupport(),
-      withEventReplay(),
-    ),
-    provideHttpClient(
-      withFetch(),
-      withInterceptorsFromDi()
-    ),
+    provideClientHydration(withI18nSupport(), withEventReplay()),
+    provideHttpClient(withInterceptorsFromDi()),
     { provide: HTTP_INTERCEPTORS, useClass: LocaleInterceptor, multi: true },
     { provide: TitleStrategy, useClass: AppTitleStrategy },
   ]

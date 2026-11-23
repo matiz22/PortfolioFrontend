@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SectionAction } from './section-action';
 
 @Component({
   imports: [SectionAction],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `<a appSectionAction [variant]="variant" href="#destination">View all projects</a>`,
 })
 class TestHost {

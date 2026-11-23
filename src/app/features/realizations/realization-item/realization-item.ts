@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { Realization } from '../../../core/models/realization';
 import { RealizationSummary } from '../../../core/models/summary/realization';
 import { ImageUrlPipe } from '../../../shared/pipes/image-url-pipe';
@@ -11,6 +11,7 @@ import { RouterLink } from '@angular/router';
     RouterLink
   ],
   templateUrl: './realization-item.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './realization-item.scss',
 })
 export class RealizationItem {

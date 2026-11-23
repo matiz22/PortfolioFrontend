@@ -30,6 +30,9 @@
           "builder": "@angular/build:application",
           "options": {
             "localize": true,
+            "security": {
+              "allowedHosts": ["malich.dev", "localhost", "127.0.0.1", "[::1]"]
+            },
             "browser": "src/main.ts",
             "polyfills": [
               "zone.js",

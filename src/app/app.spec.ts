@@ -1,10 +1,16 @@
+import {Component, provideZonelessChangeDetection} from '@angular/core';
 import {TestBed} from '@angular/core/testing';
+import {provideRouter, Router} from '@angular/router';
 import {App} from './app';
+
+@Component({template: '<h1>Test page</h1>'})
+class TestPage {}
 
 describe('App', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [App],
+      providers: [provideZonelessChangeDetection(), provideRouter([{path: 'test', component: TestPage}])],
     }).compileComponents();
   });
 
@@ -14,10 +20,12 @@ describe('App', () => {
     expect(app).toBeTruthy();
   });
 
-  it('should render title', () => {
+  it('renders the active route', async () => {
     const fixture = TestBed.createComponent(App);
-    fixture.detectChanges();
+    await fixture.whenStable();
+    await TestBed.inject(Router).navigateByUrl('/test');
+    await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, PortfolioFrontend');
+    expect(compiled.querySelector('h1')?.textContent).toBe('Test page');
   });
 });

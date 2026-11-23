@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, ChangeDetectionStrategy } from '@angular/core';
 import { ContactForm } from "../contact-form/contact-form";
 import { SocialLinksRow } from "../../../features/social-links/social-links-row/social-links-row";
 
@@ -7,6 +7,7 @@ import { SocialLinksRow } from "../../../features/social-links/social-links-row/
   imports: [ContactForm, SocialLinksRow],
   templateUrl: './contact-section.html',
   styleUrl: './contact-section.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   host: { '[class.contact-glass]': 'glass()' },
 })
 export class ContactSection {

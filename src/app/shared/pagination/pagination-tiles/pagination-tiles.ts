@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Input, Output, Signal, computed } from '@angular/core';
+import { Component, EventEmitter, Input, Output, Signal, computed, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'app-pagination-tiles',
   imports: [],
   templateUrl: './pagination-tiles.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './pagination-tiles.scss',
 })
 export class PaginationTiles {

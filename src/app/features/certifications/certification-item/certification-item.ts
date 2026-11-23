@@ -1,4 +1,4 @@
-import { Component, Input, signal } from '@angular/core';
+import { Component, Input, signal, ChangeDetectionStrategy } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Certification } from '../../../core/models/certification';
@@ -10,6 +10,7 @@ import { uniquePortfolioItems } from '../../../shared/portfolio/portfolio-metada
   selector: 'app-certification-item',
   imports: [DatePipe, ImageUrlPipe, RouterLink],
   templateUrl: './certification-item.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './certification-item.scss',
 })
 export class CertificationItem {

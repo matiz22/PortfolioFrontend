@@ -7,22 +7,22 @@
             <div class="contact-copy lg:col-span-5 flex flex-col justify-center">
                 <h2 id="contact-heading" class="section-heading text-5xl md:text-6xl xl:text-7xl leading-none text-balance mb-8">
                     @if (homeCopy()) {
-                    <ng-container i18n="@@home.contact.heading">Send me a note. We’ll take it from there.</ng-container>
+                    <span i18n="@@home.contact.heading">Send me a note. We’ll take it from there.</span>
                     } @else {
-                    <ng-container i18n="@@contact.heading">Let's Build<br>Something.</ng-container>
+                    <span i18n="@@contact.heading">Let's Build<br>Something.</span>
                     }
                 </h2>
                 
                 <p class="text-base-content/60 text-lg md:text-xl tracking-tight max-w-md mb-12"
                     [class.glass]="glass()" [class.home-glass]="glass()" [class.home-copy-panel]="glass()">
                     @if (homeCopy()) {
-                    <ng-container i18n="@@home.contact.description">
+                    <span i18n="@@home.contact.description">
                         Share an idea, tell me what isn’t working, or send me a link to what you already have.
-                    </ng-container>
+                    </span>
                     } @else {
-                    <ng-container i18n="@@contact.description">
+                    <span i18n="@@contact.description">
                         Have a vision in mind? Let's engineer it together. Drop me a message and I'll get back to you as soon as possible.
-                    </ng-container>
+                    </span>
                     }
                 </p>
                 
