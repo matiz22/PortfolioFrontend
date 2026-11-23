@@ -119,8 +119,21 @@ describe('education card animation', () => {
     expect(wrapper(0).style.opacity).toBe('');
     expect(wrapper(0).style.transform).toBe('');
     expect(Number(gsap.getProperty(surface(0), 'rotationY'))).toBe(0);
+    expect(gsap.getTweensOf(surface(0))).toEqual([]);
     surface(0).dispatchEvent(new PointerEvent('pointerenter', { pointerType: 'mouse' }));
     expect(Number(gsap.getProperty(surface(0), 'rotationY'))).toBe(0);
     link.blur();
+  });
+
+  it('does not restart tilt tweens when reduced motion is enabled mid-tilt', () => {
+    revert = animateEducationCards(root);
+    surface(0).dispatchEvent(new PointerEvent('pointerenter', { pointerType: 'mouse' }));
+    expect(gsap.getTweensOf(surface(0)).length).toBeGreaterThan(0);
+
+    reducedMotion = true;
+    gsap.matchMediaRefresh();
+
+    expect(surface(0).style.transform).toBe('');
+    expect(gsap.getTweensOf(surface(0))).toEqual([]);
   });
 });

@@ -107,7 +107,7 @@ export function animateEducationCards(root: HTMLElement): () => void {
             surface.removeEventListener('pointerenter', onEnter);
             surface.removeEventListener('pointermove', onMove);
             surface.removeEventListener('pointerleave', onLeave);
-            settle();
+            // The context has already reverted both quickTo tweens and their styles.
           });
         }
       }
