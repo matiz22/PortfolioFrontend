@@ -140,6 +140,19 @@ describe('HomePage', () => {
     }
   });
 
+  it('marks keyboard focus on a chapter without drawing a full-width outline', () => {
+    const root: HTMLElement = fixture.nativeElement;
+    const chapter = root.querySelector<HTMLElement>('#projects')!;
+
+    chapter.focus({ preventScroll: true });
+    expect(chapter.matches(':focus-visible')).toBeTrue();
+    expect(getComputedStyle(chapter).outlineStyle).toBe('none');
+    const marker = getComputedStyle(chapter, '::before');
+    expect(marker.borderBlockStartWidth).toBe('2px');
+    expect(marker.inlineSize).toBe('12px');
+    chapter.blur();
+  });
+
   it('sets stable metadata accents on only the five portfolio chapters before hydration', () => {
     const root: HTMLElement = fixture.nativeElement;
     const chapters = ['work', 'projects', 'certifications', 'experience', 'education'] as const;

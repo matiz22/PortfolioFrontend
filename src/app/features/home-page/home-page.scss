@@ -21,8 +21,27 @@
 }
 
 [data-grain-chapter] {
+  position: relative;
   // The stages already clear the fixed header. Scroll right to the viewport edge.
   scroll-margin-top: 0;
+}
+
+// Keep keyboard focus visible without outlining an entire chapter.
+[data-grain-chapter]:focus-visible {
+  outline: none;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset-block-start: calc(var(--home-stage-clearance) + 0.25rem);
+    inset-inline-start: 0.5rem;
+    z-index: 2;
+    inline-size: 0.75rem;
+    block-size: 0.75rem;
+    border-block-start: 2px solid var(--color-primary);
+    border-inline-start: 2px solid var(--color-primary);
+    pointer-events: none;
+  }
 }
 
 .home-closing {
