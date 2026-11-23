@@ -1,16 +1,289 @@
-<div class="mockup-window border border-base-300 w-full">
-  <div class="app-screen app-window-screen border-t border-base-300">
-    <app-productivity-preview device="desktop" class="app-template" data-app-template="productivity" data-app-device="desktop" />
-    <app-analytics-preview device="desktop" class="app-template" data-app-template="analytics" data-app-device="desktop" />
-    <app-messaging-preview device="desktop" class="app-template" data-app-template="messaging" data-app-device="desktop" />
+<ng-template #lines>
+  <span class="mock-lines"><i></i><i></i></span>
+</ng-template>
+
+<ng-template #document>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.45" stroke-linejoin="round">
+    <path d="M5 3h9l5 5v13H5zM14 3v5h5M8 13h8m-8 4h6" />
+  </svg>
+</ng-template>
+
+<ng-template #check>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="m5 12 4 4 10-10" />
+  </svg>
+</ng-template>
+
+<ng-template #cursor>
+  <svg class="mock-cursor" viewBox="0 0 20 22">
+    <path d="M2 1.5v17l4.7-4.4 3 6 2.4-1.2-3-6.1 6.2-.9z" fill="currentColor"
+      stroke="var(--color-base-300)" stroke-width="1.25" stroke-linejoin="round" />
+  </svg>
+</ng-template>
+
+<ng-template #vaultGrid let-cards>
+  <div class="vault-grid">
+    @for (card of cards; track card) {
+      <div class="vault-card">
+        <svg class="vault-icon" data-app-step="vault-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+          <rect x="5" y="10" width="14" height="11" rx="2" />
+          <path d="M8 10V7a4 4 0 1 1 8 0v3" />
+          <path d="M12 14v3" />
+        </svg>
+        <ng-container *ngTemplateOutlet="lines"></ng-container>
+      </div>
+    }
+  </div>
+</ng-template>
+
+<ng-template #vaultVerification>
+  <span class="biometric-check" data-app-step="verified" data-app-hidden>
+    <ng-container *ngTemplateOutlet="check"></ng-container>
+  </span>
+</ng-template>
+
+<ng-template #phoneHeader>
+  <header class="mock-toolbar">
+    <span class="mock-brand"></span>
+    <span class="mock-avatar"></span>
+  </header>
+</ng-template>
+
+<ng-template #phoneTabs>
+  <div class="mock-tabs"><i></i><i></i><i></i></div>
+</ng-template>
+
+<ng-template #checklist>
+  <div class="note-checklist">
+    @for (item of [0, 1, 2]; track item) {
+      <div class="note-task">
+        <span class="note-box">
+          @if ($first) {
+            <ng-container *ngTemplateOutlet="check"></ng-container>
+          }
+        </span>
+        <ng-container *ngTemplateOutlet="lines"></ng-container>
+      </div>
+    }
+  </div>
+</ng-template>
+
+<ng-template #noteReader>
+  <div class="note-reader" data-app-step="note-detail" data-app-hidden>
+    <header class="note-reader-bar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m14 5-7 7 7 7" />
+      </svg>
+      <span class="note-title"></span>
+    </header>
+    <div class="note-reader-paper">
+      <div class="note-reader-banner">
+        <span class="note-reader-icon"><ng-container *ngTemplateOutlet="document"></ng-container></span>
+        <div class="note-reader-heading">
+          <span class="note-title"></span>
+          <ng-container *ngTemplateOutlet="lines"></ng-container>
+        </div>
+      </div>
+      <div class="note-reader-lines">
+        <ng-container *ngTemplateOutlet="lines"></ng-container>
+        <ng-container *ngTemplateOutlet="lines"></ng-container>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #noteNotification let-device>
+  <div class="mock-toast" [class.phone-toast]="device === 'phone'" data-app-step="notification" data-app-hidden>
+    <span class="mock-row-icon"><ng-container *ngTemplateOutlet="document"></ng-container></span>
+    <ng-container *ngTemplateOutlet="lines"></ng-container>
+    @if (device === 'phone') {
+      <span class="toast-tap" data-app-step="toast-tap" data-app-hidden></span>
+    } @else {
+      <span class="toast-pointer" data-app-step="toast-pointer" data-app-hidden>
+        <ng-container *ngTemplateOutlet="cursor"></ng-container>
+      </span>
+    }
+  </div>
+</ng-template>
+
+<div class="mockup-window border">
+  <div class="mock-screen" data-app-device="desktop">
+    <div class="mock-scene" data-app-scene="vault">
+      <div class="workspace vault-workspace">
+        <header class="mock-toolbar">
+          <span class="mock-brand"></span>
+          <span class="mock-action"></span>
+        </header>
+        <ng-container *ngTemplateOutlet="vaultGrid; context: { $implicit: [0, 1, 2, 3, 4, 5] }"></ng-container>
+      </div>
+      <div class="biometric-layer" data-app-step="biometric" data-app-hidden>
+        <div class="biometric-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round">
+            <path class="fingerprint" pathLength="1" data-app-step="fingerprint" d="M4 11a8 8 0 0 1 16 0v2M6.5 17a16 16 0 0 0 .6-5.8 4.9 4.9 0 1 1 9.8 0v2.4a12 12 0 0 1-2.3 7M10.1 11.3c0-2.5 3.8-2.5 3.8 0 0 4.1-.6 7.1-2.5 9.8M10 14.5a12.1 12.1 0 0 1-1.1 4.6M19.8 16.4a13 13 0 0 1-1.3 3.2M4 14a10 10 0 0 1-.6 2.9" />
+          </svg>
+          <ng-container *ngTemplateOutlet="vaultVerification"></ng-container>
+        </div>
+      </div>
+    </div>
+
+    <div class="mock-scene" data-app-scene="studio">
+      <div class="workspace desktop-workspace">
+        <div class="mock-sidebar">
+          <span class="mock-brand"></span>
+          <div class="mock-menu"><i></i><i></i><i></i></div>
+          <span class="mock-avatar"></span>
+        </div>
+        <div class="desktop-main">
+          <header class="mock-toolbar">
+            <ng-container *ngTemplateOutlet="lines"></ng-container>
+            <span class="mock-action"></span>
+          </header>
+          <div class="desktop-columns">
+            <div class="report-list">
+              @for (row of [0, 1, 2, 3]; track row) {
+                <div class="mock-row" [class.is-current]="$first">
+                  <span class="mock-row-icon"></span>
+                  <ng-container *ngTemplateOutlet="lines"></ng-container>
+                </div>
+              }
+            </div>
+            <div class="report-detail">
+              <div class="report-cover">
+                <div class="report-art"><ng-container *ngTemplateOutlet="document"></ng-container></div>
+              </div>
+              <ng-container *ngTemplateOutlet="lines"></ng-container>
+              <div class="mock-attachment">
+                <span class="mock-row-icon"><ng-container *ngTemplateOutlet="document"></ng-container></span>
+                <ng-container *ngTemplateOutlet="lines"></ng-container>
+                <span class="drop-indicator" data-app-step="drop-target"></span>
+                <span class="mock-check" data-app-step="drop-check" data-app-hidden>
+                  <ng-container *ngTemplateOutlet="check"></ng-container>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="file-picker" data-app-step="file-picker" data-app-hidden>
+        <div class="picker-toolbar"><i></i><i></i><i></i></div>
+        <div class="picker-files">
+          <i></i>
+          <span class="picker-selected" data-app-step="drag-source">
+            <ng-container *ngTemplateOutlet="document"></ng-container>
+          </span>
+          <i></i>
+        </div>
+      </div>
+      <div class="drag-ghost" data-app-step="drag-ghost" data-app-hidden>
+        <ng-container *ngTemplateOutlet="document"></ng-container>
+        <ng-container *ngTemplateOutlet="cursor"></ng-container>
+      </div>
+    </div>
+
+    <div class="mock-scene" data-app-scene="notes">
+      <div class="workspace notebook-workspace">
+        <aside class="notebook-index">
+          <span class="mock-brand"></span>
+          @for (note of [0, 1, 2]; track note) {
+            <div class="notebook-entry" [class.is-current]="$first">
+              <ng-container *ngTemplateOutlet="lines"></ng-container>
+            </div>
+          }
+        </aside>
+        <div class="note-editor">
+          <header class="note-format"><i></i><i></i><i></i><i></i></header>
+          <div class="note-page">
+            <span class="note-title"></span>
+            <ng-container *ngTemplateOutlet="lines"></ng-container>
+            <ng-container *ngTemplateOutlet="checklist"></ng-container>
+          </div>
+        </div>
+      </div>
+      <ng-container *ngTemplateOutlet="noteReader"></ng-container>
+      <ng-container *ngTemplateOutlet="noteNotification; context: { $implicit: 'desktop' }"></ng-container>
+    </div>
   </div>
 </div>
 
 <div class="mockup-phone">
   <div class="mockup-phone-camera"></div>
-  <div class="mockup-phone-display app-screen text-white bg-neutral-900">
-    <app-productivity-preview device="phone" class="app-template" data-app-template="productivity" data-app-device="phone" />
-    <app-analytics-preview device="phone" class="app-template" data-app-template="analytics" data-app-device="phone" />
-    <app-messaging-preview device="phone" class="app-template" data-app-template="messaging" data-app-device="phone" />
+  <div class="mockup-phone-display mock-screen" data-app-device="phone">
+    <div class="mock-scene" data-app-scene="vault">
+      <div class="workspace phone-workspace">
+        <ng-container *ngTemplateOutlet="phoneHeader"></ng-container>
+        <ng-container *ngTemplateOutlet="vaultGrid; context: { $implicit: [0, 1, 2, 3] }"></ng-container>
+        <ng-container *ngTemplateOutlet="phoneTabs"></ng-container>
+      </div>
+      <div class="biometric-layer" data-app-step="biometric" data-app-hidden>
+        <div class="biometric-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 8V5a2 2 0 0 1 2-2h3m8 0h3a2 2 0 0 1 2 2v3m0 8v3a2 2 0 0 1-2 2h-3m-8 0H5a2 2 0 0 1-2-2v-3M8 9v1m8-1v1m-4-1v4h-1m-3 2a6 6 0 0 0 8 0" />
+            <line class="face-scan" data-app-step="face-scan" data-app-hidden x1="3" x2="21" y1="3" y2="3" />
+          </svg>
+          <ng-container *ngTemplateOutlet="vaultVerification"></ng-container>
+        </div>
+      </div>
+    </div>
+
+    <div class="mock-scene" data-app-scene="studio">
+      <div class="workspace phone-workspace">
+        <ng-container *ngTemplateOutlet="phoneHeader"></ng-container>
+        <div class="phone-cards">
+          <div class="phone-feature">
+            <div class="report-cover">
+              <div class="report-art"><ng-container *ngTemplateOutlet="document"></ng-container></div>
+            </div>
+            <ng-container *ngTemplateOutlet="lines"></ng-container>
+          </div>
+          <div class="mock-row">
+            <span class="mock-row-icon"><ng-container *ngTemplateOutlet="document"></ng-container></span>
+            <ng-container *ngTemplateOutlet="lines"></ng-container>
+            <span class="mock-check phone-check" data-app-step="scan-check" data-app-hidden>
+              <ng-container *ngTemplateOutlet="check"></ng-container>
+            </span>
+          </div>
+          <div class="mock-row">
+            <span class="mock-row-icon"></span>
+            <ng-container *ngTemplateOutlet="lines"></ng-container>
+          </div>
+        </div>
+        <ng-container *ngTemplateOutlet="phoneTabs"></ng-container>
+      </div>
+      <div class="scan-layer" data-app-step="camera" data-app-hidden>
+        <div class="viewfinder">
+          <div class="camera-paper" data-app-step="paper">
+            <ng-container *ngTemplateOutlet="lines"></ng-container>
+            <ng-container *ngTemplateOutlet="lines"></ng-container>
+          </div>
+          <div class="scan-beam" data-app-step="scan-beam" data-app-hidden></div>
+        </div>
+        <span class="camera-shutter"></span>
+      </div>
+    </div>
+
+    <div class="mock-scene" data-app-scene="notes">
+      <div class="workspace phone-workspace">
+        <ng-container *ngTemplateOutlet="phoneHeader"></ng-container>
+        <div class="phone-notes">
+          <div class="note-page">
+            <span class="note-title"></span>
+            <ng-container *ngTemplateOutlet="checklist"></ng-container>
+          </div>
+          <div class="mock-row" data-app-step="sync-row">
+            <span class="mock-row-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 17a4 4 0 1 1 .5-8A5.5 5.5 0 0 1 18 10a3.5 3.5 0 0 1-.5 7z" />
+                <path data-app-step="offline" d="M9.5 14.5h5" />
+                <path data-app-step="synced" data-app-hidden d="m9.5 13.5 1.5 1.5 3-3" />
+              </svg>
+            </span>
+            <ng-container *ngTemplateOutlet="lines"></ng-container>
+          </div>
+        </div>
+        <ng-container *ngTemplateOutlet="phoneTabs"></ng-container>
+      </div>
+      <ng-container *ngTemplateOutlet="noteReader"></ng-container>
+      <ng-container *ngTemplateOutlet="noteNotification; context: { $implicit: 'phone' }"></ng-container>
+    </div>
   </div>
 </div>

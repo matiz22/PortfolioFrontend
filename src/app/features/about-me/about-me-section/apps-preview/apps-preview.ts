@@ -7,16 +7,20 @@ import {
   inject,
   NgZone,
 } from '@angular/core';
+import { NgTemplateOutlet } from '@angular/common';
 import type { gsap } from 'gsap';
-import { ProductivityPreview } from './productivity-preview/productivity-preview';
-import { AnalyticsPreview } from './analytics-preview/analytics-preview';
-import { MessagingPreview } from './messaging-preview/messaging-preview';
 
 @Component({
   selector: 'app-apps-preview',
-  imports: [ProductivityPreview, AnalyticsPreview, MessagingPreview],
+  imports: [NgTemplateOutlet],
   templateUrl: './apps-preview.html',
-  styleUrl: './apps-preview.scss',
+  styleUrls: [
+    './apps-preview.scss',
+    './apps-preview-workspace.scss',
+    './apps-preview-layouts.scss',
+    './apps-preview-scenes.scss',
+    './apps-preview-notifications.scss',
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppsPreview {
