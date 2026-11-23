@@ -19,9 +19,9 @@
                         <span i18n="@@realizationsPage.heading">All Realizations</span>
                     </a>
 
-                    <div class="case-hero-layout">
+                    <div class="case-hero-layout lg:has-[.case-preview]:grid-cols-[minmax(0,1fr)_min(47%,32rem)]!">
                         <div class="case-intro">
-                            <div class="grid min-w-0 justify-items-start gap-5" data-case-copy>
+                            <div class="grid w-full min-w-0 justify-items-start gap-5" data-case-copy>
                                 @if (data.clientName || data.location || data.clientLogo) {
                                     <div class="case-client">
                                         @if (data.clientLogo) {
@@ -38,7 +38,7 @@
                                     </div>
                                 }
 
-                                <h1 class="case-title section-heading">{{ data.title }}</h1>
+                                <h1 class="case-title section-heading max-w-full!">{{ data.title }}</h1>
                                 @if (data.shortDesc) {
                                     <p class="case-summary">{{ data.shortDesc }}</p>
                                 }
@@ -64,8 +64,8 @@
                         </div>
 
                         @if (data.thumbnail) {
-                            <figure class="case-preview overflow-hidden">
-                                <img [alt]="data.title" [src]="data.thumbnail | imageUrl" fetchpriority="high" />
+                            <figure class="case-preview w-[min(85%,32rem)] justify-self-center overflow-hidden lg:w-full">
+                                <img class="max-h-[min(26rem,52svh)]!" [alt]="data.title" [src]="data.thumbnail | imageUrl" fetchpriority="high" />
                             </figure>
                         }
                     </div>
