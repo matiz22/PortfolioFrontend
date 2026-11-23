@@ -7,7 +7,7 @@
             <div class="contact-copy lg:col-span-5 flex flex-col justify-center">
                 <h2 id="contact-heading" class="text-6xl md:text-7xl lg:text-8xl font-serif italic leading-[0.9] tracking-tight mb-8">
                     @if (homeCopy()) {
-                    <ng-container i18n="@@home.contact.heading">What would you hand off to AI?</ng-container>
+                    <ng-container i18n="@@home.contact.heading">Send me a note. We’ll take it from there.</ng-container>
                     } @else {
                     <ng-container i18n="@@contact.heading">Let's Build<br>Something.</ng-container>
                     }
@@ -17,8 +17,7 @@
                     [class.glass]="glass()" [class.home-glass]="glass()" [class.home-copy-panel]="glass()">
                     @if (homeCopy()) {
                     <ng-container i18n="@@home.contact.description">
-                        Tell me about one task: where the data comes from, what your team does by hand, and what needs
-                        checking before you sign off. We can start there.
+                        Share an idea, tell me what isn’t working, or send me a link to what you already have.
                     </ng-container>
                     } @else {
                     <ng-container i18n="@@contact.description">
