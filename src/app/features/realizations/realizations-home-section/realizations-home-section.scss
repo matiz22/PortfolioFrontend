@@ -1,3 +1,5 @@
+@use '../../../../styles/home-stage' as stage;
+
 .realizations-section {
   --realizations-inset: var(--home-showcase-inset, clamp(1.5rem, 4vw, 4rem));
   background: var(--home-section-background, #080b0a);
@@ -10,13 +12,15 @@
 }
 
 .realizations-stage {
+  @include stage.layout('.realizations-content', '.realizations-next', 100svh);
   position: relative;
+  padding: var(--home-stage-inset, 1rem) var(--realizations-inset);
+}
+
+.realizations-content {
   display: grid;
   align-items: center;
   gap: clamp(2rem, 4vw, 4rem);
-  min-height: var(--home-showcase-min-height, 100svh);
-  padding: var(--home-chapter-space, 6.5rem) var(--realizations-inset)
-    var(--home-chapter-space, 2.5rem);
 }
 
 .realizations-text {
@@ -26,12 +30,6 @@
   gap: 1rem;
   min-width: 0;
   max-width: 23rem;
-}
-
-.realizations-next {
-  grid-column: 1 / -1;
-  align-self: end;
-  --section-footer-space: 0px;
 }
 
 .realizations-heading {
@@ -178,9 +176,12 @@
 @media (min-width: 64rem) {
   // Give the work twice the space of the introduction, without fixed widths.
   .realizations-stage {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
     max-width: var(--home-showcase-width, 88rem);
     margin-inline: auto;
+  }
+
+  .realizations-content {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
   }
 
   .realizations-gallery {

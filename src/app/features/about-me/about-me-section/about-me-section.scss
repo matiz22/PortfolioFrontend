@@ -1,16 +1,19 @@
+@use '../../../../styles/home-stage' as stage;
+
 :host {
   display: block;
 }
 
 .about-section {
-  padding-block: var(--home-chapter-space, clamp(4rem, 8vw, 7rem));
   background: var(--home-section-background, #080b0a);
 }
 
-.about-section.about-is-pinned {
-  // The pinned stage already provides its own viewport spacing.
-  padding-block: 0;
+.about-shell {
+  @include stage.layout('.about-stage', '.about-next');
+  padding-block: var(--home-stage-inset, 1rem);
+}
 
+.about-section.about-is-pinned {
   .about-panel-copy > :is(h3, p) {
     translate: 0 var(--about-text-offset, 0px);
   }
@@ -39,10 +42,6 @@
   line-height: 1.9;
   color: color-mix(in srgb, var(--color-base-content) 88%, transparent);
   text-wrap: pretty;
-}
-
-.about-stage {
-  padding-bottom: 1rem;
 }
 
 .about-next:empty {
@@ -139,21 +138,13 @@
   .about-stage {
     display: grid;
     grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
-    grid-template-rows: auto minmax(0, 1fr) auto;
+    grid-template-rows: auto auto;
     grid-template-areas:
       "header header"
-      "sidebar panels"
-      "next next";
+      "sidebar panels";
     align-items: center;
     column-gap: clamp(2.5rem, 5vw, 5rem);
     row-gap: clamp(1.25rem, 2.5vw, 2rem);
-    min-height: calc(100svh - 6rem);
-    padding-block: 3.5rem 2rem;
-  }
-
-  .about-next {
-    grid-area: next;
-    --section-next-space: 0px;
   }
 
   .about-sidebar {
@@ -255,7 +246,8 @@
   .about-web-visual,
   .about-apps-visual,
   .about-ai-visual {
-    height: clamp(15rem, 40svh, 24rem);
+    // Leave space for the heading, service copy, and separate navigation row.
+    height: clamp(12rem, calc(100svh - 38rem), 24rem);
   }
 }
 
@@ -263,14 +255,7 @@
 @media (min-width: 64rem) and (max-height: 56rem) {
   .about-is-pinned {
     .about-stage {
-      padding-block: 2rem 1rem;
       row-gap: 1rem;
-    }
-
-    .about-web-visual,
-    .about-apps-visual,
-    .about-ai-visual {
-      height: clamp(12rem, 30svh, 17rem);
     }
 
     .about-panel {
@@ -283,15 +268,12 @@
   .about-is-pinned {
     .about-stage {
       grid-template-columns: minmax(0, 1fr);
-      grid-template-rows: auto auto minmax(0, 1fr) auto;
+      grid-template-rows: auto auto auto;
       grid-template-areas:
         "header"
         "sidebar"
-        "panels"
-        "next";
-      align-content: center;
+        "panels";
       gap: 1.25rem;
-      padding-block: 1rem;
     }
 
     .about-header {
@@ -377,50 +359,10 @@
   }
 }
 
-@media (max-width: 63.999rem) and (min-height: 44.001rem) {
-  .about-is-pinned {
-    .about-stage {
-      height: calc(100svh - 6rem);
-      grid-template-rows: auto auto minmax(0, 1fr);
-      align-content: stretch;
-    }
-
-    .about-panels {
-      min-height: 0;
-      grid-template-rows: minmax(0, 1fr);
-      align-self: stretch;
-    }
-
-    .about-web,
-    .about-apps,
-    .about-ai {
-      display: flex;
-      flex-direction: column;
-      align-self: stretch;
-      min-height: 0;
-    }
-
-    .about-web-visual,
-    .about-apps-visual,
-    .about-ai-visual {
-      flex: 1;
-      min-height: 0;
-      height: auto;
-    }
-
-    .about-web .about-panel-copy,
-    .about-apps .about-panel-copy,
-    .about-ai .about-panel-copy {
-      flex-shrink: 0;
-    }
-  }
-}
-
 @media (max-height: 44rem) {
   .about-is-pinned {
     .about-stage {
       gap: 1rem;
-      padding-block: 0.75rem;
     }
 
     .about-header h2 {
@@ -457,12 +399,11 @@
   .about-is-pinned {
     .about-stage {
       grid-template-columns: minmax(0, 0.6fr) minmax(0, 1.4fr);
-      grid-template-rows: auto minmax(0, 1fr);
+      grid-template-rows: auto auto;
       grid-template-areas:
         "header header"
         "sidebar panels";
       gap: 1.5rem;
-      padding-block: 0.5rem;
     }
 
     .about-header h2 {

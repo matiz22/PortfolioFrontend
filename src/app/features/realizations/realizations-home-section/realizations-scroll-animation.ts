@@ -94,7 +94,7 @@ export function animateRealizationsScroll(root: HTMLElement): gsap.MatchMedia {
         // top, and vertical scrolling scrubs the track sideways. The headroom
         // equals the actual overflow, so the section never grows beyond what
         // it shows.
-        if (isDesktop && overflow() > 0) {
+        if (isDesktop && overflow() > 0 && stage.offsetHeight <= view.innerHeight) {
           section.classList.add('realizations-is-pinned');
 
           // Symmetric holds around the scrub: the composition rests pinned

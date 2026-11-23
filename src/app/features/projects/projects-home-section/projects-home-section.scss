@@ -1,25 +1,27 @@
 @use '../../../../styles/home-mobile-rail' as mobile-rail;
+@use '../../../../styles/home-stage' as stage;
 
 :host {
   display: block;
 }
 
 .projects-home-section {
-  display: grid;
-  align-items: center;
-  min-height: var(--home-showcase-min-height, 0px);
-  padding-block: var(--home-chapter-space, clamp(4.5rem, 8vw, 7rem));
+  @include stage.layout('.projects-home-content', '.projects-home-footer');
+  padding-block: var(--home-stage-inset, clamp(4.5rem, 8vw, 7rem));
   background: var(--home-section-background, #000);
+}
+
+.projects-home-content,
+.projects-home-footer {
+  width: 100%;
+  max-width: var(--home-showcase-width, 88rem);
+  margin-inline: auto;
+  padding-inline: var(--home-showcase-inset, clamp(1.5rem, 4vw, 4rem));
 }
 
 .projects-home-content {
   display: grid;
   gap: clamp(2rem, 5vw, 3.5rem);
-  min-width: 0;
-  width: 100%;
-  max-width: var(--home-showcase-width, 88rem);
-  margin-inline: auto;
-  padding-inline: var(--home-showcase-inset, clamp(1.5rem, 4vw, 4rem));
 }
 
 .projects-home-header,
@@ -56,10 +58,6 @@
 
 .projects-home-grid {
   grid-auto-rows: 1fr;
-}
-
-.projects-home-footer {
-  --section-footer-space: 0px;
 }
 
 .projects-home-slot,

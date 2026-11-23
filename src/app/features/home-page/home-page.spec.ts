@@ -136,7 +136,7 @@ describe('HomePage', () => {
     expect(root.querySelector('app-about-me-section')).toBeNull();
     for (const chapter of chapters) {
       expect(chapter.getAttribute('tabindex')).toBe('-1');
-      expect(getComputedStyle(chapter).scrollMarginTop).toBe('96px');
+      expect(getComputedStyle(chapter).scrollMarginTop).toBe('0px');
     }
   });
 

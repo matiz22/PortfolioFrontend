@@ -96,6 +96,7 @@ describe('realizations navigation without a numeric counter', () => {
     canAnimate = true;
     let top = 0;
     const wrap = root.querySelector<HTMLElement>('.realizations-stage-wrap')!;
+    Object.defineProperty(wrap.firstElementChild, 'offsetHeight', { value: window.innerHeight });
     spyOn(wrap, 'getBoundingClientRect').and.callFake(() => ({ top } as DOMRect));
     motion = animateRealizationsScroll(root);
     expect(root.querySelector('.realizations-is-pinned')).not.toBeNull();
@@ -111,6 +112,17 @@ describe('realizations navigation without a numeric counter', () => {
     top = 0;
     finishScroll();
     expect(edgeAlpha()).toBeCloseTo(0.28, 3);
+  });
+
+  it('keeps the native gallery controls when the stage is taller than the viewport', () => {
+    desktop = true;
+    canAnimate = true;
+    Object.defineProperty(root.querySelector('.realizations-stage'), 'offsetHeight', {
+      value: window.innerHeight + 1,
+    });
+    motion = animateRealizationsScroll(root);
+    expect(root.querySelector('.realizations-is-pinned')).toBeNull();
+    expect(next.disabled).toBeFalse();
   });
 
   it('updates arrows and the progress rail without any counter element', () => {

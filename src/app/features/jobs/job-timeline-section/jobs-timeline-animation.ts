@@ -6,7 +6,6 @@ gsap.registerPlugin(ScrollTrigger);
 const HORIZONTAL_QUERY = '(min-width: 64rem) and (min-height: 48rem)';
 const MOBILE_QUERY = '(width < 48rem)';
 const MOTION_QUERY = '(prefers-reduced-motion: no-preference)';
-const NAV_CLEARANCE = 80;
 const SCROLL_DISTANCE_MULTIPLIER = 1.85;
 const MIN_SCROLL_VIEWPORT_RATIO = 0.6;
 const INITIAL_HOLD_RATIO = 0.14;
@@ -15,6 +14,7 @@ export function animateJobsTimeline(root: HTMLElement): gsap.MatchMedia {
   const motion = gsap.matchMedia();
   const view = root.ownerDocument.defaultView;
   const section = root.querySelector<HTMLElement>('.jobs-section');
+  const shell = root.querySelector<HTMLElement>('.jobs-shell');
   const stage = root.querySelector<HTMLElement>('.jobs-stage');
   const viewport = root.querySelector<HTMLElement>('.jobs-viewport');
   const track = root.querySelector<HTMLElement>('.jobs-track');
@@ -22,7 +22,7 @@ export function animateJobsTimeline(root: HTMLElement): gsap.MatchMedia {
   const fill = root.querySelector<HTMLElement>('.jobs-rail-fill');
   const entries = Array.from(root.querySelectorAll<HTMLElement>('.jobs-entry'));
 
-  if (!view || !section || !stage || !viewport || !track || !rail || !fill || !entries.length) {
+  if (!view || !section || !shell || !stage || !viewport || !track || !rail || !fill || !entries.length) {
     return motion;
   }
 
@@ -70,9 +70,9 @@ export function animateJobsTimeline(root: HTMLElement): gsap.MatchMedia {
 
       if (horizontal) {
         stage.classList.add('jobs-horizontal');
-        // Reserve room for bottom navigation before checking the font-loaded height.
+        // The shell includes the top clearance and its separate navigation row.
         stage.classList.toggle('jobs-scrollable', overflow() > 0);
-        if (stage.offsetHeight > view.innerHeight - NAV_CLEARANCE - 16) {
+        if (shell.offsetHeight > view.innerHeight) {
           horizontal = false;
           stage.classList.remove('jobs-horizontal', 'jobs-scrollable');
         }
@@ -101,9 +101,7 @@ export function animateJobsTimeline(root: HTMLElement): gsap.MatchMedia {
       });
 
       if (horizontal && overflow() > 0) {
-        // Pin the complete section, including its background, lower border,
-        // and bottom controls. Only the timeline track moves within it.
-        gsap.set(stage, { '--jobs-nav-clearance': `${NAV_CLEARANCE}px` });
+        // Pin the section and its bottom controls. Only the track moves within it.
         section.classList.add('jobs-section-pinned');
         stage.classList.add('jobs-pinned');
         gsap.set(fill, { scaleX: 0 });

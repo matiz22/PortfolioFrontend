@@ -1,21 +1,19 @@
 @use '../../../../styles/home-mobile-rail' as mobile-rail;
+@use '../../../../styles/home-stage' as stage;
 @use '../../../../styles/portfolio-card' as portfolio-card;
 
 .jobs-section {
   position: relative;
-  padding-block: var(--home-chapter-space, clamp(4rem, 7vw, 6rem));
   background: var(--home-section-background, #050706);
 }
 
 .jobs-shell {
+  @include stage.layout('.jobs-stage', '.jobs-bottom');
   position: relative;
   max-width: var(--home-showcase-width, 88rem);
   margin-inline: auto;
   padding-inline: var(--home-showcase-inset, clamp(1.5rem, 4vw, 4rem));
-}
-
-.jobs-stage {
-  padding-block: 1.5rem;
+  padding-block: var(--home-stage-inset, clamp(4rem, 7vw, 6rem));
 }
 
 .jobs-header {
@@ -349,40 +347,14 @@
 }
 
 .jobs-section-pinned {
-  height: 100svh;
-  padding-block: 0;
   overflow: clip;
-
-  .jobs-shell {
-    height: 100%;
-  }
 }
 
 .jobs-pinned {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  padding-top: calc(var(--jobs-nav-clearance) + 1.5rem);
-  overflow: clip;
-
   .jobs-dot {
     border-color: rgb(255 255 255 / 35%);
     background: #050706;
     box-shadow: none;
-  }
-
-  .jobs-header,
-  .jobs-viewport {
-    flex-shrink: 0;
-  }
-
-  .jobs-viewport {
-    margin-block: auto;
-  }
-
-  .jobs-bottom {
-    --section-footer-space: 0px;
-    flex-shrink: 0;
   }
 }
 

@@ -1,4 +1,5 @@
 @use '../../../../styles/home-mobile-rail' as mobile-rail;
+@use '../../../../styles/home-stage' as stage;
 @use '../../../../styles/portfolio-card' as portfolio-card;
 @use '../education-cover';
 
@@ -7,13 +8,15 @@
 }
 
 .education-section {
-  padding-block: var(--home-chapter-space, clamp(4rem, 7vw, 7rem))
-    var(--home-chapter-space, 3rem);
+  @include stage.layout('.education-shell', '.education-footer');
+  padding-block: var(--home-stage-inset, clamp(4rem, 7vw, 7rem));
   background: var(--home-section-background, #000);
   color: var(--color-base-content);
 }
 
-.education-shell {
+.education-shell,
+.education-footer {
+  width: 100%;
   max-width: var(--home-showcase-width, 88rem);
   margin-inline: auto;
   padding-inline: var(--home-showcase-inset, clamp(1.5rem, 4vw, 4rem));

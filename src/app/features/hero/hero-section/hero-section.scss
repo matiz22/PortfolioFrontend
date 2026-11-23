@@ -1,20 +1,18 @@
+@use '../../../../styles/home-stage' as stage;
+
 :host {
     display: block;
 }
 
 .hero-section {
+    @include stage.layout('.hero-layout', '.hero-next', 100svh);
     isolation: isolate;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
-    min-height: 100svh;
-    padding: clamp(7rem, 14vh, 10rem) 1.5rem clamp(3rem, 7vh, 6rem);
+    justify-items: center;
+    padding: var(--home-stage-inset, 1rem) 1.5rem;
 }
 
 .hero-layout {
     grid-template-areas: "portrait" "copy";
-    margin-block: auto;
 }
 
 .hero-copy {

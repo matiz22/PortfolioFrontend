@@ -11,7 +11,7 @@ const SCROLL_DISTANCE_SCALE = 0.65;
 export function animateAboutMeScroll(root: HTMLElement): gsap.MatchMedia {
   const motion = gsap.matchMedia();
   const section = root.querySelector<HTMLElement>('.about-section');
-  const stage = root.querySelector<HTMLElement>('.about-stage');
+  const stage = root.querySelector<HTMLElement>('.about-shell');
   const panelsContainer = root.querySelector<HTMLElement>('.about-panels');
   const header = root.querySelector<HTMLElement>('.about-header');
   const fill = root.querySelector<HTMLElement>('.about-fill');
@@ -36,6 +36,10 @@ export function animateAboutMeScroll(root: HTMLElement): gsap.MatchMedia {
 
     const isDesktop = context.conditions['isDesktop'];
     section.classList.add('about-is-pinned');
+    if (stage.offsetHeight > view.innerHeight) {
+      section.classList.remove('about-is-pinned');
+      return;
+    }
 
     gsap.set(panels, { autoAlpha: 0, y: 14 });
     gsap.set(panels[0], { autoAlpha: 1, y: 0 });
@@ -105,9 +109,9 @@ export function animateAboutMeScroll(root: HTMLElement): gsap.MatchMedia {
     const trigger = ScrollTrigger.create({
       trigger: stage,
       animation: timeline,
-      start: 'top 96px',
+      start: 'top top',
       // Keep each service readable without requiring a full viewport of travel per hold.
-      end: () => `+=${Math.round(timeline.duration() * (stage.offsetHeight + 96) * SCROLL_DISTANCE_SCALE)}`,
+      end: () => `+=${Math.round(timeline.duration() * stage.offsetHeight * SCROLL_DISTANCE_SCALE)}`,
       pin: true,
       scrub: true,
       invalidateOnRefresh: true,

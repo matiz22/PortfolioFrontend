@@ -3,6 +3,10 @@
 }
 
 .contact-section {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-content: center;
+  min-block-size: var(--contact-stage-height, 0px);
   background: var(--contact-section-background, #000);
   padding-block: var(--contact-section-padding, 8rem);
   scroll-margin-top: 6rem;

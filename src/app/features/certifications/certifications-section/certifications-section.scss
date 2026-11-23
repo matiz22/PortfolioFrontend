@@ -1,18 +1,21 @@
 @use '../../../../styles/home-mobile-rail' as mobile-rail;
+@use '../../../../styles/home-stage' as stage;
 
 :host {
   display: block;
 }
 
 .certifications-section {
+  @include stage.layout('.certifications-shell', '.certifications-footer');
   position: relative;
   overflow: clip;
   isolation: isolate;
-  padding-block: var(--home-chapter-space, clamp(4.5rem, 8vw, 7rem));
+  padding-block: var(--home-stage-inset, clamp(4.5rem, 8vw, 7rem));
   background: var(--home-section-background, #000);
 }
 
-.certifications-shell {
+.certifications-shell,
+.certifications-footer {
   position: relative;
   z-index: 1;
   width: min(100%, var(--home-showcase-width, 88rem));

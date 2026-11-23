@@ -71,6 +71,30 @@ describe('CertificationsSection', () => {
     expect(header.nextElementSibling?.classList).toContain('certifications-wall');
   });
 
+  it('centers main content separately from the next link and grows for tall content', () => {
+    const root = render(ApiState.success([]));
+    root.style.setProperty('--home-stage-height', '640px');
+    root.style.setProperty('--home-stage-clearance', '72px');
+    root.style.setProperty('--home-stage-inset', '16px');
+    const stage = root.querySelector<HTMLElement>('.certifications-section')!;
+    const content = root.querySelector<HTMLElement>('.certifications-shell')!;
+    const next = root.querySelector<HTMLElement>('.certifications-footer')!;
+    next.style.minBlockSize = '76px';
+    const centered = () => {
+      const bounds = stage.getBoundingClientRect();
+      const body = content.getBoundingClientRect();
+      expect(body.top + body.height / 2).toBeCloseTo(bounds.top + bounds.height / 2, 0);
+      expect(next.getBoundingClientRect().top).toBeGreaterThan(body.bottom);
+    };
+
+    expect(stage.offsetHeight).toBe(640);
+    centered();
+
+    content.style.minBlockSize = '700px';
+    expect(stage.offsetHeight).toBeGreaterThan(700);
+    centered();
+  });
+
   it('reserves document space and announces loading', () => {
     const root = fixture.nativeElement as HTMLElement;
     expect(root.querySelector('.certifications-wall')?.getAttribute('aria-busy')).toBe('true');

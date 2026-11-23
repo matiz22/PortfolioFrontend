@@ -13,12 +13,14 @@ describe('About Me scroll animation', () => {
   let canAnimate: boolean;
   let isDesktop: boolean;
   let isTall: boolean;
+  let stageHeight: number;
   let originalHeight: PropertyDescriptor | undefined;
 
   beforeEach(() => {
     canAnimate = true;
     isDesktop = true;
     isTall = true;
+    stageHeight = 900;
     originalHeight = Object.getOwnPropertyDescriptor(window, 'innerHeight');
     Object.defineProperty(window, 'innerHeight', { configurable: true, value: 900 });
     const matchMedia = window.matchMedia.bind(window);
@@ -33,7 +35,7 @@ describe('About Me scroll animation', () => {
     root = document.createElement('div');
     root.innerHTML = `
       <section class="about-section">
-        <div class="about-stage">
+        <div class="about-shell">
           <header class="about-header">Services</header>
           <nav class="about-index">
             <span class="about-fill"></span>
@@ -51,11 +53,11 @@ describe('About Me scroll animation', () => {
     `;
     document.body.appendChild(root);
     section = root.querySelector('.about-section')!;
-    stage = root.querySelector('.about-stage')!;
+    stage = root.querySelector('.about-shell')!;
     panels = Array.from(root.querySelectorAll<HTMLElement>('.about-panel'));
     links = Array.from(root.querySelectorAll<HTMLAnchorElement>('.about-index-link'));
     fill = root.querySelector('.about-fill')!;
-    Object.defineProperty(stage, 'offsetHeight', { get: () => 804 });
+    Object.defineProperty(stage, 'offsetHeight', { get: () => stageHeight });
   });
 
   afterEach(() => {
@@ -75,11 +77,11 @@ describe('About Me scroll animation', () => {
     return trigger().animation as gsap.core.Timeline;
   }
 
-  it('pins the original stage below the navigation before advancing services', () => {
+  it('pins the full stage at the viewport edge before advancing services', () => {
     motion = animateAboutMeScroll(root);
     expect(section.classList.contains('about-is-pinned')).toBeTrue();
     expect(trigger().pin).toBe(stage);
-    expect(trigger().vars.start).toBe('top 96px');
+    expect(trigger().vars.start).toBe('top top');
     expect(trigger().vars.scrub).toBeTrue();
     expect(timeline().duration()).toBeCloseTo(3.48, 2);
     expect(trigger().end - trigger().start).toBeCloseTo(2036, 0);
@@ -245,6 +247,14 @@ describe('About Me scroll animation', () => {
     expect(section.classList.contains('about-is-pinned')).toBeFalse();
     expect(trigger()).toBeUndefined();
     expect(root.querySelector('.pin-spacer')).toBeNull();
+  });
+
+  it('keeps services in document flow if the stage is taller than the viewport', () => {
+    stageHeight = window.innerHeight + 1;
+    motion = animateAboutMeScroll(root);
+    expect(section.classList.contains('about-is-pinned')).toBeFalse();
+    expect(trigger()).toBeUndefined();
+    expect(panels.every((panel) => !panel.inert)).toBeTrue();
   });
 
   it('keeps every service static and readable for reduced motion', () => {

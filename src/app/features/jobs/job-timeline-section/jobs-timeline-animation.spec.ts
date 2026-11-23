@@ -13,7 +13,7 @@ describe('jobs timeline animation', () => {
   let mobile: boolean;
   let canAnimate: boolean;
   let trackWidth: number;
-  let stageHeight: number;
+  let shellHeight: number;
   let originalHeight: PropertyDescriptor | undefined;
 
   beforeEach(() => {
@@ -21,7 +21,7 @@ describe('jobs timeline animation', () => {
     mobile = false;
     canAnimate = true;
     trackWidth = 2400;
-    stageHeight = 300;
+    shellHeight = 1000;
     // Karma's test iframe may have zero height; use a deterministic desktop viewport.
     originalHeight = Object.getOwnPropertyDescriptor(window, 'innerHeight');
     Object.defineProperty(window, 'innerHeight', { configurable: true, value: 1000 });
@@ -37,7 +37,7 @@ describe('jobs timeline animation', () => {
     root = document.createElement('div');
     root.innerHTML = `
       <section class="jobs-section">
-      <div class="jobs-stage">
+        <div class="jobs-shell"><div class="jobs-stage">
         <header class="jobs-header">
           <div class="jobs-copy"><h2>Work Experience</h2><p>Past and current roles.</p></div>
           <a class="jobs-viewall" href="#jobs">View full work history</a>
@@ -55,7 +55,7 @@ describe('jobs timeline animation', () => {
             </ol>
           </div>
         </div>
-      </div>
+        </div></div>
       </section>
     `;
     document.body.appendChild(root);
@@ -65,7 +65,7 @@ describe('jobs timeline animation', () => {
     track = root.querySelector('.jobs-track')!;
     Object.defineProperty(viewport, 'clientWidth', { get: () => 800 });
     Object.defineProperty(track, 'scrollWidth', { get: () => trackWidth });
-    Object.defineProperty(stage, 'offsetHeight', { get: () => stageHeight });
+    Object.defineProperty(root.querySelector('.jobs-shell')!, 'offsetHeight', { get: () => shellHeight });
   });
 
   afterEach(() => {
@@ -148,7 +148,6 @@ describe('jobs timeline animation', () => {
     expect(stage.classList.contains('jobs-scrollable')).toBeTrue();
     expect(stage.classList.contains('jobs-pinned')).toBeTrue();
     expect(section.classList.contains('jobs-section-pinned')).toBeTrue();
-    expect(stage.style.getPropertyValue('--jobs-nav-clearance')).toBe('80px');
     expect(trigger.pin).toBe(section);
     expect(trigger.vars.start).toBe('top top');
     expect(trigger.vars.scrub).toBeTrue();
@@ -250,7 +249,6 @@ describe('jobs timeline animation', () => {
     motion = animateJobsTimeline(root);
     expect(stage.classList.contains('jobs-horizontal')).toBeFalse();
     expect(stage.classList.contains('jobs-pinned')).toBeFalse();
-    expect(stage.style.getPropertyValue('--jobs-nav-clearance')).toBe('');
     expect(ScrollTrigger.getAll().some((trigger) => trigger.pin === section)).toBeFalse();
   });
 
@@ -284,7 +282,7 @@ describe('jobs timeline animation', () => {
   });
 
   it('falls back to vertical if the content would exceed the available height', () => {
-    stageHeight = window.innerHeight;
+    shellHeight = window.innerHeight + 1;
     motion = animateJobsTimeline(root);
     expect(stage.classList.contains('jobs-horizontal')).toBeFalse();
     expect(stage.classList.contains('jobs-scrollable')).toBeFalse();
@@ -342,7 +340,6 @@ describe('jobs timeline animation', () => {
     expect(stage.classList.contains('jobs-horizontal')).toBeFalse();
     expect(stage.classList.contains('jobs-pinned')).toBeFalse();
     expect(section.classList.contains('jobs-section-pinned')).toBeFalse();
-    expect(stage.style.getPropertyValue('--jobs-nav-clearance')).toBe('');
     expect(root.querySelector('.pin-spacer')).toBeNull();
     expect(track.style.transform).toBe('');
     expect(root.querySelector('.jobs-entry-active')).toBeNull();

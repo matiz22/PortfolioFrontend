@@ -1,10 +1,10 @@
 :host {
   display: block;
-  --home-chapter-space: clamp(4rem, 7vw, 6rem);
-  --home-showcase-min-height: 0px;
+  --home-stage-height: 100svh;
+  --home-stage-clearance: 4.5rem;
+  --home-stage-inset: 1rem;
   --home-showcase-inset: clamp(1.5rem, 4vw, 4rem);
   --home-showcase-width: 88rem;
-  --contact-section-padding: var(--home-chapter-space);
   // All chapters share the fixed gradient and grain; only their content scrolls.
   --home-section-background: transparent;
   --contact-section-background: transparent;
@@ -21,41 +21,24 @@
 }
 
 [data-grain-chapter] {
-  scroll-margin-top: 6rem;
+  // The stages already clear the fixed header. Scroll right to the viewport edge.
+  scroll-margin-top: 0;
 }
 
 .home-closing {
-  display: flex;
-  flex-direction: column;
-  min-height: var(--home-showcase-min-height);
   background: var(--home-section-background);
 }
 
-.home-contact,
-.home-contact-placeholder {
-  flex: 1;
-}
-
 .home-contact {
-  display: grid;
-  align-items: center;
-  min-width: 0;
+  --contact-stage-height: var(--home-stage-height);
+  --contact-section-padding: calc(var(--home-stage-clearance) + var(--home-stage-inset));
 }
 
-.home-contact-placeholder {
-  min-height: 32rem;
+.home-chapter-placeholder {
+  min-block-size: var(--home-stage-height);
 }
 
 .home-closing app-footer {
   --footer-divider-width: 0;
   display: block;
-  flex-shrink: 0;
-}
-
-// Roomy desktop layouts get a screen-sized stage; smaller screens stay content-led.
-@media (min-width: 64rem) and (min-height: 48rem) {
-  :host {
-    --home-showcase-min-height: 100svh;
-    --contact-section-padding: 6rem clamp(3rem, 5vh, 4rem);
-  }
 }

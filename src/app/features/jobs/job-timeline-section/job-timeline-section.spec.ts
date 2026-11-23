@@ -69,8 +69,8 @@ describe('JobTimelineSection', () => {
     expect(header.nextElementSibling?.classList).toContain('jobs-viewport');
   });
 
-  it('keeps next-section navigation in the stage without archive or scroll controls', () => {
-    expect(root.querySelector('.jobs-stage app-section-footer.jobs-bottom')).not.toBeNull();
+  it('keeps next-section navigation after the timeline without archive or scroll controls', () => {
+    expect(root.querySelector('.jobs-stage + app-section-footer.jobs-bottom')).not.toBeNull();
     expect(root.querySelector('.jobs-bottom .jobs-viewall')).toBeNull();
     expect(root.querySelector('.jobs-scroll-guide, .jobs-skip, #experience-end')).toBeNull();
     expect(root.textContent).not.toContain('Scroll to follow the journey');
