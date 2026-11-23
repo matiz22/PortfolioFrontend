@@ -3,6 +3,40 @@ import { SplitText } from 'gsap/SplitText';
 
 gsap.registerPlugin(SplitText);
 
+function headlineLineStarts(heading: HTMLElement): number[] {
+  const text = heading.firstChild;
+  if (text?.nodeType !== Node.TEXT_NODE || text.nextSibling) {
+    return [];
+  }
+
+  const range = heading.ownerDocument.createRange();
+  const starts: number[] = [];
+  let previousTop = Infinity;
+  for (const [index, word] of Array.from((text.textContent ?? '').matchAll(/\S+/g)).entries()) {
+    range.setStart(text, word.index);
+    range.setEnd(text, word.index + word[0].length);
+    const { top, height } = range.getBoundingClientRect();
+    if (top > previousTop + height / 2) {
+      starts.push(index);
+    }
+    previousTop = top;
+  }
+  return starts;
+}
+
+function splitMainHeading(heading: HTMLElement, vars: SplitText.Vars): SplitText {
+  const lineStarts = headlineLineStarts(heading);
+  const split = SplitText.create(heading, vars);
+  const words = vars.mask === 'words' ? split.masks : split.words;
+
+  // Keep the plain text's balanced wrapping while the animated spans are in place.
+  // SplitText removes the temporary breaks when it restores the original markup.
+  for (const index of lineStarts) {
+    words[index]?.before(heading.ownerDocument.createElement('br'));
+  }
+  return split;
+}
+
 export function animateHeroText(root: HTMLElement): gsap.MatchMedia {
   const motion = gsap.matchMedia();
   const mainHeading = root.querySelector<HTMLElement>('.hero-headline-main');
@@ -20,7 +54,7 @@ export function animateHeroText(root: HTMLElement): gsap.MatchMedia {
       introMotion?.revert();
       introFinished = false;
       introMotion = gsap.context(() => {
-        const main = SplitText.create(mainHeading, {
+        const main = splitMainHeading(mainHeading, {
           type: 'words',
           mask: 'words',
           tag: 'span',
@@ -176,7 +210,7 @@ export function animateHeroText(root: HTMLElement): gsap.MatchMedia {
           return;
         }
 
-        mainSplit = SplitText.create(main, {
+        mainSplit = splitMainHeading(main, {
           type: 'words',
           tag: 'span',
           wordsClass: 'hero-glide-word',

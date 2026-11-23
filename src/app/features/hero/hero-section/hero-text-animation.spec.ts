@@ -104,6 +104,43 @@ describe('hero text animation', () => {
         expect(element.style.visibility).toBe('');
       }
     });
+
+    for (const [effect, wordSelector] of [
+      ['intro', '.hero-build-word-mask'],
+      ['hover', '.hero-glide-word'],
+    ] as const) {
+      it(`keeps the same line breaks through narrow ${effect} motion: ${mainText}`, () => {
+        const main = root.querySelector<HTMLElement>('.hero-headline-main')!;
+        main.textContent = mainText;
+        main.style.cssText = `
+          display: block; width: 300px; font: 40px/.96 Arial, sans-serif;
+          letter-spacing: -.035em; text-align: center; text-wrap: balance;
+        `;
+        // Simulate a browser that balances plain text but not the inline-block word wrappers.
+        const style = document.createElement('style');
+        style.textContent = `.hero-headline-main:has(${wordSelector}) { text-wrap: wrap !important; }`;
+        root.append(style);
+
+        motion = animateHeroText(root);
+        let animation = timeline();
+        if (effect === 'hover') {
+          animation.progress(1);
+          enterMain();
+          animation = hoverTimeline('.hero-glide-word');
+        }
+        animation.pause(effect === 'hover' ? 0.2 : 0);
+        const [first, second, third, fourth] = Array.from(
+          main.querySelectorAll(wordSelector), (word) => word.getBoundingClientRect().top,
+        );
+
+        expect(first).toBe(second);
+        expect(third).toBeGreaterThan(second);
+        expect(third).toBe(fourth);
+
+        animation.progress(1);
+        expect(main.innerHTML).toBe(mainText);
+      });
+    }
   }
 
   it('leaves the original DOM untouched when reduced motion is preferred', () => {
