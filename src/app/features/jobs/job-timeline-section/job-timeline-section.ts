@@ -11,6 +11,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import type { gsap } from 'gsap';
+import { map } from 'rxjs';
 import { ApiState } from '../../../core/models/api.state';
 import { JobsService } from '../../../core/services/jobs.service';
 import { JobSummary } from '../../../core/models/summary/job';
@@ -32,7 +33,11 @@ export class JobTimelineSection {
   private readonly zone = inject(NgZone);
   private readonly jobsService = inject(JobsService);
 
-  readonly jobs = toSignal(this.jobsService.getHomeSummaryItems(), {
+  readonly jobs = toSignal(this.jobsService.getHomeSummaryItems().pipe(
+    map((state) => state.status === 'success'
+      ? ApiState.success([...state.data].sort((a, b) => b.startDate.getTime() - a.startDate.getTime()))
+      : state),
+  ), {
     initialValue: ApiState.loading<JobSummary[]>(),
   });
 

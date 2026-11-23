@@ -76,8 +76,10 @@ describe('JobTimelineSection', () => {
     expect(root.textContent).not.toContain('Scroll to follow the journey');
   });
 
-  it('renders API order, accessible role links, dates, and current status', async () => {
+  it('renders newest roles first, with accessible links, dates, and current status', async () => {
     state.next(ApiState.success([
+      { ...job, id: 3, slug: 'earliest-role', title: 'Earliest Role', isCurrent: false,
+        startDate: new Date(2020, 0, 1), endDate: new Date(2021, 11, 1) },
       job,
       { ...job, id: 2, slug: 'previous-role', title: 'Previous Role', isCurrent: false,
         startDate: new Date(2022, 0, 1), endDate: new Date(2023, 11, 1) },
@@ -85,9 +87,9 @@ describe('JobTimelineSection', () => {
     await fixture.whenStable();
 
     const entries = root.querySelectorAll('.jobs-entry');
-    expect(entries.length).toBe(2);
+    expect(Array.from(root.querySelectorAll('.jobs-card'), (card) => card.getAttribute('href')))
+      .toEqual(['/job/frontend-developer', '/job/previous-role', '/job/earliest-role']);
     const link = entries[0].querySelector<HTMLAnchorElement>('.jobs-card')!;
-    expect(link.getAttribute('href')).toBe('/job/frontend-developer');
     expect(link.getAttribute('aria-labelledby')).toBe('experience-role-1');
     expect(root.querySelector('#experience-role-1')?.textContent).toBe(job.title);
     expect(entries[0].querySelector('.jobs-present')?.textContent).toBe('to present');
