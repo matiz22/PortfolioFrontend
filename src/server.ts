@@ -52,12 +52,21 @@ app.get('/sitemap.xml', async (req, res, next) => {
 });
 
 app.use((req, res, next) => {
+  if (req.aborted || res.destroyed) return;
+
   angularApp
     .handle(req)
-    .then((response) =>
-      response ? writeResponseToNodeResponse(response, res) : next(),
-    )
-    .catch(next);
+    .then((response) => {
+      if (res.destroyed) return;
+      return response ? writeResponseToNodeResponse(response, res) : next();
+    })
+    .catch((error: unknown) => {
+      // A client disconnect cancels rendering; there is no response left to send.
+      if (error instanceof DOMException && error.name === 'AbortError' && (req.aborted || res.destroyed)) {
+        return;
+      }
+      next(error);
+    });
 });
 
 /**
