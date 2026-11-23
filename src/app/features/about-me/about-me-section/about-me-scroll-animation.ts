@@ -1,5 +1,6 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { ABOUT_PIN_REFRESH_PRIORITY } from '../../../shared/animations/home-pin-refresh-priority';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -113,6 +114,7 @@ export function animateAboutMeScroll(root: HTMLElement, resolveInitialFragment =
       // Keep each service readable without requiring a full viewport of travel per hold.
       end: () => `+=${Math.round(timeline.duration() * stage.offsetHeight * SCROLL_DISTANCE_SCALE)}`,
       pin: true,
+      refreshPriority: ABOUT_PIN_REFRESH_PRIORITY,
       scrub: true,
       invalidateOnRefresh: true,
     });

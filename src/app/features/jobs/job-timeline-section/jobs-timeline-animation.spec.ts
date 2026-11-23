@@ -1,5 +1,6 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { animateAboutMeScroll } from '../../about-me/about-me-section/about-me-scroll-animation';
 import { animateJobsTimeline } from './jobs-timeline-animation';
 
 describe('jobs timeline animation', () => {
@@ -164,6 +165,53 @@ describe('jobs timeline animation', () => {
     expect(Number(gsap.getProperty(root.querySelector('.jobs-rail-fill'), 'scaleX'))).toBe(0);
     expect(root.querySelectorAll('.jobs-entry')[0].classList.contains('jobs-entry-active')).toBeTrue();
   });
+
+  for (const jobsFirst of [false, true]) {
+    it(`includes both pins in downstream geometry when ${jobsFirst ? 'Jobs' : 'About'} mounts first`, () => {
+      const about = document.createElement('div');
+      about.innerHTML = `
+        <section class="about-section">
+          <div class="about-shell" style="height: 400px">
+            <span class="about-fill"></span>
+            <a class="about-index-link" href="#one">One</a>
+            <a class="about-index-link" href="#two">Two</a>
+            <div class="about-panels">
+              <article class="about-panel" id="one"></article>
+              <article class="about-panel" id="two"></article>
+            </div>
+          </div>
+        </section>`;
+      const downstream = document.createElement('div');
+      downstream.style.height = '200vh';
+      root.before(about);
+      root.after(downstream);
+      const reveal = ScrollTrigger.create({ trigger: downstream, start: 'top top' });
+      const scroll = window.scrollY;
+      const unpinnedStart = downstream.getBoundingClientRect().top + scroll;
+      let aboutMotion: gsap.MatchMedia | undefined;
+      try {
+        if (jobsFirst) motion = animateJobsTimeline(root);
+        aboutMotion = animateAboutMeScroll(about, false);
+        if (!jobsFirst) motion = animateJobsTimeline(root);
+
+        ScrollTrigger.refresh();
+
+        const aboutPin = ScrollTrigger.getAll().find((trigger) => trigger.pin === about.querySelector('.about-shell'))!;
+        const jobsPin = travel().scrollTrigger!;
+        const spacing = (aboutPin.end - aboutPin.start) + (jobsPin.end - jobsPin.start);
+        expect(reveal.start).toBeCloseTo(unpinnedStart + spacing, 0);
+        expect(reveal.start).toBeCloseTo(downstream.getBoundingClientRect().top + window.scrollY, 0);
+      } finally {
+        reveal.kill();
+        motion?.revert();
+        motion = undefined;
+        aboutMotion?.revert();
+        about.remove();
+        downstream.remove();
+        window.scrollTo({ top: scroll, behavior: 'instant' });
+      }
+    });
+  }
 
   it('holds the first role in place before beginning horizontal travel', () => {
     motion = animateJobsTimeline(root);

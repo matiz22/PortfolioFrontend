@@ -1,5 +1,6 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { JOBS_PIN_REFRESH_PRIORITY } from '../../../shared/animations/home-pin-refresh-priority';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -120,9 +121,7 @@ export function animateJobsTimeline(root: HTMLElement): gsap.MatchMedia {
               overflow() * SCROLL_DISTANCE_MULTIPLIER,
             ) / (1 - INITIAL_HOLD_RATIO)}`,
             pin: true,
-            // Upper deferred sections may create their pins after this one.
-            // Measure this lower section after those pins add their spacing.
-            refreshPriority: -1,
+            refreshPriority: JOBS_PIN_REFRESH_PRIORITY,
             // No catch-up lag: the last role is in place before the pin releases.
             scrub: true,
             anticipatePin: 1,
