@@ -21,6 +21,11 @@ describe('AboutMeSection', () => {
     expect(component).toBeTruthy();
   });
 
+  it('does not draw a divider beneath the services heading in the unpinned layout', () => {
+    const root: HTMLElement = fixture.nativeElement;
+    expect(getComputedStyle(root.querySelector('.about-header')!).borderBottomWidth).toBe('0px');
+  });
+
   it('presents web, apps, and AI in the same order in the service index and panels', () => {
     const root: HTMLElement = fixture.nativeElement;
     expect(root.querySelector('.about-index-number')).toBeNull();

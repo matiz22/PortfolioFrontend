@@ -69,6 +69,7 @@ describe('CertificationsSection', () => {
     expect(header.querySelector('p')?.classList).not.toContain('glass');
     expect(header.querySelector('.certifications-viewall')?.classList).toContain('section-action-cta');
     expect(header.nextElementSibling?.classList).toContain('certifications-wall');
+    expect(getComputedStyle(header.querySelector('h2')!, '::after').content).toBe('none');
   });
 
   it('centers main content separately from the next link and grows for tall content', () => {

@@ -141,9 +141,8 @@ class CopyReveal {
         detailsStart = Math.max(0, timeline.duration() - 0.16);
       } else if (effect === 'seal') {
         timeline.fromTo(title, {
-          opacity: 0, scale: 1.045, transformOrigin: 'left center', '--home-seal-progress': 0,
+          opacity: 0, scale: 1.045, transformOrigin: 'left center',
         }, { opacity: 1, scale: 1, duration }, 0);
-        timeline.to(title, { '--home-seal-progress': 1, duration: 0.3 }, 0.13);
       } else {
         timeline.fromTo(title, hidden, visible, 0);
       }

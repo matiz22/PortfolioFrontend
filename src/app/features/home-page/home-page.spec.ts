@@ -101,7 +101,7 @@ describe('HomePage', () => {
 
     const root: HTMLElement = fixture.nativeElement;
     const closing = root.querySelector('.home-closing')!;
-    expect(closing.querySelector('app-contact-section.home-contact')).not.toBeNull();
+    expect(closing.querySelector('app-contact-section.home-contact.contact-blended')).not.toBeNull();
     expect(closing.lastElementChild?.tagName).toBe('APP-FOOTER');
     expect(root.querySelector('main app-footer')).toBeNull();
     expect(root.querySelectorAll('app-footer').length).toBe(1);

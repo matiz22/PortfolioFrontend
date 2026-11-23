@@ -31,23 +31,9 @@
   width: min(100%, 36rem);
 
   h2 {
-    position: relative;
     margin: 0;
     font-size: 2.25rem;
     line-height: 1.1;
-
-    &::after {
-      position: absolute;
-      inset-inline-start: 0;
-      bottom: -0.2rem;
-      width: min(3.5rem, 100%);
-      height: 2px;
-      border-radius: 1px;
-      background: var(--home-metadata-accent, var(--color-primary));
-      transform: scaleX(var(--home-seal-progress, 1));
-      transform-origin: left;
-      content: '';
-    }
   }
 
   p {

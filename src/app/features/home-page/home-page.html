@@ -94,7 +94,7 @@
     <!-- Contact and site footer form one closing chapter. -->
     <div id="contact" class="home-closing" data-grain-chapter="contact" tabindex="-1">
         @defer (on idle; hydrate on idle) {
-        <app-contact-section class="home-contact" [glass]="true" [sectionId]="null" [homeCopy]="true"></app-contact-section>
+        <app-contact-section class="home-contact contact-blended" [glass]="true" [sectionId]="null" [homeCopy]="true"></app-contact-section>
         } @placeholder {
         <div class="home-chapter-placeholder" aria-hidden="true"></div>
         }
