@@ -68,10 +68,10 @@ describe('hero text animation', () => {
     return animation as gsap.core.Timeline;
   }
 
-  for (const [mainText, accentText] of [
-    ['Thoughtful software.', 'Smarter workflows.'],
-    ['Przemyślane aplikacje.', 'Sprawniejsze procesy.'],
-  ]) {
+  for (const [mainText, accentText, duration] of [
+    ['I build what you can’t get', 'off the shelf.', 1.22],
+    ['Buduję to, czego brakuje', 'w gotowych narzędziach.', 1.18],
+  ] as const) {
     it(`reveals and restores the rendered copy: ${mainText}`, () => {
       const main = root.querySelector<HTMLElement>('.hero-headline-main')!;
       const accent = root.querySelector<HTMLElement>('.hero-headline-accent')!;
@@ -80,14 +80,14 @@ describe('hero text animation', () => {
 
       motion = animateHeroText(root);
 
-      expect(main.querySelectorAll('.hero-build-word-mask').length).toBe(2);
+      expect(main.querySelectorAll('.hero-build-word-mask').length).toBe(mainText.split(' ').length);
       expect(accent.querySelectorAll('.hero-flow-char').length).toBeGreaterThan(0);
       expect(main.getAttribute('aria-label')).toBe(mainText);
       expect(accent.getAttribute('aria-label')).toBe(accentText);
       expect(main.textContent).toBe(mainText);
       expect(accent.textContent).toBe(accentText);
       expect(timeline().repeat()).toBe(0);
-      expect(timeline().duration()).toBeCloseTo(1.18, 2);
+      expect(timeline().duration()).toBeCloseTo(duration, 2);
       expect(gsap.getTweensOf(root.querySelector('.hero-actions')).length).toBe(0);
 
       timeline().progress(1);
