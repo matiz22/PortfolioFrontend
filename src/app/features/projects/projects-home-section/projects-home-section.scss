@@ -139,3 +139,18 @@
     display: block;
   }
 }
+
+.projects-home-row-horizontal {
+  grid-template-columns: minmax(0, var(--project-left, 1fr)) minmax(0, var(--project-right, 1fr));
+
+  &[data-project-count='3'] {
+    grid-template-columns:
+      minmax(0, var(--project-left, 1fr))
+      minmax(0, var(--project-middle, 1fr))
+      minmax(0, var(--project-right, 1fr));
+  }
+
+  &[data-project-count='1'] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

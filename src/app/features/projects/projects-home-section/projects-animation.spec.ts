@@ -260,6 +260,7 @@ describe('projects animation', () => {
   it('selects the horizontal interaction on wide screens', () => {
     wideScreen = true;
     motion = animateProjects(root);
+    expect(element('.projects-home-row').classList).toContain('projects-home-row-horizontal');
     expect(element('.project-preview').classList).toContain('project-preview-horizontal');
     expect(element('.project-preview-drawer').style.width).toBe('0px');
     expect(element('.project-preview-drawer').style.height).toBe('');

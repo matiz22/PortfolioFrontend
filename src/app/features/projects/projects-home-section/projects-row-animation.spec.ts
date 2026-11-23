@@ -5,7 +5,7 @@ describe('horizontal project rows', () => {
   let root: HTMLElement;
   let context: gsap.Context | undefined;
   let delayedCall: jasmine.Spy;
-  let cardWidth: number;
+  let rowWidth: number;
   let resizeCallbacks: ResizeObserverCallback[];
   let disconnects: jasmine.Spy[];
 
@@ -23,7 +23,7 @@ describe('horizontal project rows', () => {
   }
 
   beforeEach(() => {
-    cardWidth = 484;
+    rowWidth = 1000;
     resizeCallbacks = [];
     disconnects = [];
     delayedCall = spyOn(gsap, 'delayedCall').and.callThrough();
@@ -43,12 +43,6 @@ describe('horizontal project rows', () => {
     document.body.appendChild(root);
   });
 
-  function mockCardWidths(): void {
-    for (const element of root.querySelectorAll<HTMLElement>('.project-preview')) {
-      Object.defineProperty(element, 'clientWidth', { get: () => cardWidth });
-    }
-  }
-
   afterEach(() => {
     context?.revert();
     context = undefined;
@@ -56,7 +50,11 @@ describe('horizontal project rows', () => {
   });
 
   function start(): void {
-    mockCardWidths();
+    for (const element of root.querySelectorAll<HTMLElement>('.projects-home-row')) {
+      element.dataset['projectCount'] = String(element.children.length);
+      element.style.columnGap = '32px';
+      Object.defineProperty(element, 'clientWidth', { get: () => rowWidth });
+    }
     context = gsap.context((ctx) => animateProjectRows(root, ctx), root);
   }
 
@@ -86,35 +84,48 @@ describe('horizontal project rows', () => {
     return gsap.getTweensOf(drawer()).find((tween) => tween.duration() > 0)!.parent!;
   }
 
-  it('opens the left card drawer without animating the row or its columns', () => {
+  function tracks(index = 0): string[] {
+    return ['--project-left', '--project-middle', '--project-right']
+      .map(property => row(index).style.getPropertyValue(property))
+      .filter(Boolean);
+  }
+
+  it('animates the hovered card to 65% without resizing other rows', () => {
     start();
+    expect(tracks()).toEqual(['1fr', '1fr']);
     move();
     finishIntent();
-    animation().progress(1);
+    const opening = animation();
+    opening.pause(0.26);
+    expect(parseFloat(tracks()[0])).toBeCloseTo(1.15, 3);
+    expect(parseFloat(tracks()[1])).toBeCloseTo(0.85, 3);
+    opening.progress(1);
 
-    expect(gsap.getTweensOf([row(), row(1)])).toEqual([]);
+    expect(tracks()).toEqual(['1.3fr', '0.7fr']);
+    expect(tracks(1)).toEqual(['1fr', '1fr']);
     expect(card().getAttribute('data-project-expanded')).toBe('true');
     expect(card(1).getAttribute('data-project-expanded')).toBe('false');
     expect(drawer().inert).toBeFalse();
     expect(drawer(1).inert).toBeTrue();
-    expect(drawer().style.width).toBe('256px');
+    expect(drawer().style.width).toBe('227px');
     expect(drawer().style.height).toBe('');
   });
 
-  it('can open the right-column drawer without moving the left card', () => {
+  it('widens the right card by shrinking the left track', () => {
     start();
     move(1);
     finishIntent();
     animation().progress(1);
 
+    expect(tracks()).toEqual(['0.7fr', '1.3fr']);
     expect(drawer().inert).toBeTrue();
     expect(drawer(1).inert).toBeFalse();
-    expect(drawer(1).style.width).toBe('256px');
+    expect(drawer(1).style.width).toBe('227px');
   });
 
   for (const activeIndex of [0, 1, 2]) {
-    it(`only opens drawer ${activeIndex + 1} in a three-card row`, () => {
-      cardWidth = 350;
+    it(`gives card ${activeIndex + 1} half the width of a three-card row`, () => {
+      rowWidth = 1232;
       row().insertAdjacentHTML('beforeend', slot(5));
       start();
       move(activeIndex);
@@ -124,11 +135,13 @@ describe('horizontal project rows', () => {
       for (const index of [0, 1, 2]) {
         expect(drawer(index).inert).toBe(index !== activeIndex);
       }
-      expect(drawer(activeIndex).style.width).toBe('228px');
+      expect(tracks()).toEqual([0, 1, 2].map(index => index === activeIndex ? '1.5fr' : '0.75fr'));
+      expect(drawer(activeIndex).style.width).toBe('210px');
 
       row().dispatchEvent(new PointerEvent('pointerleave'));
       finishIntent();
       animation().progress(1);
+      expect(tracks()).toEqual(['1fr', '1fr', '1fr']);
       expect(drawer(activeIndex).style.width).toBe('0px');
     });
   }
@@ -155,11 +168,12 @@ describe('horizontal project rows', () => {
     finishIntent();
     expect(opening.parent).toBeNull();
     animation().progress(1);
+    expect(tracks()).toEqual(['0.7fr', '1.3fr']);
     expect(card().getAttribute('data-project-expanded')).toBe('false');
     expect(card(1).getAttribute('data-project-expanded')).toBe('true');
   });
 
-  it('closes the drawer after its grace period', () => {
+  it('returns to equal columns after the closing grace period', () => {
     start();
     move();
     finishIntent();
@@ -168,6 +182,7 @@ describe('horizontal project rows', () => {
     expect(card().getAttribute('data-project-expanded')).toBe('true');
     finishIntent();
     animation().progress(1);
+    expect(tracks()).toEqual(['1fr', '1fr']);
     expect(drawer().style.width).toBe('0px');
     expect(drawer().inert).toBeTrue();
   });
@@ -175,11 +190,13 @@ describe('horizontal project rows', () => {
   it('immediately opens the focused project and protects it from hover switching', () => {
     start();
     card().querySelector<HTMLElement>('a')!.focus();
+    expect(tracks()).toEqual(['1.3fr', '0.7fr']);
     expect(drawer().inert).toBeFalse();
     move(1);
     expect(card().getAttribute('data-project-expanded')).toBe('true');
 
     card(1).querySelector<HTMLElement>('a')!.focus();
+    expect(tracks()).toEqual(['0.7fr', '1.3fr']);
     expect(drawer().inert).toBeTrue();
     expect(drawer(1).inert).toBeFalse();
   });
@@ -195,13 +212,14 @@ describe('horizontal project rows', () => {
     expect(drawer(1).inert).toBeFalse();
   });
 
-  it('updates the measured details width when its card is resized', () => {
+  it('updates the details width when its row resizes', () => {
     start();
     move();
     finishIntent();
     animation().progress(1);
-    cardWidth = 320;
+    rowWidth = 800;
     resizeCallbacks[0]([], {} as ResizeObserver);
+    expect(tracks()).toEqual(['1.3fr', '0.7fr']);
     expect(drawer().style.width).toBe('208px');
     expect(card().style.getPropertyValue('--project-brief-width')).toBe('208px');
   });
@@ -212,6 +230,7 @@ describe('horizontal project rows', () => {
     move();
     finishIntent();
     animation().progress(1);
+    expect(tracks()).toEqual([]);
     expect(drawer().inert).toBeFalse();
     expect(drawer().style.width).toBe('256px');
   });
@@ -229,6 +248,8 @@ describe('horizontal project rows', () => {
 
     expect(closingIntent.parent).toBeNull();
     expect(delayedCall.calls.count()).toBe(calls);
+    expect(row().classList).not.toContain('projects-home-row-horizontal');
+    expect(tracks()).toEqual([]);
     expect(card().classList).not.toContain('project-preview-horizontal');
     expect(card().style.getPropertyValue('--project-brief-width')).toBe('');
     expect(card().hasAttribute('data-project-expanded')).toBeFalse();

@@ -27,7 +27,7 @@
       @case ('success') {
       @if (projectItems.data.length > 0) {
       @for (row of projectRows(); track row[0].id) {
-       <div class="projects-home-row">
+      <div class="projects-home-row" [attr.data-project-count]="row.length">
         @for (project of row; track project.id) {
         <div class="projects-home-slot">
           <div class="projects-home-motion">

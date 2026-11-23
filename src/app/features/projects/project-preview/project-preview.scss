@@ -86,7 +86,7 @@
 }
 
 .project-preview-drawer {
-  // Desktop motion overlays the preview image without changing the card footprint.
+  // Motion enhances this into a drawer on hover-capable screens.
   // Touch, SSR, reduced motion and failed JS loading keep it fully open.
   position: relative;
   z-index: 2;
@@ -164,19 +164,13 @@
   margin-top: 0.625rem;
 }
 
-.project-preview-interactive,
-.project-preview-horizontal {
+.project-preview-interactive {
   grid-template-rows: 1fr auto;
 
   .project-preview-drawer {
     position: absolute;
     grid-area: 1 / 1 / 2 / 2;
     background: #101211;
-  }
-}
-
-.project-preview-interactive {
-  .project-preview-drawer {
     inset: auto 0 0;
     max-height: 100%;
     overflow-y: auto;
@@ -185,10 +179,18 @@
 }
 
 .project-preview-horizontal {
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: 1fr auto;
+
+  .project-preview-title {
+    // Titles can wrap as the tracks move without shifting other rows.
+    min-block-size: 2lh;
+  }
+
   .project-preview-drawer {
-    inset: 0 0 0 auto;
+    grid-area: 1 / 2 / 3 / 3;
+    contain: size;
     width: 0;
-    height: 100%;
   }
 
   .project-preview-brief {

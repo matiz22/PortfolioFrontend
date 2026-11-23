@@ -114,6 +114,22 @@ describe('ProjectPreview', () => {
     expect(list.scrollHeight).toBeGreaterThan(list.clientHeight);
   });
 
+  it('opens the desktop drawer beside the image instead of covering it', () => {
+    root.style.width = '560px';
+    const card = root.querySelector<HTMLElement>('.project-preview')!;
+    const image = root.querySelector<HTMLElement>('.project-preview-visual')!;
+    const drawer = root.querySelector<HTMLElement>('.project-preview-drawer')!;
+    card.classList.add('project-preview-horizontal');
+    const height = card.offsetHeight;
+
+    card.style.setProperty('--project-brief-width', '220px');
+    drawer.style.width = '220px';
+
+    expect(drawer.offsetWidth).toBe(220);
+    expect(drawer.getBoundingClientRect().left).toBeCloseTo(image.getBoundingClientRect().right, 1);
+    expect(card.offsetHeight).toBe(height);
+  });
+
   it('omits unavailable external actions and renders a missing-thumbnail fallback', async () => {
     fixture.componentRef.setInput('project', {
       ...project, thumbnail: null, liveUrl: null, repoUrl: null, technologies: [],
