@@ -25,6 +25,11 @@
     letter-spacing: -0.035em;
 }
 
+:host-context(#home:focus-visible) .hero-headline {
+    outline: 2px solid var(--color-base-content);
+    outline-offset: 0.375rem;
+}
+
 .hero-headline-accent {
     width: fit-content;
     margin-inline: auto;

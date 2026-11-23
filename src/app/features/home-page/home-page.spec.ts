@@ -3,6 +3,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, DeferBlockBehavior, DeferBlockState, TestBed } from '@angular/core/testing';
 
 import { HomePage } from './home-page';
+import { HeroSection } from '../hero/hero-section/hero-section';
 import { GRAIN_CHAPTER_ACCENTS } from '../../shared/grain-gradient/grain-gradient-palette';
 import { SectionNext } from '../../shared/section-next/section-next';
 
@@ -15,7 +16,7 @@ describe('HomePage', () => {
       imports: [HomePage],
       deferBlockBehavior: DeferBlockBehavior.Manual,
     })
-    .overrideComponent(HomePage, { set: { imports: [SectionNext], schemas: [NO_ERRORS_SCHEMA] } })
+    .overrideComponent(HomePage, { set: { imports: [HeroSection, SectionNext], schemas: [NO_ERRORS_SCHEMA] } })
     .compileComponents();
 
     fixture = TestBed.createComponent(HomePage);
@@ -151,6 +152,19 @@ describe('HomePage', () => {
     expect(marker.borderBlockStartWidth).toBe('2px');
     expect(marker.inlineSize).toBe('12px');
     chapter.blur();
+  });
+
+  it('outlines the hero heading on keyboard focus instead of drawing a corner mark', () => {
+    const root: HTMLElement = fixture.nativeElement;
+    const hero = root.querySelector<HTMLElement>('#home')!;
+    const heading = hero.querySelector('#hero-headline')!;
+
+    expect(getComputedStyle(heading).outlineStyle).toBe('none');
+    hero.focus({ preventScroll: true });
+    expect(hero.matches(':focus-visible')).toBeTrue();
+    expect(getComputedStyle(hero, '::before').content).toBe('none');
+    expect(getComputedStyle(heading).outlineStyle).toBe('solid');
+    hero.blur();
   });
 
   it('sets stable metadata accents on only the five portfolio chapters before hydration', () => {

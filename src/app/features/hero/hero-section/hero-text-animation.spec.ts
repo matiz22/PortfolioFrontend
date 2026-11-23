@@ -68,9 +68,9 @@ describe('hero text animation', () => {
     return animation as gsap.core.Timeline;
   }
 
-  for (const [mainText, accentText, duration] of [
-    ['I build what you can’t get', 'off the shelf.', 1.22],
-    ['Buduję to, czego brakuje', 'w gotowych narzędziach.', 1.18],
+  for (const [mainText, accentText] of [
+    ['I build what’s missing.', 'I connect what works.'],
+    ['Tworzę to, czego brakuje.', 'Łączę to, co działa.'],
   ] as const) {
     it(`reveals and restores the rendered copy: ${mainText}`, () => {
       const main = root.querySelector<HTMLElement>('.hero-headline-main')!;
@@ -87,7 +87,7 @@ describe('hero text animation', () => {
       expect(main.textContent).toBe(mainText);
       expect(accent.textContent).toBe(accentText);
       expect(timeline().repeat()).toBe(0);
-      expect(timeline().duration()).toBeCloseTo(duration, 2);
+      expect(timeline().duration()).toBeCloseTo(1.18, 2);
       expect(gsap.getTweensOf(root.querySelector('.hero-actions')).length).toBe(0);
 
       timeline().progress(1);
