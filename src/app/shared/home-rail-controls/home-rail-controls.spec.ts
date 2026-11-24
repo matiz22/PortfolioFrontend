@@ -156,4 +156,48 @@ describe('HomeRailControls', () => {
     });
     expect(buttons()).toHaveSize(2);
   });
+
+  it('uses reachable stops on a wide native rail without loading animation code', async () => {
+    mobile = false;
+    viewport.style.cssText = 'display:flex;width:900px;height:40px;gap:24px;overflow-x:auto;';
+    [...viewport.children].forEach(card => (card as HTMLElement).style.flex = '0 0 450px');
+    fixture.componentRef.setInput('scope', 'responsive');
+    fixture.componentRef.setInput('showProgress', true);
+    await render();
+    const [previous, next] = buttons();
+    const move = spyScroll();
+    expect(next).toBeDefined();
+
+    // Three cards, two visible: the final reachable stop precedes the last card's edge.
+    await scroll(viewport.scrollWidth - viewport.clientWidth);
+    previous.click();
+    expect(move).toHaveBeenCalledWith({ left: 474, behavior: 'smooth' });
+    await scroll(474);
+    previous.click();
+    expect(move).toHaveBeenCalledWith({ left: 0, behavior: 'smooth' });
+    await scroll(0);
+    next.click();
+    expect(move).toHaveBeenCalledWith({ left: 474, behavior: 'smooth' });
+  });
+
+  it('shows pinned progress and restores working native controls after pin cleanup', async () => {
+    mobile = false;
+    fixture.componentRef.setInput('scope', 'responsive');
+    fixture.componentRef.setInput('showProgress', true);
+    await render();
+    viewport.style.overflowX = 'hidden';
+    fixture.componentInstance.setPinnedProgress(0.65);
+    await render();
+    expect(buttons()).toHaveSize(0);
+    const progress: HTMLElement = fixture.nativeElement.querySelector('.rail-progress > span');
+    expect(progress.style.transform).toBe('scaleX(0.65)');
+
+    fixture.componentInstance.setPinnedProgress(null);
+    viewport.style.overflowX = 'auto';
+    await render();
+    expect(buttons()).toHaveSize(2);
+    const move = spyScroll();
+    buttons()[1].click();
+    expect(move).toHaveBeenCalledOnceWith({ left: 266, behavior: 'smooth' });
+  });
 });

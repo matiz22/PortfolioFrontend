@@ -77,4 +77,15 @@ describe('RealizationShowcaseCard', () => {
     expect(root.querySelectorAll('a').length).toBe(1);
     expect(root.querySelector('.realization-card-client')?.textContent).toContain(realization.clientName);
   });
+
+  it('falls back after an image failure and retries when its thumbnail changes', () => {
+    root.querySelector('img')!.dispatchEvent(new Event('error'));
+    fixture.detectChanges();
+    expect(root.querySelector('img')).toBeNull();
+    expect(root.querySelector('.realization-card-fallback')?.textContent).toBe(realization.title);
+
+    fixture.componentRef.setInput('realization', { ...realization, thumbnail: 'https://example.com/replacement.png' });
+    fixture.detectChanges();
+    expect(root.querySelector('img')?.getAttribute('src')).toBe('https://example.com/replacement.png');
+  });
 });

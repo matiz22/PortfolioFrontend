@@ -1,13 +1,14 @@
 import { gsap } from 'gsap';
 import { animateRealizationsScroll } from './realizations-scroll-animation';
 
-describe('realizations navigation without a numeric counter', () => {
+describe('realizations optional visual motion', () => {
   let root: HTMLElement;
   let gallery: HTMLElement;
   let previous: HTMLButtonElement;
   let next: HTMLButtonElement;
   let motion: gsap.MatchMedia | undefined;
   let scrollTo: jasmine.Spy;
+  let reportProgress: jasmine.Spy;
   let wide: boolean;
   let desktop: boolean;
   let canAnimate: boolean;
@@ -58,6 +59,7 @@ describe('realizations navigation without a numeric counter', () => {
       Object.defineProperty(card, 'offsetWidth', { value: 240 });
     });
     scrollTo = spyOn(gallery, 'scrollTo');
+    reportProgress = jasmine.createSpy('reportPinnedProgress');
   });
 
   afterEach(() => {
@@ -78,7 +80,7 @@ describe('realizations navigation without a numeric counter', () => {
   it('leaves phone swipe rails to the browser even when motion is allowed', () => {
     wide = false;
     canAnimate = true;
-    motion = animateRealizationsScroll(root);
+    motion = animateRealizationsScroll(root, reportProgress);
     scroll(270);
     next.click();
 
@@ -88,7 +90,7 @@ describe('realizations navigation without a numeric counter', () => {
   });
 
   it('removes the right-edge fade near the last card and restores it scrolling back', () => {
-    motion = animateRealizationsScroll(root);
+    motion = animateRealizationsScroll(root, reportProgress);
     expect(edgeAlpha()).toBeCloseTo(0.28, 3);
     scroll(472.5);
     expect(edgeAlpha()).toBeCloseTo(0.64, 3);
@@ -102,7 +104,7 @@ describe('realizations navigation without a numeric counter', () => {
 
   it('does not veil a gallery where all the cards fit', () => {
     Object.defineProperty(gallery, 'clientWidth', { value: 840 });
-    motion = animateRealizationsScroll(root);
+    motion = animateRealizationsScroll(root, reportProgress);
     expect(edgeAlpha()).toBe(1);
   });
 
@@ -113,8 +115,9 @@ describe('realizations navigation without a numeric counter', () => {
     const wrap = root.querySelector<HTMLElement>('.realizations-stage-wrap')!;
     Object.defineProperty(wrap.firstElementChild, 'offsetHeight', { value: window.innerHeight });
     spyOn(wrap, 'getBoundingClientRect').and.callFake(() => ({ top } as DOMRect));
-    motion = animateRealizationsScroll(root);
+    motion = animateRealizationsScroll(root, reportProgress);
     expect(root.querySelector('.realizations-is-pinned')).not.toBeNull();
+    expect(reportProgress).toHaveBeenCalledWith(0);
     expect(edgeAlpha()).toBeCloseTo(0.28, 3);
 
     const finishScroll = () => {
@@ -124,6 +127,7 @@ describe('realizations navigation without a numeric counter', () => {
     top = -702; // 162px leading hold + 540px horizontal overflow.
     finishScroll();
     expect(edgeAlpha()).toBe(1);
+    expect(reportProgress).toHaveBeenCalledWith(1);
     top = 0;
     finishScroll();
     expect(edgeAlpha()).toBeCloseTo(0.28, 3);
@@ -135,44 +139,63 @@ describe('realizations navigation without a numeric counter', () => {
     Object.defineProperty(root.querySelector('.realizations-stage'), 'offsetHeight', {
       value: window.innerHeight + 1,
     });
-    motion = animateRealizationsScroll(root);
+    motion = animateRealizationsScroll(root, reportProgress);
     expect(root.querySelector('.realizations-is-pinned')).toBeNull();
-    expect(next.disabled).toBeFalse();
+    expect(reportProgress).not.toHaveBeenCalled();
   });
 
-  it('updates arrows and the progress rail without any counter element', () => {
-    motion = animateRealizationsScroll(root);
-    expect(previous.disabled).toBeTrue();
-    expect(next.disabled).toBeFalse();
-    next.click();
-    expect(scrollTo).toHaveBeenCalledWith({ left: 300, behavior: 'auto' });
-
-    scroll(270);
-    expect(previous.disabled).toBeFalse();
-    expect(next.disabled).toBeFalse();
-    expect(Number(gsap.getProperty(root.querySelector('.realizations-rail-fill')!, 'scaleX'))).toBe(0.5);
-    next.click();
-    expect(scrollTo).toHaveBeenCalledWith({ left: 600, behavior: 'auto' });
-
-    scroll(540);
-    expect(next.disabled).toBeTrue();
+  it('does not bind navigation controls in the optional motion module', () => {
+    motion = animateRealizationsScroll(root, reportProgress);
     previous.click();
-    expect(scrollTo).toHaveBeenCalledWith({ left: 300, behavior: 'auto' });
+    next.click();
+    expect(scrollTo).not.toHaveBeenCalled();
+    expect(reportProgress).not.toHaveBeenCalled();
+    expect(root.querySelector<HTMLElement>('.realizations-rail-fill')!.style.transform).toBe('');
   });
 
-  it('disables both arrows when there is only one card', () => {
+  it('does not pin a single card with no horizontal overflow', () => {
+    desktop = true;
+    canAnimate = true;
     const cards = root.querySelectorAll('.realization-showcase');
     cards[1].remove();
     cards[2].remove();
     Object.defineProperty(gallery, 'scrollWidth', { value: 300 });
-    motion = animateRealizationsScroll(root);
-    expect(previous.disabled).toBeTrue();
-    expect(next.disabled).toBeTrue();
+    motion = animateRealizationsScroll(root, reportProgress);
+    expect(root.querySelector('.realizations-is-pinned')).toBeNull();
+    expect(reportProgress).not.toHaveBeenCalled();
     expect(edgeAlpha()).toBe(1);
   });
 
-  it('removes navigation listeners and progress styles on cleanup', () => {
-    motion = animateRealizationsScroll(root);
+  it('rechecks pin eligibility as stage content grows and shrinks', async () => {
+    desktop = true;
+    canAnimate = true;
+    let stageHeight = window.innerHeight;
+    Object.defineProperty(root.querySelector('.realizations-stage'), 'offsetHeight', {
+      get: () => stageHeight,
+    });
+    motion = animateRealizationsScroll(root, reportProgress);
+    expect(root.querySelector('.realizations-is-pinned')).not.toBeNull();
+    const resize = async () => {
+      window.dispatchEvent(new Event('resize'));
+      await new Promise<void>(resolve => requestAnimationFrame(() => resolve()));
+    };
+    stageHeight += 1;
+    await resize();
+    expect(root.querySelector('.realizations-is-pinned')).toBeNull();
+    expect(reportProgress).toHaveBeenCalledWith(null);
+    expect(root.querySelector<HTMLElement>('.realizations-stage-wrap')!.style.height).toBe('');
+
+    stageHeight -= 1;
+    await resize();
+    expect(root.querySelector('.realizations-is-pinned')).not.toBeNull();
+    expect(reportProgress.calls.mostRecent().args[0]).not.toBeNull();
+    motion.revert();
+    expect(reportProgress.calls.mostRecent().args[0]).toBeNull();
+    expect(root.querySelector<HTMLElement>('.realizations-track')!.style.transform).toBe('');
+  });
+
+  it('restores edge styles and removes visual listeners on cleanup', () => {
+    motion = animateRealizationsScroll(root, reportProgress);
     motion.revert();
     next.click();
     expect(scrollTo).not.toHaveBeenCalled();
@@ -182,7 +205,7 @@ describe('realizations navigation without a numeric counter', () => {
 
   it('preserves a pre-existing inline edge setting on cleanup', () => {
     gallery.style.setProperty('--realizations-edge-alpha', '0.8', 'important');
-    motion = animateRealizationsScroll(root);
+    motion = animateRealizationsScroll(root, reportProgress);
     motion.revert();
     expect(gallery.style.getPropertyValue('--realizations-edge-alpha')).toBe('0.8');
     expect(gallery.style.getPropertyPriority('--realizations-edge-alpha')).toBe('important');

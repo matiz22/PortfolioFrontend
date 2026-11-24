@@ -121,14 +121,13 @@
 // Scrubbed desktop mode: native swiping is replaced by the scroll-driven
 // translate, so the gallery must not scroll on its own.
 .realizations-is-pinned {
+  // Match the candidate pin measurement to its progress-only controls.
+  --home-rail-button-display: none;
+
   // Keep the whole composition in view only while the desktop track scrubs.
   .realizations-stage {
     position: sticky;
     top: 0;
-  }
-
-  .realizations-nav {
-    display: none;
   }
 
   .realizations-gallery {
@@ -138,63 +137,6 @@
 
   .realizations-track > * {
     scroll-snap-align: none;
-  }
-}
-
-.realizations-progress {
-  display: none;
-
-  @media (min-width: 48rem) {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-top: 1rem;
-  }
-}
-
-.realizations-rail {
-  display: block;
-  flex: 1;
-  height: 2px;
-  overflow: hidden;
-  background: rgb(255 255 255 / 12%);
-}
-
-.realizations-rail-fill {
-  display: block;
-  width: 100%;
-  height: 100%;
-  background: var(--color-secondary);
-  transform-origin: left top;
-}
-
-.realizations-nav {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  width: 2.25rem;
-  height: 2.25rem;
-  border: 1px solid rgb(255 255 255 / 12%);
-  border-radius: 999px;
-  background: transparent;
-  color: color-mix(in srgb, var(--color-base-content) 70%, transparent);
-  cursor: pointer;
-  transition: color 200ms ease, border-color 200ms ease;
-
-  svg {
-    width: 0.85rem;
-  }
-
-  &:hover:not(:disabled),
-  &:focus-visible:not(:disabled) {
-    color: var(--color-secondary);
-    border-color: color-mix(in srgb, var(--color-secondary) 45%, transparent);
-  }
-
-  &:disabled {
-    opacity: 0.35;
-    cursor: default;
   }
 }
 

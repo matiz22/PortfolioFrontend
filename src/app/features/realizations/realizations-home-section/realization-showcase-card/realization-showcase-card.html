@@ -19,9 +19,9 @@
   </p>
 
   <div class="realization-card-frame">
-    @if (realization().thumbnail; as thumbnail) {
-    <img class="realization-card-image" [src]="thumbnail | imageUrl" [alt]="realization().title" loading="lazy"
-      decoding="async" />
+    @if (realization().thumbnail && !thumbnailFailed()) {
+    <img class="realization-card-image" [src]="realization().thumbnail | imageUrl" [alt]="realization().title" loading="lazy"
+      decoding="async" (error)="thumbnailFailed.set(true)" />
     } @else {
     <span class="realization-card-fallback" aria-hidden="true">{{ realization().title }}</span>
     }

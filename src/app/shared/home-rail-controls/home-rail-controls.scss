@@ -3,8 +3,33 @@
 }
 
 @media (min-width: 48rem) {
-  :host {
+  :host:not(.responsive) {
     display: none;
+  }
+
+  :host(.responsive) .rail-controls {
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+}
+
+.rail-progress {
+  display: none;
+  flex: 1;
+  block-size: 2px;
+  overflow: hidden;
+  background: rgb(255 255 255 / 12%);
+
+  @media (min-width: 48rem) {
+    display: block;
+  }
+
+  > span {
+    display: block;
+    block-size: 100%;
+    background: var(--color-secondary);
+    transform-origin: left top;
   }
 }
 
@@ -15,7 +40,7 @@
 }
 
 button {
-  display: grid;
+  display: var(--home-rail-button-display, grid);
   place-items: center;
   inline-size: max(44px, 2.75rem);
   block-size: max(44px, 2.75rem);

@@ -39,27 +39,8 @@
               }
             </div>
           </div>
-          <app-home-rail-controls [viewport]="workRail" headingId="realizations-heading" />
-
-          @if (hasItems()) {
-          <div class="realizations-progress">
-            <button type="button" class="realizations-nav realizations-nav-prev" aria-label="Previous realization"
-              i18n-aria-label="@@realizations.prev">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M15 18l-6-6 6-6" />
-              </svg>
-            </button>
-            <span class="realizations-rail" aria-hidden="true"><span class="realizations-rail-fill"></span></span>
-            <button type="button" class="realizations-nav realizations-nav-next" aria-label="Next realization"
-              i18n-aria-label="@@realizations.next">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M9 18l6-6-6-6" />
-              </svg>
-            </button>
-          </div>
-          }
+          <app-home-rail-controls [viewport]="workRail" headingId="realizations-heading"
+            scope="responsive" [showProgress]="true" />
         </div>
       </div>
       <app-section-footer class="realizations-next">

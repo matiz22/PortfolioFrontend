@@ -2,8 +2,8 @@ import {
   ChangeDetectionStrategy,
   Component,
   afterRenderEffect,
-  computed,
   inject,
+  viewChild,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -29,10 +29,7 @@ export class RealizationsHomeSection {
     initialValue: ApiState.loading<RealizationSummary[]>(),
   });
 
-  readonly hasItems = computed(() => {
-    const state = this.realizations();
-    return state.status === 'success' && state.data.length > 0;
-  });
+  private readonly controls = viewChild.required(HomeRailControls);
 
   constructor() {
     const mountMotion = injectLazyMotion();
@@ -48,7 +45,8 @@ export class RealizationsHomeSection {
         const [{ animateRealizationsScroll }] = await Promise.all([
           import('./realizations-scroll-animation'), root.ownerDocument.fonts.ready,
         ]);
-        return animateRealizationsScroll;
+        return (element) => animateRealizationsScroll(element,
+          progress => this.controls().setPinnedProgress(progress));
       }, 'Realizations scroll animation could not be loaded.'));
     });
   }

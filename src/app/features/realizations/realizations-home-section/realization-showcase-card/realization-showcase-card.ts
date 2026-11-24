@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, linkedSignal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { HomeMetadataPills } from '../../../../shared/home-metadata-pills/home-metadata-pills';
 import { ImageUrlPipe } from '../../../../shared/pipes/image-url-pipe';
@@ -16,4 +16,8 @@ import { RealizationSummary } from '../../../../core/models/summary/realization'
 })
 export class RealizationShowcaseCard {
   readonly realization = input.required<RealizationSummary>();
+  protected readonly thumbnailFailed = linkedSignal({
+    source: () => this.realization().thumbnail,
+    computation: () => false,
+  });
 }
