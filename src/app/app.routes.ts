@@ -6,6 +6,7 @@ import { RealizationsService } from './core/services/realizations.service';
 import { EducationService } from './core/services/education.service';
 import { CertificationsService } from './core/services/certifications.service';
 import { JobsService } from './core/services/jobs.service';
+import { environment } from '../environments/environment';
 
 const homeTitle = $localize`:@@homeTitleMeta:AI Integration & Workflow Automation`;
 
@@ -18,11 +19,16 @@ export const routes: Routes = [
         resolve: { seo: staticSeoResolver },
         data: {
             reuse: true,
+            anchorOffset: 0,
             seo: {
                 title: homeTitle,
                 description: $localize`:@@homeDescriptionMeta:I build AI assistants that draft reports and answer questions from company documents, with sources you can check and approval before reports go out.`,
                 ogImage: 'https://malich.dev/opengraph.png',
-                robots: 'index, follow'
+                robots: 'index, follow',
+                alternates: [
+                    ...environment.languagesOptions.map(({ code, url }) => ({ hreflang: code, href: url })),
+                    { hreflang: 'x-default', href: environment.languagesOptions.find(({ code }) => code === 'pl')!.url },
+                ],
             }
         },
     },

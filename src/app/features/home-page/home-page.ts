@@ -1,4 +1,4 @@
-import { afterNextRender, Component, ElementRef, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
+import { afterNextRender, Component, ElementRef, inject, ChangeDetectionStrategy } from '@angular/core';
 import { DOCUMENT, ViewportScroller } from '@angular/common';
 import { Footer } from "../../shared/footer/footer";
 import { HeroSection } from "../hero/hero-section/hero-section";
@@ -15,17 +15,18 @@ import { GrainGradient } from '../../shared/grain-gradient/grain-gradient';
 import { GRAIN_CHAPTER_ACCENTS } from '../../shared/grain-gradient/grain-gradient-palette';
 import { HomeMotionLifecycle } from '../../shared/animations/home-motion-lifecycle';
 import { afterNextRenderMotion } from '../../shared/animations/lazy-motion';
+import { RouteAttachment } from '../../core/models/route-attachment';
 
 @Component({
   selector: 'app-home-page',
   imports: [Footer, HeroSection, AboutMeSection, Header, ContactSection, EducationSection, CertificationsSection, RealizationsHomeSection, ProjectsHomeSection, JobTimelineSection, SectionNext, GrainGradient],
   providers: [HomeMotionLifecycle],
   templateUrl: './home-page.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './home-page.scss',
 })
-export class HomePage implements OnInit {
-  readonly motionLifecycle = inject(HomeMotionLifecycle);
+export class HomePage implements RouteAttachment {
+  private readonly motionLifecycle = inject(HomeMotionLifecycle);
   protected readonly chapterAccents = GRAIN_CHAPTER_ACCENTS;
   private readonly document = inject(DOCUMENT);
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
@@ -41,17 +42,12 @@ export class HomePage implements OnInit {
     }, 'Home text animation could not be loaded.');
   }
 
-  ngOnInit(): void {
-    this.addHreflangLinks();
-    // Router-driven fragment restoration should land where native links do.
-    this.viewportScroller.setOffset(() => {
-      const chapter = this.host.nativeElement.querySelector<HTMLElement>('[data-grain-chapter]');
-      const view = this.document.defaultView;
-      const offset = view && chapter?.isConnected
-        ? parseFloat(view.getComputedStyle(chapter).scrollMarginTop) || 0
-        : 0;
-      return [0, offset];
-    });
+  onRouteAttach(): void {
+    this.motionLifecycle.attach();
+  }
+
+  onRouteDetach(): void {
+    this.motionLifecycle.detach();
   }
 
   private scrollToInitialFragment(root: HTMLElement): void {
@@ -74,22 +70,4 @@ export class HomePage implements OnInit {
     }
   }
 
-  private addHreflangLinks(): void {
-    const hreflangs = [
-      { hreflang: 'pl', href: 'https://malich.dev/' },
-      { hreflang: 'en', href: 'https://malich.dev/en' },
-      { hreflang: 'x-default', href: 'https://malich.dev/' },
-    ];
-
-    // Remove existing hreflang links to avoid duplicates on reuse
-    this.document.querySelectorAll('link[rel="alternate"][hreflang]').forEach(el => el.remove());
-
-    hreflangs.forEach(({ hreflang, href }) => {
-      const link = this.document.createElement('link');
-      link.setAttribute('rel', 'alternate');
-      link.setAttribute('hreflang', hreflang);
-      link.setAttribute('href', href);
-      this.document.head.appendChild(link);
-    });
-  }
 }

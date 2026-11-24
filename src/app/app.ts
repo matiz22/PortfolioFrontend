@@ -1,28 +1,27 @@
 import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { RouterOutlet } from "@angular/router";
-import { ViewportScroller } from '@angular/common';
-import { HomePage } from './features/home-page/home-page';
+import { notifyRouteAttachment } from './core/models/route-attachment';
+import { RoutePresentation } from './core/services/route-presentation';
 
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet],
   templateUrl: './app.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './app.scss'
 })
 export class App {
-  private viewportScroller = inject(ViewportScroller);
   protected readonly title = signal('PortfolioFrontend');
 
   constructor() {
-    this.viewportScroller.setOffset([0, 30]); // [x, y] offset for fixed header
+    inject(RoutePresentation);
   }
 
   protected onRouteAttach(component: unknown): void {
-    if (component instanceof HomePage) component.motionLifecycle.attach();
+    notifyRouteAttachment(component, 'onRouteAttach');
   }
 
   protected onRouteDetach(component: unknown): void {
-    if (component instanceof HomePage) component.motionLifecycle.detach();
+    notifyRouteAttachment(component, 'onRouteDetach');
   }
 }
