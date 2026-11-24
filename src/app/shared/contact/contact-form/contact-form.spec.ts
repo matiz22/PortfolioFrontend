@@ -2,16 +2,22 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ContactForm } from './contact-form';
 import { ContactService } from '../../../core/services/contact.service';
+import { of, Subject } from 'rxjs';
 
 describe('ContactForm', () => {
   let component: ContactForm;
   let fixture: ComponentFixture<ContactForm>;
+  let service: jasmine.SpyObj<ContactService>;
+  let result: Subject<boolean>;
 
   beforeEach(async () => {
+    result = new Subject<boolean>();
+    service = jasmine.createSpyObj<ContactService>('ContactService', ['sendEmail']);
+    service.sendEmail.and.returnValue(result.asObservable());
     await TestBed.configureTestingModule({
       imports: [ContactForm],
       providers: [
-        { provide: ContactService, useValue: jasmine.createSpyObj('ContactService', ['sendEmail']) },
+        { provide: ContactService, useValue: service },
       ],
     })
     .compileComponents();
@@ -55,5 +61,95 @@ describe('ContactForm', () => {
 
     expect(host.querySelectorAll('.text-error').length).toBe(4);
     expect(form.getBoundingClientRect().height).toBeGreaterThan(initialHeight);
+  });
+
+  function submitValidForm(): void {
+    component.contactForm.setValue({
+      name: 'Ada Lovelace', email: 'ada@example.com', subject: 'A project', message: 'Let’s build it.', company: '',
+    });
+    submit();
+  }
+
+  function submit(): void {
+    fixture.nativeElement.querySelector('form')
+      .dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+  }
+
+  it('focuses the first invalid field and associates each visible error with its control', async () => {
+    submit();
+    await fixture.whenStable();
+
+    const root: HTMLElement = fixture.nativeElement;
+    expect(document.activeElement).toBe(root.querySelector('#contact-name'));
+    for (const field of ['name', 'email', 'subject', 'message']) {
+      const control = root.querySelector<HTMLInputElement | HTMLTextAreaElement>(`#contact-${field}`)!;
+      expect(control.required).toBeTrue();
+      expect(control.getAttribute('aria-invalid')).toBe('true');
+      expect(control.getAttribute('aria-describedby')).toBe(`contact-${field}-error`);
+      expect(root.querySelector(`#contact-${field}-error`)?.textContent).toContain('Field is required');
+    }
+    expect(service.sendEmail).not.toHaveBeenCalled();
+  });
+
+  it('sends non-null form values once and announces pending submission', async () => {
+    submitValidForm();
+    submit();
+    await fixture.whenStable();
+
+    expect(service.sendEmail).toHaveBeenCalledOnceWith({
+      name: 'Ada Lovelace', email: 'ada@example.com', subject: 'A project', message: 'Let’s build it.', company: '',
+    });
+    const root: HTMLElement = fixture.nativeElement;
+    expect(root.querySelector('form')?.getAttribute('aria-busy')).toBe('true');
+    expect(root.querySelector<HTMLButtonElement>('button[type="submit"]')?.disabled).toBeTrue();
+    expect(root.querySelector('[role="status"]')?.textContent).toContain('Sending...');
+  });
+
+  it('focuses the announced success message after replacing the form', async () => {
+    submitValidForm();
+    result.next(true);
+    result.complete();
+    await fixture.whenStable();
+
+    const root: HTMLElement = fixture.nativeElement;
+    const success = root.querySelector<HTMLElement>('[aria-labelledby="contact-success-title"]')!;
+    expect(root.querySelector('form')).toBeNull();
+    expect(success.getAttribute('role')).toBe('status');
+    expect(document.activeElement).toBe(success);
+    expect(component.submitting()).toBeFalse();
+  });
+
+  it('announces failures, keeps entered data, and allows retry', async () => {
+    submitValidForm();
+    result.next(false);
+    result.complete();
+    await fixture.whenStable();
+
+    const root: HTMLElement = fixture.nativeElement;
+    expect(root.querySelector('[role="alert"]')?.textContent).toContain('Failed to send message');
+    expect(component.contactForm.controls.message.value).toBe('Let’s build it.');
+    expect(root.querySelector<HTMLButtonElement>('button[type="submit"]')?.disabled).toBeFalse();
+
+    service.sendEmail.and.returnValue(of(true));
+    submit();
+    await fixture.whenStable();
+    expect(service.sendEmail).toHaveBeenCalledTimes(2);
+    expect(root.querySelector('#contact-success-title')).not.toBeNull();
+  });
+
+  it('cancels the pending subscription on destruction and ignores late responses', () => {
+    submitValidForm();
+    expect(result.observed).toBeTrue();
+    fixture.destroy();
+
+    expect(result.observed).toBeFalse();
+    expect(component.submitting()).toBeFalse();
+    result.next(true);
+    expect(component.submitted()).toBeNull();
+  });
+
+  it('resets all form values to strings', () => {
+    component.contactForm.reset();
+    expect(component.contactForm.getRawValue()).toEqual({ name: '', email: '', subject: '', message: '', company: '' });
   });
 });

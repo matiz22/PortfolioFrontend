@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {Contact} from '../models/contact';
 import {catchError, map, Observable, of} from 'rxjs';
@@ -20,13 +20,9 @@ export class ContactService {
       return of(true);
     }
 
-    return this.http.post<any>(this.baseUrl, mapContactDto(contact, 'contact_form')).pipe(
+    return this.http.post<unknown>(this.baseUrl, mapContactDto(contact, 'contact_form')).pipe(
       map(() => true),
-      catchError(err => this.handleError(err))
+      catchError(() => of(false))
     );
-  }
-
-  private handleError(error: HttpErrorResponse): Observable<boolean> {
-    return of(false);
   }
 }

@@ -1,25 +1,31 @@
+<p class="sr-only" role="status" aria-live="polite" aria-atomic="true">
+    @if (submitting()) {
+    <ng-container i18n="@@contactForm.button.sending">Sending...</ng-container>
+    }
+</p>
 @if (submitted() === true) {
 <!-- Success Message - Show when form is successfully sent -->
-<div class="flex flex-col items-center justify-center py-12 text-center">
+<div #successMessage class="flex flex-col items-center justify-center py-12 text-center"
+    tabindex="-1" role="status" aria-labelledby="contact-success-title" aria-describedby="contact-success-description">
     <div class="w-16 h-16 mb-6 rounded-xl bg-primary/10 flex items-center justify-center">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-primary" fill="none" viewBox="0 0 24 24"
-            stroke="currentColor">
+            stroke="currentColor" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
     </div>
-    <h3 class="section-heading text-xl mb-2" i18n="@@contactForm.success.title">Message Sent!</h3>
-    <p class="text-base-content/50 max-w-sm text-sm" i18n="@@contactForm.success.description">Thank you for reaching out. I'll
+    <h3 id="contact-success-title" class="section-heading text-xl mb-2" i18n="@@contactForm.success.title">Message Sent!</h3>
+    <p id="contact-success-description" class="text-base-content/50 max-w-sm text-sm" i18n="@@contactForm.success.description">Thank you for reaching out. I'll
         get back to you as soon as possible.</p>
 </div>
 } @else {
-<form class="contact-form" [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+<form class="contact-form" [formGroup]="contactForm" (ngSubmit)="onSubmit()" [attr.aria-busy]="submitting()">
     <!-- Name Field -->
     <div class="form-control contact-identity">
         <label class="label pb-1.5" for="contact-name">
             <span class="label-text text-sm font-medium text-base-content/60 flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-primary/60" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
+                    stroke="currentColor" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                 </svg>
@@ -28,13 +34,15 @@
         </label>
         <input id="contact-name"
             class="input input-bordered w-full bg-base-300/50 border-white/5 focus:bg-base-300 focus:border-primary/50 focus:ring-1 focus:ring-primary/20 transition-all duration-300"
-            [class.input-error]="contactForm.get('name')?.invalid && contactForm.get('name')?.touched"
-            placeholder="Your Name" i18n-placeholder="@@contactForm.placeholder.name" type="text" formControlName="name"
-            (blur)="onBlur('name')">
-        @if (contactForm.get('name')?.invalid && contactForm.get('name')?.touched) {
-        <label class="label pb-2">
+            [class.input-error]="contactForm.controls.name.invalid && contactForm.controls.name.touched"
+            [attr.aria-invalid]="contactForm.controls.name.invalid && contactForm.controls.name.touched"
+            [attr.aria-describedby]="contactForm.controls.name.invalid && contactForm.controls.name.touched ? 'contact-name-error' : null"
+            required maxlength="100" autocomplete="name"
+            placeholder="Your Name" i18n-placeholder="@@contactForm.placeholder.name" type="text" formControlName="name">
+        @if (contactForm.controls.name.invalid && contactForm.controls.name.touched) {
+        <p id="contact-name-error" class="label pb-2">
             <span class="label-text-alt text-error">{{ getErrorMessage('name') }}</span>
-        </label>
+        </p>
         }
     </div>
 
@@ -43,7 +51,7 @@
         <label class="label pb-1.5" for="contact-email">
             <span class="label-text text-sm font-medium text-base-content/60 flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-primary/60" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
+                    stroke="currentColor" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
@@ -52,13 +60,16 @@
         </label>
         <input id="contact-email"
             class="input input-bordered w-full bg-base-300/50 border-white/5 focus:bg-base-300 focus:border-primary/50 focus:ring-1 focus:ring-primary/20 transition-all duration-300"
-            [class.input-error]="contactForm.get('email')?.invalid && contactForm.get('email')?.touched"
+            [class.input-error]="contactForm.controls.email.invalid && contactForm.controls.email.touched"
+            [attr.aria-invalid]="contactForm.controls.email.invalid && contactForm.controls.email.touched"
+            [attr.aria-describedby]="contactForm.controls.email.invalid && contactForm.controls.email.touched ? 'contact-email-error' : null"
+            required maxlength="255" autocomplete="email"
             placeholder="your@email.com" i18n-placeholder="@@contactForm.placeholder.email" type="email"
-            formControlName="email" (blur)="onBlur('email')">
-        @if (contactForm.get('email')?.invalid && contactForm.get('email')?.touched) {
-        <label class="label pb-2">
+            formControlName="email">
+        @if (contactForm.controls.email.invalid && contactForm.controls.email.touched) {
+        <p id="contact-email-error" class="label pb-2">
             <span class="label-text-alt text-error">{{ getErrorMessage('email') }}</span>
-        </label>
+        </p>
         }
     </div>
 
@@ -67,7 +78,7 @@
         <label class="label pb-1.5" for="contact-subject">
             <span class="label-text text-sm font-medium text-base-content/60 flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-primary/60" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
+                    stroke="currentColor" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
                 </svg>
@@ -76,13 +87,16 @@
         </label>
         <input id="contact-subject"
             class="input input-bordered w-full bg-base-300/50 border-white/5 focus:bg-base-300 focus:border-primary/50 focus:ring-1 focus:ring-primary/20 transition-all duration-300"
-            [class.input-error]="contactForm.get('subject')?.invalid && contactForm.get('subject')?.touched"
+            [class.input-error]="contactForm.controls.subject.invalid && contactForm.controls.subject.touched"
+            [attr.aria-invalid]="contactForm.controls.subject.invalid && contactForm.controls.subject.touched"
+            [attr.aria-describedby]="contactForm.controls.subject.invalid && contactForm.controls.subject.touched ? 'contact-subject-error' : null"
+            required maxlength="255" autocomplete="off"
             placeholder="What's this about?" i18n-placeholder="@@contactForm.placeholder.subject" type="text"
-            formControlName="subject" (blur)="onBlur('subject')">
-        @if (contactForm.get('subject')?.invalid && contactForm.get('subject')?.touched) {
-        <label class="label pb-2">
+            formControlName="subject">
+        @if (contactForm.controls.subject.invalid && contactForm.controls.subject.touched) {
+        <p id="contact-subject-error" class="label pb-2">
             <span class="label-text-alt text-error">{{ getErrorMessage('subject') }}</span>
-        </label>
+        </p>
         }
     </div>
 
@@ -96,7 +110,7 @@
         <label class="label pb-1.5" for="contact-message">
             <span class="label-text text-sm font-medium text-base-content/60 flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-primary/60" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
+                    stroke="currentColor" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                 </svg>
@@ -105,21 +119,24 @@
         </label>
         <textarea id="contact-message"
             class="textarea textarea-bordered w-full bg-base-300/50 border-white/5 focus:bg-base-300 focus:border-primary/50 focus:ring-1 focus:ring-primary/20 transition-all duration-300 min-h-32"
-            [class.textarea-error]="contactForm.get('message')?.invalid && contactForm.get('message')?.touched"
+            [class.textarea-error]="contactForm.controls.message.invalid && contactForm.controls.message.touched"
+            [attr.aria-invalid]="contactForm.controls.message.invalid && contactForm.controls.message.touched"
+            [attr.aria-describedby]="contactForm.controls.message.invalid && contactForm.controls.message.touched ? 'contact-message-error' : null"
+            required maxlength="5000" autocomplete="off"
             placeholder="Tell me about your project..." i18n-placeholder="@@contactForm.placeholder.message" rows="5"
-            formControlName="message" (blur)="onBlur('message')"></textarea>
-        @if (contactForm.get('message')?.invalid && contactForm.get('message')?.touched) {
-        <label class="label">
+            formControlName="message"></textarea>
+        @if (contactForm.controls.message.invalid && contactForm.controls.message.touched) {
+        <p id="contact-message-error" class="label">
             <span class="label-text-alt text-error">{{ getErrorMessage('message') }}</span>
-        </label>
+        </p>
         }
     </div>
 
     <!-- Error Message -->
     @if (submitted() === false) {
-    <div class="alert alert-error shadow-lg">
+    <div class="alert alert-error shadow-lg" role="alert">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0" fill="none" viewBox="0 0 24 24"
-            stroke="currentColor">
+            stroke="currentColor" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
@@ -136,7 +153,7 @@
             <span i18n="@@contactForm.button.sending">Sending...</span>
             } @else {
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 group-hover:translate-x-1 transition-transform"
-                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
             </svg>
