@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { ApiState } from '../../../core/models/api.state';
-import { SocialLinksService } from '../../../core/services/social.links.service';
+import { ApiState } from '../../core/models/api.state';
+import { SocialLinksService } from '../../core/services/social.links.service';
 
 import { SocialLinksRow } from './social-links-row';
 

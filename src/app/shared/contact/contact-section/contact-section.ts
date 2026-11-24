@@ -1,13 +1,13 @@
 import { Component, input, ChangeDetectionStrategy } from '@angular/core';
 import { ContactForm } from "../contact-form/contact-form";
-import { SocialLinksRow } from "../../../features/social-links/social-links-row/social-links-row";
+import { SocialLinksRow } from "../../social-links-row/social-links-row";
 
 @Component({
   selector: 'app-contact-section',
   imports: [ContactForm, SocialLinksRow],
   templateUrl: './contact-section.html',
   styleUrl: './contact-section.scss',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   host: { '[class.contact-glass]': 'glass()' },
 })
 export class ContactSection {
