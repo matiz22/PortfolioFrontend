@@ -2,7 +2,6 @@
   <div class="hero-layout relative z-10 mx-auto grid w-full max-w-6xl gap-8 text-center">
     <figure class="hero-portrait">
       <div class="hero-image-container relative">
-        @defer (on immediate) {
         <div class="hero-photo relative overflow-hidden">
           <img ngSrc="hero.png" width="500" height="500" alt="Mateusz Malich"
             class="w-full h-full object-cover" priority />
@@ -12,9 +11,6 @@
             }
           </div>
         </div>
-        } @placeholder {
-        <div class="hero-photo skeleton"></div>
-        }
       </div>
 
       <figcaption class="hero-role-caption mt-4 pt-3 @min-[54rem]/hero:mt-5 @min-[54rem]/hero:pt-4">
