@@ -1,4 +1,4 @@
-import { ViewportScroller } from '@angular/common';
+import { NgTemplateOutlet, ViewportScroller } from '@angular/common';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, DeferBlockBehavior, DeferBlockState, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
@@ -26,7 +26,7 @@ describe('HomePage', () => {
       ],
     })
     .overrideComponent(HomePage, {
-      set: { imports: [CertificationsSection, HeroSection, SectionNext], schemas: [NO_ERRORS_SCHEMA] },
+      set: { imports: [NgTemplateOutlet, CertificationsSection, HeroSection, SectionNext], schemas: [NO_ERRORS_SCHEMA] },
     })
     .compileComponents();
 
@@ -34,6 +34,16 @@ describe('HomePage', () => {
     component = fixture.componentInstance;
     fixture.autoDetectChanges();
     await fixture.whenStable();
+  });
+
+  it('shows a recoverable failure inside the existing chapter anchor', async () => {
+    const [block] = await fixture.getDeferBlocks();
+    await block.render(DeferBlockState.Error);
+    await fixture.whenStable();
+    const chapter = fixture.nativeElement.querySelector('#about');
+    expect(chapter.tabIndex).toBe(-1);
+    expect(chapter.querySelector('[role="alert"]').textContent).toContain('This section could not be loaded.');
+    expect(chapter.querySelector('button').textContent).toContain('Reload page');
   });
 
   it('should create', () => {

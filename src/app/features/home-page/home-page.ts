@@ -1,5 +1,5 @@
 import { afterNextRender, Component, ElementRef, inject, ChangeDetectionStrategy } from '@angular/core';
-import { DOCUMENT, ViewportScroller } from '@angular/common';
+import { DOCUMENT, NgTemplateOutlet, ViewportScroller } from '@angular/common';
 import { Footer } from "../../shared/footer/footer";
 import { HeroSection } from "../hero/hero-section/hero-section";
 import { AboutMeSection } from "../about-me/about-me-section/about-me-section";
@@ -19,7 +19,7 @@ import { RouteAttachment } from '../../core/models/route-attachment';
 
 @Component({
   selector: 'app-home-page',
-  imports: [Footer, HeroSection, AboutMeSection, Header, ContactSection, EducationSection, CertificationsSection, RealizationsHomeSection, ProjectsHomeSection, JobTimelineSection, SectionNext, GrainGradient],
+  imports: [NgTemplateOutlet, Footer, HeroSection, AboutMeSection, Header, ContactSection, EducationSection, CertificationsSection, RealizationsHomeSection, ProjectsHomeSection, JobTimelineSection, SectionNext, GrainGradient],
   providers: [HomeMotionLifecycle],
   templateUrl: './home-page.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -48,6 +48,10 @@ export class HomePage implements RouteAttachment {
 
   onRouteDetach(): void {
     this.motionLifecycle.detach();
+  }
+
+  protected reloadPage(): void {
+    this.document.defaultView?.location.reload();
   }
 
   private scrollToInitialFragment(root: HTMLElement): void {

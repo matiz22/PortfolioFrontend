@@ -39,6 +39,16 @@
   min-block-size: var(--home-stage-height);
 }
 
+.home-chapter-error {
+  min-block-size: var(--home-stage-height);
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 1rem;
+  padding: var(--home-stage-clearance) 1.5rem;
+  text-align: center;
+}
+
 .home-closing app-footer {
   --footer-divider-width: 0;
   display: block;

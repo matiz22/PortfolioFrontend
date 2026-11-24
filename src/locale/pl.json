@@ -2,6 +2,8 @@
     "locale": "pl",
     "translations": {
         "header.menu": "Menu nawigacji",
+        "home.section.error": "Nie udało się wczytać tej sekcji.",
+        "home.section.reload": "Odśwież stronę",
         "home.next.about": "Jak pracuję",
         "home.next.work": "Realizacje",
         "home.next.projects": "Projekty",

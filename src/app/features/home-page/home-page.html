@@ -1,8 +1,15 @@
+<ng-template #sectionError>
+    <div class="home-chapter-error" role="alert">
+        <p i18n="@@home.section.error">This section could not be loaded.</p>
+        <button type="button" class="btn btn-outline" (click)="reloadPage()" i18n="@@home.section.reload">Reload page</button>
+    </div>
+</ng-template>
+
 <div class="home-page">
-    <app-grain-gradient></app-grain-gradient>
+    <app-grain-gradient />
 
     <!-- Header -->
-    <app-header [homeSections]="true"></app-header>
+    <app-header [homeSections]="true" />
 
     <!-- Main Content -->
     <main>
@@ -25,6 +32,8 @@
             </app-about-me-section>
             } @placeholder {
             <div class="home-chapter-placeholder" aria-hidden="true"></div>
+            } @error {
+            <ng-container [ngTemplateOutlet]="sectionError" />
             }
         </div>
 
@@ -37,6 +46,8 @@
             </app-realizations-home-section>
             } @placeholder {
             <div class="home-chapter-placeholder" aria-hidden="true"></div>
+            } @error {
+            <ng-container [ngTemplateOutlet]="sectionError" />
             }
         </div>
 
@@ -49,6 +60,8 @@
             </app-projects-home-section>
             } @placeholder {
             <div class="home-chapter-placeholder" aria-hidden="true"></div>
+            } @error {
+            <ng-container [ngTemplateOutlet]="sectionError" />
             }
         </div>
 
@@ -62,6 +75,8 @@
             </app-certifications-section>
             } @placeholder {
             <div class="home-chapter-placeholder" aria-hidden="true"></div>
+            } @error {
+            <ng-container [ngTemplateOutlet]="sectionError" />
             }
         </div>
 
@@ -74,6 +89,8 @@
             </app-job-timeline-section>
             } @placeholder {
             <div class="home-chapter-placeholder" aria-hidden="true"></div>
+            } @error {
+            <ng-container [ngTemplateOutlet]="sectionError" />
             }
         </div>
 
@@ -86,6 +103,8 @@
             </app-education-section>
             } @placeholder {
             <div class="home-chapter-placeholder" aria-hidden="true"></div>
+            } @error {
+            <ng-container [ngTemplateOutlet]="sectionError" />
             }
         </div>
 
@@ -97,7 +116,9 @@
         <app-contact-section class="home-contact contact-blended" [glass]="true" [sectionId]="null" [homeCopy]="true"></app-contact-section>
         } @placeholder {
         <div class="home-chapter-placeholder" aria-hidden="true"></div>
+        } @error {
+        <ng-container [ngTemplateOutlet]="sectionError" />
         }
-        <app-footer></app-footer>
+        <app-footer />
     </div>
 </div>
