@@ -41,9 +41,10 @@ export function animateAboutMeScroll(root: HTMLElement, resolveInitialFragment =
     let stopPin!: () => void;
     context.ignore(() => {
       stopPin = watchPinFit({
-      section, stage, pinnedClass: 'about-is-pinned',
+      section, stage, pinnedClass: 'about-is-pinned', tolerance: 12,
       observe: [panelsContainer, ...panels, ...(header ? [header] : [])],
       mount: () => {
+        let trigger!: ScrollTrigger;
         const animation = gsap.context(() => {
           gsap.set(panels, { autoAlpha: 0, y: 14 });
           gsap.set(panels[0], { autoAlpha: 1, y: 0 });
@@ -118,7 +119,7 @@ export function animateAboutMeScroll(root: HTMLElement, resolveInitialFragment =
             ));
           });
 
-          const trigger = ScrollTrigger.create({
+          trigger = ScrollTrigger.create({
             trigger: stage,
             animation: timeline,
             start: 'top top',
@@ -194,7 +195,9 @@ export function animateAboutMeScroll(root: HTMLElement, resolveInitialFragment =
             links.forEach((link) => link.removeAttribute('aria-current'));
           };
         }, root);
-        return { refresh: () => ScrollTrigger.refresh(), revert: () => animation.revert() };
+        // Refresh only this section's trigger: a global refresh would revert and
+        // reapply every pin on the page, churning each spacer on every blip.
+        return { refresh: () => trigger.refresh(), revert: () => animation.revert() };
       },
       });
     });

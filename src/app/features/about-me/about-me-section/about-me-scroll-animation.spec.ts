@@ -24,7 +24,7 @@ describe('About Me scroll animation', () => {
     isTall = true;
     stageHeight = 900;
     originalHeight = Object.getOwnPropertyDescriptor(window, 'innerHeight');
-    Object.defineProperty(window, 'innerHeight', { configurable: true, value: 900 });
+    Object.defineProperty(window, 'innerHeight', { configurable: true, value: 920 });
     const matchMedia = window.matchMedia.bind(window);
     spyOn(window, 'matchMedia').and.callFake((query) => {
       const media = matchMedia(query);
@@ -300,23 +300,32 @@ describe('About Me scroll animation', () => {
     expect(panels.every((panel) => !panel.inert)).toBeTrue();
   });
 
-  it('restores native services when content outgrows the viewport and pins again when it fits', async () => {
+  it('restores native services when content outgrows the viewport and pins again when it fits', () => {
     let resized!: ResizeObserverCallback;
+    let flush!: () => void;
     spyOn(window, 'ResizeObserver').and.callFake(function (callback) {
       resized = callback;
       return { observe() {}, unobserve() {}, disconnect() {} } as ResizeObserver;
     });
+    // Flush the scheduled fit check directly: real frames are at the mercy of
+    // the headless compositor, while the decision itself is synchronous.
+    spyOn(window, 'requestAnimationFrame').and.callFake((callback) => {
+      flush = () => callback(0);
+      return 1;
+    });
     motion = animateAboutMeScroll(root);
-    stageHeight = window.innerHeight + 1;
+    stageHeight = window.innerHeight + 20;
     resized([], {} as ResizeObserver);
-    await new Promise(requestAnimationFrame);
+    flush();
+    // The first overflowing check only schedules a confirmation pass.
+    flush();
     expect(section.classList.contains('about-is-pinned')).toBeFalse();
     expect(trigger()).toBeUndefined();
     expect(panels.every((panel) => !panel.inert && !panel.hasAttribute('aria-hidden'))).toBeTrue();
 
     stageHeight = window.innerHeight - 20;
     resized([], {} as ResizeObserver);
-    await new Promise(requestAnimationFrame);
+    flush();
     expect(section.classList.contains('about-is-pinned')).toBeTrue();
     expect(trigger().pin).toBe(stage);
     expect(panels[0].inert).toBeFalse();

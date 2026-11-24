@@ -181,6 +181,8 @@ describe('realizations optional visual motion', () => {
     };
     stageHeight += 1;
     await resize();
+    // The first overflowing check schedules a confirmation pass before releasing.
+    await resize();
     expect(root.querySelector('.realizations-is-pinned')).toBeNull();
     expect(reportProgress).toHaveBeenCalledWith(null);
     expect(root.querySelector<HTMLElement>('.realizations-stage-wrap')!.style.height).toBe('');

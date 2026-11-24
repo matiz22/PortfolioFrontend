@@ -37,16 +37,23 @@ describe('watchPinFit', () => {
 
   const resize = () => resized([], {} as ResizeObserver);
 
-  function start(eligible?: () => boolean): void {
-    cleanup = watchPinFit({ section, stage, pinnedClass: 'pinned', observe: [], mount, eligible });
+  function start(options?: { eligible?: () => boolean; tolerance?: number }): void {
+    cleanup = watchPinFit({ section, stage, pinnedClass: 'pinned', observe: [], mount, ...options });
   }
 
-  it('mounts synchronously and switches from fitting to native and back within one breakpoint', () => {
-    start();
+  it('mounts synchronously, tolerates small drift, and releases on real overflow', () => {
+    start({ tolerance: 12 });
     expect(mount).toHaveBeenCalledTimes(1);
     expect(section.classList.contains('pinned')).toBeTrue();
-    height = window.innerHeight + 1;
+    height = window.innerHeight + 4;
     resize();
+    flush();
+    expect(instance.revert).not.toHaveBeenCalled();
+    expect(section.classList.contains('pinned')).toBeTrue();
+    height = window.innerHeight + 20;
+    resize();
+    flush();
+    // The first overflowing check only schedules a confirmation pass.
     flush();
     expect(instance.revert).toHaveBeenCalledTimes(1);
     expect(section.classList.contains('pinned')).toBeFalse();
@@ -57,14 +64,30 @@ describe('watchPinFit', () => {
     expect(section.classList.contains('pinned')).toBeTrue();
   });
 
-  it('coalesces size notifications and skips refreshes for unchanged geometry', () => {
+  it('refuses a fresh mount that overflows the viewport at all', () => {
+    height = window.innerHeight + 4;
+    start();
+    expect(mount).not.toHaveBeenCalled();
+    expect(section.classList.contains('pinned')).toBeFalse();
+    resize();
+    flush();
+    resize();
+    flush();
+    expect(mount).not.toHaveBeenCalled();
+  });
+
+  it('coalesces size notifications and ignores drift below the refresh epsilon', () => {
     start();
     resize();
     resize();
     expect(window.requestAnimationFrame).toHaveBeenCalledTimes(1);
     flush();
     expect(instance.refresh).not.toHaveBeenCalled();
-    height--;
+    height -= 3;
+    resize();
+    flush();
+    expect(instance.refresh).not.toHaveBeenCalled();
+    height -= 8;
     resize();
     flush();
     expect(instance.refresh).toHaveBeenCalledTimes(1);
@@ -73,9 +96,19 @@ describe('watchPinFit', () => {
     expect(instance.refresh).toHaveBeenCalledTimes(1);
   });
 
+  it('keeps an active pin across small overflows a fresh mount would refuse', () => {
+    start({ tolerance: 12 });
+    height = window.innerHeight + 8;
+    resize();
+    flush();
+    expect(mount).toHaveBeenCalledTimes(1);
+    expect(section.classList.contains('pinned')).toBeTrue();
+    expect(instance.revert).not.toHaveBeenCalled();
+  });
+
   it('checks extra eligibility and cleans up scheduled work exactly once', () => {
     let eligible = false;
-    start(() => eligible);
+    start({ eligible: () => eligible });
     expect(mount).not.toHaveBeenCalled();
     eligible = true;
     window.dispatchEvent(new Event('resize'));
