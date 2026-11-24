@@ -92,6 +92,58 @@ describe('education card animation', () => {
     expect(Number(gsap.getProperty(surface(0), 'x'))).toBe(0);
   });
 
+  it('measures the card at pointer entry after its initial offscreen layout changes', () => {
+    const bounds = spyOn(surface(0), 'getBoundingClientRect')
+      .and.returnValue(new DOMRect(0, 500, 200, 100));
+    revert = animateEducationCards(root);
+    bounds.and.returnValue(new DOMRect(100, 100, 200, 100));
+
+    surface(0).dispatchEvent(new PointerEvent('pointerenter', {
+      pointerType: 'mouse', clientX: 200, clientY: 150,
+    }));
+    finishTweens(surface(0));
+    expect(Number(gsap.getProperty(surface(0), 'rotationX'))).toBeCloseTo(0);
+    expect(Number(gsap.getProperty(surface(0), 'rotationY'))).toBeCloseTo(0);
+  });
+
+  it('invalidates hovered card bounds after scrolling', () => {
+    const bounds = spyOn(surface(0), 'getBoundingClientRect')
+      .and.returnValue(new DOMRect(0, 0, 200, 100));
+    revert = animateEducationCards(root);
+    surface(0).dispatchEvent(new PointerEvent('pointerenter', {
+      pointerType: 'mouse', clientX: 100, clientY: 50,
+    }));
+    bounds.and.returnValue(new DOMRect(100, 100, 200, 100));
+    window.dispatchEvent(new Event('scroll'));
+    surface(0).dispatchEvent(new PointerEvent('pointermove', {
+      pointerType: 'mouse', clientX: 200, clientY: 150,
+    }));
+    finishTweens(surface(0));
+
+    expect(Number(gsap.getProperty(surface(0), 'rotationX'))).toBeCloseTo(0);
+    expect(Number(gsap.getProperty(surface(0), 'rotationY'))).toBeCloseTo(0);
+  });
+
+  it('immediately reveals a keyboard-focused card and refuses to fade it out', () => {
+    revert = animateEducationCards(root);
+    root.querySelector<HTMLAnchorElement>('a')!.focus();
+    expect(wrapper(0).style.opacity).toBe('');
+    expect(wrapper(0).style.transform).toBe('');
+
+    const trigger = ScrollTrigger.getAll().find((candidate) => candidate.trigger === wrapper(0))!;
+    trigger.vars.onLeaveBack?.(trigger);
+    finishTweens(wrapper(0));
+    expect(wrapper(0).style.opacity).toBe('');
+    expect(wrapper(0).style.transform).toBe('');
+  });
+
+  it('keeps an already-focused card visible when motion mounts', () => {
+    root.querySelector<HTMLAnchorElement>('a')!.focus();
+    revert = animateEducationCards(root);
+    expect(wrapper(0).style.opacity).toBe('');
+    expect(wrapper(0).style.transform).toBe('');
+  });
+
   it('keeps reduced-motion and touch-only layouts static', () => {
     reducedMotion = true;
     hoverCapable = false;

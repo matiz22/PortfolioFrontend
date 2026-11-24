@@ -8,13 +8,14 @@ gsap.registerPlugin(ScrollTrigger);
 export function animateEducationCards(root: HTMLElement): () => void {
   const motion = gsap.matchMedia();
   const cleanups: (() => void)[] = [];
+  const view = root.ownerDocument.defaultView;
 
   try {
     motion.add({
       animate: '(min-width: 48rem) and (prefers-reduced-motion: no-preference)',
       hover: '(hover: hover) and (pointer: fine)',
     }, (context) => {
-      if (!context.conditions?.['animate']) {
+      if (!context.conditions?.['animate'] || !view) {
         return;
       }
 
@@ -51,6 +52,9 @@ export function animateEducationCards(root: HTMLElement): () => void {
             });
           },
           onLeaveBack: () => {
+            if (wrapper.contains(root.ownerDocument.activeElement)) {
+              return;
+            }
             revealed.delete(wrapper);
             gsap.to(wrapper, {
               opacity: 0,
@@ -64,9 +68,26 @@ export function animateEducationCards(root: HTMLElement): () => void {
         triggers.push(trigger);
       }
 
+      const onFocus = () => {
+        const wrapper = wrappers.find((candidate) => candidate.contains(root.ownerDocument.activeElement));
+        if (wrapper) {
+          context.add(() => {
+            revealed.add(wrapper);
+            gsap.killTweensOf(wrapper);
+            gsap.set(wrapper, { clearProps: 'transform,opacity' });
+          });
+        }
+      };
+      root.addEventListener('focusin', onFocus);
+      cleanups.push(() => root.removeEventListener('focusin', onFocus));
+      onFocus();
+
       if (context.conditions?.['hover']) {
         for (const surface of surfaces.values()) {
-          const rect = surface.getBoundingClientRect();
+          let rect: DOMRect | undefined;
+          let hovered = false;
+          let pointer = { x: 0, y: 0 };
+          let frame: number | undefined;
           gsap.set(surface, {
             transformPerspective: 650,
             force3D: true,
@@ -82,31 +103,70 @@ export function animateEducationCards(root: HTMLElement): () => void {
             tiltY(0);
           };
 
-          const onMove = (event: PointerEvent) => {
+          const updateTilt = () => {
+            // Refresh after navigation, scrolling, or resizing, rather than
+            // retaining the offscreen rectangle from animation setup.
+            rect ??= surface.getBoundingClientRect();
             // A restrained tilt toward the cursor; the card stays anchored,
             // so nothing lifts or slides while the pointer travels across it.
-            const xRatio = gsap.utils.clamp(0, 1, (event.clientX - rect.left) / rect.width);
-            const yRatio = gsap.utils.clamp(0, 1, (event.clientY - rect.top) / rect.height);
+            const xRatio = gsap.utils.clamp(0, 1, (pointer.x - rect.left) / Math.max(1, rect.width));
+            const yRatio = gsap.utils.clamp(0, 1, (pointer.y - rect.top) / Math.max(1, rect.height));
             tiltX(gsap.utils.interpolate(3.5, -3.5, yRatio));
             tiltY(gsap.utils.interpolate(-4.5, 4.5, xRatio));
+          };
+
+          const onMove = (event: PointerEvent) => {
+            if (!hovered || event.pointerType === 'touch') return;
+            pointer = { x: event.clientX, y: event.clientY };
+            updateTilt();
           };
 
           const onEnter = (event: PointerEvent) => {
             if (event.pointerType === 'touch') {
               return;
             }
+            hovered = true;
+            rect = undefined;
             onMove(event);
           };
 
-          const onLeave = () => settle();
+          const cancelFrame = () => {
+            if (frame !== undefined) {
+              view.cancelAnimationFrame(frame);
+              frame = undefined;
+            }
+          };
+          const onLeave = () => {
+            hovered = false;
+            cancelFrame();
+            settle();
+          };
+          const onBoundsChange = () => {
+            if (!hovered) return;
+            rect = undefined;
+            if (frame === undefined) {
+              frame = view.requestAnimationFrame(() => {
+                frame = undefined;
+                if (hovered) updateTilt();
+              });
+            }
+          };
 
           surface.addEventListener('pointerenter', onEnter);
           surface.addEventListener('pointermove', onMove);
           surface.addEventListener('pointerleave', onLeave);
+          surface.addEventListener('pointercancel', onLeave);
+          view.addEventListener('scroll', onBoundsChange, { passive: true, capture: true });
+          view.addEventListener('resize', onBoundsChange);
           cleanups.push(() => {
+            hovered = false;
+            cancelFrame();
             surface.removeEventListener('pointerenter', onEnter);
             surface.removeEventListener('pointermove', onMove);
             surface.removeEventListener('pointerleave', onLeave);
+            surface.removeEventListener('pointercancel', onLeave);
+            view.removeEventListener('scroll', onBoundsChange, true);
+            view.removeEventListener('resize', onBoundsChange);
             // The context has already reverted both quickTo tweens and their styles.
           });
         }
