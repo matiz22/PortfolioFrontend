@@ -1,3 +1,4 @@
+import { HomeCopy } from '../../../shared/animations/home-copy';
 import {
   afterRenderEffect,
   ChangeDetectionStrategy,
@@ -19,7 +20,7 @@ import { SectionFooter } from '../../../shared/section-footer/section-footer';
 
 @Component({
   selector: 'app-job-timeline-section',
-  imports: [DatePipe, RouterLink, SectionAction, SectionFooter, HomeMetadataPills, HomeRailControls],
+  imports: [HomeCopy, DatePipe, RouterLink, SectionAction, SectionFooter, HomeMetadataPills, HomeRailControls],
   templateUrl: './job-timeline-section.html',
   styleUrl: './job-timeline-section.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

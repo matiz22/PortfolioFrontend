@@ -4,7 +4,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-8 items-start">
             
             <!-- Left Header & CTA Copy (Spans 5 columns) -->
-            <div class="contact-copy lg:col-span-5 flex flex-col justify-center">
+            <div class="contact-copy lg:col-span-5 flex flex-col justify-center" [appHomeCopy]="{ heading: 'h2', details: 'p', effect: 'lines', duration: 0.52, stagger: 0.16, focusScope: '.contact-section', keepAtPageEnd: true }">
                 <h2 id="contact-heading" class="section-heading text-5xl md:text-6xl xl:text-7xl leading-none text-balance mb-8">
                     @if (homeCopy()) {
                     <span i18n="@@home.contact.heading">Send me a note. We’ll take it from there.</span>

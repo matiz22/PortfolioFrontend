@@ -1,6 +1,6 @@
 <section class="education-section" aria-labelledby="education-heading">
   <div class="education-shell">
-    <header class="education-header glass home-glass home-copy-panel">
+    <header class="education-header glass home-glass home-copy-panel" [appHomeCopy]="{ heading: 'h2', details: 'p' }">
       <h2 id="education-heading" class="section-heading" i18n="@@education.heading">Education</h2>
       <p i18n="@@education.description">
         Where I studied and how I got into computer science and software engineering.
@@ -31,7 +31,7 @@
               }
 
               <div class="education-body">
-                <div class="education-main">
+                <div class="education-main" [appHomeCopy]="{ heading: '.education-degree', details: '.education-institution', duration: 0.35, focusScope: '.education-card' }">
                   <h3 class="education-degree" [id]="'education-title-' + item.id">{{ item.degree }}</h3>
                   @if (item.fieldOfStudy) {
                   <p class="education-subject">{{ item.fieldOfStudy }}</p>

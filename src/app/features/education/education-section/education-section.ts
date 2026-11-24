@@ -1,3 +1,4 @@
+import { HomeCopy } from '../../../shared/animations/home-copy';
 import {
   afterRenderEffect,
   ChangeDetectionStrategy,
@@ -21,7 +22,7 @@ import { SectionFooter } from '../../../shared/section-footer/section-footer';
 
 @Component({
   selector: 'app-education-section',
-  imports: [DatePipe, RouterLink, ImageUrlPipe, SectionAction, SectionFooter, HomeMetadataPills, HomeRailControls],
+  imports: [HomeCopy, DatePipe, RouterLink, ImageUrlPipe, SectionAction, SectionFooter, HomeMetadataPills, HomeRailControls],
   templateUrl: './education-section.html',
   styleUrl: './education-section.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

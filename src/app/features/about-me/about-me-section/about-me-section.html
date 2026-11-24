@@ -1,7 +1,7 @@
 <section class="about-section section-noise" aria-labelledby="about-heading">
   <div class="about-shell relative z-10 mx-auto w-full max-w-7xl px-6">
     <div class="about-stage">
-      <header class="about-header">
+      <header class="about-header" [appHomeCopy]="{ heading: 'h2', effect: 'mask' }">
         <h2 id="about-heading" class="section-heading" i18n="@@about.heading">What I design and build</h2>
       </header>
 
@@ -35,7 +35,7 @@
           <div class="about-visual about-web-visual" aria-hidden="true">
             <app-web-development-preview />
           </div>
-          <div class="about-panel-copy glass home-glass home-copy-panel">
+          <div class="about-panel-copy glass home-glass home-copy-panel" [appHomeCopy]="{ heading: 'h3', details: 'p', effect: 'mask', duration: 0.36 }">
             <h3 id="about-web-title" i18n="@@about.card.web.title">Websites &amp; Web Apps</h3>
             <p i18n="@@about.card.web.description">
               Need a company website, an online store, or a blog? I’ll build and launch it around what you need it to
@@ -50,7 +50,7 @@
           <div class="about-visual about-apps-visual" aria-hidden="true">
             <app-apps-preview />
           </div>
-          <div class="about-panel-copy glass home-glass home-copy-panel">
+          <div class="about-panel-copy glass home-glass home-copy-panel" [appHomeCopy]="{ heading: 'h3', details: 'p', effect: 'mask', duration: 0.36 }">
             <h3 id="about-apps-title" i18n="@@about.card.apps.title">Native Mobile &amp; Desktop Apps</h3>
             <p i18n="@@about.card.apps.description">
               I’ll build a native app for the platform your users work on. I’ll focus on fast startup, a responsive
@@ -64,7 +64,7 @@
           <div class="about-visual about-ai-visual glass home-glass" aria-hidden="true">
             <app-ai-workflow-preview />
           </div>
-          <div class="about-panel-copy glass home-glass home-copy-panel">
+          <div class="about-panel-copy glass home-glass home-copy-panel" [appHomeCopy]="{ heading: 'h3', details: 'p', effect: 'mask', duration: 0.36 }">
             <h3 id="about-ai-title" i18n="@@about.card.ai.title">AI Integration &amp; Automation</h3>
             <p i18n="@@about.card.ai.description">
               Give AI a task, not just a question. I’ll automate the parts of your workflow where your team still

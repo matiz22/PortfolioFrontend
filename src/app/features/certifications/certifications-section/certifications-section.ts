@@ -1,3 +1,4 @@
+import { HomeCopy } from '../../../shared/animations/home-copy';
 import {
   afterRenderEffect,
   ChangeDetectionStrategy,
@@ -17,7 +18,7 @@ import { SectionFooter } from '../../../shared/section-footer/section-footer';
 
 @Component({
   selector: 'app-certifications-section',
-  imports: [CertificationShowcaseCard, RouterLink, HomeRailControls, SectionAction, SectionFooter],
+  imports: [HomeCopy, CertificationShowcaseCard, RouterLink, HomeRailControls, SectionAction, SectionFooter],
   templateUrl: './certifications-section.html',
   styleUrl: './certifications-section.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

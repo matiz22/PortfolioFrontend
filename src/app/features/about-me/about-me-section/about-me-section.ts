@@ -1,3 +1,4 @@
+import { HomeCopy } from '../../../shared/animations/home-copy';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { afterNextRenderMotion } from '../../../shared/animations/lazy-motion';
 import { WebDevelopmentPreview } from './web-development-preview/web-development-preview';
@@ -6,7 +7,7 @@ import { AiWorkflowPreview } from './ai-workflow-preview/ai-workflow-preview';
 
 @Component({
   selector: 'app-about-me-section',
-  imports: [WebDevelopmentPreview, AppsPreview, AiWorkflowPreview],
+  imports: [HomeCopy, WebDevelopmentPreview, AppsPreview, AiWorkflowPreview],
   templateUrl: './about-me-section.html',
   styleUrl: './about-me-section.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

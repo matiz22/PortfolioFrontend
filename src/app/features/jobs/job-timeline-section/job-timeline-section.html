@@ -1,7 +1,7 @@
 <section class="jobs-section section-noise" aria-labelledby="experience-heading">
   <div class="jobs-shell">
     <div class="jobs-stage">
-      <header class="jobs-header glass home-glass home-copy-panel">
+      <header class="jobs-header glass home-glass home-copy-panel" [appHomeCopy]="{ heading: 'h2', details: '.jobs-intro' }">
         <div class="jobs-copy">
           <h2 id="experience-heading" class="section-heading" i18n="@@jobs.heading">Work Experience</h2>
           <p class="jobs-intro" i18n="@@jobs.description">
@@ -28,7 +28,7 @@
           <div class="jobs-rail" aria-hidden="true"><span class="jobs-rail-fill"></span></div>
           <ol #jobsRail id="home-experience-rail" class="jobs-list" role="list" (focusin)="revealFocusedRole($event)">
             @for (job of state.data; track job.id) {
-            <li class="jobs-entry" data-home-rail-item [class.jobs-entry-current]="job.isCurrent">
+            <li class="jobs-entry" [appHomeCopy]="{ heading: 'h3', details: '.jobs-company, .jobs-dates', duration: 0.34 }" data-home-rail-item [class.jobs-entry-current]="job.isCurrent">
               <div class="jobs-point">
                 <span class="jobs-dot" aria-hidden="true"></span>
                 <div class="jobs-dates">

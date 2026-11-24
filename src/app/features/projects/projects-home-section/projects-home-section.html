@@ -1,7 +1,7 @@
 <section class="projects-home-section relative"
   aria-labelledby="projects-home-heading">
   <div class="projects-home-content relative z-10">
-    <div class="projects-home-header glass home-glass home-copy-panel">
+    <div class="projects-home-header glass home-glass home-copy-panel" [appHomeCopy]="{ heading: 'h2', details: '.projects-home-description', effect: 'wipe', duration: 0.32 }">
       <div class="projects-home-intro">
         <h2 id="projects-home-heading" class="section-heading text-4xl md:text-5xl lg:text-6xl"
           i18n="@@projects.home.heading">Side Projects</h2>

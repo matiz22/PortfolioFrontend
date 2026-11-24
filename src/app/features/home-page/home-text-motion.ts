@@ -1,4 +1,5 @@
 import { gsap } from 'gsap';
+import type { HomeCopyConfig, HomeCopyRegistration, HomeCopyRegistry } from '../../shared/animations/home-copy-registry';
 
 const ENTER_RATIO = 0.48;
 const EXIT_RATIO = 0.28;
@@ -6,34 +7,6 @@ const NAV_CLEARANCE = 72;
 const OPEN_WIPE = 'inset(-0.16em -0.16em -0.16em -0.16em)';
 const VERTICAL_WIPE = 'inset(100% -0.16em -0.16em -0.16em)';
 const SIDE_WIPE = 'inset(-0.16em 100% -0.16em -0.16em)';
-
-interface CopyEffect {
-  group: string;
-  heading: string;
-  details?: string;
-  effect?: 'mask' | 'wipe' | 'lines' | 'seal';
-  duration?: number;
-  stagger?: number;
-  focusScope?: string;
-  keepAtPageEnd?: boolean;
-}
-
-const EFFECTS: CopyEffect[] = [
-  { group: '.about-header', heading: 'h2', effect: 'mask' },
-  { group: '.about-panel-copy', heading: 'h3', details: 'p', effect: 'mask', duration: 0.36 },
-  { group: '.realizations-text', heading: 'h2', details: '.realizations-description', effect: 'lines', duration: 0.46 },
-  { group: '.projects-home-header', heading: 'h2', details: '.projects-home-description', effect: 'wipe', duration: 0.32 },
-  { group: '.certifications-header', heading: 'h2', details: 'p', effect: 'seal', duration: 0.39 },
-  { group: '.jobs-header', heading: 'h2', details: '.jobs-intro' },
-  { group: '.jobs-entry', heading: 'h3', details: '.jobs-company, .jobs-dates', duration: 0.34 },
-  { group: '.education-header', heading: 'h2', details: 'p' },
-  { group: '.education-main', heading: '.education-degree', details: '.education-institution', duration: 0.35, focusScope: '.education-card' },
-  {
-    group: '.contact-copy', heading: 'h2', details: 'p', effect: 'lines',
-    duration: 0.52, stagger: 0.16, focusScope: '.contact-section', keepAtPageEnd: true,
-  },
-];
-const GROUP_SELECTOR = EFFECTS.map(({ group }) => group).join(', ');
 
 class CopyReveal {
   inView?: boolean;
@@ -48,7 +21,7 @@ class CopyReveal {
   constructor(
     readonly group: HTMLElement,
     readonly heading: HTMLElement,
-    readonly config: CopyEffect,
+    readonly config: HomeCopyConfig,
   ) {
     this.details = config.details ? Array.from(group.querySelectorAll(config.details)) : [];
     this.focusScope = (config.focusScope && group.closest<HTMLElement>(config.focusScope)) || group;
@@ -155,10 +128,10 @@ class CopyReveal {
   }
 }
 
-export function animateHomeText(root: HTMLElement): gsap.MatchMedia {
+export function animateHomeText(root: HTMLElement, registry: HomeCopyRegistry): gsap.MatchMedia {
   const motion = gsap.matchMedia();
   const view = root.ownerDocument.defaultView;
-  if (!view?.IntersectionObserver || !view.MutationObserver) {
+  if (!view?.IntersectionObserver) {
     return motion;
   }
 
@@ -228,40 +201,26 @@ export function animateHomeText(root: HTMLElement): gsap.MatchMedia {
       }
     }, { rootMargin: `-${NAV_CLEARANCE}px 0px 0px`, threshold: [0, EXIT_RATIO, ENTER_RATIO] });
 
-    const sync = () => {
-      for (const [group, reveal] of reveals) {
-        if (!root.contains(group) || !group.contains(reveal.heading)) {
-          observer.unobserve(reveal.heading);
-          reveal.dispose();
-          headings.delete(reveal.heading);
-          reveals.delete(group);
-        }
-      }
-      const currentAnchor = anchor();
-      for (const group of root.querySelectorAll<HTMLElement>(GROUP_SELECTOR)) {
-        if (reveals.has(group)) {
-          continue;
-        }
-        const config = EFFECTS.find((candidate) => group.matches(candidate.group))!;
-        const heading = group.querySelector<HTMLElement>(config.heading);
-        if (heading) {
-          const reveal = new CopyReveal(group, heading, config);
-          reveals.set(group, reveal);
-          headings.set(heading, reveal);
-          requestAnchorEntrance(reveal, currentAnchor);
-          observer.observe(heading);
-        }
-      }
+    const remove = ({ element: group }: HomeCopyRegistration) => {
+      const reveal = reveals.get(group);
+      if (!reveal) return;
+      observer.unobserve(reveal.heading);
+      reveal.dispose();
+      headings.delete(reveal.heading);
+      reveals.delete(group);
     };
-    const mutations = new view.MutationObserver((records) => {
-      // Deferred components and data add groups without requiring another scroll listener.
-      const changesGroup = (node: Node) => node instanceof view.Element &&
-        (node.matches(GROUP_SELECTOR) || !!node.querySelector(GROUP_SELECTOR));
-      if (records.some(({ addedNodes, removedNodes }) =>
-        Array.from(addedNodes).some(changesGroup) || Array.from(removedNodes).some(changesGroup))) {
-        sync();
-      }
-    });
+    const add = (registration: HomeCopyRegistration) => {
+      const { element: group, config } = registration;
+      if (!root.contains(group)) return;
+      remove(registration);
+      const heading = group.querySelector<HTMLElement>(config.heading);
+      if (!heading) return;
+      const reveal = new CopyReveal(group, heading, config);
+      reveals.set(group, reveal);
+      headings.set(heading, reveal);
+      requestAnchorEntrance(reveal, anchor());
+      observer.observe(heading);
+    };
     const onAnchor = () => {
       const target = anchor();
       for (const reveal of reveals.values()) {
@@ -291,8 +250,7 @@ export function animateHomeText(root: HTMLElement): gsap.MatchMedia {
       }
     });
 
-    sync();
-    mutations.observe(root, { childList: true, subtree: true });
+    const unsubscribe = registry.subscribe({ add, remove });
     root.addEventListener('focusin', onFocus);
     root.addEventListener('focusout', onBlur);
     view.addEventListener('hashchange', onAnchor);
@@ -300,7 +258,7 @@ export function animateHomeText(root: HTMLElement): gsap.MatchMedia {
     return () => {
       disposed = true;
       observer.disconnect();
-      mutations.disconnect();
+      unsubscribe();
       root.removeEventListener('focusin', onFocus);
       root.removeEventListener('focusout', onBlur);
       view.removeEventListener('hashchange', onAnchor);

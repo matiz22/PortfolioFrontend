@@ -1,3 +1,4 @@
+import { HomeCopy } from '../../../shared/animations/home-copy';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -23,7 +24,7 @@ import { SectionFooter } from '../../../shared/section-footer/section-footer';
 
 @Component({
   selector: 'app-projects-home-section',
-  imports: [RouterLink, ProjectPreview, HomeRailControls, SectionAction, SectionFooter],
+  imports: [HomeCopy, RouterLink, ProjectPreview, HomeRailControls, SectionAction, SectionFooter],
   templateUrl: './projects-home-section.html',
   styleUrl: './projects-home-section.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

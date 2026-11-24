@@ -1,8 +1,11 @@
 import { gsap } from 'gsap';
 import { animateHomeText } from './home-text-motion';
+import { HomeCopyRegistry } from '../../shared/animations/home-copy-registry';
 
 describe('homepage text motion', () => {
   let root: HTMLElement;
+  let registry: HomeCopyRegistry;
+  let unregisterProjects: () => void;
   let motion: gsap.MatchMedia | undefined;
   let reducedMotion: boolean;
   let observe: jasmine.Spy;
@@ -41,6 +44,14 @@ describe('homepage text motion', () => {
       </section>
     `;
     document.body.appendChild(root);
+    registry = new HomeCopyRegistry();
+    unregisterProjects = registry.register(element('.projects-home-header'), {
+      heading: 'h2', details: '.projects-home-description', effect: 'wipe', duration: 0.32,
+    });
+    registry.register(element('.contact-copy'), {
+      heading: 'h2', details: 'p', effect: 'lines', duration: 0.52, stagger: 0.16,
+      focusScope: '.contact-section', keepAtPageEnd: true,
+    });
   });
 
   afterEach(() => {
@@ -65,7 +76,7 @@ describe('homepage text motion', () => {
   }
 
   it('wipes in on entry, reverses faster on exit, and replays in either direction', () => {
-    motion = animateHomeText(root);
+    motion = animateHomeText(root, registry);
     const title = element('.projects-home-header h2');
     expect(observe).toHaveBeenCalledWith(title);
     expect(title.style.opacity).toBe('');
@@ -98,7 +109,7 @@ describe('homepage text motion', () => {
   });
 
   it('changes direction mid-transition without creating a second tween stack', () => {
-    motion = animateHomeText(root);
+    motion = animateHomeText(root, registry);
     const title = element('.projects-home-header h2');
     intersect(title, 0);
     intersect(title, 0.6);
@@ -114,7 +125,7 @@ describe('homepage text motion', () => {
   });
 
   it('does not hide already-visible content on hydration or links when focus enters', () => {
-    motion = animateHomeText(root);
+    motion = animateHomeText(root, registry);
     const title = element('.projects-home-header h2');
     const link = element('a');
     intersect(title, 0.8);
@@ -133,7 +144,7 @@ describe('homepage text motion', () => {
     const originalUrl = location.href;
     try {
       history.replaceState(null, '', '#text-motion-projects');
-      motion = animateHomeText(root);
+      motion = animateHomeText(root, registry);
       const title = element('.projects-home-header h2');
       intersect(title, 0);
       expect(title.style.opacity).toBe('0');
@@ -156,7 +167,7 @@ describe('homepage text motion', () => {
       title.id = 'text-motion-projects-heading';
       title.tabIndex = -1;
       history.replaceState(null, '', '#text-motion-projects-heading');
-      motion = animateHomeText(root);
+      motion = animateHomeText(root, registry);
       title.focus();
       intersect(title, 0.8);
       expect(animation(title).reversed()).toBeFalse();
@@ -168,7 +179,7 @@ describe('homepage text motion', () => {
   it('replays an already visible destination on hash navigation without restarting an active entrance', () => {
     const originalUrl = location.href;
     try {
-      motion = animateHomeText(root);
+      motion = animateHomeText(root, registry);
       const title = element('.projects-home-header h2');
       intersect(title, 0.8);
       expect(gsap.getTweensOf(title)).toEqual([]);
@@ -190,12 +201,14 @@ describe('homepage text motion', () => {
     const chapter = element('#text-motion-projects');
     const intro = element('.projects-home-header');
     const title = element('.projects-home-header h2');
+    unregisterProjects();
     intro.remove();
     try {
-      motion = animateHomeText(root);
+      motion = animateHomeText(root, registry);
       history.replaceState(null, '', '#text-motion-projects');
       window.dispatchEvent(new HashChangeEvent('hashchange'));
       chapter.appendChild(intro);
+      registry.register(intro, { heading: 'h2', effect: 'wipe', duration: 0.32 });
       await new Promise<void>((resolve) => setTimeout(resolve, 0));
 
       expect(observe).toHaveBeenCalledWith(title);
@@ -208,7 +221,7 @@ describe('homepage text motion', () => {
 
   it('reveals native contact lines in two beats without touching the form or replacing nodes', () => {
     spyOnProperty(document.scrollingElement!, 'scrollHeight').and.returnValue(window.scrollY + window.innerHeight);
-    motion = animateHomeText(root);
+    motion = animateHomeText(root, registry);
     const title = element('.contact-copy h2');
     const lineBreak = title.querySelector('br');
     intersect(title, 0);
@@ -229,7 +242,7 @@ describe('homepage text motion', () => {
 
   it('keeps the first contact line revealed when the second beat starts', () => {
     element('.contact-copy').style.height = '240px';
-    motion = animateHomeText(root);
+    motion = animateHomeText(root, registry);
     const title = element('.contact-copy h2');
     intersect(title, 0);
     intersect(title, 0.5);
@@ -250,7 +263,7 @@ describe('homepage text motion', () => {
   });
 
   it('picks up deferred card text and releases removed nodes and inline styles', async () => {
-    motion = animateHomeText(root);
+    motion = animateHomeText(root, registry);
     const card = document.createElement('article');
     card.className = 'education-card';
     card.innerHTML = `
@@ -260,11 +273,15 @@ describe('homepage text motion', () => {
       </div>
     `;
     root.appendChild(card);
+    const unregister = registry.register(card.querySelector<HTMLElement>('.education-main')!, {
+      heading: '.education-degree', details: '.education-institution', duration: 0.35, focusScope: '.education-card',
+    });
     await new Promise<void>((resolve) => setTimeout(resolve, 0));
     const title = element('.education-degree');
     expect(observe).toHaveBeenCalledWith(title);
     intersect(title, 0);
     expect(title.style.opacity).toBe('0');
+    unregister();
     card.remove();
     await new Promise<void>((resolve) => setTimeout(resolve, 0));
     expect(unobserve).toHaveBeenCalledWith(title);
@@ -273,10 +290,24 @@ describe('homepage text motion', () => {
     expect(disconnect).toHaveBeenCalled();
   });
 
+  it('resumes retained registrations without duplicated observers after route reattachment', () => {
+    motion = animateHomeText(root, registry);
+    const title = element('.projects-home-header h2');
+    intersect(title, 0);
+    expect(title.style.opacity).toBe('0');
+    motion.revert();
+    expect(title.style.opacity).toBe('');
+    observe.calls.reset();
+    motion = animateHomeText(root, registry);
+    expect(observe.calls.allArgs().filter(([node]) => node === title).length).toBe(1);
+    unregisterProjects();
+    expect(unobserve).toHaveBeenCalledWith(title);
+  });
+
   it('does not observe or modify text when reduced motion is on', () => {
     reducedMotion = true;
     const original = root.innerHTML;
-    motion = animateHomeText(root);
+    motion = animateHomeText(root, registry);
     expect(observe).not.toHaveBeenCalled();
     expect(root.innerHTML).toBe(original);
   });
