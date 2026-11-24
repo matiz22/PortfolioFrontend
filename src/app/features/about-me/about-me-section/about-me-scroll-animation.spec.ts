@@ -15,8 +15,10 @@ describe('About Me scroll animation', () => {
   let isTall: boolean;
   let stageHeight: number;
   let originalHeight: PropertyDescriptor | undefined;
+  let originalUrl: string;
 
   beforeEach(() => {
+    originalUrl = location.href;
     canAnimate = true;
     isDesktop = true;
     isTall = true;
@@ -45,7 +47,7 @@ describe('About Me scroll animation', () => {
           </nav>
           <div class="about-panels">
             ${[0, 1, 2].map((index) => `
-              <article class="about-panel" id="service-${index}">Service ${index}</article>
+              <article class="about-panel" id="service-${index}" tabindex="-1">Service ${index}</article>
             `).join('')}
           </div>
         </div>
@@ -61,6 +63,7 @@ describe('About Me scroll animation', () => {
   });
 
   afterEach(() => {
+    history.replaceState(history.state, '', originalUrl);
     motion?.revert();
     motion = undefined;
     root.remove();
@@ -186,8 +189,32 @@ describe('About Me scroll animation', () => {
       (trigger().end - trigger().start);
 
     expect(event.defaultPrevented).toBeTrue();
+    expect(location.hash).toBe('#service-1');
+    timeline().time(time);
+    expect(document.activeElement).toBe(panels[1]);
     expect(scroll.calls.allArgs() as unknown[])
       .toContain([jasmine.objectContaining({ top, behavior: 'smooth' })]);
+  });
+
+  it('leaves modified index clicks to the browser', () => {
+    motion = animateAboutMeScroll(root);
+    const scroll = spyOn(window, 'scrollTo');
+    const event = new MouseEvent('click', { bubbles: true, cancelable: true, ctrlKey: true });
+    links[1].dispatchEvent(event);
+    expect(event.defaultPrevented).toBeFalse();
+    expect(scroll).not.toHaveBeenCalled();
+  });
+
+  it('replays the current index fragment without another history entry', () => {
+    motion = animateAboutMeScroll(root);
+    history.replaceState(history.state, '', '#service-1');
+    const push = spyOn(history, 'pushState');
+    const scroll = spyOn(window, 'scrollTo');
+    links[1].dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
+    expect(push).not.toHaveBeenCalled();
+    expect(scroll).toHaveBeenCalled();
+    timeline().time(timeline().labels['service-1'] + 0.35);
+    expect(document.activeElement).toBe(panels[1]);
   });
 
   it('resolves an incoming service fragment to its pinned reading hold', () => {
@@ -271,6 +298,29 @@ describe('About Me scroll animation', () => {
     expect(section.classList.contains('about-is-pinned')).toBeFalse();
     expect(trigger()).toBeUndefined();
     expect(panels.every((panel) => !panel.inert)).toBeTrue();
+  });
+
+  it('restores native services when content outgrows the viewport and pins again when it fits', async () => {
+    let resized!: ResizeObserverCallback;
+    spyOn(window, 'ResizeObserver').and.callFake(function (callback) {
+      resized = callback;
+      return { observe() {}, unobserve() {}, disconnect() {} } as ResizeObserver;
+    });
+    motion = animateAboutMeScroll(root);
+    stageHeight = window.innerHeight + 1;
+    resized([], {} as ResizeObserver);
+    await new Promise(requestAnimationFrame);
+    expect(section.classList.contains('about-is-pinned')).toBeFalse();
+    expect(trigger()).toBeUndefined();
+    expect(panels.every((panel) => !panel.inert && !panel.hasAttribute('aria-hidden'))).toBeTrue();
+
+    stageHeight = window.innerHeight - 20;
+    resized([], {} as ResizeObserver);
+    await new Promise(requestAnimationFrame);
+    expect(section.classList.contains('about-is-pinned')).toBeTrue();
+    expect(trigger().pin).toBe(stage);
+    expect(panels[0].inert).toBeFalse();
+    expect(panels[1].inert).toBeTrue();
   });
 
   it('keeps every service static and readable for reduced motion', () => {
