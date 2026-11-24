@@ -5,6 +5,7 @@ export const environment = {
   apiUrl: 'https://admintest.matiz22.pl/api',
   storageUrl: 'https://admintest.matiz22.pl/storage',
   version: 'v1',
+  seoTitleSuffix: ' | Mateusz Malich',
   languagesOptions: [
     {
       code: 'pl',
