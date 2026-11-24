@@ -23,6 +23,12 @@ describe('Header', () => {
     expect(component).toBeTruthy();
   });
 
+  it('names the mobile menu toggle and hides its decorative icon', () => {
+    const toggle: HTMLElement = fixture.nativeElement.querySelector('summary');
+    expect(toggle.getAttribute('aria-label')).toBe('Navigation menu');
+    expect(toggle.querySelector('svg')?.getAttribute('aria-hidden')).toBe('true');
+  });
+
   function menuHrefs(selector: string): (string | null)[] {
     const root: HTMLElement = fixture.nativeElement;
     const menu = root.querySelector(`nav ${selector}`);

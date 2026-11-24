@@ -1,6 +1,7 @@
 {
     "locale": "pl",
     "translations": {
+        "header.menu": "Menu nawigacji",
         "home.next.about": "Jak pracuję",
         "home.next.work": "Realizacje",
         "home.next.projects": "Projekty",

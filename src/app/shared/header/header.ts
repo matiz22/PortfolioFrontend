@@ -31,7 +31,7 @@ const chapterOrder = ['work', 'projects', 'certifications', 'experience', 'educa
   ],
   templateUrl: './header.html',
   styleUrl: './header.scss',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: 'relative z-[9999] block'
   }
