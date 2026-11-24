@@ -1,4 +1,5 @@
 import { gsap } from 'gsap';
+import { observePreviewPlayback } from '../../../../shared/animations/preview-playback';
 import type { WorkflowPhase, WorkflowScene } from './ai-workflow-state';
 import { buildKnowledgeTimeline } from './knowledge-preview/knowledge-animation';
 import { buildOperationsTimeline } from './operations-preview/operations-animation';
@@ -12,7 +13,6 @@ interface WorkflowCallbacks {
 export function animateAiWorkflow(root: HTMLElement, callbacks: WorkflowCallbacks): gsap.MatchMedia {
   const motion = gsap.matchMedia();
   const panel = root.closest<HTMLElement>('.about-panel');
-  const document = root.ownerDocument;
   const main = root.querySelector<HTMLElement>('.workflow-main-anchor');
   const helpers = Array.from(root.querySelectorAll<HTMLElement>('.workflow-helper-motion'));
   if (!main || helpers.length !== 2) return motion;
@@ -148,24 +148,11 @@ export function animateAiWorkflow(root: HTMLElement, callbacks: WorkflowCallback
       .to('.workflow-operations-scene', { autoAlpha: 0 }, 40.9)
       .to({}, { duration: 0.4 }, 41.4);
 
-    let inViewport = false;
     let disposed = false;
-    const syncPlayback = () => {
-      if (disposed) return;
-      const active = panel?.getAttribute('aria-hidden') !== 'true' && !panel?.inert;
-      const playing = inViewport && active && !document.hidden;
+    const stopPlayback = observePreviewPlayback(root, (playing) => {
       timeline.paused(!playing);
       callbacks.playback(playing);
-    };
-    const intersection = new IntersectionObserver(([entry]) => {
-      inViewport = entry.isIntersecting && entry.intersectionRatio > 0;
-      syncPlayback();
-    }, { threshold: [0, 0.1] });
-    intersection.observe(root);
-
-    const selection = new MutationObserver(syncPlayback);
-    if (panel) selection.observe(panel, { attributes: true, attributeFilter: ['aria-hidden', 'inert'] });
-    document.addEventListener('visibilitychange', syncPlayback);
+    }, panel);
 
     const resize = new ResizeObserver(() => {
       if (!disposed) measure();
@@ -174,11 +161,8 @@ export function animateAiWorkflow(root: HTMLElement, callbacks: WorkflowCallback
 
     return () => {
       disposed = true;
-      intersection.disconnect();
-      selection.disconnect();
+      stopPlayback();
       resize.disconnect();
-      document.removeEventListener('visibilitychange', syncPlayback);
-      callbacks.playback(false);
       callbacks.scene('team');
       callbacks.phase('complete');
     };

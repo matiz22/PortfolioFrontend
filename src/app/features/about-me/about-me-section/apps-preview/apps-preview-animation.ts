@@ -1,4 +1,5 @@
 import { gsap } from 'gsap';
+import { observePreviewPlayback } from '../../../../shared/animations/preview-playback';
 
 const SCENE_DURATION = 4.6;
 const TRANSITION = 0.26;
@@ -8,7 +9,6 @@ const NOTE_READING_HOLD = 0.5;
 export function animateAppsPreview(root: HTMLElement): gsap.MatchMedia {
   const motion = gsap.matchMedia();
   const panel = root.closest<HTMLElement>('.about-panel');
-  const document = root.ownerDocument;
   const step = (name: string) => root.querySelectorAll(`[data-app-step="${name}"]`);
   const pairs = ['vault', 'studio', 'notes'].map((name) =>
     root.querySelectorAll<HTMLElement>(`[data-app-scene="${name}"]`),
@@ -83,32 +83,7 @@ export function animateAppsPreview(root: HTMLElement): gsap.MatchMedia {
       .fromTo(step('note-detail'), { autoAlpha: 0, y: 5 },
         { autoAlpha: 1, y: 0, duration: 0.36 }, 'note-open');
 
-    let inViewport = false;
-    let disposed = false;
-    const syncPlayback = () => {
-      if (!disposed) {
-        const active = panel?.getAttribute('aria-hidden') !== 'true' && !panel?.inert;
-        timeline.paused(!inViewport || !active || document.hidden);
-      }
-    };
-    const intersection = new IntersectionObserver(([entry]) => {
-      inViewport = entry.isIntersecting && entry.intersectionRatio > 0;
-      syncPlayback();
-    }, { threshold: 0.1 });
-    intersection.observe(root);
-
-    const selection = new MutationObserver(syncPlayback);
-    if (panel) {
-      selection.observe(panel, { attributes: true, attributeFilter: ['aria-hidden', 'inert'] });
-    }
-    document.addEventListener('visibilitychange', syncPlayback);
-
-    return () => {
-      disposed = true;
-      intersection.disconnect();
-      selection.disconnect();
-      document.removeEventListener('visibilitychange', syncPlayback);
-    };
+    return observePreviewPlayback(root, (playing) => timeline.paused(!playing), panel);
   }, root);
 
   return motion;

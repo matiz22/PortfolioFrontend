@@ -1,11 +1,11 @@
 import { gsap } from 'gsap';
+import { observePreviewPlayback } from '../../../../shared/animations/preview-playback';
 
 export function animateWebPreview(root: HTMLElement): gsap.MatchMedia {
   const motion = gsap.matchMedia();
   const templates = Array.from(root.querySelectorAll<HTMLElement>('[data-preview-template]'));
   const parts = Array.from(root.querySelectorAll<HTMLElement>('[data-preview-part]'));
   const panel = root.closest<HTMLElement>('.about-panel');
-  const document = root.ownerDocument;
 
   const required = [
     '.preview-site .preview-nav', '.preview-heading-line', '.preview-copy-line',
@@ -77,35 +77,7 @@ export function animateWebPreview(root: HTMLElement): gsap.MatchMedia {
         }, start + 3.9);
     });
 
-    let inViewport = false;
-    let disposed = false;
-    const syncPlayback = () => {
-      if (disposed) {
-        return;
-      }
-      const active = panel?.getAttribute('aria-hidden') !== 'true' && !panel?.inert;
-      timeline.paused(!inViewport || !active || document.hidden);
-    };
-
-    const intersection = new IntersectionObserver(([entry]) => {
-      inViewport = entry.isIntersecting && entry.intersectionRatio > 0;
-      syncPlayback();
-    }, { threshold: 0.1 });
-    intersection.observe(root);
-
-    // The parent scroll sequence owns panel selection; do not couple the preview to its timing.
-    const selection = new MutationObserver(syncPlayback);
-    if (panel) {
-      selection.observe(panel, { attributes: true, attributeFilter: ['aria-hidden', 'inert'] });
-    }
-    document.addEventListener('visibilitychange', syncPlayback);
-
-    return () => {
-      disposed = true;
-      intersection.disconnect();
-      selection.disconnect();
-      document.removeEventListener('visibilitychange', syncPlayback);
-    };
+    return observePreviewPlayback(root, (playing) => timeline.paused(!playing), panel);
   }, root);
 
   return motion;
