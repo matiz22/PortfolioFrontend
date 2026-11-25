@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { LoadingCard } from '../loading-card/loading-card';
 import { LoadingCardCover } from '../loading-card-cover/loading-card-cover';
 
@@ -6,11 +6,10 @@ import { LoadingCardCover } from '../loading-card-cover/loading-card-cover';
   selector: 'app-loading-items',
   imports: [LoadingCard, LoadingCardCover],
   templateUrl: './loading-items.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './loading-items.scss',
 })
 export class LoadingItems {
-  @Input() count: number = 9;
+  @Input() count = 9;
   @Input() variant: 'default' | 'cover' = 'default';
 
   // Helper to generate array for loop

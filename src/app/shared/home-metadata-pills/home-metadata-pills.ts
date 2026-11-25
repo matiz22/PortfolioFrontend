@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 
-type MetadataItem = { id: number; name: string };
+interface MetadataItem { id: number; name: string }
 
 const TECHNOLOGIES = $localize`:@@home.metadata.technologies:Technologies`;
 const SKILLS = $localize`:@@home.metadata.skills:Skills`;

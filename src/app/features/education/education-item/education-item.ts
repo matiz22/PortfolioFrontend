@@ -1,4 +1,4 @@
-import { Component, Input, signal, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, signal } from '@angular/core';
 import { Education } from '../../../core/models/education';
 import { EducationSummary } from '../../../core/models/summary/education';
 import { ImageUrlPipe } from '../../../shared/pipes/image-url-pipe';
@@ -10,7 +10,6 @@ import { PortfolioPeriod } from '../../../shared/portfolio/portfolio-period';
   selector: 'app-education-item',
   imports: [ArchiveCard, ImageUrlPipe, RouterLink, PortfolioPeriod],
   templateUrl: './education-item.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './education-item.scss',
 })
 export class EducationItem {

@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {Contact} from '../models/contact';
@@ -9,9 +9,10 @@ import {mapContactDto} from '../mappers/contact.dto';
   providedIn: 'root'
 })
 export class ContactService {
+  private readonly http = inject(HttpClient);
   private readonly baseUrl: string;
 
-  constructor(private http: HttpClient) {
+  constructor() {
     this.baseUrl = `${environment.apiUrl}/${environment.version}/send-email`;
   }
 

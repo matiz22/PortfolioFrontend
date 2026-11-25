@@ -48,4 +48,20 @@ describe('ProjectsPage', () => {
     expect(root.querySelector('[role="alert"]')?.textContent).toContain('Error loading projects');
     expect(root.querySelector('.archive-grid')).toBeNull();
   });
+
+  it('fetches and renders the next archive page when its pagination tile is clicked', async () => {
+    projects.getAllPaginated.withArgs(1).and.returnValue(of(ApiState.success({
+      data: [], meta: { currentPage: 1, lastPage: 2, perPage: 9, total: 10, from: 1, to: 9 },
+    })));
+    projects.getAllPaginated.withArgs(2).and.returnValue(
+      of({ status: 'error', error: 'Could not load projects' }),
+    );
+
+    const root = await renderArchive();
+    root.querySelector<HTMLInputElement>('input[aria-label="2"]')!.click();
+    await fixture.whenStable();
+
+    expect(projects.getAllPaginated.calls.allArgs()).toEqual([[1], [2]]);
+    expect(root.querySelector('[role="alert"]')?.textContent).toContain('Error loading projects');
+  });
 });

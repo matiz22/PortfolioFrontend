@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { of } from 'rxjs';
@@ -41,7 +41,6 @@ const entries = [entry, {
     JobItem, JobTimelineSection, ProjectItem, ProjectsHomeSection,
   ],
   styleUrl: './_archive.scss',
-  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <app-projects-home-section />
     <app-certifications-section />

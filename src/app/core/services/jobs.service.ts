@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {ICrudService} from './base/services/crud.service';
 import {IHomeService} from './base/services/home.service';
 import {ISummaryService} from './base/services/summary.service';
@@ -35,7 +35,8 @@ export class JobsService implements ICrudService<Job>,
   private summaryOps: SummaryOperations<JobSummaryDto, JobSummary>;
 
 
-  constructor(private http: HttpClient) {
+  constructor() {
+    const http = inject(HttpClient);
     this.baseUrl = `${environment.apiUrl}/${environment.version}/jobs/translated`;
     this.homeUrl = `${this.baseUrl}/home-page`;
     this.summaryUrl = `${this.baseUrl}/summary`;
@@ -66,7 +67,7 @@ export class JobsService implements ICrudService<Job>,
     return this.homeOps.getHomeSummaryItems(mapJobSummary);
   }
 
-  getAllPaginated(page: number = 1): Observable<ApiState<{ data: Job[], meta: PaginationMeta }>> {
+  getAllPaginated(page = 1): Observable<ApiState<{ data: Job[], meta: PaginationMeta }>> {
     return this.crudOps.getAllPaginated(page, 9);
   }
 
@@ -82,7 +83,7 @@ export class JobsService implements ICrudService<Job>,
     return this.summaryOps.getBySlug(slug);
   }
 
-  getAllSummaryPaginated(page: number = 1): Observable<ApiState<{ data: JobSummary[], meta: PaginationMeta }>> {
+  getAllSummaryPaginated(page = 1): Observable<ApiState<{ data: JobSummary[], meta: PaginationMeta }>> {
     return this.summaryOps.getAllPaginated(page, 9);
   }
 

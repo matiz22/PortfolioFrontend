@@ -1,10 +1,9 @@
-import { Component, ChangeDetectionStrategy, input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SectionNext } from './section-next';
 
 @Component({
   imports: [SectionNext],
-  changeDetection: ChangeDetectionStrategy.Eager,
   template: `<app-section-next [targetId]="target()">Client work</app-section-next>`,
 })
 class TestHost {

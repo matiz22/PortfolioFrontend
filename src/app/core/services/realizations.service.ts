@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
@@ -35,7 +35,8 @@ export class RealizationsService implements ICrudService<Realization>,
   private summaryOps: SummaryOperations<RealizationSummaryDto, RealizationSummary>;
 
 
-  constructor(private http: HttpClient) {
+  constructor() {
+    const http = inject(HttpClient);
     this.baseUrl = `${environment.apiUrl}/${environment.version}/realizations/translated`;
     this.homeUrl = `${this.baseUrl}/home-page`;
     this.summaryUrl = `${this.baseUrl}/summary`;
@@ -66,7 +67,7 @@ export class RealizationsService implements ICrudService<Realization>,
     return this.homeOps.getHomeSummaryItems(mapRealizationSummary);
   }
 
-  getAllPaginated(page: number = 1): Observable<ApiState<{ data: Realization[], meta: PaginationMeta }>> {
+  getAllPaginated(page = 1): Observable<ApiState<{ data: Realization[], meta: PaginationMeta }>> {
     return this.crudOps.getAllPaginated(page, 9);
   }
 
@@ -82,7 +83,7 @@ export class RealizationsService implements ICrudService<Realization>,
     return this.summaryOps.getBySlug(slug);
   }
 
-  getAllSummaryPaginated(page: number = 1): Observable<ApiState<{ data: RealizationSummary[], meta: PaginationMeta }>> {
+  getAllSummaryPaginated(page = 1): Observable<ApiState<{ data: RealizationSummary[], meta: PaginationMeta }>> {
     return this.summaryOps.getAllPaginated(page, 9);
   }
 

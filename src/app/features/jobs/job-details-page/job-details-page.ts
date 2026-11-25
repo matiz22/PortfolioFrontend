@@ -1,4 +1,4 @@
-import { afterRenderEffect, Component, computed, ElementRef, inject, NgZone, ChangeDetectionStrategy } from '@angular/core';
+import { afterRenderEffect, Component, computed, ElementRef, inject, NgZone } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ApiState } from '../../../core/models/api.state';
@@ -26,7 +26,6 @@ import { PortfolioPeriod } from '../../../shared/portfolio/portfolio-period';
     CaseHeroCover,
   ],
   templateUrl: './job-details-page.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './job-details-page.scss',
 })
 export class JobDetailsPage {

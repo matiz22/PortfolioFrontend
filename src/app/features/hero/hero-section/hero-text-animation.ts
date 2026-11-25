@@ -46,12 +46,12 @@ export function animateHeroText(root: HTMLElement): gsap.MatchMedia {
     return motion;
   }
   let introFinished = false;
-  let resetHover = () => {};
+  let resetHover: (() => void) | undefined;
 
   motion.add(MOTION_ALLOWED_QUERY, () => {
     let introMotion: gsap.Context | undefined;
     const playIntro = () => {
-      resetHover();
+      resetHover?.();
       introMotion?.revert();
       introFinished = false;
       introMotion = gsap.context(() => {
@@ -157,7 +157,7 @@ export function animateHeroText(root: HTMLElement): gsap.MatchMedia {
         if (entry.intersectionRatio <= (tall ? 0.08 : 0.12)) {
           armed = true;
           introFinished = false;
-          resetHover();
+          resetHover?.();
           introMotion?.revert();
           introMotion = undefined;
         } else if (armed && inView) {
@@ -259,8 +259,8 @@ export function animateHeroText(root: HTMLElement): gsap.MatchMedia {
       return () => {
         main.removeEventListener('pointerenter', onMainPointerEnter);
         accent.removeEventListener('pointerenter', onAccentPointerEnter);
-        resetHover();
-        resetHover = () => {};
+        resetHover?.();
+        resetHover = undefined;
       };
     },
     root,

@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {environment} from '../../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {ProjectDto} from '../dto/project';
@@ -36,7 +36,8 @@ export class ProjectsService implements ICrudService<Project>,
   private summaryOps: SummaryOperations<ProjectSummaryDto, ProjectSummary>;
 
 
-  constructor(private http: HttpClient) {
+  constructor() {
+    const http = inject(HttpClient);
     this.baseUrl = `${environment.apiUrl}/${environment.version}/projects/translated`;
     this.homeUrl = `${this.baseUrl}/home-page`;
     this.summaryUrl = `${this.baseUrl}/summary`;
@@ -67,7 +68,7 @@ export class ProjectsService implements ICrudService<Project>,
     return this.homeOps.getHomeSummaryItems(mapProjectSummary);
   }
 
-  getAllPaginated(page: number = 1): Observable<ApiState<{ data: Project[], meta: PaginationMeta }>> {
+  getAllPaginated(page = 1): Observable<ApiState<{ data: Project[], meta: PaginationMeta }>> {
     return this.crudOps.getAllPaginated(page, 9);
   }
 
@@ -83,7 +84,7 @@ export class ProjectsService implements ICrudService<Project>,
     return this.summaryOps.getBySlug(slug);
   }
 
-  getAllSummaryPaginated(page: number = 1): Observable<ApiState<{ data: ProjectSummary[], meta: PaginationMeta }>> {
+  getAllSummaryPaginated(page = 1): Observable<ApiState<{ data: ProjectSummary[], meta: PaginationMeta }>> {
     return this.summaryOps.getAllPaginated(page, 9);
   }
 }

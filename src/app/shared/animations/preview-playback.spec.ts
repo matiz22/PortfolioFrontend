@@ -15,7 +15,12 @@ describe('observePreviewPlayback', () => {
     document.body.append(panel);
     spyOn(window, 'IntersectionObserver').and.callFake(function (callback) {
       intersect = callback;
-      return { observe() {}, unobserve() {}, disconnect() {}, takeRecords: () => [] } as unknown as IntersectionObserver;
+      return {
+        observe: () => undefined,
+        unobserve: () => undefined,
+        disconnect: () => undefined,
+        takeRecords: () => [],
+      } as unknown as IntersectionObserver;
     });
     hidden = spyOnProperty(document, 'hidden', 'get').and.returnValue(false);
     playing = jasmine.createSpy('playing');

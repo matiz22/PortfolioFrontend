@@ -24,7 +24,7 @@ const GEOMETRY_EPSILON = 4;
 /** Mount a section's enhancement only while its candidate pinned layout fits. */
 export function watchPinFit({ section, stage, pinnedClass, observe, eligible, tolerance = 0, mount }: PinFitOptions): () => void {
   const view = section.ownerDocument.defaultView;
-  if (!view) return () => {};
+  if (!view) return () => undefined;
   let instance: PinInstance | undefined;
   let frame: number | undefined;
   let disposed = false;

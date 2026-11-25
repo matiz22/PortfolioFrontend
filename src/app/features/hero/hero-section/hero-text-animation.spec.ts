@@ -193,7 +193,7 @@ describe('hero text animation', () => {
     let onIntersection!: IntersectionObserverCallback;
     spyOn(window, 'IntersectionObserver').and.callFake(function (callback) {
       onIntersection = callback;
-      return { observe: () => {}, disconnect } as unknown as IntersectionObserver;
+      return { observe: () => undefined, disconnect } as unknown as IntersectionObserver;
     });
     const intersect = (intersectionRatio: number) => onIntersection(
       [{

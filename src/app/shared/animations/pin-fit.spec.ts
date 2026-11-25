@@ -24,7 +24,11 @@ describe('watchPinFit', () => {
     spyOn(window, 'cancelAnimationFrame');
     spyOn(window, 'ResizeObserver').and.callFake(function (callback) {
       resized = callback;
-      return { observe() {}, unobserve() {}, disconnect() {} } as ResizeObserver;
+      return {
+        observe: () => undefined,
+        unobserve: () => undefined,
+        disconnect: () => undefined,
+      } satisfies ResizeObserver;
     });
     instance = { refresh: jasmine.createSpy('refresh'), revert: jasmine.createSpy('revert') };
     mount = jasmine.createSpy('mount').and.returnValue(instance);

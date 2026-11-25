@@ -349,7 +349,11 @@ describe('About Me scroll animation', () => {
     let flush!: () => void;
     spyOn(window, 'ResizeObserver').and.callFake(function (callback) {
       resized = callback;
-      return { observe() {}, unobserve() {}, disconnect() {} } as ResizeObserver;
+      return {
+        observe: () => undefined,
+        unobserve: () => undefined,
+        disconnect: () => undefined,
+      } satisfies ResizeObserver;
     });
     // Flush the scheduled fit check directly: real frames are at the mercy of
     // the headless compositor, while the decision itself is synchronous.

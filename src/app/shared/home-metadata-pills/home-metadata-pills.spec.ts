@@ -1,10 +1,9 @@
-import { Component, ChangeDetectionStrategy, input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HomeMetadataPills } from './home-metadata-pills';
 
 @Component({
   imports: [HomeMetadataPills],
-  changeDetection: ChangeDetectionStrategy.Eager,
   template: '<ul appHomeMetadataPills [items]="items" [kind]="kind()"></ul>',
 })
 class MetadataPreview {

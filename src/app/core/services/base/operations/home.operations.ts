@@ -13,7 +13,7 @@ export class HomeOperations<TDto, TModel> {
     private http: HttpClient,
     private homeUrl: string,
     private mapper: (dto: TDto) => TModel,
-    private entityName: string = 'Entity'
+    private entityName = 'Entity'
   ) {
   }
 

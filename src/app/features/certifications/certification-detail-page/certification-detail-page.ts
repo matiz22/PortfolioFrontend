@@ -1,4 +1,4 @@
-import { afterRenderEffect, Component, computed, ElementRef, inject, NgZone, ChangeDetectionStrategy } from '@angular/core';
+import { afterRenderEffect, Component, computed, ElementRef, inject, NgZone } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ApiState } from '../../../core/models/api.state';
@@ -33,7 +33,6 @@ import { uniquePortfolioItems } from '../../../shared/portfolio/portfolio-metada
     CaseHeroCover,
   ],
   templateUrl: './certification-detail-page.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './certification-detail-page.scss',
 })
 export class CertificationDetailPage {

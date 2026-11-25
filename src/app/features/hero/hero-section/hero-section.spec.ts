@@ -81,11 +81,11 @@ describe('HeroSection', () => {
               disconnectResize();
             }
           },
-          unobserve() {},
+          unobserve: () => undefined,
         };
       });
       spyOn(window, 'IntersectionObserver').and.callFake(function () {
-        return { observe: () => {}, disconnect: disconnectIntro } as unknown as IntersectionObserver;
+        return { observe: () => undefined, disconnect: disconnectIntro } as unknown as IntersectionObserver;
       });
 
       TestBed.configureTestingModule({ imports: [HeroSection], providers: [HomeMotionLifecycle] });

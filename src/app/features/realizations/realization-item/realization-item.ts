@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Realization } from '../../../core/models/realization';
 import { RealizationSummary } from '../../../core/models/summary/realization';
 import { ImageUrlPipe } from '../../../shared/pipes/image-url-pipe';
@@ -13,7 +13,6 @@ import { ArchiveCard } from '../../../shared/portfolio/archive-card';
     RouterLink
   ],
   templateUrl: './realization-item.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './realization-item.scss',
 })
 export class RealizationItem {
@@ -21,7 +20,8 @@ export class RealizationItem {
 
   // derived helpers for template
   get year(): number | null {
-    const date = (this.realization as any)?.createdAt;
+    const item = this.realization;
+    const date = item && 'createdAt' in item ? item.createdAt : undefined;
     return date ? new Date(date).getFullYear() : null;
   }
 

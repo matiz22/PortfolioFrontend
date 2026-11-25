@@ -13,7 +13,7 @@ export function animateProjectDrawers(root: HTMLElement, context: gsap.Context):
         '.project-preview-description, .project-preview-actions',
       );
       if (!drawer || !brief || !art || !shade) {
-        return () => {};
+        return () => undefined;
       }
 
       const originalInert = drawer.inert;

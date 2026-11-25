@@ -68,7 +68,7 @@ export function watchGrainGradientPalette(
 ): () => void {
   const view = root.ownerDocument.defaultView;
   if (!view) {
-    return () => {};
+    return () => undefined;
   }
   const chapters = Array.from(root.querySelectorAll<HTMLElement>('[data-grain-chapter]'))
     .flatMap((section) => {
@@ -76,7 +76,7 @@ export function watchGrainGradientPalette(
       return palette ? [{ section, palette }] : [];
     });
   if (!chapters.length) {
-    return () => {};
+    return () => undefined;
   }
 
   const reducedMotion = view.matchMedia('(prefers-reduced-motion: reduce)');

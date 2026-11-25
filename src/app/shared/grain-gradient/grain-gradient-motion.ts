@@ -9,7 +9,7 @@ export function attachGrainGradientMotion(
 ): () => void {
   const view = root.ownerDocument.defaultView;
   if (!view) {
-    return () => {};
+    return () => undefined;
   }
 
   const reducedMotion = view.matchMedia('(prefers-reduced-motion: reduce)');

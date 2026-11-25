@@ -35,7 +35,7 @@ describe('HomeCopy registrations', () => {
     expect(remove).toHaveBeenCalledTimes(2);
     unsubscribe();
     const remaining = jasmine.createSpy('remaining');
-    registry.subscribe({ add: remaining, remove: () => {} })();
+    registry.subscribe({ add: remaining, remove: () => undefined })();
     expect(remaining).not.toHaveBeenCalled();
   });
 

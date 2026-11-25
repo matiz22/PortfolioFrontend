@@ -3,7 +3,7 @@ import { gsap } from 'gsap';
 export function animatePortfolioHero(root: HTMLElement): () => void {
   const view = root.ownerDocument.defaultView;
   const copy = root.querySelector<HTMLElement>('[data-case-copy]');
-  if (!view || !copy) return () => {};
+  if (!view || !copy) return () => undefined;
 
   const actions = root.querySelector<HTMLElement>('[data-case-actions]');
   const preview = root.querySelector<HTMLElement>('.case-preview');

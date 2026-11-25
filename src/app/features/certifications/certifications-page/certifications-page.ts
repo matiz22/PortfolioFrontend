@@ -1,4 +1,4 @@
-import { Component, computed, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { switchMap } from 'rxjs/operators';
 import { CertificationsService } from '../../../core/services/certifications.service';
@@ -19,7 +19,6 @@ import { GrainGradient } from '../../../shared/grain-gradient/grain-gradient';
   imports: [Header, Footer, ContactSection, CertificationItem, LoadingItems, PaginationTiles, GrainGradient],
   providers: [PaginationService],
   templateUrl: './certifications-page.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './certifications-page.scss',
 })
 export class CertificationsPage {

@@ -8,7 +8,7 @@ gsap.registerPlugin(ScrollTrigger);
 /** Visual enhancement only: native navigation and controls belong to Angular. */
 export function animateRealizationsScroll(
   root: HTMLElement,
-  reportPinnedProgress: (progress: number | null) => void = () => {},
+  reportPinnedProgress: (progress: number | null) => void = () => undefined,
 ): gsap.MatchMedia {
   const motion = gsap.matchMedia();
   const view = root.ownerDocument.defaultView;

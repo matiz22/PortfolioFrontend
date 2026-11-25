@@ -20,7 +20,7 @@ export function animateProjectRows(root: HTMLElement, context: gsap.Context): ()
   const view = root.ownerDocument.defaultView;
   const grid = root.querySelector<HTMLElement>('.projects-home-grid');
   if (!view || !grid) {
-    return () => {};
+    return () => undefined;
   }
 
   const slots = Array.from(grid.querySelectorAll<HTMLElement>(':scope > .projects-home-slot'));
@@ -43,7 +43,7 @@ export function animateProjectRows(root: HTMLElement, context: gsap.Context): ()
     }] : [];
   });
   if (cards.length === 0) {
-    return () => {};
+    return () => undefined;
   }
 
   const hadGridClass = grid.classList.contains('projects-home-grid-horizontal');
