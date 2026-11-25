@@ -6,6 +6,13 @@
   overflow: hidden;
   pointer-events: none;
   background: #000;
+
+  @media (any-pointer: coarse) {
+    // The toolbar animates before some browsers update their dynamic viewport.
+    // Paint the largest viewport in advance so neither the clip nor the canvas
+    // exposes a strip of the page background as more of the page is revealed.
+    min-block-size: 100lvh;
+  }
 }
 
 .grain-surface {
@@ -19,21 +26,6 @@
 
   &.is-ready {
     background: #000;
-  }
-}
-
-@media (pointer: coarse) {
-  // Clip to the changing visible viewport without reallocating the WebGL
-  // drawing buffer as the address bar moves. Keep the lower glow in view.
-  :host {
-    block-size: 100dvh;
-  }
-
-  @supports (height: 100lvh) {
-    .grain-surface {
-      inset-block-start: auto;
-      block-size: 100lvh;
-    }
   }
 }
 
