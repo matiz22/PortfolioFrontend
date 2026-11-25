@@ -13,8 +13,8 @@ export class CrudOperations<TDto, TModel> {
   ) {
   }
 
-  getAll(): Observable<ApiState<TModel[]>> {
-    return this.http.get<TDto[]>(this.baseUrl).pipe(
+  getAll(options?: { timeout?: number }): Observable<ApiState<TModel[]>> {
+    return this.http.get<TDto[]>(this.baseUrl, options).pipe(
       map(dtos => ApiState.success(dtos.map(dto => this.mapper(dto)))),
       catchError(err => of(ApiState.error<TModel[]>(this.getErrorMessage(err))))
     );

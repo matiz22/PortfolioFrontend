@@ -1,5 +1,5 @@
-@let socialLinksState = socialLinks();
 <app-status-announcer [message]="statusMessage()" />
+@if (socialLinks(); as socialLinksState) {
 @switch (socialLinksState.status) {
 @case ('loading') {
 <p class="social-links-state" aria-hidden="true" i18n="@@socialLinks.loading">Loading social links…</p>
@@ -25,5 +25,6 @@
         }
     </div>
 </div>
+}
 }
 }

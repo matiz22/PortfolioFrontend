@@ -61,10 +61,11 @@ yarn ng build --configuration local
 node tests/home-hydration.mjs
 ```
 
-Open the printed URL in a browser at least `80rem` wide. The check provides its own data, verifies
-that the five summary sections do not refetch, and checks Projects' column widths. It reports
-Contact's social links separately. Set `HYDRATION_BROWSER` to a browser launcher that takes the URL
-as its only argument to run it without opening the URL manually.
+Open the printed URL in a browser at least `80rem` wide. The check provides its own data and verifies
+that the five summary sections do not refetch and Projects keeps its column widths. It also
+verifies that Contact loads social links only in the browser. Set `HYDRATION_SOCIAL_MODE=error` or
+`HYDRATION_SOCIAL_MODE=timeout` to test the email fallback, and set `HYDRATION_BROWSER` to a launcher
+that takes the URL as its only argument to run it without opening the URL manually.
 
 ## Additional Resources
 

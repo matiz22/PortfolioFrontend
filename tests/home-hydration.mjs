@@ -4,6 +4,10 @@ import { createServer } from 'node:http';
 
 // Run against `ng build --configuration local`, where the API URL is loopback.
 const api = 'http://127.0.0.1:8000/api/';
+const socialMode = process.env['HYDRATION_SOCIAL_MODE'] ?? 'success';
+if (!['success', 'error', 'timeout'].includes(socialMode)) {
+  throw new Error('HYDRATION_SOCIAL_MODE must be success, error or timeout.');
+}
 const summary = (id, name) => ({
   id,
   slug: `fixture-${name}-${id}`,
@@ -38,10 +42,13 @@ const fixtures = {
   [socialPath]: [{ id: 1, name: 'Fixture social link', url: 'https://example.com', icon: '', order: 1 }],
 };
 const nativeFetch = globalThis.fetch;
+let serverSocialRequests = 0;
 globalThis.fetch = (input, init) => {
   const url = input instanceof Request ? input.url : String(input);
   if (url.startsWith(api)) {
-    return Promise.resolve(Response.json(fixtures[url.slice(api.length)] ?? []));
+    const path = url.slice(api.length);
+    if (path === socialPath) serverSocialRequests++;
+    return Promise.resolve(Response.json(fixtures[path] ?? []));
   }
   return nativeFetch(input, init);
 };
@@ -65,8 +72,11 @@ const server = createServer(async (req, res) => {
       if (!response.ok || !html.includes(entry)) {
         throw new Error('Expected SSR output from ng build --configuration local.');
       }
+      if (serverSocialRequests) {
+        throw new Error('SSR requested the optional social links.');
+      }
       // Take the first measurement before the real application entry point runs.
-      const args = JSON.stringify(['main.js', resultPath, api, socialPath]);
+      const args = JSON.stringify(['main.js', resultPath, api, socialPath, socialMode, fixtures[socialPath]]);
       const script = `<script>(${probe})(...${args})</script>`;
       res.setHeader('Content-Type', 'text/html; charset=utf-8');
       res.end(html.replace(entry, script));
@@ -103,7 +113,7 @@ try {
   globalThis.fetch = nativeFetch;
 }
 
-function probe(entry, resultPath, api, socialPath) {
+function probe(entry, resultPath, api, socialPath, socialMode, socialLinks) {
   function capture(hostSelector, itemSelector, count) {
     const host = document.querySelector(`${hostSelector}[ngh]`);
     const read = () => Array.from(host?.querySelectorAll(itemSelector) ?? []);
@@ -138,20 +148,45 @@ function probe(entry, resultPath, api, socialPath) {
     });
   }
 
+  function waitForElement(selector) {
+    const existing = document.querySelector(selector);
+    if (existing) return Promise.resolve(existing);
+    return new Promise((resolve, reject) => {
+      const observer = new MutationObserver(() => {
+        const element = document.querySelector(selector);
+        if (element) {
+          observer.disconnect();
+          clearTimeout(timeout);
+          resolve(element);
+        }
+      });
+      observer.observe(document.body, { childList: true, subtree: true });
+      const timeout = setTimeout(() => {
+        observer.disconnect();
+        reject(new Error(`Did not find ${selector}.`));
+      }, 10_000);
+    });
+  }
+
   async function check() {
     await document.fonts.ready;
     if (!matchMedia('(min-width: 80rem)').matches) {
       throw new Error('Open the test at the wide Projects breakpoint (80rem or more).');
     }
 
-    const chapters = [
+    const summaries = [
       capture('app-realizations-home-section', 'app-realization-showcase-card', 1),
       capture('app-projects-home-section', '.project-preview', 5),
       capture('app-certifications-section', 'app-certification-showcase-card', 1),
       capture('app-job-timeline-section', '.jobs-entry', 2),
       capture('app-education-section', '.education-card', 1),
     ];
-    const contact = capture('app-contact-section', 'app-social-links-row a', 1);
+    const contact = capture('app-contact-section', 'input:not([type="hidden"]), textarea', 5);
+    const email = contact.host.querySelector('a[href="mailto:contact@malich.dev"]');
+    if (!email || contact.host.querySelector('app-social-links-row a, .social-links-state')) {
+      throw new Error('Expected Contact SSR to render its form and email, without API-dependent links or a loading message.');
+    }
+    const chapters = [...summaries, contact];
     const selector = 'app-projects-home-section .projects-home-grid > .projects-home-slot';
     const before = Array.from(document.querySelectorAll(selector));
     const snapshot = (slots) => slots.map(({ offsetLeft, offsetWidth }) => [offsetLeft, offsetWidth]);
@@ -164,20 +199,46 @@ function probe(entry, resultPath, api, socialPath) {
       throw new Error('Expected three columns followed by a full-width row of two before hydration.');
     }
 
-    const requested = new Set();
+    const requested = [];
+    let socialRequestAborted = false;
     const nativeFetch = globalThis.fetch;
     globalThis.fetch = (input, init) => {
       const url = input instanceof Request ? input.url : String(input);
       if (url.startsWith(api)) {
-        requested.add(url.slice(api.length));
+        const path = url.slice(api.length);
+        requested.push(path);
+        if (path === socialPath) {
+          if (socialMode === 'error') {
+            return Promise.resolve(Response.json(null, { status: 503 }));
+          }
+          if (socialMode === 'timeout') {
+            const signal = init?.signal ?? input.signal;
+            return new Promise((_, reject) => {
+              signal.addEventListener('abort', () => {
+                socialRequestAborted = true;
+                reject(signal.reason);
+              }, { once: true });
+            });
+          }
+          return Promise.resolve(Response.json(socialLinks));
+        }
         return Promise.resolve(Response.json([]));
       }
       return nativeFetch(input, init);
     };
-    const hydrated = Promise.all([...chapters, contact].map(({ host }) => waitForHydration(host)));
+    const hydrated = Promise.all(chapters.map(({ host }) => waitForHydration(host)));
     await Promise.all([import(new URL(entry, document.baseURI)), hydrated]);
+    const socialSelector = socialMode === 'success'
+      ? 'app-social-links-row a[href="https://example.com"]'
+      : 'app-social-links-row [role="alert"]';
+    await waitForElement(socialSelector);
+    if (requested.filter(path => path === socialPath).length !== 1 ||
+        (socialMode === 'timeout' && !socialRequestAborted) ||
+        contact.host.querySelector('a[href="mailto:contact@malich.dev"]') !== email) {
+      throw new Error('Expected one bounded browser request with the original email fallback intact.');
+    }
     await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
-    const refetched = [...requested].filter(path => path.endsWith('/home-page/summary'));
+    const refetched = requested.filter(path => path.endsWith('/home-page/summary'));
     if (refetched.length) {
       throw new Error(`Hydration refetched summary endpoints: ${refetched.join(', ')}.`);
     }
@@ -194,10 +255,7 @@ function probe(entry, resultPath, api, socialPath) {
     if (hydratedGeometry !== geometry) {
       throw new Error(`Hydration changed the horizontal geometry: ${geometry} → ${hydratedGeometry}.`);
     }
-    return [
-      requested.has(socialPath) ? 'refetched' : 'did not refetch',
-      contact.unchanged() ? 'retained the original link' : 'replaced the original link',
-    ].join('; ');
+    return `${socialMode}; fetched once in the browser, email and form preserved`;
   }
 
   addEventListener('load', () => {

@@ -1,6 +1,6 @@
-import { Component, computed, inject, input, ChangeDetectionStrategy } from '@angular/core';
+import { afterNextRender, ChangeDetectionStrategy, Component, computed, DestroyRef, inject, input, signal } from '@angular/core';
 import { SocialLinksService } from '../../core/services/social.links.service';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ApiState } from '../../core/models/api.state';
 import { SocialLink } from '../../core/models/social.link';
 import { ImageUrlPipe } from '../pipes/image-url-pipe';
@@ -16,13 +16,18 @@ import { StatusAnnouncer } from '../status-announcer/status-announcer';
 export class SocialLinksRow {
   readonly glass = input(false);
   private readonly socialLinksService = inject(SocialLinksService);
-  protected readonly socialLinks = toSignal(
-    this.socialLinksService.getAll(),
-    {
-      initialValue: ApiState.loading<SocialLink[]>()
-    }
-  );
-  protected readonly statusMessage = computed(() => this.socialLinks().status === 'loading'
+  private readonly destroyRef = inject(DestroyRef);
+  protected readonly socialLinks = signal<ApiState<SocialLink[]> | null>(null);
+  protected readonly statusMessage = computed(() => this.socialLinks()?.status === 'loading'
     ? $localize`:@@socialLinks.loading:Loading social links…`
     : '');
+
+  constructor() {
+    // Email and the form are rendered on the server; social links are optional.
+    afterNextRender(() => {
+      this.socialLinks.set(ApiState.loading());
+      this.socialLinksService.getAll().pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe(state => this.socialLinks.set(state));
+    });
+  }
 }
