@@ -1,11 +1,6 @@
 import { Routes } from '@angular/router';
 import { HomePage } from './features/home-page/home-page';
 import { createEntityResolver, staticSeoResolver } from './core/resolvers/seo.resolver';
-import { ProjectsService } from './core/services/projects.service';
-import { RealizationsService } from './core/services/realizations.service';
-import { EducationService } from './core/services/education.service';
-import { CertificationsService } from './core/services/certifications.service';
-import { JobsService } from './core/services/jobs.service';
 import { environment } from '../environments/environment';
 
 const homeTitle = $localize`:@@homeTitleMeta:AI Integration & Workflow Automation`;
@@ -57,7 +52,10 @@ export const routes: Routes = [
                 (m) => m.ProjectDetailsPage
             ),
         resolve: {
-            projectState: createEntityResolver(ProjectsService, data => `${data.title}`),
+            projectState: createEntityResolver(
+                () => import('./core/services/projects.service').then((m) => m.ProjectsService),
+                (data) => data.title,
+            ),
         },
     },
     {
@@ -85,7 +83,10 @@ export const routes: Routes = [
                 (m) => m.RealizationDetailsPage
             ),
         resolve: {
-            realizationState: createEntityResolver(RealizationsService, data => `${data.title}`),
+            realizationState: createEntityResolver(
+                () => import('./core/services/realizations.service').then((m) => m.RealizationsService),
+                (data) => data.title,
+            ),
         },
     },
     {
@@ -113,7 +114,10 @@ export const routes: Routes = [
                 (m) => m.EducationDetailsPage
             ),
         resolve: {
-            educationState: createEntityResolver(EducationService, data => `${data.degree} at ${data.institution}`),
+            educationState: createEntityResolver(
+                () => import('./core/services/education.service').then((m) => m.EducationService),
+                (data) => `${data.degree} at ${data.institution}`,
+            ),
         },
     },
     {
@@ -141,7 +145,10 @@ export const routes: Routes = [
                 (m) => m.CertificationDetailPage
             ),
         resolve: {
-            certificationState: createEntityResolver(CertificationsService, data => `${data.name}`),
+            certificationState: createEntityResolver(
+                () => import('./core/services/certifications.service').then((m) => m.CertificationsService),
+                (data) => data.name,
+            ),
         },
     },
     {
@@ -167,7 +174,10 @@ export const routes: Routes = [
                 (m) => m.JobDetailsPage
             ),
         resolve: {
-            jobState: createEntityResolver(JobsService, data => `${data.title} at ${data.companyName}`),
+            jobState: createEntityResolver(
+                () => import('./core/services/jobs.service').then((m) => m.JobsService),
+                (data) => `${data.title} at ${data.companyName}`,
+            ),
         },
     },
     {
