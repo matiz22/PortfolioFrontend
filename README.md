@@ -54,13 +54,17 @@ ng test
 
 ## Running end-to-end tests
 
-For end-to-end (e2e) testing, run:
+To check that the homepage sections retain their server-rendered cards during hydration:
 
 ```bash
-ng e2e
+yarn ng build --configuration local
+node tests/home-hydration.mjs
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Open the printed URL in a browser at least `80rem` wide. The check provides its own data, verifies
+that the five summary sections do not refetch, and checks Projects' column widths. It reports
+Contact's social links separately. Set `HYDRATION_BROWSER` to a browser launcher that takes the URL
+as its only argument to run it without opening the URL manually.
 
 ## Additional Resources
 
