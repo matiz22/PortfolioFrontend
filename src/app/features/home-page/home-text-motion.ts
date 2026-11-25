@@ -1,4 +1,5 @@
 import { gsap } from 'gsap';
+import { MOTION_ALLOWED_QUERY } from '../../shared/animations/motion-media';
 import type { HomeCopyConfig, HomeCopyRegistration, HomeCopyRegistry } from '../../shared/animations/home-copy-registry';
 
 const ENTER_RATIO = 0.48;
@@ -135,7 +136,7 @@ export function animateHomeText(root: HTMLElement, registry: HomeCopyRegistry): 
     return motion;
   }
 
-  motion.add('(prefers-reduced-motion: no-preference)', () => {
+  motion.add(MOTION_ALLOWED_QUERY, () => {
     const reveals = new Map<HTMLElement, CopyReveal>();
     const headings = new Map<Element, CopyReveal>();
     const doc = root.ownerDocument;

@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import { afterNextRenderMotion } from '../../../shared/animations/lazy-motion';
+import { MOTION_ALLOWED_QUERY } from '../../../shared/animations/motion-media';
 import { SectionAction } from '../../../shared/section-action/section-action';
 
 @Component({
@@ -20,7 +21,7 @@ export class HeroSection {
         import('./hero-scroll-animation'), root.ownerDocument.fonts.ready,
       ]);
       return animateHeroScroll;
-    }, 'Hero scroll animation could not be loaded.');
+    }, 'Hero scroll animation could not be loaded.', MOTION_ALLOWED_QUERY);
 
     // Keep SSR text readable while the optional animation and display font load.
     afterNextRenderMotion(async (root) => {
@@ -28,6 +29,6 @@ export class HeroSection {
         import('./hero-text-animation'), root.ownerDocument.fonts.ready,
       ]);
       return animateHeroText;
-    }, 'Hero text animation could not be loaded.');
+    }, 'Hero text animation could not be loaded.', MOTION_ALLOWED_QUERY);
   }
 }

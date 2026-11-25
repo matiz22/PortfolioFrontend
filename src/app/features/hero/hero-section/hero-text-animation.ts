@@ -1,5 +1,6 @@
 import { gsap } from 'gsap';
 import { SplitText } from 'gsap/SplitText';
+import { FINE_POINTER_MOTION_QUERY, MOTION_ALLOWED_QUERY } from '../../../shared/animations/motion-media';
 
 gsap.registerPlugin(SplitText);
 
@@ -47,7 +48,7 @@ export function animateHeroText(root: HTMLElement): gsap.MatchMedia {
   let introFinished = false;
   let resetHover = () => {};
 
-  motion.add('(prefers-reduced-motion: no-preference)', () => {
+  motion.add(MOTION_ALLOWED_QUERY, () => {
     let introMotion: gsap.Context | undefined;
     const playIntro = () => {
       resetHover();
@@ -177,7 +178,7 @@ export function animateHeroText(root: HTMLElement): gsap.MatchMedia {
   }, root);
 
   motion.add(
-    '(prefers-reduced-motion: no-preference) and (hover: hover) and (pointer: fine)',
+    FINE_POINTER_MOTION_QUERY,
     () => {
       const main = mainHeading;
       const accent = accentHeading;

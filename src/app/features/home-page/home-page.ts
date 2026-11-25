@@ -15,6 +15,7 @@ import { GrainGradient } from '../../shared/grain-gradient/grain-gradient';
 import { GRAIN_CHAPTER_ACCENTS } from '../../shared/grain-gradient/grain-gradient-palette';
 import { HomeMotionLifecycle } from '../../shared/animations/home-motion-lifecycle';
 import { afterNextRenderMotion } from '../../shared/animations/lazy-motion';
+import { MOTION_ALLOWED_QUERY } from '../../shared/animations/motion-media';
 import { HomeCopyRegistry } from '../../shared/animations/home-copy-registry';
 import { RouteAttachment } from '../../core/models/route-attachment';
 import { StatusAnnouncer } from '../../shared/status-announcer/status-announcer';
@@ -47,7 +48,7 @@ export class HomePage implements RouteAttachment {
         import('./home-text-motion'), this.document.fonts.ready,
       ]);
       return (root) => animateHomeText(root, this.copyRegistry);
-    }, 'Home text animation could not be loaded.');
+    }, 'Home text animation could not be loaded.', MOTION_ALLOWED_QUERY);
   }
 
   onRouteAttach(): void {

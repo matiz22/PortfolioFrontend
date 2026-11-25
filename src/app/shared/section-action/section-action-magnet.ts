@@ -1,4 +1,5 @@
 import { gsap } from 'gsap';
+import { FINE_POINTER_MOTION_QUERY } from '../animations/motion-media';
 
 export function animateSectionAction(root: HTMLAnchorElement, strength: number): gsap.MatchMedia {
   const motion = gsap.matchMedia();
@@ -8,7 +9,7 @@ export function animateSectionAction(root: HTMLAnchorElement, strength: number):
   }
 
   motion.add(
-    '(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)',
+    FINE_POINTER_MOTION_QUERY,
     () => {
       let returnTween: gsap.core.Tween | undefined;
       const move = (event: PointerEvent) => {

@@ -1,4 +1,5 @@
 import { gsap } from 'gsap';
+import { FINE_POINTER_MOTION_QUERY, MOTION_ALLOWED_QUERY } from '../../../shared/animations/motion-media';
 
 import { animateHeroText } from './hero-text-animation';
 
@@ -16,9 +17,8 @@ describe('hero text animation', () => {
       const media = matchMedia(query);
       Object.defineProperty(media, 'matches', {
         value: !reducedMotion && (
-          query === '(prefers-reduced-motion: no-preference)' ||
-          (hoverCapable && query ===
-            '(prefers-reduced-motion: no-preference) and (hover: hover) and (pointer: fine)')
+          query === MOTION_ALLOWED_QUERY ||
+          (hoverCapable && query === FINE_POINTER_MOTION_QUERY)
         ),
       });
       return media;

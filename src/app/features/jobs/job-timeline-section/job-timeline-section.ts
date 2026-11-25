@@ -10,6 +10,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { injectLazyMotion } from '../../../shared/animations/lazy-motion';
+import { MOTION_ALLOWED_QUERY } from '../../../shared/animations/motion-media';
 import { map } from 'rxjs';
 import { ApiState } from '../../../core/models/api.state';
 import { JobsService } from '../../../core/services/jobs.service';
@@ -19,6 +20,8 @@ import { HomeRailControls } from '../../../shared/home-rail-controls/home-rail-c
 import { SectionAction } from '../../../shared/section-action/section-action';
 import { SectionFooter } from '../../../shared/section-footer/section-footer';
 import { StatusAnnouncer } from '../../../shared/status-announcer/status-announcer';
+
+const TIMELINE_MOTION_QUERY = `(min-width: 48rem) and ${MOTION_ALLOWED_QUERY}`;
 
 @Component({
   selector: 'app-job-timeline-section',
@@ -55,7 +58,7 @@ export class JobTimelineSection {
           import('./jobs-timeline-animation'), root.ownerDocument.fonts.ready,
         ]);
         return animateJobsTimeline;
-      }, 'Experience animation could not be loaded.'));
+      }, 'Experience animation could not be loaded.', TIMELINE_MOTION_QUERY));
     });
   }
 

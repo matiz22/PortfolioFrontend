@@ -6,6 +6,7 @@ import {
   input,
 } from '@angular/core';
 import { injectLazyMotion } from '../animations/lazy-motion';
+import { FINE_POINTER_MOTION_QUERY } from '../animations/motion-media';
 
 @Component({
   selector: 'a[appSectionAction]',
@@ -38,7 +39,7 @@ export class SectionAction {
       onCleanup(mountMotion(async () => {
         const { animateSectionAction } = await import('./section-action-magnet');
         return (root) => animateSectionAction(root, strength);
-      }, 'Section button interaction could not be loaded.'));
+      }, 'Section button interaction could not be loaded.', FINE_POINTER_MOTION_QUERY));
     });
   }
 }
