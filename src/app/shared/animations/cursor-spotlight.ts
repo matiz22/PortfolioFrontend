@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Inject, OnDestroy, AfterViewInit, PLATFORM_ID, Renderer2 } from '@angular/core';
+import { Directive, ElementRef, inject, OnDestroy, AfterViewInit, PLATFORM_ID, Renderer2 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 
 @Directive({
@@ -6,6 +6,10 @@ import { isPlatformBrowser } from '@angular/common';
   standalone: true
 })
 export class CursorSpotlight implements AfterViewInit, OnDestroy {
+  private readonly el = inject<ElementRef<HTMLElement>>(ElementRef);
+  private readonly renderer = inject(Renderer2);
+  private readonly platformId = inject(PLATFORM_ID);
+
   private overlay: HTMLElement | null = null;
   private mouseMoveHandler: ((e: MouseEvent) => void) | null = null;
   private mouseLeaveHandler: (() => void) | null = null;
@@ -15,12 +19,6 @@ export class CursorSpotlight implements AfterViewInit, OnDestroy {
   private lastX = 0;
   private lastY = 0;
   private isHovered = false;
-
-  constructor(
-    private el: ElementRef<HTMLElement>,
-    private renderer: Renderer2,
-    @Inject(PLATFORM_ID) private platformId: Object
-  ) {}
 
   ngAfterViewInit(): void {
     if (!isPlatformBrowser(this.platformId)) return;

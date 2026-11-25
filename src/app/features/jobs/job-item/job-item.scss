@@ -1,0 +1,12 @@
+@use '../../../../styles/portfolio-card' as portfolio-card;
+
+:host {
+  display: grid;
+  min-width: 0;
+}
+
+.job-company {
+  @include portfolio-card.lines(1);
+  color: var(--portfolio-ink);
+  font-size: 0.875rem;
+}

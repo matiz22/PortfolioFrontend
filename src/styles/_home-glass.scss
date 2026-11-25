@@ -1,0 +1,78 @@
+// A dark variant of DaisyUI's glass, applied only to individual content surfaces.
+// The root qualifier outranks Angular's old component-level opaque backgrounds.
+:root .home-glass.glass {
+  --glass-blur: 14px;
+  --glass-opacity: 6%;
+  --glass-reflect-opacity: 2%;
+  --glass-border-opacity: 10%;
+  --glass-text-shadow-opacity: 0%;
+
+  // Solid fallback keeps text readable when backdrop filters are unavailable.
+  background-color: #070c0a;
+  background-image: linear-gradient(135deg, rgb(255 255 255 / var(--glass-opacity)), transparent 65%);
+  border: 1px solid rgb(255 255 255 / 12%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 5%), 0 8px 24px rgb(0 0 0 / 18%);
+  color: color-mix(in srgb, var(--color-base-content) 90%, transparent);
+  text-shadow: none;
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: blur(var(--glass-blur));
+
+  &:is(:hover, :focus-within) {
+    border-color: color-mix(in srgb, var(--color-primary) 35%, transparent);
+    background-color: #070c0a;
+  }
+}
+
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+  :root .home-glass.glass {
+    background-color: rgb(4 10 8 / 74%);
+
+    &:is(:hover, :focus-within) {
+      background-color: rgb(4 10 8 / 80%);
+    }
+  }
+}
+
+:root .home-glass.glass.home-copy-panel {
+  padding: clamp(1rem, 2vw, 1.5rem);
+  border-radius: var(--radius);
+}
+
+@media (max-width: 47.999rem) {
+  :root .home-glass.glass {
+    --glass-blur: 10px;
+  }
+}
+
+@media (max-height: 44rem) {
+  :root .home-glass.glass.home-copy-panel {
+    padding: 0.875rem;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  :root .home-glass.glass,
+  :root .home-glass.glass:is(:hover, :focus-within) {
+    background-color: #070c0a;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+// Small glass chips: navigation links and pill buttons stay airy on the shader.
+:root .home-glass.home-glass-chip.glass {
+  --glass-blur: 10px;
+  border-radius: var(--radius);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 4%), 0 4px 14px rgb(0 0 0 / 14%);
+
+  &:is(:hover, :focus-visible, :focus-within) {
+    border-color: color-mix(in srgb, var(--color-primary) 35%, transparent);
+    background-color: rgb(4 10 8 / 80%);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  :root .home-glass.home-glass-chip.glass:is(:hover, :focus-visible, :focus-within) {
+    background-color: #070c0a;
+  }
+}

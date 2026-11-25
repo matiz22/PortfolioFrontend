@@ -2,7 +2,6 @@ import { Component, computed, inject } from '@angular/core';
 import { EducationService } from '../../../core/services/education.service';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { switchMap } from 'rxjs/operators';
-import { ActivatedRoute } from '@angular/router';
 import { ApiState } from '../../../core/models/api.state';
 import { Education } from '../../../core/models/education';
 import { PaginationMeta } from '../../../core/models/pagination-meta';
@@ -13,17 +12,17 @@ import { EducationItem } from '../education-item/education-item';
 import { LoadingItems } from '../../../shared/loading/loading-items/loading-items';
 import { PaginationService } from '../../../shared/pagination/pagination.service';
 import { PaginationTiles } from '../../../shared/pagination/pagination-tiles/pagination-tiles';
+import { GrainGradient } from '../../../shared/grain-gradient/grain-gradient';
 
 @Component({
   selector: 'app-education-page',
-  imports: [Header, Footer, ContactSection, EducationItem, LoadingItems, PaginationTiles],
+  imports: [Header, Footer, ContactSection, EducationItem, LoadingItems, PaginationTiles, GrainGradient],
   providers: [PaginationService],
   templateUrl: './education-page.html',
   styleUrl: './education-page.scss',
 })
 export class EducationPage {
   educationService: EducationService = inject(EducationService);
-  private route = inject(ActivatedRoute);
   protected pagination = inject(PaginationService);
 
   // Fetch paginated response based on current page

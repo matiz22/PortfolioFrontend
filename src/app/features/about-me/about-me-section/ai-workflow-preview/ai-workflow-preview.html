@@ -1,0 +1,95 @@
+<div class="workflow-team-scene">
+  <svg class="workflow-connections" viewBox="0 0 520 320" preserveAspectRatio="none" aria-hidden="true">
+    <path class="workflow-link workflow-link-analyst" pathLength="100" d="M248 165C225 190 170 194 114 224" />
+    <path class="workflow-link workflow-link-researcher" pathLength="100" d="M272 165C295 190 350 194 406 224" />
+    <circle class="workflow-packet workflow-packet-analyst" cx="248" cy="165" r="3" />
+    <circle class="workflow-packet workflow-packet-researcher" cx="272" cy="165" r="3" />
+    <circle class="workflow-return workflow-return-analyst" cx="248" cy="165" r="4" />
+    <circle class="workflow-return workflow-return-researcher" cx="272" cy="165" r="4" />
+  </svg>
+
+  <div class="workflow-message workflow-request" #request>
+    <span class="workflow-person">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <circle cx="12" cy="8" r="3" />
+        <path d="M5 20v-2a7 7 0 0 1 14 0v2" />
+      </svg>
+    </span>
+    <div class="workflow-bubble">
+      <span class="workflow-message-label" i18n="@@aiWorkflow.you">You</span>
+      <p i18n="@@aiWorkflow.request">Prepare my weekly report.</p>
+    </div>
+  </div>
+
+  <div class="workflow-message workflow-reply" #reply>
+    <span class="workflow-reply-icon" aria-hidden="true">✓</span>
+    <div>
+      <span class="workflow-message-label" i18n="@@aiWorkflow.forReview">For review</span>
+      <p i18n="@@aiWorkflow.reply">Draft ready for approval.</p>
+    </div>
+  </div>
+
+  <div class="workflow-helper-anchor workflow-analyst" #analyst>
+    <div class="workflow-helper-motion">
+      <blobatar
+        class="workflow-blob"
+        name="workflow-analyst"
+        [animate]="helperMotionMode()"
+        [expression]="analystExpression()"
+        [background]="false"
+        [hue]="151"
+        [tone]="0.45"
+        [size]="72"
+      />
+      <span class="workflow-helper-name" i18n="@@aiWorkflow.analyst">Analyst</span>
+      <div class="workflow-tool" [class.is-done]="analystDone()">
+        <span class="workflow-tool-mark" aria-hidden="true">{{ analystDone() ? '✓' : '↗' }}</span>
+        <code>database.query</code>
+      </div>
+    </div>
+  </div>
+
+  <div class="workflow-helper-anchor workflow-researcher" #researcher>
+    <div class="workflow-helper-motion">
+      <blobatar
+        class="workflow-blob"
+        name="workflow-researcher"
+        [animate]="helperMotionMode()"
+        [expression]="researcherExpression()"
+        [background]="false"
+        [hue]="75"
+        [tone]="0.45"
+        [size]="72"
+      />
+      <span class="workflow-helper-name" i18n="@@aiWorkflow.researcher">Researcher</span>
+      <div class="workflow-tool" [class.is-done]="researcherDone()">
+        <span class="workflow-tool-mark" aria-hidden="true">{{ researcherDone() ? '✓' : '↗' }}</span>
+        <code>docs.search</code>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-knowledge-preview class="workflow-knowledge-scene" [phase]="phase()" />
+<app-operations-preview class="workflow-operations-scene" [phase]="phase()" />
+
+<div class="workflow-main-anchor">
+  <div class="workflow-main-motion">
+    <blobatar
+      class="workflow-blob workflow-main-blob"
+      name="mateusz-malich"
+      [animate]="motionMode()"
+      [expression]="mainExpression()"
+      [gaze]="gazeTarget()"
+      [gazeTravel]="3"
+      [background]="false"
+      [hue]="207"
+      [traits]="mainTraits"
+      [size]="144"
+    />
+  </div>
+  <div class="workflow-main-status" [class.is-complete]="successful()">
+    <span class="workflow-status-mark" aria-hidden="true">{{ successful() ? '✓' : '✳' }}</span>
+    <span>{{ status() }}</span>
+  </div>
+</div>

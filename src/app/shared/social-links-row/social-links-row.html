@@ -1,0 +1,30 @@
+<app-status-announcer [message]="statusMessage()" />
+@if (socialLinks(); as socialLinksState) {
+@switch (socialLinksState.status) {
+@case ('loading') {
+<p class="social-links-state" aria-hidden="true" i18n="@@socialLinks.loading">Loading social links…</p>
+}
+@case ('error') {
+<p class="social-links-state" role="alert" i18n="@@socialLinks.error">Social links could not be loaded. You can still contact me by email.</p>
+}
+@case ('success') {
+<div class="flex flex-col items-center gap-2">
+    <span class="text-xs font-medium tracking-wider uppercase text-base-content/60 px-3 py-1.5 w-max"
+        [class.glass]="glass()" [class.home-glass]="glass()" [class.home-glass-chip]="glass()"
+        i18n="@@socialLinks.label">Social
+        Links</span>
+    <div class="flex flex-row space-x-1 px-3 py-2 w-max"
+        [class.glass]="glass()" [class.home-glass]="glass()" [class.home-glass-chip]="glass()">
+        @for (link of socialLinksState.data; track link.id) {
+        <a [href]="link.url" target="_blank" rel="noopener noreferrer"
+            class="btn btn-ghost btn-circle btn-sm text-base-content/60 hover:text-primary transition"
+            [title]="link.name">
+            <img [src]="link.icon | imageUrl" [alt]="link.name"
+                class="w-4 h-4 opacity-50 hover:opacity-100 transition-opacity">
+        </a>
+        }
+    </div>
+</div>
+}
+}
+}

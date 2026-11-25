@@ -1,0 +1,162 @@
+.biometric-layer,
+.scan-layer {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--color-base-300) 38%, transparent);
+}
+
+.biometric-badge,
+.file-picker,
+.viewfinder {
+  border: 1px solid var(--mock-border);
+  border-radius: var(--mock-radius);
+  background: var(--color-base-200);
+  box-shadow: 0 0.28rem 0.9rem rgb(0 0 0 / 40%);
+}
+
+.biometric-badge {
+  position: relative;
+  display: grid;
+  width: clamp(1.9rem, 11cqw, 4rem);
+  aspect-ratio: 1;
+  place-items: center;
+  border-color: color-mix(in srgb, var(--mock-accent) 44%, transparent);
+  color: var(--mock-accent);
+
+  svg { width: 56%; }
+}
+
+.biometric-check {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  border-radius: inherit;
+  background: var(--color-base-200);
+}
+
+.fingerprint {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+.face-scan {
+  stroke: color-mix(in srgb, var(--mock-accent) 65%, var(--color-base-content));
+  stroke-width: 1.1;
+}
+
+.file-picker {
+  position: absolute;
+  inset: 37% auto 21% 8%;
+  display: grid;
+  grid-template-rows: 24% minmax(0, 1fr);
+  width: 36%;
+}
+
+.picker-toolbar {
+  display: flex;
+  align-items: center;
+  gap: clamp(2px, 0.7cqw, 4px);
+  padding-inline: 8%;
+  border-bottom: 1px solid var(--mock-border);
+
+  i {
+    width: clamp(2px, 0.75cqw, 5px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--mock-line);
+  }
+}
+
+.picker-files {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  min-height: 0;
+
+  > * {
+    display: grid;
+    place-items: center;
+    width: 19%;
+    height: 64%;
+    border: 1px solid var(--mock-border);
+    border-radius: 0.24rem;
+    background: var(--color-base-100);
+  }
+
+  .picker-selected { border-color: var(--mock-line); color: var(--mock-accent); }
+  svg { width: 75%; max-height: 85%; }
+}
+
+.drag-ghost {
+  position: absolute;
+  top: 63%;
+  left: 26%;
+  width: clamp(0.95rem, 6cqw, 2.45rem);
+  aspect-ratio: 1;
+  padding: 2px;
+  border: 1px solid currentColor;
+  border-radius: 0.3rem;
+  background: var(--mock-tint);
+  color: var(--mock-accent);
+  translate: -50% -50%;
+}
+
+.mock-cursor {
+  width: clamp(0.65rem, 3.3cqw, 1.15rem);
+  color: var(--color-base-content);
+}
+
+.drag-ghost .mock-cursor {
+  position: absolute;
+  top: 64%;
+  left: 69%;
+}
+
+.scan-layer {
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 6px;
+  inset: 19% 10% 16%;
+  padding-block: 6%;
+  border-radius: var(--mock-radius);
+  background: var(--color-base-300);
+}
+
+.viewfinder {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-style: dashed;
+  border-color: color-mix(in srgb, var(--mock-accent) 54%, transparent);
+}
+
+.camera-paper {
+  display: grid;
+  align-content: space-evenly;
+  width: 56%;
+  height: 72%;
+  padding: 9%;
+  background: color-mix(in srgb, var(--color-base-content) 77%, var(--color-base-200));
+
+  i { background: color-mix(in srgb, var(--color-base-300) 45%, transparent); }
+}
+
+.scan-beam {
+  position: absolute;
+  inset: 13% 4% auto;
+  height: 1px;
+  background: var(--mock-accent);
+  box-shadow: 0 0 0.4rem var(--mock-accent);
+}
+
+.camera-shutter {
+  width: clamp(0.6rem, 3.2cqw, 1.15rem);
+  aspect-ratio: 1;
+  border: 2px double var(--mock-accent);
+  border-radius: 50%;
+}

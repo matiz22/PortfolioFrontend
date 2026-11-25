@@ -1,0 +1,43 @@
+@mixin shell {
+  display: block;
+  position: relative;
+  isolation: isolate;
+  min-height: 100svh;
+  background: #000;
+  color: var(--color-base-content);
+  // Keep the site's green UI accents independent of each chapter's shader.
+  --portfolio-accent: var(--color-primary);
+  --portfolio-ink: color-mix(in srgb, var(--portfolio-accent) 55%, white);
+  --portfolio-border: color-mix(in srgb, var(--portfolio-accent) 42%, transparent);
+  --portfolio-border-muted: color-mix(in srgb, var(--portfolio-accent) 22%, transparent);
+  --portfolio-tint: color-mix(in srgb, var(--portfolio-accent) 12%, transparent);
+  --portfolio-inset: clamp(1.5rem, 4vw, 4rem);
+  --portfolio-width: 84rem;
+  --footer-divider-width: 0;
+}
+
+@mixin container {
+  width: min(calc(100% - 2 * var(--portfolio-inset)), var(--portfolio-width));
+  margin-inline: auto;
+}
+
+@mixin eyebrow {
+  color: var(--portfolio-ink);
+  font: 500 0.75rem/1.5 var(--font-sans);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+@mixin chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.7rem;
+  border: 1px solid var(--portfolio-border);
+  border-radius: 999px;
+  background: var(--portfolio-tint);
+  color: var(--portfolio-ink);
+  font-size: 0.6875rem;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}

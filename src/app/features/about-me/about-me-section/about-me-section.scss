@@ -1,0 +1,260 @@
+:host {
+  display: block;
+}
+
+.about-section {
+  background: var(--home-section-background, #080b0a);
+}
+
+.about-shell {
+  padding-block: var(--home-stage-inset, 1rem);
+}
+
+.about-section.about-is-pinned {
+  .about-panel-copy > :is(h3, p) {
+    translate: 0 var(--about-text-offset, 0px);
+  }
+}
+
+.about-sidebar {
+  margin-bottom: 2.75rem;
+}
+
+.about-header {
+  padding-bottom: 2.75rem;
+  text-align: center;
+
+  h2 {
+    max-width: 20ch;
+    margin-inline: auto;
+    font-size: clamp(3.25rem, 6vw, 5.5rem);
+    line-height: 1.02;
+    text-wrap: balance;
+  }
+}
+
+.about-panel-copy p {
+  font-size: 0.875rem;
+  line-height: 1.9;
+  color: color-mix(in srgb, var(--color-base-content) 88%, transparent);
+  text-wrap: pretty;
+}
+
+.about-next:empty {
+  display: none;
+}
+
+// Progressive enhancement: nothing is hidden until ScrollTrigger is ready.
+.about-index {
+  display: none;
+}
+
+.about-panels {
+  display: grid;
+  gap: 3rem;
+}
+
+.about-panel {
+  --service-accent: var(--color-primary);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: 1.5rem;
+  min-width: 0;
+  scroll-margin-top: 7rem;
+}
+
+.about-apps {
+  --service-accent: var(--color-secondary);
+}
+
+.about-ai {
+  --service-accent: var(--color-accent);
+}
+
+.about-visual {
+  position: relative;
+  isolation: isolate;
+  height: clamp(11rem, 30vw, 15rem);
+  overflow: hidden;
+  color: var(--service-accent);
+}
+
+.about-web-visual,
+.about-apps-visual,
+.about-ai-visual {
+  height: clamp(15rem, 40svh, 20rem);
+  overflow: visible;
+}
+
+// Only the AI scene sits on glass: the mockups are already self-contained cards.
+// No padding: the workflow measures its own container to place every element.
+.about-ai-visual.home-glass {
+  border-radius: var(--radius);
+  overflow: hidden;
+
+  .ai-workflow {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+.about-apps-visual,
+.about-ai-visual {
+  width: 100%;
+}
+
+.about-apps-visual {
+  --apps-preview-align: end;
+}
+
+.about-panel-copy {
+  h3 {
+    margin-bottom: 0.75rem;
+    font-family: var(--font-pixel);
+    font-size: clamp(2rem, 3vw, 2.5rem);
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+}
+
+@media (min-width: 48rem) {
+  .about-panel {
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    column-gap: 2.5rem;
+  }
+
+  .about-section:not(.about-is-pinned) .about-apps-visual {
+    --apps-preview-align: center;
+  }
+}
+
+.about-is-pinned {
+  .about-stage {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    grid-template-rows: auto auto;
+    grid-template-areas:
+      "header header"
+      "sidebar panels";
+    align-items: center;
+    column-gap: clamp(2.5rem, 5vw, 5rem);
+    row-gap: clamp(1.25rem, 2.5vw, 2rem);
+  }
+
+  .about-sidebar {
+    grid-area: sidebar;
+    margin-bottom: 0;
+  }
+
+  .about-header {
+    grid-area: header;
+    padding-bottom: 0;
+
+    h2 {
+      max-width: none;
+      font-size: clamp(3rem, 4.8vw, 4.25rem);
+    }
+  }
+
+  .about-index {
+    position: relative;
+    display: block;
+    padding: 1rem 1.25rem;
+
+    ol {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    li + li {
+      border-top: 1px solid rgb(255 255 255 / 7%);
+    }
+  }
+
+  .about-index.home-glass {
+    border-radius: var(--radius);
+  }
+
+  .about-index-inner {
+    position: relative;
+    padding-left: 1.25rem;
+  }
+
+  .about-track {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 2px;
+    background: rgb(255 255 255 / 10%);
+  }
+
+  .about-fill {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: var(--color-primary);
+    transform-origin: left top;
+  }
+
+  .about-index-link {
+    display: block;
+    padding-block: 1.1rem;
+    color: color-mix(in srgb, var(--color-base-content) 70%, transparent);
+    text-decoration: none;
+    transition: color 200ms ease;
+
+    &[aria-current="step"],
+    &:hover,
+    &:focus-visible {
+      color: var(--color-primary);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 6px;
+      border-radius: var(--radius);
+    }
+  }
+
+  .about-index-title {
+    font-family: var(--font-pixel);
+    font-size: clamp(1.25rem, 2.1vw, 1.875rem);
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+  }
+
+  .about-panels {
+    grid-area: panels;
+    align-items: center;
+    gap: 0;
+  }
+
+  .about-panel {
+    // All panels size the same grid cell; even the longest translation fits.
+    grid-area: 1 / 1;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: stretch;
+  }
+
+  .about-web-visual,
+  .about-apps-visual,
+  .about-ai-visual {
+    // Leave space for the heading, service copy, and separate navigation row.
+    height: clamp(12rem, calc(100svh - 38rem), 24rem);
+  }
+}
+
+// Keep the added next-section link on screen throughout shorter desktop pins.
+@media (min-width: 64rem) and (max-height: 56rem) {
+  .about-is-pinned {
+    .about-stage {
+      row-gap: 1rem;
+    }
+
+    .about-panel {
+      row-gap: 1rem;
+    }
+  }
+}

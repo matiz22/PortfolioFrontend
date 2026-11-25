@@ -1,19 +1,26 @@
-import { Component, inject, signal } from '@angular/core';
+import {
+  afterRenderEffect, ChangeDetectionStrategy, Component, DestroyRef, ElementRef, inject, signal, viewChild,
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ContactService } from '../../../core/services/contact.service';
-import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Contact } from '../../../core/models/contact';
+import { NonNullableFormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-contact-form',
   imports: [ReactiveFormsModule],
   templateUrl: './contact-form.html',
-  styleUrl: './contact-form.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  styleUrls: ['./contact-field-styles.css', './contact-form.scss'],
 })
 export class ContactForm {
-  fb = inject(FormBuilder);
-  contactService = inject(ContactService);
+  private readonly fb = inject(NonNullableFormBuilder);
+  private readonly contactService = inject(ContactService);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
+  private readonly successMessage = viewChild<ElementRef<HTMLElement>>('successMessage');
 
-  contactForm = this.fb.group({
+  readonly contactForm = this.fb.group({
     name: ['', [Validators.required, Validators.maxLength(100)]],
     email: ['', [Validators.required, Validators.email, Validators.maxLength(255)]],
     subject: ['', [Validators.required, Validators.maxLength(255)]],
@@ -21,15 +28,26 @@ export class ContactForm {
     company: ['']
   });
 
-  touchedFields: { [key: string]: boolean } = {};
+  readonly submitted = signal<boolean | null>(null);
+  readonly submitting = signal(false);
+  private readonly invalidFocus = signal<{ field: keyof ContactForm['contactForm']['controls'] } | null>(null);
 
-  onBlur(fieldName: string) {
-    this.touchedFields[fieldName] = true;
+  constructor() {
+    afterRenderEffect({
+      write: () => {
+        const invalid = this.invalidFocus();
+        if (this.submitted() === true) {
+          this.successMessage()?.nativeElement.focus();
+        } else if (invalid) {
+          // Focus after the error text and its associations are in the DOM.
+          this.host.nativeElement.querySelector<HTMLElement>(`[formControlName="${invalid.field}"]`)?.focus();
+        }
+      },
+    });
   }
 
-  getErrorMessage(fieldName: string): string {
-    const control = this.contactForm.get(fieldName);
-    if (!control) return '';
+  getErrorMessage(fieldName: keyof typeof this.contactForm.controls): string {
+    const control = this.contactForm.controls[fieldName];
 
     if (control.hasError('required')) {
       return $localize`:@@requiredFieldError:Field is required`;
@@ -45,21 +63,38 @@ export class ContactForm {
     return '';
   }
 
-  submitted = signal<boolean | null>(null);
-  submitting = signal<boolean>(false);
+  onSubmit(): void {
+    if (this.submitting() || this.submitted() === true) return;
 
-  onSubmit() {
-    if (this.submitting()) return;
+    const value = this.contactForm.getRawValue();
+    const normalizedValue = {
+      name: value.name.trim(),
+      email: value.email.trim(),
+      subject: value.subject.trim(),
+      message: value.message.trim(),
+      company: value.company.trim(),
+    };
+    this.contactForm.setValue(normalizedValue);
 
-    if (this.contactForm.valid) {
-      const contact = this.contactForm.value as Contact;
-      this.submitting.set(true);
-      this.contactService.sendEmail(contact).subscribe(success => {
-        this.submitting.set(false);
-        this.submitted.set(success);
-      });
-    } else {
+    if (this.contactForm.invalid) {
       this.contactForm.markAllAsTouched();
+      const firstInvalid = (Object.keys(this.contactForm.controls) as (keyof typeof this.contactForm.controls)[])
+        .find((field) => this.contactForm.controls[field].invalid);
+      if (firstInvalid) {
+        this.invalidFocus.set({ field: firstInvalid });
+      }
+      return;
     }
+
+    this.invalidFocus.set(null);
+    this.submitted.set(null);
+    this.submitting.set(true);
+    this.contactService.sendEmail(normalizedValue).pipe(
+      takeUntilDestroyed(this.destroyRef),
+      finalize(() => this.submitting.set(false)),
+    ).subscribe({
+      next: (success) => this.submitted.set(success),
+      error: () => this.submitted.set(false),
+    });
   }
 }

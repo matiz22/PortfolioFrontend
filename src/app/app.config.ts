@@ -1,9 +1,9 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChangeDetection, inject } from '@angular/core';
+import { ApplicationConfig, provideBrowserGlobalErrorListeners, inject } from '@angular/core';
 import { provideRouter, RouteReuseStrategy, withInMemoryScrolling, withViewTransitions, Router } from '@angular/router';
 
 import { routes } from './app.routes';
-import { provideClientHydration, withEventReplay, withI18nSupport, withIncrementalHydration } from '@angular/platform-browser';
-import { HTTP_INTERCEPTORS, provideHttpClient, withFetch, withInterceptorsFromDi } from '@angular/common/http';
+import { provideClientHydration, withEventReplay, withI18nSupport } from '@angular/platform-browser';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { LocaleInterceptor } from './core/interceptors/locale.interceptor';
 import { CustomRouteReuseStrategy } from './route.reuse.strategy';
 import { TitleStrategy } from '@angular/router';
@@ -12,12 +12,17 @@ import { AppTitleStrategy } from './core/strategies/title.strategy';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
-    provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(
       routes,
       withViewTransitions({
         skipInitialTransition: true,
-        onViewTransitionCreated: ({ transition }) => {
+        onViewTransitionCreated: ({ transition, to }) => {
+          // Let routes with their own entrance animate without a page snapshot over them.
+          if (to.firstChild?.data['skipViewTransition']) {
+            transition.skipTransition();
+            return;
+          }
+
           const router = inject(Router);
           const targetUrl = router.currentNavigation()!.finalUrl!;
           // Skip transition if only fragment or query params change
@@ -36,17 +41,9 @@ export const appConfig: ApplicationConfig = {
       withInMemoryScrolling({ scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled' }),
     ),
     { provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy },
-    provideClientHydration(
-      withIncrementalHydration(),
-      withI18nSupport(),
-      withEventReplay(),
-    ),
-    provideHttpClient(
-      withFetch(),
-      withInterceptorsFromDi()
-    ),
+    provideClientHydration(withI18nSupport(), withEventReplay()),
+    provideHttpClient(withInterceptorsFromDi()),
     { provide: HTTP_INTERCEPTORS, useClass: LocaleInterceptor, multi: true },
     { provide: TitleStrategy, useClass: AppTitleStrategy },
   ]
 };
-

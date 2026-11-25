@@ -1,0 +1,25 @@
+@if (pinnedProgress() !== null || position() !== 'hidden') {
+<div class="rail-controls" role="group" [attr.aria-labelledby]="headingId()">
+  @if (pinnedProgress() === null) {
+  <button type="button" [attr.aria-controls]="viewport().id" [attr.aria-disabled]="position() === 'start'"
+    i18n-aria-label="@@home.rail.previous" aria-label="Previous card" (click)="move(-1)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+      stroke-linejoin="round" aria-hidden="true">
+      <path d="m15 6-6 6 6 6" />
+    </svg>
+  </button>
+  }
+  @if (showProgress()) {
+  <span class="rail-progress" aria-hidden="true"><span [style.transform]="'scaleX(' + progress() + ')'"></span></span>
+  }
+  @if (pinnedProgress() === null) {
+  <button type="button" [attr.aria-controls]="viewport().id" [attr.aria-disabled]="position() === 'end'"
+    i18n-aria-label="@@home.rail.next" aria-label="Next card" (click)="move(1)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+      stroke-linejoin="round" aria-hidden="true">
+      <path d="m9 6 6 6-6 6" />
+    </svg>
+  </button>
+  }
+</div>
+}

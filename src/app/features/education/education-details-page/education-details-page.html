@@ -1,131 +1,102 @@
+<app-grain-gradient chapter="education"></app-grain-gradient>
 <app-header></app-header>
 
-<main class="min-h-screen bg-black">
+<main>
     @let educationState = education();
-
     @switch (educationState.status) {
-    @case ('loading') {
-    <app-loading-details-page></app-loading-details-page>
-    }
-    @case ('success') {
-    @let data = educationState.data;
-
-    <!-- Hero Section: Editorial Style -->
-    <section class="relative w-full min-h-[70vh] md:h-[72vh] overflow-hidden flex items-end bg-black pt-32">
-        @if (data.thumbnail) {
-        <div class="absolute inset-0 z-0 hero-bg-image"
-            [style.background-image]="'linear-gradient(to top, #000, rgba(0,0,0,0.4)), url(' + (data.thumbnail | imageUrl) + ')'">
-        </div>
+        @case ('loading') {
+            <div class="pt-32 pb-16"><app-loading-details-page></app-loading-details-page></div>
         }
+        @case ('success') {
+            @let data = educationState.data;
 
-        <div class="container mx-auto px-6 pb-16 md:pb-24 relative z-10">
-            <div class="max-w-5xl animate-fade-in">
-                <!-- Metadata: Institution and Date -->
-                <div class="flex items-center gap-4 mb-6 animate-fade-in [animation-delay:200ms]">
-                    <span class="h-px w-12 bg-primary"></span>
-                    <div class="flex flex-col">
-                        <span class="font-mono text-sm uppercase tracking-[0.4em] text-primary mb-1" i18n="@@details.label.academicDegree">Academic Degree</span>
-                        <span class="font-mono text-xs uppercase text-white/60 tracking-wider">
-                            {{ data.institution }} • {{ data.startDate | date:'yyyy' }} - {{ data.isCurrent ? 'Present' : (data.endDate | date:'yyyy') }}
-                        </span>
+            <section class="case-hero">
+                @if (data.thumbnail) {
+                    <app-case-hero-cover [src]="data.thumbnail | imageUrl" chapter="education"></app-case-hero-cover>
+                }
+                <div class="case-container">
+                    <a class="case-back" routerLink="/education">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M10 19l-7-7m0 0l7-7m-7 7h18" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+                        </svg>
+                        <span i18n="@@educationDetails.btn.back">Back to Education</span>
+                    </a>
+
+                    <div class="case-hero-layout">
+                        <div class="case-intro">
+                            <div class="grid min-w-0 justify-items-start gap-5" data-case-copy>
+                                @if (data.institution) {
+                                    <p class="education-institution">{{ data.institution }}</p>
+                                }
+                                <h1 class="case-title section-heading">{{ data.degree }}</h1>
+                                @if (data.fieldOfStudy) {
+                                    <p class="case-summary">{{ data.fieldOfStudy }}</p>
+                                }
+                            </div>
+
+                            <div class="flex flex-wrap items-center gap-2" data-case-actions>
+                                <app-portfolio-period class="case-chip" [period]="data"></app-portfolio-period>
+                                @if (data.grade) {
+                                    <p class="case-chip">
+                                        <span><ng-container i18n="@@education.grade">Grade</ng-container>: {{ data.grade }}</span>
+                                    </p>
+                                }
+                            </div>
+                        </div>
                     </div>
                 </div>
+            </section>
 
-                <h1
-                    class="font-serif italic text-5xl md:text-8xl lg:text-9xl leading-[0.9] mb-8 drop-shadow-sm animate-fade-in [animation-delay:400ms]">
-                    {{ data.degree }}
-                </h1>
-
-                @if (data.fieldOfStudy) {
-                <p class="max-w-3xl text-base md:text-xl text-white/70 font-medium mb-10 animate-fade-in [animation-delay:600ms]">
-                    {{ data.fieldOfStudy }}
-                </p>
-                }
-
-                <!-- Technologies & Skills on Thumbnail Overlay -->
-                <div class="flex gap-3 flex-wrap mt-8 animate-fade-in [animation-delay:700ms]">
-                    @for (tech of data.technologies; track tech.id) {
-                    <div class="flex items-center gap-2 px-3 py-1.5 bg-white/5 backdrop-blur-md rounded-full border border-white/10 text-xs font-mono uppercase tracking-wider text-white/80 transition-colors hover:bg-white/10">
-                        @if (tech.icon) {
-                        <img [alt]="tech.name" [src]="tech.icon | imageUrl" class="w-3.5 h-3.5 opacity-70" />
+            @let groups = expertise();
+            @let hasStory = data.description.trim().length > 0;
+            @if (hasStory || groups.length) {
+                <div class="case-container case-sections">
+                    <div class="case-reading">
+                        @if (groups.length) {
+                            <div class="case-facts glass home-glass home-copy-panel">
+                                @for (group of groups; track group.key) {
+                                    <section class="grid gap-3">
+                                        <h2 class="case-fact-label">{{ group.label }}</h2>
+                                        <ul class="flex flex-wrap gap-2" role="list">
+                                            @for (item of group.items; track item.id) {
+                                                <li class="case-chip">
+                                                    @if (item.icon) {
+                                                        <img [src]="item.icon | imageUrl" alt="" />
+                                                    }
+                                                    {{ item.name }}
+                                                </li>
+                                            }
+                                        </ul>
+                                    </section>
+                                }
+                            </div>
                         }
-                        {{ tech.name }}
+                        @if (hasStory) {
+                            <div class="case-story">
+                                @defer (on viewport; hydrate on idle) {
+                                    <app-description-md [description]="data.description" [showGlow]="false"></app-description-md>
+                                } @placeholder {
+                                    <div class="h-64 skeleton bg-white/5 rounded-2xl"></div>
+                                }
+                            </div>
+                        }
                     </div>
-                    }
-                    @for (skill of data.skills; track skill.id) {
-                    <div class="flex items-center gap-2 px-3 py-1.5 bg-primary/10 backdrop-blur-md rounded-full border border-primary/20 text-xs font-mono uppercase tracking-wider text-primary/80">
-                        {{ skill.name }}
-                    </div>
-                    }
                 </div>
-
-                <div class="flex flex-wrap gap-4 mt-10 animate-fade-in [animation-delay:800ms]">
-                    @if (data.grade) {
-                    <div class="px-4 py-2 bg-white/5 backdrop-blur-md rounded-full border border-white/10 text-sm font-mono uppercase tracking-widest text-white/80 w-full sm:w-auto text-center">
-                        <ng-container i18n="@@details.label.result">Result</ng-container>: {{ data.grade }}
-                    </div>
-                    }
-                    @if (!data.isCurrent) {
-                    <div class="px-4 py-2 bg-primary/10 backdrop-blur-md rounded-full border border-primary/20 text-sm font-mono uppercase tracking-widest text-primary/80 w-full sm:w-auto text-center" i18n="@@details.label.validated">
-                        Validated
-                    </div>
-                    } @else {
-                    <div class="px-4 py-2 bg-accent/10 backdrop-blur-md rounded-full border border-accent/20 text-sm font-mono uppercase tracking-widest text-accent/80 w-full sm:w-auto text-center" i18n="@@details.label.inProgress">
-                        In Progress
-                    </div>
-                    }
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Main Content Area with Noise Texture -->
-    <div class="section-noise bg-black relative">
-        <div class="container mx-auto px-6 pt-6 pb-24 flex flex-col gap-16">
-
-            <div class="section-divider"></div>
-
-            <!-- Description Section -->
-            <div class="animate-fade-in w-full">
-                <h2 class="section-heading text-4xl mb-12 font-serif italic" i18n="@@educationDetails.journey">Academic Journey</h2>
-                @defer (on viewport; hydrate on idle) {
-                    <app-description-md [description]="data.description"></app-description-md>
-                } @placeholder {
-                    <div class="w-full h-64 skeleton bg-white/5 rounded-2xl"></div>
-                }
-            </div>
-
-
-
-            <!-- Back Button -->
-            <div class="pt-12 flex justify-center animate-fade-in">
-                <a class="group flex items-center gap-4 font-mono text-xs uppercase tracking-[0.3em] text-white/40 hover:text-primary transition-colors"
-                    routerLink="/education">
-                    <svg class="w-5 h-5 transition-transform group-hover:-translate-x-2" fill="none"
-                        stroke="currentColor" viewBox="0 0 24 24">
-                        <path d="M10 19l-7-7m0 0l7-7m-7 7h18" stroke-linecap="round" stroke-linejoin="round"
-                            stroke-width="2" />
+            }
+        }
+        @case ('error') {
+            <div class="case-container pt-32 pb-16 text-center">
+                <div role="alert" class="alert alert-error rounded-2xl border-none shadow-xl inline-flex w-auto">
+                    <svg class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
                     </svg>
-                    <span i18n="@@educationDetails.btn.back">Back to Academic Path</span>
-                </a>
+                    <span class="text-sm">{{ educationState.error }}</span>
+                </div>
             </div>
-        </div>
-    </div>
-    }
-    @case ('error') {
-    <div class="container mx-auto px-6 py-24 text-center">
-        <div role="alert" class="alert alert-error rounded-2xl border-none shadow-xl inline-flex w-auto">
-            <svg class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
-                <path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round"
-                    stroke-linejoin="round" stroke-width="2" />
-            </svg>
-            <span class="font-mono text-sm">{{ educationState.error }}</span>
-        </div>
-    </div>
-    }
+        }
     }
 
-    <app-contact-section></app-contact-section>
+    <app-contact-section class="contact-blended" [glass]="true"></app-contact-section>
 </main>
 
 <app-footer></app-footer>

@@ -1,0 +1,30 @@
+@let role = job();
+<div class="jobs-point relative flex items-center">
+  <span class="jobs-dot absolute" aria-hidden="true"></span>
+  <div class="jobs-dates flex flex-wrap items-center gap-2">
+    <time [attr.datetime]="role.startDate | date:'yyyy-MM'">{{ role.startDate | date:'MMM yyyy' }}</time>
+    @if (role.isCurrent) {
+    <span class="jobs-present text-primary" i18n="@@jobs.present">to present</span>
+    } @else if (role.endDate) {
+    <span i18n="@@home.dates.to">to</span>
+    <time [attr.datetime]="role.endDate | date:'yyyy-MM'">{{ role.endDate | date:'MMM yyyy' }}</time>
+    }
+  </div>
+</div>
+
+<a class="jobs-card glass home-glass home-copy-panel block overflow-hidden" [routerLink]="['/job', role.slug]"
+  [attr.aria-labelledby]="'experience-role-' + role.id">
+  <div class="jobs-company">{{ role.companyName }}</div>
+  <h3 [id]="'experience-role-' + role.id" [title]="role.title">{{ role.title }}</h3>
+  @if (role.location) {
+  <p class="jobs-location">{{ role.location }}</p>
+  }
+
+  @if (role.technologies.length > 0) {
+  <ul appHomeMetadataPills class="jobs-tags jobs-technologies" [items]="role.technologies"></ul>
+  }
+
+  @if (role.skills.length > 0) {
+  <ul appHomeMetadataPills class="jobs-tags jobs-skills" kind="skills" [items]="role.skills"></ul>
+  }
+</a>

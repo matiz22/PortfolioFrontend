@@ -36,6 +36,6 @@ export class CustomRouteReuseStrategy implements RouteReuseStrategy {
   }
 
   private getRouteKey(route: ActivatedRouteSnapshot): string {
-    return <string>route.routeConfig ?? '';
+    return route.routeConfig as string ?? '';
   }
 }

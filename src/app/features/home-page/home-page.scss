@@ -1,0 +1,95 @@
+:host {
+  display: block;
+  --home-stage-height: 100svh;
+  --home-stage-clearance: 4.5rem;
+  --home-stage-inset: 1rem;
+  --home-showcase-inset: clamp(1.5rem, 4vw, 4rem);
+  --home-showcase-width: 88rem;
+  // All chapters share the fixed gradient and grain; only their content scrolls.
+  --home-section-background: transparent;
+  --contact-section-background: transparent;
+  --section-noise-content: none;
+}
+
+.home-page {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+  background: #000;
+}
+
+[data-grain-chapter] {
+  position: relative;
+  // The stages already clear the fixed header. Scroll right to the viewport edge.
+  scroll-margin-top: 0;
+}
+
+.home-closing {
+  background: var(--home-section-background);
+}
+
+.home-contact {
+  --contact-stage-height: var(--home-stage-height);
+  --contact-section-padding: calc(var(--home-stage-clearance) + var(--home-stage-inset));
+}
+
+.home-chapter-placeholder,
+.home-chapter-loading,
+.home-chapter-error {
+  min-block-size: var(--home-stage-height);
+}
+
+.home-chapter-loading {
+  display: grid;
+  align-items: center;
+  padding: var(--home-stage-clearance) clamp(1.5rem, 4vw, 4rem);
+}
+
+.home-chapter-skeleton {
+  display: grid;
+  gap: clamp(1.5rem, 4vh, 3rem);
+  width: min(100%, var(--home-showcase-width));
+  margin-inline: auto;
+}
+
+.home-chapter-skeleton-copy {
+  display: grid;
+  gap: 0.75rem;
+  width: min(100%, 28rem);
+}
+
+.home-chapter-skeleton-title {
+  width: min(90%, 22rem);
+  height: clamp(2.5rem, 6vw, 4.5rem);
+}
+
+.home-chapter-skeleton-line {
+  width: 100%;
+  height: 1rem;
+}
+
+.home-chapter-skeleton-line-short {
+  width: 65%;
+}
+
+.home-chapter-skeleton-panel {
+  width: 100%;
+  height: clamp(14rem, 34svh, 22rem);
+  border-radius: var(--radius);
+}
+
+.home-chapter-error {
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 1rem;
+  padding: var(--home-stage-clearance) 1.5rem;
+  text-align: center;
+}
+
+.home-page > app-footer {
+  --footer-divider-width: 0;
+  display: block;
+}

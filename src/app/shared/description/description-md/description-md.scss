@@ -1,12 +1,50 @@
-:host {
+app-description-md {
     display: block;
 }
 
-::ng-deep .prose {
-    // Custom list styling
-    ul > li::marker {
+app-description-md .markdown-prose-detail {
+    :is(h1, h2, h3, h4, h5, h6) {
+        color: white;
+        font-family: var(--font-pixel);
+        font-weight: 400;
+        letter-spacing: -0.025em;
+        overflow-wrap: anywhere;
+    }
+
+    a {
         color: var(--color-primary);
-        opacity: 0.5;
+        text-underline-offset: 0.25rem;
+    }
+
+    strong {
+        color: white;
+    }
+
+    :not(pre) > code {
+        color: var(--color-accent);
+        background: color-mix(in srgb, var(--color-accent) 5%, transparent);
+        padding: 0.125rem 0.375rem;
+        border-radius: calc(var(--radius) - 0.25rem);
+    }
+
+    blockquote {
+        color: color-mix(in srgb, var(--color-base-content) 60%, transparent);
+        background: rgb(255 255 255 / 3%);
+        padding: 1rem 2rem;
+        border-inline-start-color: var(--color-primary);
+        border-start-end-radius: var(--radius);
+        border-end-end-radius: var(--radius);
+        font-style: normal;
+    }
+
+    img {
+        border: 1px solid rgb(255 255 255 / 5%);
+        border-radius: var(--radius);
+        box-shadow: 0 25px 50px -12px rgb(0 0 0 / 25%);
+    }
+
+    ul > li::marker {
+        color: color-mix(in srgb, var(--color-primary) 50%, transparent);
     }
 
     // Modern horizontal rule
@@ -17,34 +55,12 @@
         margin: 4rem 0;
     }
 
-    // Better spacing for code blocks if they are fenced
     pre {
-        background-color: rgba(0, 0, 0, 0.3) !important;
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        border-radius: 1rem;
-        padding: 1.5rem !important;
-        
-        code {
-            background-color: transparent !important;
-            padding: 0 !important;
-            color: #d1d5db !important;
-            font-size: 0.9em !important;
-        }
-    }
-
-    // Heading adjustments
-    h1, h2, h3, h4 {
-        color: white;
-        margin-top: 2rem;
-        margin-bottom: 1rem;
-    }
-
-    // Ensure symmetry by removing margins on first and last children
-    & > :first-child {
-        margin-top: 0 !important;
-    }
-
-    & > :last-child {
-        margin-bottom: 0 !important;
+        background-color: rgb(0 0 0 / 30%);
+        border: 1px solid rgb(255 255 255 / 5%);
+        border-radius: var(--radius);
+        padding: 1.5rem;
+        color: #d1d5db;
+        font-size: 0.9em;
     }
 }

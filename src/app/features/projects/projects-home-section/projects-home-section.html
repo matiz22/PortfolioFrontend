@@ -1,0 +1,52 @@
+<section appHomeStage class="projects-home-section relative"
+  aria-labelledby="projects-home-heading">
+  <div class="projects-home-content relative z-10" data-home-stage-content>
+    <div class="projects-home-header glass home-glass home-copy-panel" [appHomeCopy]="{ heading: 'h2', details: '.projects-home-description', effect: 'wipe', duration: 0.32 }">
+      <div class="projects-home-intro">
+        <h2 id="projects-home-heading" class="section-heading text-4xl md:text-5xl lg:text-6xl"
+          i18n="@@projects.home.heading">Side Projects</h2>
+        <p class="projects-home-description" i18n="@@projects.home.description">
+          Things I build to find out how an idea holds up in practice. If the source is public, you can see how I put it together.
+        </p>
+      </div>
+      <a appSectionAction variant="cta" routerLink="/projects" class="projects-home-viewall">
+        <ng-container i18n="@@projects.home.viewall">View all projects</ng-container>
+      </a>
+    </div>
+
+    <div class="projects-home-rail">
+      @let projectItems = projects();
+      <app-status-announcer [message]="statusMessage()" />
+      <div #projectsRail id="home-projects-rail" class="projects-home-grid" data-home-mobile-rail [attr.aria-busy]="projectItems.status === 'loading'">
+        @switch (projectItems.status) {
+        @case ('loading') {
+        <div class="projects-home-skeleton" data-home-rail-placeholder aria-hidden="true"></div>
+        <div class="projects-home-skeleton" data-home-rail-placeholder aria-hidden="true"></div>
+        <div class="projects-home-skeleton projects-home-skeleton-extra" data-home-rail-placeholder aria-hidden="true"></div>
+        }
+        @case ('success') {
+        @if (projectItems.data.length > 0) {
+        @for (project of projectItems.data; track project.id) {
+        <div class="projects-home-slot" data-home-rail-item>
+          <div class="projects-home-motion">
+            <app-project-preview [project]="project" />
+          </div>
+        </div>
+        }
+        } @else {
+        <p class="projects-home-state" i18n="@@projects.home.empty">No projects to show yet.</p>
+        }
+        }
+        @case ('error') {
+        <p class="projects-home-state" role="alert" i18n="@@projects.home.error">Projects could not be loaded. Please try again
+          later.</p>
+        }
+        }
+      </div>
+      <app-home-rail-controls [viewport]="projectsRail" headingId="projects-home-heading" />
+    </div>
+  </div>
+  <app-section-footer class="projects-home-footer" data-home-stage-footer>
+    <ng-content select="[section-next]" />
+  </app-section-footer>
+</section>

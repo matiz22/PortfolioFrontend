@@ -1,0 +1,13 @@
+@use '../../../../styles/portfolio-card' as portfolio-card;
+@use '../certificate-cover';
+
+:host {
+  display: grid;
+  min-width: 0;
+}
+
+.certification-issuer {
+  @include portfolio-card.lines(2);
+  color: var(--portfolio-ink);
+  font-size: 0.875rem;
+}

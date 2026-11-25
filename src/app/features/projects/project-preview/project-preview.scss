@@ -1,0 +1,226 @@
+@use '../../../../styles/portfolio-card' as portfolio-card;
+
+:host {
+  display: grid;
+  min-width: 0;
+}
+
+.project-preview {
+  @include portfolio-card.compact-pills;
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: 1fr auto auto;
+  overflow: hidden;
+  isolation: isolate;
+  border: 1px solid rgb(255 255 255 / 9%);
+  border-radius: var(--radius);
+  background: #101211;
+  transform-origin: center top;
+  transition: border-color 250ms ease;
+
+  &:hover,
+  &:focus-within {
+    border-color: color-mix(in srgb, var(--color-primary) 45%, transparent);
+
+    .project-preview-title-link {
+      color: var(--color-primary);
+    }
+  }
+}
+
+.project-preview-visual {
+  position: relative;
+  grid-area: 1 / 1;
+  min-block-size: clamp(12rem, 24vw, 18rem);
+  overflow: hidden;
+  border-bottom: 1px solid rgb(255 255 255 / 7%);
+}
+
+.project-preview-art,
+.project-preview-image,
+.project-preview-fallback,
+.project-preview-shade {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.project-preview-image {
+  display: block;
+  object-fit: cover;
+  object-position: top center;
+}
+
+.project-preview-fallback {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 2rem;
+  background:
+    radial-gradient(ellipse at 80% 10%, color-mix(in srgb, var(--color-primary) 12%, transparent), transparent 65%),
+    repeating-linear-gradient(0deg, transparent, transparent 31px, rgb(255 255 255 / 3%) 31px, rgb(255 255 255 / 3%) 32px),
+    #141a17;
+}
+
+.project-preview-code {
+  color: var(--color-primary);
+  font-size: 3.5rem;
+  letter-spacing: -0.1em;
+  opacity: 0.45;
+}
+
+.project-preview-fallback-title {
+  max-width: 16ch;
+  color: rgb(255 255 255 / 35%);
+  font-size: 1.125rem;
+  overflow-wrap: anywhere;
+}
+
+.project-preview-shade {
+  background: #000;
+  opacity: 0.25;
+  pointer-events: none;
+}
+
+.project-preview-drawer {
+  // Motion enhances this into a drawer on hover-capable screens.
+  // Touch, SSR, reduced motion and failed JS loading keep it fully open.
+  position: relative;
+  z-index: 2;
+  grid-area: 3 / 1;
+  overflow: hidden;
+}
+
+.project-preview-brief {
+  padding: 0.75rem 1rem;
+  border-top: 1px solid rgb(255 255 255 / 9%);
+  background: rgb(0 0 0 / 20%);
+}
+
+.project-preview-description {
+  margin: 0;
+  color: rgb(255 255 255 / 88%);
+  font-size: 0.8125rem;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+
+.project-preview-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+  margin-top: 0.5rem;
+}
+
+.project-preview-action {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  font-size: 0.6875rem;
+}
+
+.project-preview-caption {
+  // Title comes first in DOM/tab order, ahead of the revealed action links.
+  grid-area: 2 / 1;
+  padding: 0.875rem 1rem;
+}
+
+.project-preview-title {
+  margin: 0;
+  font-size: clamp(1.125rem, 2vw, 1.375rem);
+  letter-spacing: -0.04em;
+}
+
+.project-preview-title-link {
+  display: block;
+  color: var(--color-base-content);
+  overflow-wrap: anywhere;
+  text-decoration: none;
+  transition: color 200ms ease;
+
+  // Stretch only the project link, keeping demo/source links as siblings.
+  &::after {
+    content: '';
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    border-radius: var(--radius);
+  }
+
+  &:focus-visible {
+    outline: none;
+
+    &::after {
+      outline: 2px solid var(--color-primary);
+      outline-offset: -3px;
+    }
+  }
+}
+
+.project-preview-technologies {
+  margin-top: 0.625rem;
+}
+
+.project-preview-interactive {
+  grid-template-rows: 1fr auto;
+
+  .project-preview-drawer {
+    position: absolute;
+    grid-area: 1 / 1 / 2 / 2;
+    background: #101211;
+    inset: auto 0 0;
+    max-height: 100%;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+}
+
+.project-preview-horizontal {
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: 1fr auto;
+
+  .project-preview-title {
+    // Reserve room for two lines during the tween without capping longer titles.
+    min-block-size: 2lh;
+  }
+
+  .project-preview-drawer {
+    grid-area: 1 / 2 / 3 / 3;
+    contain: size;
+    width: 0;
+  }
+
+  .project-preview-brief {
+    display: flex;
+    flex-direction: column;
+    width: var(--project-brief-width);
+    height: 100%;
+    padding: 1.5rem 1.25rem;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    border-top: 0;
+    border-left: 1px solid rgb(255 255 255 / 9%);
+  }
+
+  .project-preview-description,
+  .project-preview-actions {
+    flex-shrink: 0;
+  }
+
+  .project-preview-actions {
+    flex-direction: column;
+    align-items: start;
+    margin-top: auto;
+    padding-top: 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-preview,
+  .project-preview-title-link {
+    transition: none;
+  }
+}

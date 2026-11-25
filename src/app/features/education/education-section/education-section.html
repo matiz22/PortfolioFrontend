@@ -1,47 +1,89 @@
-<section appCursorSpotlight class="py-24 border-y border-white/5 bg-black" id="education" style="background-image: radial-gradient(oklch(79% 0.209 151.711 / 0.4) 1.5px, transparent 1.5px); background-size: 24px 24px;">
-  <div class="container mx-auto px-6 max-w-6xl relative z-10">
-    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
-      <div class="md:w-1/2">
-        <h2 class="section-heading text-4xl md:text-5xl lg:text-6xl text-left" i18n="@@education.heading">Education</h2>
-      </div>
-      <div class="md:w-1/2 lg:w-2/5">
-        <p class="text-base text-left text-base-content/80 backdrop-blur-md bg-base-100/50 rounded-xl px-5 py-4 border border-white/5 relative z-10" i18n="@@education.description">
-          My academic background and the foundations of my knowledge in computer science and software engineering.
-        </p>
-      </div>
-    </div>
-
-    <!-- Flex layout with centering: orphan items center nicely -->
-    <div class="flex flex-row flex-wrap justify-center gap-4 relative z-10">
-      @if (education(); as state) {
-      @if (state.status === 'loading') {
-      <div class="text-center w-full">
-        <span class="loading loading-spinner loading-lg text-accent"></span>
-      </div>
-      }
-      @else if (state.status === 'success') {
-      @for (item of state.data; track item.id; let i = $index) {
-      <app-education-item [education]="item" appAosAnimations="reveal-iris" [delay]="i * 100"
-        class="flex-1 min-w-full md:min-w-[calc(50%-0.5rem)] lg:min-w-[calc(33.333%-0.67rem)] md:max-w-[calc(50%-0.5rem)] lg:max-w-[calc(33.333%-0.67rem)]"></app-education-item>
-      }
-      }
-      @else if (state.status === 'error') {
-      <div class="alert alert-error w-full">
-        <span>{{ state.error }}</span>
-      </div>
-      }
-      }
-    </div>
-
-    <!-- View All Link -->
-    <div class="text-center mt-8 relative z-10">
-      <a routerLink="/education" class="btn bg-base-100/50 backdrop-blur-md border border-accent/30 text-base-content hover:border-accent hover:text-accent hover:bg-transparent">
-        <ng-container i18n="@@education.viewall">View All Education</ng-container>
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24"
-          stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-        </svg>
+<section appHomeStage class="education-section" aria-labelledby="education-heading">
+  <div class="education-shell" data-home-stage-content>
+    <header class="education-header glass home-glass home-copy-panel flex flex-col items-start gap-3" [appHomeCopy]="headerCopy">
+      <h2 id="education-heading" class="section-heading" i18n="@@education.heading">Education</h2>
+      <p i18n="@@education.description">
+        Where I studied and how I got into computer science and software engineering.
+      </p>
+      <a appSectionAction variant="cta" routerLink="/education" class="education-viewall relative z-[1]">
+        <span i18n="@@education.viewall">View academic record</span>
       </a>
+    </header>
+
+    @let state = education();
+    <div class="education-record" [attr.aria-busy]="state.status === 'loading'">
+      @switch (state.status) {
+      @case ('loading') {
+      <div class="education-loading flex items-center gap-4">
+        <span class="text-primary" aria-hidden="true">└──</span>
+        <p class="education-state" role="status" i18n="@@education.loading">Loading academic record…</p>
+      </div>
+      }
+      @case ('success') {
+      <ol #educationRail id="home-education-rail" class="education-entries" data-home-mobile-rail role="list">
+        @for (item of entries(); track item.id) {
+        <li class="education-entry grid" data-home-rail-item>
+          <div class="education-motion grid">
+            <article class="education-card education-cover glass home-glass" [attr.aria-labelledby]="'education-title-' + item.id">
+              @if (item.thumbnail && !failedThumbnails().has(item.thumbnail)) {
+              <img class="education-cover-image" [src]="item.thumbnail | imageUrl" alt=""
+                loading="lazy" decoding="async" (error)="hideThumbnail(item.thumbnail)" />
+              }
+
+              <div class="education-body flex justify-between gap-4">
+                <div class="education-main min-w-0 overflow-hidden" [appHomeCopy]="cardCopy">
+                  <h3 class="education-degree" [id]="'education-title-' + item.id">{{ item.degree }}</h3>
+                  @if (item.fieldOfStudy) {
+                  <p class="education-subject">{{ item.fieldOfStudy }}</p>
+                  }
+                  <p class="education-institution">{{ item.institution }}</p>
+                  @if (item.technologies.length > 0) {
+                  <p class="education-tech" i18n="@@education.technologies">Key technologies</p>
+                  <ul appHomeMetadataPills class="education-tags" [items]="item.technologies"></ul>
+                  }
+                  @if (item.skills.length > 0) {
+                  <p class="education-tech" i18n="@@home.metadata.skills">Skills</p>
+                  <ul appHomeMetadataPills class="education-tags education-skills" kind="skills" [items]="item.skills"></ul>
+                  }
+                </div>
+
+                <div class="education-aside flex shrink-0 flex-col justify-end">
+                  <p class="education-dates flex flex-wrap justify-end gap-2">
+                    <time [attr.datetime]="item.startDate | date:'yyyy-MM'">{{ item.startDate | date:'yyyy' }}</time>
+                    @if (item.isCurrent) {
+                    <span class="education-current text-primary" i18n="@@education.present">to present</span>
+                    } @else if (item.endDate) {
+                    <span i18n="@@home.dates.to">to</span>
+                    <time [attr.datetime]="item.endDate | date:'yyyy-MM'">{{ item.endDate | date:'yyyy' }}</time>
+                    }
+                  </p>
+                  @if (item.grade) {
+                  <p class="education-grade"><span i18n="@@education.grade">Grade</span> · {{ item.grade }}</p>
+                  }
+                  <a class="education-link education-detail-link home-text-action inline-flex items-center max-w-full" [routerLink]="['/education', item.slug]"
+                    [attr.aria-labelledby]="'education-explore-' + item.id + ' education-title-' + item.id">
+                    <span [id]="'education-explore-' + item.id" i18n="@@education.explore">Details</span>
+                  </a>
+                </div>
+              </div>
+            </article>
+          </div>
+        </li>
+        } @empty {
+        <li class="education-state" i18n="@@education.empty">New chapters in my education will appear here.</li>
+        }
+      </ol>
+      <app-home-rail-controls [viewport]="educationRail" headingId="education-heading" />
+      }
+      @case ('error') {
+      <p class="education-state" role="status" i18n="@@education.error">
+        Education could not be loaded. Please try again later.
+      </p>
+      }
+      }
     </div>
   </div>
+  <app-section-footer class="education-footer" data-home-stage-footer>
+    <ng-content select="[section-next]" />
+  </app-section-footer>
 </section>

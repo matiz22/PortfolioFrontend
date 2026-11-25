@@ -1,4 +1,4 @@
-import { AfterViewInit, Directive, ElementRef, Inject, Input, OnInit, PLATFORM_ID } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, inject, Input, OnInit, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 
 @Directive({
@@ -7,13 +7,11 @@ import { isPlatformBrowser } from '@angular/common';
 })
 export class AosAnimations implements AfterViewInit, OnInit {
 
-  @Input('appAosAnimations') animationType: string = 'reveal-elegant';
+  @Input('appAosAnimations') animationType = 'reveal-elegant';
   @Input() delay: string | number = 0;
 
-  constructor(
-    private el: ElementRef,
-    @Inject(PLATFORM_ID) private platformId: Object
-  ) { }
+  private readonly el = inject<ElementRef<HTMLElement>>(ElementRef);
+  private readonly platformId = inject(PLATFORM_ID);
 
   ngOnInit() {
     this.el.nativeElement.classList.add(this.animationType);

@@ -1,25 +1,29 @@
 import { Routes } from '@angular/router';
 import { HomePage } from './features/home-page/home-page';
 import { createEntityResolver, staticSeoResolver } from './core/resolvers/seo.resolver';
-import { ProjectsService } from './core/services/projects.service';
-import { RealizationsService } from './core/services/realizations.service';
-import { EducationService } from './core/services/education.service';
-import { CertificationsService } from './core/services/certifications.service';
-import { JobsService } from './core/services/jobs.service';
+import { environment } from '../environments/environment';
+
+const homeTitle = $localize`:@@homeTitleMeta:AI Integration & Workflow Automation`;
 
 export const routes: Routes = [
     // HomePage loads eagerly for fast initial load
     {
         path: '',
         component: HomePage,
-        title: $localize`:@@homeTitleMeta:Apps, Websites & AI Solutions`,
+        title: homeTitle,
         resolve: { seo: staticSeoResolver },
         data: {
             reuse: true,
+            anchorOffset: 0,
             seo: {
-                title: $localize`:@@homeTitleMeta:Apps, Websites & AI Solutions`,
-                description: $localize`:@@homeDescriptionMeta:I build intelligent applications and modern websites that drive business. Leverage the potential of AI and modern technologies in your company. Check it out!`,
-                robots: 'index, follow'
+                title: homeTitle,
+                description: $localize`:@@homeDescriptionMeta:I build AI assistants that draft reports and answer questions from company documents, with sources you can check and approval before reports go out.`,
+                ogImage: 'https://malich.dev/opengraph.png',
+                robots: 'index, follow',
+                alternates: [
+                    ...environment.languagesOptions.map(({ code, url }) => ({ hreflang: code, href: url })),
+                    { hreflang: 'x-default', href: environment.languagesOptions.find(({ code }) => code === 'pl')!.url },
+                ],
             }
         },
     },
@@ -42,12 +46,16 @@ export const routes: Routes = [
     },
     {
         path: 'project/:slug',
+        data: { skipViewTransition: true },
         loadComponent: () =>
             import('./features/projects/project-details-page/project-details-page').then(
                 (m) => m.ProjectDetailsPage
             ),
         resolve: {
-            projectState: createEntityResolver(ProjectsService, data => `${data.title}`),
+            projectState: createEntityResolver(
+                () => import('./core/services/projects.service').then((m) => m.ProjectsService),
+                (data) => data.title,
+            ),
         },
     },
     {
@@ -69,12 +77,16 @@ export const routes: Routes = [
     },
     {
         path: 'realization/:slug',
+        data: { skipViewTransition: true },
         loadComponent: () =>
             import('./features/realizations/realization-details-page/realization-details-page').then(
                 (m) => m.RealizationDetailsPage
             ),
         resolve: {
-            realizationState: createEntityResolver(RealizationsService, data => `${data.title}`),
+            realizationState: createEntityResolver(
+                () => import('./core/services/realizations.service').then((m) => m.RealizationsService),
+                (data) => data.title,
+            ),
         },
     },
     {
@@ -96,12 +108,16 @@ export const routes: Routes = [
     },
     {
         path: 'education/:slug',
+        data: { skipViewTransition: true },
         loadComponent: () =>
             import('./features/education/education-details-page/education-details-page').then(
                 (m) => m.EducationDetailsPage
             ),
         resolve: {
-            educationState: createEntityResolver(EducationService, data => `${data.degree} at ${data.institution}`),
+            educationState: createEntityResolver(
+                () => import('./core/services/education.service').then((m) => m.EducationService),
+                (data) => `${data.degree} at ${data.institution}`,
+            ),
         },
     },
     {
@@ -123,12 +139,16 @@ export const routes: Routes = [
     },
     {
         path: 'certification/:slug',
+        data: { skipViewTransition: true },
         loadComponent: () =>
             import('./features/certifications/certification-detail-page/certification-detail-page').then(
                 (m) => m.CertificationDetailPage
             ),
         resolve: {
-            certificationState: createEntityResolver(CertificationsService, data => `${data.name}`),
+            certificationState: createEntityResolver(
+                () => import('./core/services/certifications.service').then((m) => m.CertificationsService),
+                (data) => data.name,
+            ),
         },
     },
     {
@@ -148,12 +168,16 @@ export const routes: Routes = [
     },
     {
         path: 'job/:slug',
+        data: { skipViewTransition: true },
         loadComponent: () =>
             import('./features/jobs/job-details-page/job-details-page').then(
                 (m) => m.JobDetailsPage
             ),
         resolve: {
-            jobState: createEntityResolver(JobsService, data => `${data.title} at ${data.companyName}`),
+            jobState: createEntityResolver(
+                () => import('./core/services/jobs.service').then((m) => m.JobsService),
+                (data) => `${data.title} at ${data.companyName}`,
+            ),
         },
     },
     {

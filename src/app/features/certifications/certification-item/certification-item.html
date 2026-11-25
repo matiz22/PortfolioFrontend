@@ -1,41 +1,27 @@
-<a [routerLink]="['/certification', certification.slug]" [title]="certification.name"
-  [class]="certification.thumbnail
-    ? 'card image-full border border-white/5 hover:border-secondary/30 transition-all duration-300 ease-out hover:-translate-y-1 h-full min-h-64 overflow-hidden'
-    : 'card bg-base-200/50 border border-white/5 hover:border-secondary/30 transition-all duration-300 ease-out hover:-translate-y-1 h-full min-h-64 overflow-hidden'">
-  @if (certification.thumbnail) {
-  <figure>
-    <img [alt]="certification.name" [src]="certification.thumbnail | imageUrl" />
-  </figure>
-  } @else {
-  <figure>
-    <div class="flex items-center justify-center h-48 w-full bg-base-300/50 text-base-content/20">
-      <span class="text-5xl font-serif italic">{{ certification.name.charAt(0) }}</span>
-    </div>
-  </figure>
+<a appArchiveCard class="archive-card archive-card-compact certificate-cover" [routerLink]="['/certification', certification.slug]">
+  @if (certification.thumbnail && failedThumbnail() !== certification.thumbnail) {
+    <img class="certificate-cover-image" [src]="certification.thumbnail | imageUrl" alt=""
+      loading="lazy" decoding="async" (error)="failedThumbnail.set(certification.thumbnail)">
   }
-  <div class="card-body" [class.before:absolute]="certification.thumbnail" [class.before:inset-0]="certification.thumbnail" [class.before:bg-black/60]="certification.thumbnail" [class.before:-z-10]="certification.thumbnail">
-    <div>
-      <h2 class="card-title text-lg font-mono tracking-tight leading-tight mb-2">
-        {{ certification.name }}
-      </h2>
-      <p class="text-sm text-base-content/50">{{ certification.issuingOrganization }}</p>
+
+  <div class="certificate-cover-copy">
+    <div class="archive-card-header">
+      <h2 class="archive-card-title section-heading">{{ certification.name }}</h2>
     </div>
 
-    @if (certification.technologies.length || certification.skills.length) {
-    <div class="mt-4">
-      <div class="card-actions justify-start flex-wrap gap-1.5">
-        @for (tech of certification.technologies; track tech.id) {
-        <div class="badge badge-secondary badge-outline badge-sm">{{ tech.name }}</div>
+    <p class="certification-issuer">{{ certification.issuingOrganization }}</p>
+    <p class="archive-card-meta flex flex-wrap items-baseline gap-x-1.5">
+      <span i18n="@@certificationDetails.badge.issued">Issued:</span>
+      <time [attr.datetime]="certification.issueDate | date:'yyyy-MM-dd':'UTC'">{{ certification.issueDate | date:'MMM yyyy':'UTC' }}</time>
+    </p>
+
+    @let items = tags;
+    @if (items.length) {
+      <ul class="archive-card-technologies" role="list">
+        @for (tag of items; track tag.name) {
+          <li>{{ tag.name }}</li>
         }
-        @for (skill of certification.skills; track skill.id) {
-        <div class="badge badge-secondary badge-outline badge-sm">{{ skill.name }}</div>
-        }
-      </div>
-    </div>
+      </ul>
     }
-
-    <div class="card-actions justify-end mt-auto">
-      <div class="badge badge-secondary badge-sm font-mono">{{ certification.issueDate | date:'yyyy' }}</div>
-    </div>
   </div>
 </a>

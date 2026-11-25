@@ -1,0 +1,45 @@
+<article class="realization-card-link glass home-glass">
+  <h3 class="realization-card-title">
+    <a class="realization-card-title-link" [routerLink]="['/realization', realization().slug]">{{ realization().title }}</a>
+  </h3>
+
+  <p class="realization-card-client">
+    @if (realization().clientName) {
+    @if (realization().clientUrl; as clientUrl) {
+    <a [href]="clientUrl" target="_blank" rel="noopener noreferrer" [title]="realization().clientName">
+      {{ realization().clientName }}
+      <span class="sr-only" i18n="@@realizations.newTab">(opens in a new tab)</span>
+    </a>
+    } @else {
+    {{ realization().clientName }}
+    }
+    }
+    @if (realization().location) {
+    <span class="realization-card-location">{{ realization().location }}</span>
+    }
+  </p>
+
+  <div class="realization-card-frame">
+    @if (realization().thumbnail && !thumbnailFailed()) {
+    <img class="realization-card-image" [src]="realization().thumbnail | imageUrl" [alt]="realization().title" loading="lazy"
+      decoding="async" (error)="thumbnailFailed.set(true)" />
+    } @else {
+    <span class="realization-card-fallback" aria-hidden="true">{{ realization().title }}</span>
+    }
+  </div>
+
+  @if (realization().shortDesc) {
+  <p class="realization-card-desc">{{ realization().shortDesc }}</p>
+  }
+
+  @if (realization().technologies.length || realization().skills.length) {
+  <div class="realization-card-metadata">
+    @if (realization().technologies.length) {
+    <ul appHomeMetadataPills [items]="realization().technologies"></ul>
+    }
+    @if (realization().skills.length) {
+    <ul appHomeMetadataPills kind="skills" [items]="realization().skills"></ul>
+    }
+  </div>
+  }
+</article>

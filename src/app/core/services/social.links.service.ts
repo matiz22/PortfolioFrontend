@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {ICrudService} from './base/services/crud.service';
 import {CrudOperations} from './base/operations/crud.operations';
 import {HttpClient} from '@angular/common/http';
@@ -8,6 +8,8 @@ import {SocialLink} from '../models/social.link';
 import {SocialLinkDto} from '../dto/social.link';
 import {mapSocialLink} from '../mappers/social.link';
 import {ApiState} from '../models/api.state';
+
+const SOCIAL_LINKS_TIMEOUT_MS = 5_000;
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +22,8 @@ export class SocialLinksService implements ICrudService<SocialLink> {
   private crudOps: CrudOperations<SocialLinkDto, SocialLink>;
 
 
-  constructor(private http: HttpClient) {
+  constructor() {
+    const http = inject(HttpClient);
     this.baseUrl = `${environment.apiUrl}/${environment.version}/social-links/translated`;
 
     this.crudOps = new CrudOperations(http, this.baseUrl, mapSocialLink, this.entityName);
@@ -28,7 +31,7 @@ export class SocialLinksService implements ICrudService<SocialLink> {
   }
 
   getAll(): Observable<ApiState<SocialLink[]>> {
-    return this.crudOps.getAll();
+    return this.crudOps.getAll({timeout: SOCIAL_LINKS_TIMEOUT_MS});
   }
 
   getById(id: string): Observable<ApiState<SocialLink>> {

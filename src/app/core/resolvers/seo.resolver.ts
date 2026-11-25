@@ -1,9 +1,9 @@
-import { inject, ProviderToken } from '@angular/core';
+import { inject, Injector, ProviderToken } from '@angular/core';
 import { ResolveFn } from '@angular/router';
 import { SeoData, SeoService } from '../services/seo.service';
 import { environment } from '../../../environments/environment';
 import { ISlugService } from '../services/base/services/slug.service';
-import { tap } from 'rxjs';
+import { defer, switchMap, tap } from 'rxjs';
 import { ApiState } from '../models/api.state';
 
 /**
@@ -32,23 +32,22 @@ export const staticSeoResolver: ResolveFn<void> = (route) => {
  * Creates a resolver that fetches an entity by slug and applies its SEO metadata.
  * This is the preferred way for SSR as it ensures meta tags are updated BEFORE rendering.
  *
- * @param serviceToken  DI token for the service implementing ISlugService
+ * @param loadService   Lazy import of the service implementing ISlugService
  * @param titleBuilder  Function that builds a fallback title from the entity when metaTitle is null
  */
 export function createEntityResolver<T extends Seoable>(
-  serviceToken: ProviderToken<ISlugService<T>>,
+  loadService: () => Promise<ProviderToken<ISlugService<T>>>,
   titleBuilder: (data: T) => string
 ): ResolveFn<ApiState<T>> {
   return (route) => {
     const slug = route.paramMap.get('slug');
-    if (!slug) return inject(serviceToken).getBySlug(''); // Or error state
+    const injector = inject(Injector);
+    const seoService = slug ? inject(SeoService) : undefined;
 
-    const service = inject(serviceToken);
-    const seoService = inject(SeoService);
-
-    return service.getBySlug(slug).pipe(
+    return defer(loadService).pipe(
+      switchMap((serviceToken) => injector.get(serviceToken).getBySlug(slug ?? '')),
       tap(state => {
-        if (state.status === 'success') {
+        if (seoService && state.status === 'success') {
           const seo = buildSeoFromModel(state.data, titleBuilder(state.data));
           seoService.updateMeta(seo);
         }

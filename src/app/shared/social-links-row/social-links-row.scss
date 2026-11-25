@@ -1,0 +1,12 @@
+:host {
+  display: block;
+  // Reserve the label, gap, and icon row before the browser has fetched links.
+  min-block-size: 5.25rem;
+}
+
+.social-links-state {
+  max-width: 18rem;
+  color: color-mix(in srgb, var(--color-base-content) 60%, transparent);
+  font-size: 0.75rem;
+  line-height: 1.5;
+}

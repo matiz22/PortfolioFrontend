@@ -9,7 +9,7 @@ import { LoadingCardCover } from '../loading-card-cover/loading-card-cover';
   styleUrl: './loading-items.scss',
 })
 export class LoadingItems {
-  @Input() count: number = 9;
+  @Input() count = 9;
   @Input() variant: 'default' | 'cover' = 'default';
 
   // Helper to generate array for loop

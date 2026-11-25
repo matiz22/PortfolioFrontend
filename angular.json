@@ -3,7 +3,10 @@
   "version": 1,
   "newProjectRoot": "projects",
   "cli": {
-    "analytics": false
+    "analytics": false,
+    "schematicCollections": [
+      "angular-eslint"
+    ]
   },
   "projects": {
     "PortfolioFrontend": {
@@ -30,9 +33,16 @@
           "builder": "@angular/build:application",
           "options": {
             "localize": true,
+            "security": {
+              "allowedHosts": [
+                "malich.dev",
+                "localhost",
+                "127.0.0.1",
+                "[::1]"
+              ]
+            },
             "browser": "src/main.ts",
             "polyfills": [
-              "zone.js",
               "@angular/localize/init"
             ],
             "tsConfig": "tsconfig.app.json",
@@ -44,7 +54,17 @@
             ],
             "styles": [
               "src/styles.scss",
-              "src/animations.scss"
+              "src/animations.scss",
+              {
+                "input": "node_modules/blobatar/dist/motion.css",
+                "bundleName": "blobatar-motion",
+                "inject": false
+              },
+              {
+                "input": "node_modules/blobatar/dist/gaze.css",
+                "bundleName": "blobatar-motion",
+                "inject": false
+              }
             ],
             "server": "src/main.server.ts",
             "outputMode": "server",
@@ -72,8 +92,7 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "600kB",
-                  "maximumError": "1MB"
+                  "maximumError": "500kB"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -111,7 +130,8 @@
         "serve": {
           "builder": "@angular/build:dev-server",
           "options": {
-            "port": 4200
+            "port": 4200,
+            "hmr": false
           },
           "configurations": {
             "production": {
@@ -141,8 +161,6 @@
           "builder": "@angular/build:karma",
           "options": {
             "polyfills": [
-              "zone.js",
-              "zone.js/testing",
               "@angular/localize/init"
             ],
             "tsConfig": "tsconfig.spec.json",
@@ -156,6 +174,15 @@
             "styles": [
               "src/styles.scss",
               "src/animations.scss"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
             ]
           }
         }

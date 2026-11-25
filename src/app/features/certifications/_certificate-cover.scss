@@ -1,0 +1,54 @@
+@use '../../../styles/portfolio-card' as portfolio-card;
+
+.certificate-cover {
+  @include portfolio-card.compact-pills;
+  --certificate-cover-padding: clamp(1rem, 1.8vw, 1.5rem);
+
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-block-size: clamp(16rem, 24vw, 22rem);
+  padding: var(--certificate-cover-padding);
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -3;
+    background:
+      radial-gradient(ellipse at 80% 0%, rgb(93 159 120 / 25%), transparent 75%),
+      repeating-linear-gradient(135deg, transparent 0 28px, rgb(255 255 255 / 5%) 28px 29px),
+      #101914;
+  }
+}
+
+.certificate-cover-image {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  pointer-events: none;
+}
+
+.certificate-cover-copy {
+  position: relative;
+  display: grid;
+  gap: 0.65rem;
+
+  // Keep contrast tied to the caption, even when it grows to multiple lines.
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -2.5rem calc(-1 * var(--certificate-cover-padding))
+      calc(-1 * var(--certificate-cover-padding));
+    z-index: -1;
+    background: linear-gradient(transparent, rgb(3 7 5 / 88%) 2.5rem, rgb(3 7 5 / 96%));
+    pointer-events: none;
+  }
+}

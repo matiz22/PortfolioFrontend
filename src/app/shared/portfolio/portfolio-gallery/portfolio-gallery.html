@@ -1,0 +1,36 @@
+@let images = screenshots();
+@if (images.length === 1) {
+    <figure class="gallery-shot">
+        <img [alt]="screenshotAlt(0)" [src]="images[0] | imageUrl" loading="lazy" decoding="async" />
+    </figure>
+} @else if (images.length > 1) {
+    <div #track class="gallery-track" [id]="trackId()" tabindex="0" role="region"
+        [attr.aria-labelledby]="headingId()" (scroll)="onTrackScroll(track)" (keydown)="onTrackKeydown($event)">
+        @for (image of images; track $index) {
+            <figure class="gallery-shot">
+                <img [alt]="screenshotAlt($index)" [src]="image | imageUrl" loading="lazy" decoding="async" />
+            </figure>
+        }
+    </div>
+
+    <div class="gallery-controls">
+        <button type="button" class="gallery-button" [attr.aria-controls]="trackId()"
+            i18n-aria-label="@@portfolioGallery.previous" aria-label="Previous screenshot"
+            [disabled]="activeIndex() === 0" (click)="moveTo(activeIndex() - 1)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M19 12H5m6-6-6 6 6 6" />
+            </svg>
+        </button>
+        <span class="gallery-count" aria-hidden="true">{{ activeIndex() + 1 | number:'2.0' }} / {{ images.length | number:'2.0' }}</span>
+        <span class="sr-only" role="status">{{ positionLabel() }}</span>
+        <button type="button" class="gallery-button" [attr.aria-controls]="trackId()"
+            i18n-aria-label="@@portfolioGallery.next" aria-label="Next screenshot"
+            [disabled]="activeIndex() === images.length - 1" (click)="moveTo(activeIndex() + 1)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M5 12h14m-6-6 6 6-6 6" />
+            </svg>
+        </button>
+    </div>
+}

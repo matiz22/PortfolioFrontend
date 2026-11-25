@@ -1,0 +1,23 @@
+@mixin layout($content, $navigation, $height: 0px) {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  // Equal outer tracks keep the content centered, even with a link in the
+  // bottom track. Intrinsic track sizes let tall sections grow without overlap.
+  grid-template-rows: minmax(var(--home-stage-clearance, 0px), 1fr) auto 1fr;
+  min-block-size: var(--home-stage-height, #{$height});
+
+  > #{$content} {
+    grid-row: 2;
+    grid-column: 1;
+    min-inline-size: 0;
+  }
+
+  > #{$navigation} {
+    grid-row: 3;
+    grid-column: 1;
+    align-self: end;
+    margin-block-start: clamp(0.75rem, 2svh, 1.5rem);
+    --section-footer-space: 0px;
+    --section-next-space: 0px;
+  }
+}

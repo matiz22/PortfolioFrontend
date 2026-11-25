@@ -1,9 +1,33 @@
 /* You can add global styles to this file, and also import other style files */
 @use "tailwindcss";
-@plugin "@tailwindcss/typography";
+@use "./styles/home-glass"; // Dark, readable content surfaces over the homepage shader.
+
+/* Shared corner radius; circles and pills keep their semantic shapes. */
+:root {
+  --radius: 1rem;
+}
+
+@theme {
+  --font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
+  --font-pixel: "Geist Pixel", var(--font-sans);
+}
+
+@theme inline {
+  --radius-xs: var(--radius);
+  --radius-sm: var(--radius);
+  --radius-md: var(--radius);
+  --radius-lg: var(--radius);
+  --radius-xl: var(--radius);
+  --radius-2xl: var(--radius);
+  --radius-3xl: var(--radius);
+  --radius-4xl: var(--radius);
+}
 
 @plugin "daisyui" {
-  themes: dark;
+  // The custom dark theme below is the only theme. Keep this list limited to
+  // components used in templates; Tailwind also finds words in copy and code.
+  themes: false;
+  include: properties, rootcolor, scrollbar, alert, aura, badge, button, card, dropdown, glass, input, skeleton;
 }
 
 @plugin "daisyui/theme" {
@@ -31,9 +55,9 @@
   --color-warning-content: oklch(41% 0.112 45.904);
   --color-error: oklch(71% 0.194 13.428);
   --color-error-content: oklch(27% 0.105 12.094);
-  --radius-selector: 0.5rem;
-  --radius-field: 0.5rem;
-  --radius-box: 0.75rem;
+  --radius-selector: var(--radius);
+  --radius-field: var(--radius);
+  --radius-box: var(--radius);
   --size-selector: 0.25rem;
   --size-field: 0.28125rem;
   --border: 1px;
@@ -43,7 +67,7 @@
 
 
 html {
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-sans);
   font-size: 16px;
   scroll-behavior: smooth;
 }
@@ -52,21 +76,36 @@ html:active-view-transition {
   scroll-behavior: auto !important;
 }
 
-body {
-  font-family: "JetBrains Mono", monospace;
+// Land directly on an unrendered chapter after client navigation. A smooth
+// scroll would initialize intermediate chapters and could shift the destination.
+html:has(app-home-page [data-grain-chapter]:target > .home-chapter-placeholder) {
+  scroll-behavior: auto;
 }
 
-/* Font utility classes */
-.font-serif {
-  font-family: "Instrument Serif", serif;
+@media (prefers-reduced-motion: reduce) {
+  html {
+    // ScrollTrigger can restore an inline smooth value after a layout refresh.
+    scroll-behavior: auto !important;
+  }
 }
 
-.font-sans {
-  font-family: "JetBrains Mono", monospace;
-}
+/* Quiet, text-only actions inside homepage cards. */
+.home-text-action {
+  color: var(--color-base-content);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
+  text-underline-offset: 0.25em;
 
-.font-mono {
-  font-family: "JetBrains Mono", monospace;
+  &:is(:hover, :focus-visible) {
+    color: var(--color-primary);
+    text-decoration-color: currentColor;
+  }
+
+  &:focus-visible {
+    border-radius: 0.125rem;
+    outline: 2px solid var(--color-primary);
+    outline-offset: 0.25rem;
+  }
 }
 
 /* Fade-in Animation to prevent flickering */
@@ -145,12 +184,33 @@ body {
   opacity: 0;
 }
 
-/* Section headings — editorial style */
+/* Section headings */
 .section-heading {
-  font-family: "Instrument Serif", serif;
-  font-style: italic;
+  font-family: var(--font-pixel);
   font-weight: 400;
   letter-spacing: -0.02em;
+  overflow-wrap: anywhere;
+}
+
+// Homepage anchors live outside their section components. Outline the heading once
+// it renders, and keep an inset focus outline on the anchor while content is deferred.
+.home-page [data-grain-chapter]:not([data-grain-chapter='hero']):focus-visible {
+  outline: 2px solid var(--color-base-content);
+  outline-offset: -2px;
+
+  &:has(> * > section[aria-labelledby] :is(h1, h2)[id]) {
+    outline: none;
+  }
+
+  > * > section[aria-labelledby] :is(h1, h2)[id] {
+    outline: 2px solid var(--color-base-content);
+    outline-offset: 0.375rem;
+  }
+}
+
+// Keep the Hero anchor focusable without drawing a frame on landing at #home.
+.home-page #home:focus {
+  outline: none;
 }
 
 /* Subtle divider line */
@@ -165,7 +225,7 @@ body {
 }
 
 .section-noise::before {
-  content: '';
+  content: var(--section-noise-content, '');
   position: absolute;
   inset: 0;
   pointer-events: none;

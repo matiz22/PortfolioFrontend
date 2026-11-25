@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, ViewEncapsulation } from '@angular/core';
 import { MarkdownComponent, provideMarkdown } from 'ngx-markdown';
 
 @Component({
@@ -6,9 +6,11 @@ import { MarkdownComponent, provideMarkdown } from 'ngx-markdown';
   imports: [MarkdownComponent],
   providers: [provideMarkdown()],
   templateUrl: './description-md.html',
-  styleUrl: './description-md.scss',
+  // Markdown generates its descendants without Angular's scoping attributes.
+  encapsulation: ViewEncapsulation.None,
+  styleUrls: ['../../../../styles/markdown-prose.scss', './description-md.scss'],
 })
 export class DescriptionMd {
   description = input.required<string>();
+  readonly showGlow = input(true);
 }
-

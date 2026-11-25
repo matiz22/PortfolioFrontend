@@ -1,6 +1,12 @@
 import { inject, Injectable } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { environment } from '../../../environments/environment';
+import { DOCUMENT } from '@angular/common';
+
+export interface AlternateLanguageLink {
+  hreflang: string;
+  href: string;
+}
 
 export interface SeoData {
   title?: string;
@@ -10,6 +16,7 @@ export interface SeoData {
   ogDescription?: string;
   ogImage?: string;
   ogUrl?: string;
+  alternates?: readonly AlternateLanguageLink[];
 }
 
 @Injectable({
@@ -18,6 +25,20 @@ export interface SeoData {
 export class SeoService {
   private readonly titleService = inject(Title);
   private readonly metaService = inject(Meta);
+  private readonly document = inject(DOCUMENT);
+
+  updateAlternateLinks(links: readonly AlternateLanguageLink[] = []): void {
+    // The marker also identifies links serialized by SSR. Leave other owners alone.
+    this.document.head.querySelectorAll('link[data-app-hreflang]').forEach((link) => link.remove());
+    for (const { hreflang, href } of links) {
+      const link = this.document.createElement('link');
+      link.rel = 'alternate';
+      link.hreflang = hreflang;
+      link.href = href;
+      link.setAttribute('data-app-hreflang', '');
+      this.document.head.appendChild(link);
+    }
+  }
 
   updateMeta(seo: SeoData): void {
     if (seo.title) {

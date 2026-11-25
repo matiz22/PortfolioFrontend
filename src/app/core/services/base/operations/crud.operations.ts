@@ -9,12 +9,12 @@ export class CrudOperations<TDto, TModel> {
     private http: HttpClient,
     private baseUrl: string,
     private mapper: (dto: TDto) => TModel,
-    private entityName: string = 'Entity'
+    private entityName = 'Entity'
   ) {
   }
 
-  getAll(): Observable<ApiState<TModel[]>> {
-    return this.http.get<TDto[]>(this.baseUrl).pipe(
+  getAll(options?: { timeout?: number }): Observable<ApiState<TModel[]>> {
+    return this.http.get<TDto[]>(this.baseUrl, options).pipe(
       map(dtos => ApiState.success(dtos.map(dto => this.mapper(dto)))),
       catchError(err => of(ApiState.error<TModel[]>(this.getErrorMessage(err))))
     );
@@ -34,7 +34,7 @@ export class CrudOperations<TDto, TModel> {
     );
   }
 
-  getAllPaginated(page: number = 1, perPage: number = 15): Observable<ApiState<{ data: TModel[], meta: PaginationMeta }>> {
+  getAllPaginated(page = 1, perPage = 15): Observable<ApiState<{ data: TModel[], meta: PaginationMeta }>> {
     return this.http.get<PaginatedResponse<TDto>>(`${this.baseUrl}/paginated?page=${page}&perPage=${perPage}`).pipe(
       map(response => {
         const data = response.data.map(dto => this.mapper(dto));

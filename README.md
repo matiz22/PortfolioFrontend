@@ -1,6 +1,7 @@
 # PortfolioFrontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.2.0.
+This project uses [Angular CLI](https://github.com/angular/angular-cli) 22 and Yarn Classic.
+Use Node.js 22.22.3+, 24.15.0+, or 26.x, as specified in `package.json`.
 
 ## Development server
 
@@ -10,7 +11,7 @@ To start a local development server, run:
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application automatically reloads when source files change. HMR is off by default so `@defer` dependencies load on their normal triggers.
 
 ## Code scaffolding
 
@@ -36,6 +37,13 @@ ng build
 
 This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
 
+## Running the SSR server
+
+After building, run `yarn serve:ssr:PortfolioFrontend`. The production host `malich.dev` and
+loopback hosts are allowed by default. Set `NG_ALLOWED_HOSTS` for additional deployment hosts.
+If a trusted reverse proxy validates and overwrites forwarding headers, set `NG_TRUST_PROXY_HEADERS`
+to the comma-separated headers it provides, such as `x-forwarded-host,x-forwarded-proto`.
+
 ## Running unit tests
 
 To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
@@ -46,13 +54,20 @@ ng test
 
 ## Running end-to-end tests
 
-For end-to-end (e2e) testing, run:
+To check that the homepage sections retain their server-rendered cards during hydration:
 
 ```bash
-ng e2e
+yarn ng build --configuration local
+node tests/home-hydration.mjs
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Open the printed URL in a browser at least `80rem` wide. The check provides its own data and verifies
+that About hydrates on idle, later chapters wait for the viewport without refetching any of the
+five summaries, and Projects keeps its column widths. It checks chapter footer links and the unique
+Contact anchor before and after hydration, and verifies that Contact loads social links only in the
+browser. Set `HYDRATION_SOCIAL_MODE=error` or `HYDRATION_SOCIAL_MODE=timeout` to
+test the email fallback, and set `HYDRATION_BROWSER` to a launcher that takes the URL as its only
+argument to run it without opening the URL manually.
 
 ## Additional Resources
 

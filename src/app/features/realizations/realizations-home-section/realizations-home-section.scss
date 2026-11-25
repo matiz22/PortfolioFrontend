@@ -1,0 +1,184 @@
+@use '../../../../styles/home-mobile-rail' as mobile-rail;
+@use '../../../../styles/home-stage' as stage;
+
+// Angular observes this host for viewport hydration.
+:host {
+  display: block;
+}
+
+.realizations-section {
+  --realizations-inset: var(--home-showcase-inset, clamp(1.5rem, 4vw, 4rem));
+  background: var(--home-section-background, #080b0a);
+  // Clip the gallery bleed without creating a scroll container (sticky safe).
+  overflow-x: clip;
+}
+
+.realizations-stage-wrap {
+  position: relative;
+}
+
+.realizations-stage {
+  @include stage.layout('.realizations-content', '.realizations-next', 100svh);
+  position: relative;
+  padding: var(--home-stage-inset, 1rem) var(--realizations-inset);
+}
+
+.realizations-content {
+  display: grid;
+  align-items: center;
+  gap: clamp(2rem, 4vw, 4rem);
+}
+
+.realizations-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+  min-width: 0;
+  max-width: 23rem;
+}
+
+.realizations-heading {
+  font-size: clamp(2rem, 2.6vw, 3.25rem);
+  line-height: 1.05;
+  text-wrap: balance;
+}
+
+.realizations-description {
+  font-size: 0.8125rem;
+  line-height: 1.8;
+}
+
+.realizations-viewall {
+  position: relative;
+  z-index: 1;
+}
+
+.realizations-gallery-panel {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.realizations-track {
+  position: relative;
+  width: 100%;
+}
+
+.realizations-state {
+  padding-block: 2rem;
+  font-size: 0.875rem;
+  color: color-mix(in srgb, var(--color-base-content) 50%, transparent);
+}
+
+@media (width < 48rem) {
+  .realizations-gallery:has(.realizations-track > :nth-child(2)) {
+    display: grid;
+    @include mobile-rail.viewport;
+    @include mobile-rail.columns;
+    padding-block: 0.5rem 1rem;
+
+    // Let the scrolling grid include the trailing inset after the last card.
+    .realizations-track {
+      display: contents;
+    }
+
+    .realizations-track > * {
+      @include mobile-rail.item;
+    }
+  }
+}
+
+@media (min-width: 48rem) {
+  .realizations-gallery {
+    // Bleed into the stage's right inset so cards clip at the viewport edge.
+    margin-right: calc(-1 * var(--realizations-inset));
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+
+    // Only veil incoming work. The edge becomes fully opaque as the final card
+    // settles; without JS, everything remains readable.
+    -webkit-mask-image: linear-gradient(to right, #000 55%, rgb(0 0 0 / var(--realizations-edge-alpha, 1)) 95%);
+    mask-image: linear-gradient(to right, #000 55%, rgb(0 0 0 / var(--realizations-edge-alpha, 1)) 95%);
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  .realizations-track {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .realizations-track > * {
+    flex: 0 0 min(86%, 24rem);
+    scroll-snap-align: start;
+  }
+
+  .realizations-state {
+    flex-basis: 100%;
+  }
+}
+
+// Scrubbed desktop mode: native swiping is replaced by the scroll-driven
+// translate, so the gallery must not scroll on its own.
+.realizations-is-pinned {
+  // Match the candidate pin measurement to its progress-only controls.
+  --home-rail-button-display: none;
+
+  // Keep the whole composition in view only while the desktop track scrubs.
+  .realizations-stage {
+    position: sticky;
+    top: 0;
+  }
+
+  .realizations-gallery {
+    overflow: hidden;
+    scroll-snap-type: none;
+  }
+
+  .realizations-track > * {
+    scroll-snap-align: none;
+  }
+}
+
+.realizations-skeleton {
+  height: clamp(14rem, 34svh, 18rem);
+  border-radius: var(--radius);
+  background: rgb(255 255 255 / 4%);
+}
+
+@media (min-width: 64rem) {
+  // Give the work twice the space of the introduction, without fixed widths.
+  .realizations-stage {
+    max-width: var(--home-showcase-width, 88rem);
+    margin-inline: auto;
+  }
+
+  .realizations-content {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  }
+
+  .realizations-gallery {
+    margin-right: 0;
+  }
+
+  .realizations-heading {
+    font-size: clamp(2.25rem, 3vw, 3.5rem);
+  }
+
+  .realizations-description {
+    font-size: 0.875rem;
+  }
+
+  .realizations-track > * {
+    flex-basis: clamp(23rem, 34vw, 30rem);
+  }
+
+  .realizations-skeleton {
+    height: clamp(11rem, 26svh, 19rem);
+  }
+}

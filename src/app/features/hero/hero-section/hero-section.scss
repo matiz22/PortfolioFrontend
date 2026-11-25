@@ -1,94 +1,138 @@
-/* Hero section animations — Multi-Layered Sharp Reveal */
+@use '../../../../styles/home-stage' as stage;
 
-/* 1. Pure Fade (Badge & Buttons) — Sharp & Grounded */
-@keyframes pure-fade {
-    0% {
-        opacity: 0;
-    }
-
-    100% {
-        opacity: 1;
-    }
+:host {
+    display: block;
 }
 
-/* 2. Slide Reveal (Text Content) — Sharp & Precision */
-@keyframes slide-reveal {
-    0% {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.hero-section {
+    @include stage.layout('.hero-layout', '.hero-next', 100svh);
+    isolation: isolate;
+    justify-items: center;
+    padding: var(--home-stage-inset, 1rem) 1.5rem;
 }
 
-/* 3. Horizontal Wipe & Zoom (Hero Image) — Cinematic & Intentional */
-@keyframes image-reveal-premium {
-    0% {
-        opacity: 0;
-        clip-path: inset(0 100% 0 0);
-        transform: scale(1.08) translateX(10px);
-    }
-
-    100% {
-        opacity: 1;
-        clip-path: inset(0 0 0 0);
-        transform: scale(1) translateX(0);
-    }
+.hero-layout {
+    grid-template-areas: "portrait" "copy";
 }
 
-.animate-pure-fade {
-    animation: pure-fade 1s cubic-bezier(0.2, 0, 0.2, 1) both;
-
-    @starting-style {
-        opacity: 0;
-    }
+.hero-copy {
+    grid-area: copy;
 }
 
-.animate-slide-reveal {
-    animation: slide-reveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
-
-    @starting-style {
-        opacity: 0;
-        transform: translateY(20px);
-    }
+.hero-headline {
+    font-size: clamp(2.5rem, 12.5cqw, 5.75rem);
+    line-height: 0.96;
+    letter-spacing: -0.035em;
 }
 
-.animate-image-reveal-premium {
-    animation: image-reveal-premium 1s cubic-bezier(0.23, 1, 0.32, 1) both;
+.hero-headline-accent {
+    width: fit-content;
+    margin-inline: auto;
+    margin-top: 0.22em;
+    font-size: 0.74em;
+    // Keep character widths stable when the animated spans return to plain text.
+    font-kerning: none;
+    font-variant-ligatures: none;
+}
 
-    @starting-style {
-        opacity: 0;
-        clip-path: inset(0 100% 0 0);
-        transform: scale(1.08) translateX(10px);
+.hero-portrait {
+    grid-area: portrait;
+    width: min(100%, 16rem);
+    margin: 0 auto;
+}
+
+.hero-image-container {
+    width: clamp(7.5rem, 20cqw, 10rem);
+    max-width: 100%;
+    margin-inline: auto;
+}
+
+.hero-photo {
+    aspect-ratio: 3 / 4;
+    border-radius: var(--radius);
+    background: var(--color-base-200);
+}
+
+@media (min-width: 48rem) {
+    .hero-section {
+        padding-inline: 3rem;
     }
 }
 
-.animation-delay-100 {
-    animation-delay: 0.1s;
+// Switch when the hero itself has enough usable width, including in narrower containers.
+@container hero (min-width: 54rem) {
+    .hero-layout {
+        grid-template-areas: "copy portrait";
+        grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+        gap: clamp(3rem, 5cqw, 5rem);
+        align-items: start;
+        text-align: left;
+    }
+
+    .hero-headline {
+        font-size: clamp(4rem, 7.3cqw, 6.5rem);
+    }
+
+    .hero-headline-main,
+    .hero-headline-accent,
+    .hero-description {
+        margin-inline: 0;
+    }
+
+    .hero-description {
+        font-size: 0.9375rem;
+    }
+
+    .hero-portrait {
+        width: min(100%, 23rem);
+        margin-inline: auto 0;
+    }
+
+    .hero-image-container {
+        width: 100%;
+    }
 }
 
-.animation-delay-200 {
-    animation-delay: 0.2s;
+/* Horizontal blind slats lift in sequence, revealing the portrait beneath. */
+@keyframes blind-lift {
+    from {
+        transform: scaleY(1);
+    }
+
+    to {
+        transform: scaleY(0);
+    }
 }
 
-.animation-delay-300 {
-    animation-delay: 0.3s;
+@keyframes portrait-settle {
+    from {
+        transform: scale(1.06);
+    }
+
+    to {
+        transform: scale(1);
+    }
 }
 
-.animation-delay-400 {
-    animation-delay: 0.4s;
+.hero-photo > img {
+    animation: portrait-settle 1.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
 }
 
-.animation-delay-500 {
-    animation-delay: 0.5s;
+.hero-photo-blind {
+    // Slight overlap prevents hairline gaps between the closed slats.
+    margin-block: -1px;
+    background: var(--color-base-100);
+    transform-origin: center top;
+    animation: blind-lift 0.9s cubic-bezier(0.76, 0, 0.24, 1) both;
+    animation-delay: calc(0.2s + var(--blind-index, 0) * 0.09s);
 }
 
-/* Performance optimization */
-.hero-image-container,
-.animate-slide-reveal,
-.animate-curtain-reveal {
-    will-change: transform, opacity, clip-path;
+@media (prefers-reduced-motion: reduce) {
+    .hero-photo > img {
+        animation: none;
+    }
+
+    .hero-photo-blinds {
+        display: none;
+    }
 }

@@ -1,0 +1,52 @@
+<section class="realizations-section section-noise relative"
+  aria-labelledby="realizations-heading">
+  <div class="realizations-stage-wrap">
+    <div class="realizations-stage">
+      <div class="realizations-content">
+        <div class="realizations-text glass home-glass home-copy-panel" [appHomeCopy]="{ heading: 'h2', details: '.realizations-description', effect: 'lines', duration: 0.46 }">
+          <h2 id="realizations-heading"
+            class="realizations-heading section-heading" i18n="@@realizations.heading">Client Work</h2>
+          <p class="realizations-description" i18n="@@realizations.description">
+            Websites and apps I’ve built for clients. See what each project was meant to do and what I shipped.
+          </p>
+          <a appSectionAction variant="cta" routerLink="/realizations" class="realizations-viewall">
+            <span i18n="@@realizations.viewall">See all client work</span>
+          </a>
+        </div>
+
+        <div class="realizations-gallery-panel">
+          @let realizationItems = realizations();
+          <app-status-announcer [message]="statusMessage()" />
+          <div #workRail id="home-work-rail" class="realizations-gallery">
+            <div class="realizations-track">
+              @switch (realizationItems.status) {
+              @case ('loading') {
+              <div class="realizations-skeleton" aria-hidden="true"></div>
+              <div class="realizations-skeleton" aria-hidden="true"></div>
+              }
+              @case ('success') {
+              @if (realizationItems.data.length > 0) {
+              @for (realization of realizationItems.data; track realization.id) {
+               <app-realization-showcase-card data-home-rail-item [realization]="realization" />
+              }
+              } @else {
+              <p class="realizations-state" i18n="@@realizations.empty">No realizations to show yet.</p>
+              }
+              }
+              @case ('error') {
+              <p class="realizations-state" role="alert" i18n="@@realizations.error">Realizations could not be loaded. Please try again
+                later.</p>
+              }
+              }
+            </div>
+          </div>
+          <app-home-rail-controls [viewport]="workRail" headingId="realizations-heading"
+            scope="responsive" [showProgress]="true" />
+        </div>
+      </div>
+      <app-section-footer class="realizations-next">
+        <ng-content select="[section-next]" />
+      </app-section-footer>
+    </div>
+  </div>
+</section>
