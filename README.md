@@ -63,8 +63,9 @@ node tests/home-hydration.mjs
 
 Open the printed URL in a browser at least `80rem` wide. The check provides its own data and verifies
 that About hydrates on idle, later chapters wait for the viewport without refetching any of the
-five summaries, and Projects keeps its column widths. It also verifies that Contact loads social
-links only in the browser. Set `HYDRATION_SOCIAL_MODE=error` or `HYDRATION_SOCIAL_MODE=timeout` to
+five summaries, and Projects keeps its column widths. It checks chapter footer links and the unique
+Contact anchor before and after hydration, and verifies that Contact loads social links only in the
+browser. Set `HYDRATION_SOCIAL_MODE=error` or `HYDRATION_SOCIAL_MODE=timeout` to
 test the email fallback, and set `HYDRATION_BROWSER` to a launcher that takes the URL as its only
 argument to run it without opening the URL manually.
 
