@@ -18,7 +18,7 @@
 }
 
 .realizations-stage {
-  @include stage.layout('.realizations-content', '.realizations-next', 100svh);
+  @include stage.layout('.realizations-content', '.realizations-next', calc(100 * var(--layout-vh, 1svh)));
   position: relative;
   padding: var(--home-stage-inset, 1rem) var(--realizations-inset);
 }
@@ -146,7 +146,7 @@
 }
 
 .realizations-skeleton {
-  height: clamp(14rem, 34svh, 18rem);
+  height: clamp(14rem, 34 * var(--layout-vh, 1svh), 18rem);
   border-radius: var(--radius);
   background: rgb(255 255 255 / 4%);
 }
@@ -179,6 +179,6 @@
   }
 
   .realizations-skeleton {
-    height: clamp(11rem, 26svh, 19rem);
+  height: clamp(11rem, 26 * var(--layout-vh, 1svh), 19rem);
   }
 }

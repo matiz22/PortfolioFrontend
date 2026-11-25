@@ -16,7 +16,7 @@
     grid-row: 3;
     grid-column: 1;
     align-self: end;
-    margin-block-start: clamp(0.75rem, 2svh, 1.5rem);
+    margin-block-start: clamp(0.75rem, 2 * var(--layout-vh, 1svh), 1.5rem);
     --section-footer-space: 0px;
     --section-next-space: 0px;
   }

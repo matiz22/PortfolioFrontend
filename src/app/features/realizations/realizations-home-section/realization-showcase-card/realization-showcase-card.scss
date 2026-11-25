@@ -95,7 +95,7 @@
 .realization-card-image {
   display: block;
   width: 100%;
-  height: clamp(11rem, 26svh, 19rem);
+  height: clamp(11rem, 26 * var(--layout-vh, 1svh), 19rem);
   object-fit: contain;
   transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -108,7 +108,7 @@
 .realization-card-fallback {
   display: grid;
   place-items: center;
-  height: clamp(11rem, 26svh, 19rem);
+  height: clamp(11rem, 26 * var(--layout-vh, 1svh), 19rem);
   font-family: var(--font-pixel);
   font-size: 1.25rem;
   color: color-mix(in srgb, var(--color-base-content) 35%, transparent);

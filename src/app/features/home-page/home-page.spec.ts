@@ -49,7 +49,7 @@ describe('HomePage', () => {
 
   it('keeps one live region and stable skeleton geometry through all deferred states', async () => {
     const root: HTMLElement = fixture.nativeElement;
-    root.style.setProperty('--home-stage-height', '640px');
+    root.style.setProperty('--layout-vh', '6.4px');
     const [block] = await fixture.getDeferBlocks();
     const chapter = root.querySelector<HTMLElement>('#about')!;
     const status = chapter.querySelector<HTMLElement>('[role="status"]')!;

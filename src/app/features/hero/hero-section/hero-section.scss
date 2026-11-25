@@ -5,7 +5,7 @@
 }
 
 .hero-section {
-    @include stage.layout('.hero-layout', '.hero-next', 100svh);
+    @include stage.layout('.hero-layout', '.hero-next', calc(100 * var(--layout-vh, 1svh)));
     isolation: isolate;
     justify-items: center;
     padding: var(--home-stage-inset, 1rem) 1.5rem;

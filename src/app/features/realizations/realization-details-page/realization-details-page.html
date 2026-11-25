@@ -65,7 +65,7 @@
 
                         @if (data.thumbnail) {
                             <figure class="case-preview w-[min(85%,32rem)] justify-self-center overflow-hidden lg:w-full">
-                                <img class="max-h-[min(26rem,52svh)]!" [alt]="data.title" [src]="data.thumbnail | imageUrl" fetchpriority="high" />
+                                <img class="max-h-[min(26rem,calc(52*var(--layout-vh,1svh)))]!" [alt]="data.title" [src]="data.thumbnail | imageUrl" fetchpriority="high" />
                             </figure>
                         }
                     </div>

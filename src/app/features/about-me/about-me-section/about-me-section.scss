@@ -82,7 +82,7 @@
 .about-web-visual,
 .about-apps-visual,
 .about-ai-visual {
-  height: clamp(15rem, 40svh, 20rem);
+  height: clamp(15rem, 40 * var(--layout-vh, 1svh), 20rem);
   overflow: visible;
 }
 
@@ -242,7 +242,7 @@
   .about-apps-visual,
   .about-ai-visual {
     // Leave space for the heading, service copy, and separate navigation row.
-    height: clamp(12rem, calc(100svh - 38rem), 24rem);
+    height: clamp(12rem, 100 * var(--layout-vh, 1svh) - 38rem, 24rem);
   }
 }
 

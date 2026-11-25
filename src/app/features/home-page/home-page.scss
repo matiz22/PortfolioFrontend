@@ -1,6 +1,6 @@
 :host {
   display: block;
-  --home-stage-height: 100svh;
+  --home-stage-height: calc(100 * var(--layout-vh, 1svh));
   --home-stage-clearance: calc(4.5rem + env(safe-area-inset-top, 0px));
   --home-stage-inset: 1rem;
   --home-showcase-inset: clamp(1.5rem, 4vw, 4rem);
@@ -16,7 +16,7 @@
   isolation: isolate;
   display: flex;
   flex-direction: column;
-  min-height: 100svh;
+  min-height: var(--home-stage-height);
   background: #000;
 }
 
@@ -49,7 +49,7 @@
 
 .home-chapter-skeleton {
   display: grid;
-  gap: clamp(1.5rem, 4vh, 3rem);
+  gap: clamp(1.5rem, 4 * var(--layout-vh, 1vh), 3rem);
   width: min(100%, var(--home-showcase-width));
   margin-inline: auto;
 }
@@ -76,7 +76,7 @@
 
 .home-chapter-skeleton-panel {
   width: 100%;
-  height: clamp(14rem, 34svh, 22rem);
+  height: clamp(14rem, 34 * var(--layout-vh, 1svh), 22rem);
   border-radius: var(--radius);
 }
 
