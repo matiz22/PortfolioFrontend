@@ -7,6 +7,7 @@ import { afterNextRenderMotion } from '../../../../shared/animations/lazy-motion
   imports: [NgTemplateOutlet],
   templateUrl: './apps-preview.html',
   styleUrls: [
+    './apps-preview-mockups.css',
     './apps-preview.scss',
     './apps-preview-workspace.scss',
     './apps-preview-layouts.scss',

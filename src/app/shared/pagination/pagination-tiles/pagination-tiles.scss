@@ -1,3 +1,22 @@
+.pagination-buttons {
+  display: inline-flex;
+
+  > :not(:first-child) {
+    margin-inline-start: calc(-1 * var(--border));
+    border-start-start-radius: 0;
+    border-end-start-radius: 0;
+  }
+
+  > :not(:last-child) {
+    border-start-end-radius: 0;
+    border-end-end-radius: 0;
+  }
+
+  > :focus-visible {
+    z-index: 1;
+  }
+}
+
 :host(.pagination-themed) {
   .btn {
     border-color: var(--pagination-border);
@@ -24,7 +43,7 @@
     }
   }
 
-  .join {
+  .pagination-buttons {
     max-width: 100%;
     flex-wrap: wrap;
     justify-content: center;

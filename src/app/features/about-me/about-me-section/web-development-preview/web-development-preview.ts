@@ -7,7 +7,7 @@ import { DashboardPreview } from './dashboard-preview/dashboard-preview';
   selector: 'app-web-development-preview',
   imports: [StorefrontPreview, DashboardPreview],
   templateUrl: './web-development-preview.html',
-  styleUrl: './web-development-preview.scss',
+  styleUrls: ['./web-development-preview-mockup.css', './web-development-preview.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WebDevelopmentPreview {

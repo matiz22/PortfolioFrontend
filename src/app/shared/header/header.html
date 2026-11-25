@@ -33,25 +33,21 @@
 
       <!-- Mobile Navigation (Hamburger Dropdown) -->
       <div class="flex-none lg:hidden pr-2">
-        <ul class="menu menu-horizontal p-0">
-          <li class="relative">
-            <details #menuDetails class="w-full">
-              <summary aria-label="Navigation menu" i18n-aria-label="@@header.menu" class="btn btn-ghost btn-circle btn-sm text-base-content/70 list-none w-full flex justify-center" (click)="$event.stopPropagation()">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                  stroke="currentColor" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-              </summary>
+        <details #menuDetails>
+          <summary aria-label="Navigation menu" i18n-aria-label="@@header.menu" class="btn btn-ghost btn-circle btn-sm text-base-content/70 flex justify-center" (click)="$event.stopPropagation()">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </summary>
 
-              <ul class="fixed top-20 left-0 right-0 bg-base-200/98 backdrop-blur-3xl border-b border-white/10 text-base-content z-[999] shadow-[0_30px_60px_rgba(0,0,0,0.6)] p-4 flex flex-col gap-1 animate-fade-in">
-                <ng-container *ngTemplateOutlet="navLinks; context: { $implicit: 'block py-4 px-8 rounded-2xl hover:bg-primary/10 hover:text-primary transition-colors text-lg font-medium whitespace-nowrap', itemClass: 'w-full' }" />
-                <li class="border-t border-white/5 mt-4 pt-4 px-6 w-full">
-                  <app-languages-switcher mode="inline" />
-                </li>
-              </ul>
-            </details>
-          </li>
-        </ul>
+          <ul class="fixed top-20 left-0 right-0 bg-base-200/98 backdrop-blur-3xl rounded-box border-b border-white/10 text-base-content z-[999] shadow-[0_30px_60px_rgba(0,0,0,0.6)] p-4 flex flex-col gap-1 list-none animate-fade-in">
+            <ng-container *ngTemplateOutlet="navLinks; context: { $implicit: 'block py-4 px-8 rounded-2xl hover:bg-primary/10 hover:text-primary transition-colors text-lg font-medium whitespace-nowrap', itemClass: 'w-full' }" />
+            <li class="border-t border-white/5 mt-4 pt-4 px-6 w-full">
+              <app-languages-switcher mode="inline" />
+            </li>
+          </ul>
+        </details>
       </div>
     </div>
   </nav>

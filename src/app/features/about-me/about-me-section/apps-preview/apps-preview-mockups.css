@@ -1,0 +1,8 @@
+@import "tailwindcss/utilities.css" layer(utilities) source(none);
+
+@plugin "daisyui" {
+  themes: false;
+  include: mockup;
+}
+
+@source inline("mockup-window mockup-phone mockup-phone-camera mockup-phone-display");

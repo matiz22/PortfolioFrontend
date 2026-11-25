@@ -11,7 +11,7 @@ import { finalize } from 'rxjs';
   imports: [ReactiveFormsModule],
   templateUrl: './contact-form.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styleUrl: './contact-form.scss',
+  styleUrls: ['./contact-field-styles.css', './contact-form.scss'],
 })
 export class ContactForm {
   private readonly fb = inject(NonNullableFormBuilder);

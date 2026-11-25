@@ -10,10 +10,11 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
         </svg>
     </div>
-    <ul tabindex="0" class="dropdown-content menu bg-base-300 text-white rounded-xl z-[1] w-48 p-2 shadow-lg">
+    <ul tabindex="0" class="dropdown-content list-none bg-base-300 text-white rounded-xl z-[1] w-48 p-2 shadow-lg">
         @for (lang of languagesOptions; track lang.code) {
         <li>
-            <a [href]="lang.url" [title]="lang.label" class="text-sm">
+            <a [href]="lang.url" [title]="lang.label"
+                class="block rounded-field px-3 py-1.5 text-sm hover:bg-white/10 focus-visible:bg-white/10">
                 {{ lang.label }}
             </a>
         </li>

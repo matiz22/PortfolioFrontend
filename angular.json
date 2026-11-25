@@ -47,8 +47,16 @@
             "styles": [
               "src/styles.scss",
               "src/animations.scss",
-              "node_modules/blobatar/dist/motion.css",
-              "node_modules/blobatar/dist/gaze.css"
+              {
+                "input": "node_modules/blobatar/dist/motion.css",
+                "bundleName": "blobatar-motion",
+                "inject": false
+              },
+              {
+                "input": "node_modules/blobatar/dist/gaze.css",
+                "bundleName": "blobatar-motion",
+                "inject": false
+              }
             ],
             "server": "src/main.server.ts",
             "outputMode": "server",
@@ -76,8 +84,7 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "600kB",
-                  "maximumError": "1MB"
+                  "maximumError": "500kB"
                 },
                 {
                   "type": "anyComponentStyle",

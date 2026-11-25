@@ -12,6 +12,7 @@ import { BlobatarGaze, type GazeTarget } from '@blobatar/angular/gaze';
 import { happy, idle, surprised, thinking } from 'blobatar/expression';
 import { afterNextRenderMotion } from '../../../../shared/animations/lazy-motion';
 import { type WorkflowPhase, type WorkflowScene } from './ai-workflow-state';
+import { loadBlobatarStyles } from './load-blobatar-styles';
 import { KnowledgePreview } from './knowledge-preview/knowledge-preview';
 import { OperationsPreview } from './operations-preview/operations-preview';
 
@@ -35,6 +36,7 @@ export class AiWorkflowPreview {
   readonly phase = signal<WorkflowPhase>('complete');
   readonly scene = signal<WorkflowScene>('team');
   readonly playing = signal(false);
+  private readonly blobatarStylesReady = signal(false);
   protected readonly request = viewChild<ElementRef<HTMLElement>>('request');
   protected readonly analyst = viewChild<ElementRef<HTMLElement>>('analyst');
   protected readonly researcher = viewChild<ElementRef<HTMLElement>>('researcher');
@@ -42,7 +44,9 @@ export class AiWorkflowPreview {
   protected readonly knowledge = viewChild(KnowledgePreview);
   protected readonly operations = viewChild(OperationsPreview);
 
-  protected readonly motionMode = computed(() => this.playing() ? 'always' as const : false);
+  protected readonly motionMode = computed(() =>
+    this.playing() && this.blobatarStylesReady() ? 'always' as const : false,
+  );
   protected readonly helperMotionMode = computed(() => this.scene() === 'team' ? this.motionMode() : false);
   protected readonly successful = computed(() => ['complete', 'answering', 'restored'].includes(this.phase()));
   protected readonly mainExpression = computed(() => {
@@ -122,7 +126,15 @@ export class AiWorkflowPreview {
       return (root) => animateAiWorkflow(root, {
         phase: (phase) => this.phase.set(phase),
         scene: (scene) => this.scene.set(scene),
-        playback: (playing) => this.playing.set(playing),
+        playback: (playing) => {
+          this.playing.set(playing);
+          if (playing && !this.blobatarStylesReady()) {
+            void loadBlobatarStyles(root.ownerDocument).then(
+              () => this.blobatarStylesReady.set(true),
+              (error: unknown) => console.warn('Blobatar animations are unavailable.', error),
+            );
+          }
+        },
       });
     }, 'AI workflow animation could not be loaded.');
   }

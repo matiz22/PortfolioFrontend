@@ -149,7 +149,7 @@
         [disabled]="submitting()">
         <span class="flex items-center gap-2">
             @if (submitting()) {
-            <span class="loading loading-spinner loading-sm"></span>
+            <span class="ui-spinner ui-spinner-small" aria-hidden="true"></span>
             <span i18n="@@contactForm.button.sending">Sending...</span>
             } @else {
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 group-hover:translate-x-1 transition-transform"

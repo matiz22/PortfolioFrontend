@@ -1,7 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @use "tailwindcss";
 @use "./styles/home-glass"; // Dark, readable content surfaces over the homepage shader.
-@plugin "@tailwindcss/typography";
 
 /* Shared corner radius; circles and pills keep their semantic shapes. */
 :root {
@@ -25,7 +24,10 @@
 }
 
 @plugin "daisyui" {
-  themes: dark;
+  // The custom dark theme below is the only theme. Keep this list limited to
+  // components used in templates; Tailwind also finds words in copy and code.
+  themes: false;
+  include: properties, rootcolor, scrollbar, alert, aura, badge, button, card, dropdown, glass, input, skeleton;
 }
 
 @plugin "daisyui/theme" {

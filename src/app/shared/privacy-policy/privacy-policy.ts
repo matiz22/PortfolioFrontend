@@ -1,4 +1,4 @@
-import { Component, computed, inject, LOCALE_ID, ChangeDetectionStrategy } from '@angular/core';
+import { Component, computed, inject, LOCALE_ID, ChangeDetectionStrategy, ViewEncapsulation } from '@angular/core';
 import { Header } from "../header/header";
 import { ContactSection } from "../contact/contact-section/contact-section";
 import { Footer } from "../footer/footer";
@@ -10,7 +10,9 @@ import { MarkdownComponent, provideMarkdown } from "ngx-markdown";
   providers: [provideMarkdown()],
   templateUrl: './privacy-policy.html',
   changeDetection: ChangeDetectionStrategy.Eager,
-  styleUrl: './privacy-policy.scss',
+  // The shared stylesheet is scoped by class so it also reaches generated Markdown.
+  encapsulation: ViewEncapsulation.None,
+  styleUrl: '../../../styles/markdown-prose.scss',
 })
 export class PrivacyPolicy {
   private locale = inject(LOCALE_ID);
