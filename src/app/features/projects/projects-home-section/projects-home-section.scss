@@ -53,15 +53,12 @@
   min-inline-size: 0;
 }
 
-.projects-home-grid,
-.projects-home-row {
+.projects-home-grid {
+  --project-column-count: 1;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: 1.75rem;
-}
-
-.projects-home-grid {
   grid-auto-rows: 1fr;
+  gap: 1.75rem;
 }
 
 .projects-home-slot,
@@ -93,15 +90,10 @@
 }
 
 @media (width < 48rem) {
-  .projects-home-grid:has(.projects-home-row-loading, .projects-home-slot + .projects-home-slot) {
+  .projects-home-grid:has(.projects-home-skeleton, .projects-home-slot + .projects-home-slot) {
     @include mobile-rail.viewport;
     @include mobile-rail.columns;
     padding-block: 0.5rem 1rem;
-
-    // Keep the desktop row grouping in the DOM but lay out all cards in one strip.
-    .projects-home-row {
-      display: contents;
-    }
 
     .projects-home-slot,
     .projects-home-skeleton {
@@ -122,19 +114,38 @@
     margin-inline: 0 -0.5rem;
   }
 
-  .projects-home-grid,
-  .projects-home-row {
+  .projects-home-grid {
+    --project-column-count: 2;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 2rem;
   }
+}
 
-  .projects-home-row {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+@media (min-width: 48rem) and (width < 80rem) {
+  .projects-home-slot:nth-child(2n + 1):last-child {
+    grid-column: 1 / -1;
   }
 }
 
 @media (min-width: 80rem) {
-  .projects-home-row {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+  .projects-home-grid {
+    --project-column-count: 3;
+    // Six tracks allow a final pair to use half the row each without a DOM wrapper.
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .projects-home-slot,
+  .projects-home-skeleton {
+    grid-column: span 2;
+  }
+
+  .projects-home-slot:nth-child(3n + 1):nth-last-child(2),
+  .projects-home-slot:nth-child(3n + 2):last-child {
+    grid-column: span 3;
+  }
+
+  .projects-home-slot:nth-child(3n + 1):last-child {
+    grid-column: 1 / -1;
   }
 
   .projects-home-skeleton-extra {
@@ -142,17 +153,23 @@
   }
 }
 
-.projects-home-row-horizontal {
-  grid-template-columns: minmax(0, var(--project-left, 1fr)) minmax(0, var(--project-right, 1fr));
+.projects-home-grid:has(> .projects-home-slot:only-child) {
+  --project-column-count: 1;
+  grid-template-columns: minmax(0, 1fr);
+}
 
-  &[data-project-count='3'] {
-    grid-template-columns:
-      minmax(0, var(--project-left, 1fr))
-      minmax(0, var(--project-middle, 1fr))
-      minmax(0, var(--project-right, 1fr));
+.projects-home-grid-horizontal {
+  .projects-home-slot {
+    grid-template-columns: minmax(0, 1fr);
   }
 
-  &[data-project-count='1'] {
-    grid-template-columns: minmax(0, 1fr);
+  .projects-home-motion {
+    // Keep the grid and its observed slots still while the active row redistributes space.
+    --project-inline-offset: 0px;
+    --project-width-offset: 0px;
+    position: relative;
+    justify-self: start;
+    inset-inline-start: var(--project-inline-offset);
+    inline-size: calc(100% + var(--project-width-offset));
   }
 }

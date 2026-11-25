@@ -20,23 +20,17 @@
       <div #projectsRail id="home-projects-rail" class="projects-home-grid" [attr.aria-busy]="projectItems.status === 'loading'">
         @switch (projectItems.status) {
         @case ('loading') {
-        <div class="projects-home-row projects-home-row-loading" aria-hidden="true">
-          <div class="projects-home-skeleton"></div>
-          <div class="projects-home-skeleton"></div>
-          <div class="projects-home-skeleton projects-home-skeleton-extra"></div>
-        </div>
+        <div class="projects-home-skeleton" aria-hidden="true"></div>
+        <div class="projects-home-skeleton" aria-hidden="true"></div>
+        <div class="projects-home-skeleton projects-home-skeleton-extra" aria-hidden="true"></div>
         }
         @case ('success') {
         @if (projectItems.data.length > 0) {
-        @for (row of projectRows(); track row[0].id) {
-        <div class="projects-home-row" [attr.data-project-count]="row.length">
-          @for (project of row; track project.id) {
-          <div class="projects-home-slot" data-home-rail-item>
-            <div class="projects-home-motion">
-              <app-project-preview [project]="project" />
-            </div>
+        @for (project of projectItems.data; track project.id) {
+        <div class="projects-home-slot" data-home-rail-item>
+          <div class="projects-home-motion">
+            <app-project-preview [project]="project" />
           </div>
-          }
         </div>
         }
         } @else {

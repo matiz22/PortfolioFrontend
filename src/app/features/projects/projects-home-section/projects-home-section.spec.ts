@@ -6,7 +6,6 @@ import { ApiState } from '../../../core/models/api.state';
 import { ProjectSummary } from '../../../core/models/summary/project';
 import { ProjectsService } from '../../../core/services/projects.service';
 import { ProjectPreview } from '../project-preview/project-preview';
-import { THREE_PROJECTS_QUERY } from './projects-layout';
 import { ProjectsHomeSection } from './projects-home-section';
 
 @Component({
@@ -20,20 +19,14 @@ class TestProjectPreview {
   readonly project = input.required<ProjectSummary>();
 }
 
-describe('ProjectsHomeSection responsive focus', () => {
+describe('ProjectsHomeSection', () => {
   let fixture: ComponentFixture<ProjectsHomeSection>;
-  let wide: boolean;
-  let columnsQuery: MediaQueryList;
   let state: BehaviorSubject<ApiState<ProjectSummary[]>>;
   let projects: ProjectSummary[];
 
   beforeEach(async () => {
-    wide = false;
     const matchMedia = window.matchMedia.bind(window);
-    columnsQuery = matchMedia(THREE_PROJECTS_QUERY);
-    Object.defineProperty(columnsQuery, 'matches', { get: () => wide });
     spyOn(window, 'matchMedia').and.callFake(query => {
-      if (query === THREE_PROJECTS_QUERY) return columnsQuery;
       const media = matchMedia(query);
       Object.defineProperty(media, 'matches', { value: false });
       return media;
@@ -57,6 +50,11 @@ describe('ProjectsHomeSection responsive focus', () => {
     await fixture.whenStable();
   });
 
+  afterEach(() => {
+    fixture.destroy();
+    state.complete();
+  });
+
   it('announces loading outside the busy grid and keeps skeletons decorative', async () => {
     const root: HTMLElement = fixture.nativeElement;
     state.next(ApiState.loading());
@@ -67,7 +65,8 @@ describe('ProjectsHomeSection responsive focus', () => {
     expect(status.textContent).toContain('Loading projects');
     expect(grid.contains(status)).toBeFalse();
     expect(grid.querySelectorAll('.projects-home-skeleton').length).toBe(3);
-    expect(grid.querySelector('.projects-home-row-loading')?.getAttribute('aria-hidden')).toBe('true');
+    expect(Array.from(grid.querySelectorAll('.projects-home-skeleton'))
+      .every(skeleton => skeleton.getAttribute('aria-hidden') === 'true')).toBeTrue();
   });
 
   it('announces an empty result in the same live region and clears the busy state', async () => {
@@ -98,25 +97,20 @@ describe('ProjectsHomeSection responsive focus', () => {
     expect(root.textContent).not.toContain('Sensitive backend error');
   });
 
-  it('keeps the focused project and action when regrouping two columns into three and back', async () => {
+  it('keeps the focused link and keyed cards when fresh data arrives', async () => {
     const root: HTMLElement = fixture.nativeElement;
-    const source = () => root.querySelectorAll<HTMLAnchorElement>('[aria-labelledby="project-3"] a')[1];
-    const first = source();
-    first.focus();
-    expect(document.activeElement).toBe(first);
-    expect(root.querySelectorAll('.projects-home-row')).toHaveSize(3);
+    const selector = '.projects-home-grid > .projects-home-slot > .projects-home-motion > app-project-preview';
+    const cards = Array.from(root.querySelectorAll(selector));
+    const focused = cards[2].querySelectorAll<HTMLAnchorElement>('a')[1];
+    focused.focus();
+    expect(document.activeElement).toBe(focused);
 
-    wide = true;
-    columnsQuery.dispatchEvent(new Event('change'));
+    state.next(ApiState.success(projects.map(project => ({ ...project, slug: `${project.slug}-updated` }))));
     await fixture.whenStable();
-    expect(root.querySelectorAll('.projects-home-row')).toHaveSize(2);
-    expect(document.activeElement).toBe(source());
-    expect(first.isConnected).toBeFalse();
-
-    wide = false;
-    columnsQuery.dispatchEvent(new Event('change'));
-    await fixture.whenStable();
-    expect(root.querySelectorAll('.projects-home-row')).toHaveSize(3);
-    expect(document.activeElement).toBe(source());
+    const updated = Array.from(root.querySelectorAll(selector));
+    expect(updated).toHaveSize(projects.length);
+    updated.forEach((card, index) => expect(card).toBe(cards[index]));
+    expect(cards[2].querySelector('a')?.getAttribute('href')).toBe('/project/project-3-updated');
+    expect(document.activeElement).toBe(focused);
   });
 });

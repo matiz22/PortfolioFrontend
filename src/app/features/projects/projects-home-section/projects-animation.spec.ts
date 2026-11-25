@@ -43,7 +43,6 @@ describe('projects animation', () => {
     root.innerHTML = `
       <h2 class="projects-home-reveal">Projects</h2>
       <div class="projects-home-grid">
-        <div class="projects-home-row">
         <div class="projects-home-slot">
           <div class="projects-home-motion">
             <article class="project-preview">
@@ -58,7 +57,6 @@ describe('projects animation', () => {
               </div>
             </article>
           </div>
-        </div>
         </div>
       </div>
     `;
@@ -260,7 +258,7 @@ describe('projects animation', () => {
   it('selects the horizontal interaction on wide screens', () => {
     wideScreen = true;
     motion = animateProjects(root);
-    expect(element('.projects-home-row').classList).toContain('projects-home-row-horizontal');
+    expect(element('.projects-home-grid').classList).toContain('projects-home-grid-horizontal');
     expect(element('.project-preview').classList).toContain('project-preview-horizontal');
     expect(element('.project-preview-drawer').style.width).toBe('0px');
     expect(element('.project-preview-drawer').style.height).toBe('');
