@@ -16,6 +16,7 @@
 
     <div class="projects-home-rail">
       @let projectItems = projects();
+      <app-status-announcer [message]="statusMessage()" />
       <div #projectsRail id="home-projects-rail" class="projects-home-grid" [attr.aria-busy]="projectItems.status === 'loading'">
         @switch (projectItems.status) {
         @case ('loading') {
@@ -43,7 +44,7 @@
         }
         }
         @case ('error') {
-        <p class="projects-home-state" i18n="@@projects.home.error">Projects could not be loaded. Please try again
+        <p class="projects-home-state" role="alert" i18n="@@projects.home.error">Projects could not be loaded. Please try again
           later.</p>
         }
         }

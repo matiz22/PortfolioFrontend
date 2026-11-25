@@ -14,14 +14,15 @@
       </header>
 
       @let state = jobs();
+      <app-status-announcer [message]="statusMessage()" />
+      @if (state.status === 'loading') {
+      <div class="jobs-loading" aria-hidden="true">
+        <span class="loading loading-spinner text-primary" aria-hidden="true"></span>
+        <span i18n="@@jobs.loading">Loading experience…</span>
+      </div>
+      }
       <div class="jobs-viewport" [attr.aria-busy]="state.status === 'loading'">
         @switch (state.status) {
-        @case ('loading') {
-        <div class="jobs-loading" role="status">
-          <span class="loading loading-spinner text-primary" aria-hidden="true"></span>
-          <span i18n="@@jobs.loading">Loading experience…</span>
-        </div>
-        }
         @case ('success') {
         @if (state.data.length > 0) {
         <div class="jobs-track" [style.--job-columns]="state.data.length - 1">
@@ -67,7 +68,7 @@
         }
         }
         @case ('error') {
-        <p class="jobs-state" role="status" i18n="@@jobs.error">Error loading jobs. Please try again later.</p>
+        <p class="jobs-state" role="alert" i18n="@@jobs.error">Error loading jobs. Please try again later.</p>
         }
         }
       </div>

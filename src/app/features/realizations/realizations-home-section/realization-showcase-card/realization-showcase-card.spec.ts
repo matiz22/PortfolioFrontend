@@ -66,6 +66,7 @@ describe('RealizationShowcaseCard', () => {
     expect(links[1].getAttribute('href')).toBe(realization.clientUrl);
     expect(links[1].rel).toContain('noopener');
     expect(links[1].rel).toContain('noreferrer');
+    expect(links[1].querySelector('.sr-only')?.textContent).toContain('opens in a new tab');
     expect(root.querySelector('a a')).toBeNull();
     expect(getComputedStyle(links[0], '::after').position).toBe('absolute');
     expect(getComputedStyle(root.querySelector('article')!).borderTopWidth).toBe('1px');

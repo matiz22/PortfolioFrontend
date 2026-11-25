@@ -66,6 +66,16 @@ export class ContactForm {
   onSubmit(): void {
     if (this.submitting() || this.submitted() === true) return;
 
+    const value = this.contactForm.getRawValue();
+    const normalizedValue = {
+      name: value.name.trim(),
+      email: value.email.trim(),
+      subject: value.subject.trim(),
+      message: value.message.trim(),
+      company: value.company.trim(),
+    };
+    this.contactForm.setValue(normalizedValue);
+
     if (this.contactForm.invalid) {
       this.contactForm.markAllAsTouched();
       const firstInvalid = (Object.keys(this.contactForm.controls) as (keyof typeof this.contactForm.controls)[])
@@ -79,7 +89,7 @@ export class ContactForm {
     this.invalidFocus.set(null);
     this.submitted.set(null);
     this.submitting.set(true);
-    this.contactService.sendEmail(this.contactForm.getRawValue()).pipe(
+    this.contactService.sendEmail(normalizedValue).pipe(
       takeUntilDestroyed(this.destroyRef),
       finalize(() => this.submitting.set(false)),
     ).subscribe({

@@ -21,10 +21,11 @@ import { groupProjects, THREE_PROJECTS_QUERY } from './projects-layout';
 import { HomeRailControls } from '../../../shared/home-rail-controls/home-rail-controls';
 import { SectionAction } from '../../../shared/section-action/section-action';
 import { SectionFooter } from '../../../shared/section-footer/section-footer';
+import { StatusAnnouncer } from '../../../shared/status-announcer/status-announcer';
 
 @Component({
   selector: 'app-projects-home-section',
-  imports: [HomeCopy, RouterLink, ProjectPreview, HomeRailControls, SectionAction, SectionFooter],
+  imports: [HomeCopy, RouterLink, ProjectPreview, HomeRailControls, SectionAction, SectionFooter, StatusAnnouncer],
   templateUrl: './projects-home-section.html',
   styleUrl: './projects-home-section.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -37,6 +38,16 @@ export class ProjectsHomeSection {
   private readonly projectsService = inject(ProjectsService);
   readonly projects = toSignal(this.projectsService.getHomeSummaryItems(), {
     initialValue: ApiState.loading<ProjectSummary[]>(),
+  });
+  protected readonly statusMessage = computed(() => {
+    const state = this.projects();
+    if (state.status === 'loading') {
+      return $localize`:@@projects.home.loading:Loading projects…`;
+    }
+    if (state.status === 'success' && state.data.length === 0) {
+      return $localize`:@@projects.home.empty:No projects to show yet.`;
+    }
+    return '';
   });
   protected readonly columnsPerRow = signal<2 | 3>(2);
   protected readonly projectRows = computed(() => {

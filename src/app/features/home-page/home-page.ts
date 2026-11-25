@@ -17,11 +17,13 @@ import { HomeMotionLifecycle } from '../../shared/animations/home-motion-lifecyc
 import { afterNextRenderMotion } from '../../shared/animations/lazy-motion';
 import { HomeCopyRegistry } from '../../shared/animations/home-copy-registry';
 import { RouteAttachment } from '../../core/models/route-attachment';
+import { StatusAnnouncer } from '../../shared/status-announcer/status-announcer';
+import { ChapterLoading, ChapterLoadingRegistry } from './chapter-loading';
 
 @Component({
   selector: 'app-home-page',
-  imports: [NgTemplateOutlet, Footer, HeroSection, AboutMeSection, Header, ContactSection, EducationSection, CertificationsSection, RealizationsHomeSection, ProjectsHomeSection, JobTimelineSection, SectionNext, GrainGradient],
-  providers: [HomeMotionLifecycle, HomeCopyRegistry],
+  imports: [NgTemplateOutlet, Footer, HeroSection, AboutMeSection, Header, ContactSection, EducationSection, CertificationsSection, RealizationsHomeSection, ProjectsHomeSection, JobTimelineSection, SectionNext, GrainGradient, StatusAnnouncer, ChapterLoading],
+  providers: [HomeMotionLifecycle, HomeCopyRegistry, ChapterLoadingRegistry],
   templateUrl: './home-page.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './home-page.scss',
@@ -30,6 +32,8 @@ export class HomePage implements RouteAttachment {
   private readonly motionLifecycle = inject(HomeMotionLifecycle);
   private readonly copyRegistry = inject(HomeCopyRegistry);
   protected readonly chapterAccents = GRAIN_CHAPTER_ACCENTS;
+  protected readonly chapterLoading = inject(ChapterLoadingRegistry).chapters;
+  protected readonly sectionLoadingMessage = $localize`:@@home.section.loading:Loading section…`;
   private readonly document = inject(DOCUMENT);
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly viewportScroller = inject(ViewportScroller);

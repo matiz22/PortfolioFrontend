@@ -3,6 +3,7 @@ import {
   afterRenderEffect,
   ChangeDetectionStrategy,
   Component,
+  computed,
   inject,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -17,10 +18,11 @@ import { HomeMetadataPills } from '../../../shared/home-metadata-pills/home-meta
 import { HomeRailControls } from '../../../shared/home-rail-controls/home-rail-controls';
 import { SectionAction } from '../../../shared/section-action/section-action';
 import { SectionFooter } from '../../../shared/section-footer/section-footer';
+import { StatusAnnouncer } from '../../../shared/status-announcer/status-announcer';
 
 @Component({
   selector: 'app-job-timeline-section',
-  imports: [HomeCopy, DatePipe, RouterLink, SectionAction, SectionFooter, HomeMetadataPills, HomeRailControls],
+  imports: [HomeCopy, DatePipe, RouterLink, SectionAction, SectionFooter, HomeMetadataPills, HomeRailControls, StatusAnnouncer],
   templateUrl: './job-timeline-section.html',
   styleUrl: './job-timeline-section.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -35,6 +37,9 @@ export class JobTimelineSection {
   ), {
     initialValue: ApiState.loading<JobSummary[]>(),
   });
+  protected readonly statusMessage = computed(() => this.jobs().status === 'loading'
+    ? $localize`:@@jobs.loading:Loading experience…`
+    : '');
 
   constructor() {
     const mountMotion = injectLazyMotion();

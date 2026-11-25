@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   afterRenderEffect,
+  computed,
   inject,
   viewChild,
 } from '@angular/core';
@@ -16,10 +17,11 @@ import { RealizationShowcaseCard } from './realization-showcase-card/realization
 import { HomeRailControls } from '../../../shared/home-rail-controls/home-rail-controls';
 import { SectionAction } from '../../../shared/section-action/section-action';
 import { SectionFooter } from '../../../shared/section-footer/section-footer';
+import { StatusAnnouncer } from '../../../shared/status-announcer/status-announcer';
 
 @Component({
   selector: 'app-realizations-home-section',
-  imports: [HomeCopy, RouterLink, RealizationShowcaseCard, HomeRailControls, SectionAction, SectionFooter],
+  imports: [HomeCopy, RouterLink, RealizationShowcaseCard, HomeRailControls, SectionAction, SectionFooter, StatusAnnouncer],
   templateUrl: './realizations-home-section.html',
   styleUrl: './realizations-home-section.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -28,6 +30,16 @@ export class RealizationsHomeSection {
   private readonly realizationsService = inject(RealizationsService);
   readonly realizations = toSignal(this.realizationsService.getHomeSummaryItems(), {
     initialValue: ApiState.loading<RealizationSummary[]>(),
+  });
+  protected readonly statusMessage = computed(() => {
+    const state = this.realizations();
+    if (state.status === 'loading') {
+      return $localize`:@@realizations.loading:Loading client work…`;
+    }
+    if (state.status === 'success' && state.data.length === 0) {
+      return $localize`:@@realizations.empty:No realizations to show yet.`;
+    }
+    return '';
   });
 
   private readonly controls = viewChild.required(HomeRailControls);

@@ -1,3 +1,16 @@
+<ng-template #sectionLoading>
+    <div appChapterLoading class="home-chapter-placeholder home-chapter-loading" aria-hidden="true">
+        <div class="home-chapter-skeleton">
+            <div class="home-chapter-skeleton-copy">
+                <div class="skeleton home-chapter-skeleton-title"></div>
+                <div class="skeleton home-chapter-skeleton-line"></div>
+                <div class="skeleton home-chapter-skeleton-line home-chapter-skeleton-line-short"></div>
+            </div>
+            <div class="skeleton home-chapter-skeleton-panel"></div>
+        </div>
+    </div>
+</ng-template>
+
 <ng-template #sectionError>
     <div class="home-chapter-error" role="alert">
         <p i18n="@@home.section.error">This section could not be loaded.</p>
@@ -24,6 +37,7 @@
 
         <!-- Keep the anchor and chapter bounds outside the lazy content. -->
         <div id="about" data-grain-chapter="about" tabindex="-1">
+            <app-status-announcer [message]="chapterLoading().has('about') ? sectionLoadingMessage : ''" />
             @defer (on idle; hydrate on idle) {
             <app-about-me-section>
                 <app-section-next section-next targetId="work">
@@ -31,13 +45,16 @@
                 </app-section-next>
             </app-about-me-section>
             } @placeholder {
-            <div class="home-chapter-placeholder" aria-hidden="true"></div>
+            <ng-container [ngTemplateOutlet]="sectionLoading" />
+            } @loading {
+            <ng-container [ngTemplateOutlet]="sectionLoading" />
             } @error {
             <ng-container [ngTemplateOutlet]="sectionError" />
             }
         </div>
 
         <div id="work" data-grain-chapter="work" tabindex="-1" [style.--home-metadata-accent]="chapterAccents.work">
+            <app-status-announcer [message]="chapterLoading().has('work') ? sectionLoadingMessage : ''" />
             @defer (on idle; hydrate on idle) {
             <app-realizations-home-section>
                 <app-section-next section-next targetId="projects">
@@ -45,13 +62,16 @@
                 </app-section-next>
             </app-realizations-home-section>
             } @placeholder {
-            <div class="home-chapter-placeholder" aria-hidden="true"></div>
+            <ng-container [ngTemplateOutlet]="sectionLoading" />
+            } @loading {
+            <ng-container [ngTemplateOutlet]="sectionLoading" />
             } @error {
             <ng-container [ngTemplateOutlet]="sectionError" />
             }
         </div>
 
         <div id="projects" data-grain-chapter="projects" tabindex="-1" [style.--home-metadata-accent]="chapterAccents.projects">
+            <app-status-announcer [message]="chapterLoading().has('projects') ? sectionLoadingMessage : ''" />
             @defer (on idle; hydrate on idle) {
             <app-projects-home-section>
                 <app-section-next section-next targetId="certifications">
@@ -59,7 +79,9 @@
                 </app-section-next>
             </app-projects-home-section>
             } @placeholder {
-            <div class="home-chapter-placeholder" aria-hidden="true"></div>
+            <ng-container [ngTemplateOutlet]="sectionLoading" />
+            } @loading {
+            <ng-container [ngTemplateOutlet]="sectionLoading" />
             } @error {
             <ng-container [ngTemplateOutlet]="sectionError" />
             }
@@ -67,6 +89,7 @@
 
         <div id="certifications" data-grain-chapter="certifications" tabindex="-1"
             [style.--home-metadata-accent]="chapterAccents.certifications">
+            <app-status-announcer [message]="chapterLoading().has('certifications') ? sectionLoadingMessage : ''" />
             @defer (on idle; hydrate on idle) {
             <app-certifications-section>
                 <app-section-next section-next targetId="experience">
@@ -74,13 +97,16 @@
                 </app-section-next>
             </app-certifications-section>
             } @placeholder {
-            <div class="home-chapter-placeholder" aria-hidden="true"></div>
+            <ng-container [ngTemplateOutlet]="sectionLoading" />
+            } @loading {
+            <ng-container [ngTemplateOutlet]="sectionLoading" />
             } @error {
             <ng-container [ngTemplateOutlet]="sectionError" />
             }
         </div>
 
         <div id="experience" data-grain-chapter="experience" tabindex="-1" [style.--home-metadata-accent]="chapterAccents.experience">
+            <app-status-announcer [message]="chapterLoading().has('experience') ? sectionLoadingMessage : ''" />
             @defer (on idle; hydrate on idle) {
             <app-job-timeline-section>
                 <app-section-next section-next targetId="education">
@@ -88,13 +114,16 @@
                 </app-section-next>
             </app-job-timeline-section>
             } @placeholder {
-            <div class="home-chapter-placeholder" aria-hidden="true"></div>
+            <ng-container [ngTemplateOutlet]="sectionLoading" />
+            } @loading {
+            <ng-container [ngTemplateOutlet]="sectionLoading" />
             } @error {
             <ng-container [ngTemplateOutlet]="sectionError" />
             }
         </div>
 
         <div id="education" data-grain-chapter="education" tabindex="-1" [style.--home-metadata-accent]="chapterAccents.education">
+            <app-status-announcer [message]="chapterLoading().has('education') ? sectionLoadingMessage : ''" />
             @defer (on idle; hydrate on idle) {
             <app-education-section>
                 <app-section-next section-next targetId="contact">
@@ -102,23 +131,28 @@
                 </app-section-next>
             </app-education-section>
             } @placeholder {
-            <div class="home-chapter-placeholder" aria-hidden="true"></div>
+            <ng-container [ngTemplateOutlet]="sectionLoading" />
+            } @loading {
+            <ng-container [ngTemplateOutlet]="sectionLoading" />
             } @error {
             <ng-container [ngTemplateOutlet]="sectionError" />
             }
         </div>
 
+        <!-- Contact closes the main content; the site footer stays outside its landmark. -->
+        <div id="contact" class="home-closing" data-grain-chapter="contact" tabindex="-1">
+            <app-status-announcer [message]="chapterLoading().has('contact') ? sectionLoadingMessage : ''" />
+            @defer (on idle; hydrate on idle) {
+            <app-contact-section class="home-contact contact-blended" [glass]="true" [sectionId]="null" [homeCopy]="true" />
+            } @placeholder {
+            <ng-container [ngTemplateOutlet]="sectionLoading" />
+            } @loading {
+            <ng-container [ngTemplateOutlet]="sectionLoading" />
+            } @error {
+            <ng-container [ngTemplateOutlet]="sectionError" />
+            }
+        </div>
     </main>
 
-    <!-- Contact and site footer form one closing chapter. -->
-    <div id="contact" class="home-closing" data-grain-chapter="contact" tabindex="-1">
-        @defer (on idle; hydrate on idle) {
-        <app-contact-section class="home-contact contact-blended" [glass]="true" [sectionId]="null" [homeCopy]="true"></app-contact-section>
-        } @placeholder {
-        <div class="home-chapter-placeholder" aria-hidden="true"></div>
-        } @error {
-        <ng-container [ngTemplateOutlet]="sectionError" />
-        }
-        <app-footer />
-    </div>
+    <app-footer />
 </div>

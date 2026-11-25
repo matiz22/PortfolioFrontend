@@ -91,6 +91,38 @@ describe('ContactForm', () => {
     expect(service.sendEmail).not.toHaveBeenCalled();
   });
 
+  it('rejects whitespace-only fields using the existing required validation', async () => {
+    component.contactForm.setValue({
+      name: '   ', email: '\t ', subject: '\n  ', message: '  \r\n ', company: '',
+    });
+    submit();
+    await fixture.whenStable();
+
+    expect(service.sendEmail).not.toHaveBeenCalled();
+    expect(component.contactForm.getRawValue()).toEqual({
+      name: '', email: '', subject: '', message: '', company: '',
+    });
+    expect(fixture.nativeElement.querySelectorAll('.text-error').length).toBe(4);
+    for (const field of ['name', 'email', 'subject', 'message'] as const) {
+      expect(component.contactForm.controls[field].hasError('required')).toBeTrue();
+    }
+    expect(document.activeElement).toBe(fixture.nativeElement.querySelector('#contact-name'));
+  });
+
+  it('trims submitted values without changing meaningful internal whitespace', async () => {
+    component.contactForm.setValue({
+      name: '  Ada Lovelace\n', email: '  ada@example.com\t', subject: '  A project  ',
+      message: '  Let’s build it.\nKeep this line.  ', company: '  ',
+    });
+    submit();
+    await fixture.whenStable();
+
+    expect(service.sendEmail).toHaveBeenCalledOnceWith({
+      name: 'Ada Lovelace', email: 'ada@example.com', subject: 'A project',
+      message: 'Let’s build it.\nKeep this line.', company: '',
+    });
+  });
+
   it('sends non-null form values once and announces pending submission', async () => {
     submitValidForm();
     submit();

@@ -1,5 +1,12 @@
 @let socialLinksState = socialLinks();
+<app-status-announcer [message]="statusMessage()" />
 @switch (socialLinksState.status) {
+@case ('loading') {
+<p class="social-links-state" aria-hidden="true" i18n="@@socialLinks.loading">Loading social links…</p>
+}
+@case ('error') {
+<p class="social-links-state" role="alert" i18n="@@socialLinks.error">Social links could not be loaded. You can still contact me by email.</p>
+}
 @case ('success') {
 <div class="flex flex-col items-center gap-2">
     <span class="text-xs font-medium tracking-wider uppercase text-base-content/60 px-3 py-1.5 w-max"

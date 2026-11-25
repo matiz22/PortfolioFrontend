@@ -11,6 +11,8 @@ describe('HeroSection', () => {
     expect(image.getAttribute('src')).toBe('hero.png');
     expect(image.getAttribute('fetchpriority')).toBe('high');
     expect(image.getAttribute('loading')).toBe('eager');
+    expect(image.getAttribute('alt')).toBe('');
+    expect(fixture.nativeElement.querySelector('.hero-name')?.textContent).toContain('Mateusz Malich');
     expect(fixture.nativeElement.querySelector('.hero-photo.skeleton')).toBeNull();
   });
 });

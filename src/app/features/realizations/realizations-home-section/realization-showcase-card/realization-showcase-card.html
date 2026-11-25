@@ -6,9 +6,10 @@
   <p class="realization-card-client">
     @if (realization().clientName) {
     @if (realization().clientUrl; as clientUrl) {
-    <a [href]="clientUrl" target="_blank" rel="noopener noreferrer" [title]="realization().clientName">{{
-      realization().clientName
-    }}</a>
+    <a [href]="clientUrl" target="_blank" rel="noopener noreferrer" [title]="realization().clientName">
+      {{ realization().clientName }}
+      <span class="sr-only" i18n="@@realizations.newTab">(opens in a new tab)</span>
+    </a>
     } @else {
     {{ realization().clientName }}
     }

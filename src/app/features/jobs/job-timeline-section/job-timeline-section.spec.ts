@@ -51,9 +51,13 @@ describe('JobTimelineSection', () => {
     state.complete();
   });
 
-  it('announces loading without rendering timeline entries', () => {
-    expect(root.querySelector('[aria-busy="true"]')).not.toBeNull();
-    expect(root.querySelector('[role="status"]')?.textContent).toContain('Loading experience');
+  it('announces loading outside the busy timeline without rendering entries', () => {
+    const busyViewport = root.querySelector('.jobs-viewport[aria-busy="true"]')!;
+    const status = root.querySelector('app-status-announcer [role="status"]')!;
+    expect(busyViewport.contains(status)).toBeFalse();
+    expect(busyViewport.querySelector('[role="status"]')).toBeNull();
+    expect(status.textContent).toContain('Loading experience');
+    expect(root.querySelector('.jobs-loading')?.getAttribute('aria-hidden')).toBe('true');
     expect(root.querySelector('.jobs-track')).toBeNull();
   });
 
@@ -66,7 +70,7 @@ describe('JobTimelineSection', () => {
     expect(header.querySelector('.jobs-intro')?.classList).not.toContain('glass');
     expect(link?.classList).toContain('section-action-cta');
     expect(link?.getAttribute('href')).toBe('/jobs');
-    expect(header.nextElementSibling?.classList).toContain('jobs-viewport');
+    expect(root.querySelector('.jobs-stage > .jobs-viewport')).not.toBeNull();
   });
 
   it('keeps next-section navigation after the timeline without archive or scroll controls', () => {
@@ -150,9 +154,12 @@ describe('JobTimelineSection', () => {
   });
 
   it('shows a useful error and retains the full experience link', async () => {
+    const status = root.querySelector('[role="status"]')!;
     state.next(ApiState.error('Offline'));
     await fixture.whenStable();
-    expect(root.querySelector('[role="status"]')?.textContent).toContain('Error loading jobs');
+    expect(root.querySelector('[role="status"]')).toBe(status);
+    expect(status.textContent?.trim()).toBe('');
+    expect(root.querySelector('.jobs-state[role="alert"]')?.textContent).toContain('Error loading jobs');
     expect(root.querySelector('.jobs-viewall')?.getAttribute('href')).toBe('/jobs');
   });
 });

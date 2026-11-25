@@ -11,6 +11,8 @@ import { ApiState } from '../../core/models/api.state';
 import { CertificationsService } from '../../core/services/certifications.service';
 import { GRAIN_CHAPTER_ACCENTS } from '../../shared/grain-gradient/grain-gradient-palette';
 import { SectionNext } from '../../shared/section-next/section-next';
+import { StatusAnnouncer } from '../../shared/status-announcer/status-announcer';
+import { ChapterLoading } from './chapter-loading';
 
 describe('HomePage', () => {
   let component: HomePage;
@@ -26,7 +28,10 @@ describe('HomePage', () => {
       ],
     })
     .overrideComponent(HomePage, {
-      set: { imports: [NgTemplateOutlet, CertificationsSection, HeroSection, SectionNext], schemas: [NO_ERRORS_SCHEMA] },
+      set: {
+        imports: [NgTemplateOutlet, CertificationsSection, HeroSection, SectionNext, StatusAnnouncer, ChapterLoading],
+        schemas: [NO_ERRORS_SCHEMA],
+      },
     })
     .compileComponents();
 
@@ -36,12 +41,50 @@ describe('HomePage', () => {
     await fixture.whenStable();
   });
 
+  it('keeps one live region and stable skeleton geometry through all deferred states', async () => {
+    const root: HTMLElement = fixture.nativeElement;
+    root.style.setProperty('--home-stage-height', '640px');
+    const [block] = await fixture.getDeferBlocks();
+    const chapter = root.querySelector<HTMLElement>('#about')!;
+    const status = chapter.querySelector<HTMLElement>('[role="status"]')!;
+
+    await block.render(DeferBlockState.Placeholder);
+    await fixture.whenStable();
+    const placeholder = chapter.querySelector<HTMLElement>('.home-chapter-loading')!;
+    expect(root.querySelectorAll('[data-grain-chapter] > app-status-announcer [role="status"]').length).toBe(7);
+    expect(status.getAttribute('aria-live')).toBe('polite');
+    expect(status.textContent).toContain('Loading section…');
+    expect(placeholder.getAttribute('aria-hidden')).toBe('true');
+    expect(placeholder.querySelectorAll('.home-chapter-skeleton .skeleton').length).toBe(4);
+    expect(placeholder.querySelector('[role="status"]')).toBeNull();
+    const placeholderMinBlockSize = getComputedStyle(placeholder).minBlockSize;
+    expect(placeholderMinBlockSize).toBe('640px');
+
+    await block.render(DeferBlockState.Loading);
+    await fixture.whenStable();
+    const loading = chapter.querySelector<HTMLElement>('.home-chapter-loading')!;
+    expect(chapter.querySelector('[role="status"]')).toBe(status);
+    expect(status.textContent).toContain('Loading section…');
+    expect(loading).not.toBe(placeholder);
+    expect(getComputedStyle(loading).minBlockSize).toBe(placeholderMinBlockSize);
+
+    await block.render(DeferBlockState.Complete);
+    await fixture.whenStable();
+    expect(chapter.querySelector('[role="status"]')).toBe(status);
+    expect(status.textContent?.trim()).toBe('');
+    expect(chapter.querySelector('.home-chapter-loading')).toBeNull();
+    expect(chapter.querySelector('app-about-me-section')).not.toBeNull();
+  });
+
   it('shows a recoverable failure inside the existing chapter anchor', async () => {
     const [block] = await fixture.getDeferBlocks();
+    const chapter = fixture.nativeElement.querySelector('#about');
+    const status = chapter.querySelector('[role="status"]');
     await block.render(DeferBlockState.Error);
     await fixture.whenStable();
-    const chapter = fixture.nativeElement.querySelector('#about');
     expect(chapter.tabIndex).toBe(-1);
+    expect(chapter.querySelector('[role="status"]')).toBe(status);
+    expect(status.textContent?.trim()).toBe('');
     expect(chapter.querySelector('[role="alert"]').textContent).toContain('This section could not be loaded.');
     expect(chapter.querySelector('button').textContent).toContain('Reload page');
   });
@@ -116,17 +159,22 @@ describe('HomePage', () => {
     }
   });
 
-  it('keeps contact and the site footer in the same closing chapter', async () => {
+  it('keeps contact in the main landmark and the site footer outside it', async () => {
     const blocks = await fixture.getDeferBlocks();
     await blocks[blocks.length - 1].render(DeferBlockState.Complete);
     await fixture.whenStable();
 
     const root: HTMLElement = fixture.nativeElement;
-    const closing = root.querySelector('.home-closing')!;
+    const main = root.querySelector('main')!;
+    const closing = main.querySelector<HTMLElement>('#contact.home-closing')!;
+    const footer = root.querySelector<HTMLElement>('.home-page > app-footer')!;
+    expect(root.querySelectorAll('main').length).toBe(1);
     expect(closing.querySelector('app-contact-section.home-contact.contact-blended')).not.toBeNull();
-    expect(closing.lastElementChild?.tagName).toBe('APP-FOOTER');
-    expect(root.querySelector('main app-footer')).toBeNull();
+    expect(root.querySelectorAll('#contact').length).toBe(1);
+    expect(main.querySelector('app-footer')).toBeNull();
     expect(root.querySelectorAll('app-footer').length).toBe(1);
+    expect(getComputedStyle(footer).display).toBe('block');
+    expect(getComputedStyle(footer).getPropertyValue('--footer-divider-width').trim()).toBe('0');
   });
 
   it('preserves the portfolio chapter order', async () => {
@@ -146,6 +194,7 @@ describe('HomePage', () => {
       'APP-CERTIFICATIONS-SECTION',
       'APP-JOB-TIMELINE-SECTION',
       'APP-EDUCATION-SECTION',
+      'APP-CONTACT-SECTION',
     ]);
   });
 

@@ -15,9 +15,10 @@
         </div>
 
         <div class="realizations-gallery-panel">
+          @let realizationItems = realizations();
+          <app-status-announcer [message]="statusMessage()" />
           <div #workRail id="home-work-rail" class="realizations-gallery">
             <div class="realizations-track">
-              @let realizationItems = realizations();
               @switch (realizationItems.status) {
               @case ('loading') {
               <div class="realizations-skeleton" aria-hidden="true"></div>
@@ -33,7 +34,7 @@
               }
               }
               @case ('error') {
-              <p class="realizations-state" i18n="@@realizations.error">Realizations could not be loaded. Please try again
+              <p class="realizations-state" role="alert" i18n="@@realizations.error">Realizations could not be loaded. Please try again
                 later.</p>
               }
               }
