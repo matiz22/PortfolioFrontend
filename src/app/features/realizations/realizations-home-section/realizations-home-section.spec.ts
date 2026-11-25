@@ -28,9 +28,8 @@ describe('RealizationsHomeSection', () => {
 
   async function render(state: ApiState<RealizationSummary[]>): Promise<HTMLElement> {
     response.next(state);
-    fixture.detectChanges();
     await fixture.whenStable();
-    return fixture.nativeElement as HTMLElement;
+    return fixture.nativeElement;
   }
 
   beforeEach(async () => {
@@ -47,25 +46,31 @@ describe('RealizationsHomeSection', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(RealizationsHomeSection);
-    fixture.detectChanges();
     await fixture.whenStable();
   });
+
+  afterEach(() => response.complete());
 
   it('announces loading while keeping both skeletons decorative', () => {
     const root: HTMLElement = fixture.nativeElement;
     const status = root.querySelector('app-status-announcer [role="status"]')!;
     expect(status.textContent).toContain('Loading client work');
     expect(root.querySelectorAll('.realizations-skeleton[aria-hidden="true"]').length).toBe(2);
-    expect(root.querySelector('.realization-card-link')).toBeNull();
+    expect(root.querySelector('app-realization-showcase-card')).toBeNull();
   });
 
   it('renders successful results and clears the announcement in the same live region', async () => {
-    const status = fixture.nativeElement.querySelector('[role="status"]');
+    const status = fixture.nativeElement.querySelector('[role="status"]')!;
+    expect(status.textContent).toContain('Loading client work');
     const root = await render(ApiState.success([realization]));
-    expect(root.querySelectorAll('app-realization-showcase-card').length).toBe(1);
+    const cards = root.querySelectorAll('app-realization-showcase-card');
+    expect(cards.length).toBe(1);
+    const link = cards[0]?.querySelector('.realization-card-title-link');
+    expect(link?.textContent).toContain(realization.title);
+    expect(link?.getAttribute('href')).toBe('/realization/company-website');
     expect(root.querySelector('[role="status"]')).toBe(status);
     expect(status.textContent?.trim()).toBe('');
-    expect(root.querySelector('.realizations-skeleton')).toBeNull();
+    expect(root.querySelector('.realizations-skeleton, .realizations-state')).toBeNull();
   });
 
   it('announces an empty result in the same live region', async () => {
@@ -73,8 +78,10 @@ describe('RealizationsHomeSection', () => {
     const root = await render(ApiState.success([]));
     expect(root.querySelector('[role="status"]')).toBe(status);
     expect(status.textContent).toContain('No realizations to show yet');
-    expect(root.querySelector('.realizations-state[role="status"]')).toBeNull();
-    expect(root.querySelector('app-realization-showcase-card')).toBeNull();
+    const message = root.querySelector('.realizations-state')!;
+    expect(message.textContent).toContain('No realizations to show yet');
+    expect(message.hasAttribute('role')).toBeFalse();
+    expect(root.querySelector('.realizations-skeleton, app-realization-showcase-card')).toBeNull();
   });
 
   it('announces API errors without exposing backend details', async () => {

@@ -103,6 +103,7 @@ try {
   console.log('About hydrated on idle; the remaining chapters waited for the viewport.');
   console.log('All five homepage summary sections retained their server-rendered cards without refetching.');
   console.log('Projects retained their server-rendered nodes and column geometry after hydration.');
+  console.log('Chapter footer links and the Contact anchor survived hydration.');
   console.log(`Contact social links (separate API): ${contact}`);
 } catch (error) {
   console.error(error.message);
@@ -115,6 +116,31 @@ try {
 }
 
 function probe(entry, resultPath, api, socialPath, socialMode, socialLinks) {
+  function checkChapterNavigation() {
+    const nextLinks = [
+      ['home', '.hero-next', 'about'],
+      ['about', '.about-next', 'work'],
+      ['work', '.realizations-next', 'projects'],
+      ['projects', '.projects-home-footer', 'certifications'],
+      ['certifications', '.certifications-footer', 'experience'],
+      ['experience', '.jobs-bottom', 'education'],
+      ['education', '.education-footer', 'contact'],
+    ];
+    for (const [from, footer, to] of nextLinks) {
+      const links = document.querySelectorAll(`#${from} app-section-next a`);
+      const link = links[0];
+      const target = document.querySelectorAll(`#${to}`);
+      if (links.length !== 1 || !link.closest(footer) || link.getAttribute('href') !== `#${to}` ||
+          target.length !== 1 || !target[0].matches('main > [data-grain-chapter]')) {
+        throw new Error(`Expected a next link from ${from} in ${footer} to the chapter #${to}.`);
+      }
+    }
+    if (document.querySelector('#contact app-section-next') ||
+        document.querySelector('#contact .contact-section')?.hasAttribute('id') !== false) {
+      throw new Error('Expected Contact to end the chapter chain without a duplicate inner ID.');
+    }
+  }
+
   function capture(hostSelector, itemSelector, count) {
     const host = document.querySelector(`${hostSelector}[ngh]`);
     const read = () => Array.from(host?.querySelectorAll(itemSelector) ?? []);
@@ -176,6 +202,7 @@ function probe(entry, resultPath, api, socialPath, socialMode, socialLinks) {
     if (!matchMedia('(min-width: 80rem)').matches) {
       throw new Error('Open the test at the wide Projects breakpoint (80rem or more).');
     }
+    checkChapterNavigation();
 
     const summaries = [
       capture('app-realizations-home-section', 'app-realization-showcase-card', 1),
@@ -276,6 +303,7 @@ function probe(entry, resultPath, api, socialPath, socialMode, socialLinks) {
     if (hydratedGeometry !== geometry) {
       throw new Error(`Hydration changed the horizontal geometry: ${geometry} → ${hydratedGeometry}.`);
     }
+    checkChapterNavigation();
     return `${socialMode}; fetched once in the browser, email and form preserved`;
   }
 

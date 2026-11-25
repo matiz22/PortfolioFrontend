@@ -1,23 +1,10 @@
-import { Component, input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { ApiState } from '../../../core/models/api.state';
 import { ProjectSummary } from '../../../core/models/summary/project';
 import { ProjectsService } from '../../../core/services/projects.service';
-import { ProjectPreview } from '../project-preview/project-preview';
 import { ProjectsHomeSection } from './projects-home-section';
-
-@Component({
-  selector: 'app-project-preview',
-  template: `<article class="project-preview" [attr.aria-labelledby]="'project-' + project().id">
-    <a [href]="'/project/' + project().slug">Details</a>
-    <a href="https://example.com">Source</a>
-  </article>`,
-})
-class TestProjectPreview {
-  readonly project = input.required<ProjectSummary>();
-}
 
 describe('ProjectsHomeSection', () => {
   let fixture: ComponentFixture<ProjectsHomeSection>;
@@ -35,30 +22,22 @@ describe('ProjectsHomeSection', () => {
       id: index + 1, slug: `project-${index + 1}`, title: `Project ${index + 1}`,
       shortDesc: 'Description', homePage: true, published: true, order: index, technologies: [],
     }));
-    state = new BehaviorSubject<ApiState<ProjectSummary[]>>(ApiState.success(projects));
+    state = new BehaviorSubject<ApiState<ProjectSummary[]>>(ApiState.loading());
     await TestBed.configureTestingModule({
       imports: [ProjectsHomeSection],
       providers: [provideRouter([]), {
         provide: ProjectsService,
         useValue: { getHomeSummaryItems: () => state.asObservable() },
       }],
-    }).overrideComponent(ProjectsHomeSection, {
-      remove: { imports: [ProjectPreview] }, add: { imports: [TestProjectPreview] },
     }).compileComponents();
     fixture = TestBed.createComponent(ProjectsHomeSection);
-    fixture.autoDetectChanges();
     await fixture.whenStable();
   });
 
-  afterEach(() => {
-    fixture.destroy();
-    state.complete();
-  });
+  afterEach(() => state.complete());
 
-  it('announces loading outside the busy grid and keeps skeletons decorative', async () => {
+  it('announces loading outside the busy grid and keeps skeletons decorative', () => {
     const root: HTMLElement = fixture.nativeElement;
-    state.next(ApiState.loading());
-    await fixture.whenStable();
 
     const grid = root.querySelector('.projects-home-grid[aria-busy="true"]')!;
     const status = root.querySelector('[role="status"]')!;
@@ -69,6 +48,26 @@ describe('ProjectsHomeSection', () => {
       .every(skeleton => skeleton.getAttribute('aria-hidden') === 'true')).toBeTrue();
   });
 
+  it('replaces loading skeletons with real preview links and clears the live region', async () => {
+    const root: HTMLElement = fixture.nativeElement;
+    const status = root.querySelector('[role="status"]')!;
+    const grid = root.querySelector('.projects-home-grid')!;
+    expect(status.textContent).toContain('Loading projects');
+
+    state.next(ApiState.success(projects));
+    await fixture.whenStable();
+
+    expect(root.querySelector('[role="status"]')).toBe(status);
+    expect(status.textContent?.trim()).toBe('');
+    expect(grid.getAttribute('aria-busy')).toBe('false');
+    expect(grid.querySelector('.projects-home-skeleton, .projects-home-state')).toBeNull();
+    const links = Array.from(grid.querySelectorAll('.project-preview-title a'));
+    expect(links.map(link => link.textContent?.trim())).toEqual(projects.map(project => project.title));
+    expect(links.map(link => link.getAttribute('href'))).toEqual(
+      projects.map(project => `/project/${project.slug}`),
+    );
+  });
+
   it('announces an empty result in the same live region and clears the busy state', async () => {
     const root: HTMLElement = fixture.nativeElement;
     const status = root.querySelector('[role="status"]')!;
@@ -77,9 +76,11 @@ describe('ProjectsHomeSection', () => {
 
     expect(root.querySelector('[role="status"]')).toBe(status);
     expect(status.textContent).toContain('No projects to show yet');
-    expect(root.querySelector('.projects-home-state[role="status"]')).toBeNull();
+    const message = root.querySelector('.projects-home-state')!;
+    expect(message.textContent).toContain('No projects to show yet');
+    expect(message.hasAttribute('role')).toBeFalse();
     expect(root.querySelector('.projects-home-grid')?.getAttribute('aria-busy')).toBe('false');
-    expect(root.querySelector('.project-preview')).toBeNull();
+    expect(root.querySelector('.projects-home-skeleton, .project-preview')).toBeNull();
   });
 
   it('announces API errors without exposing backend details', async () => {
@@ -98,10 +99,13 @@ describe('ProjectsHomeSection', () => {
   });
 
   it('keeps the focused link and keyed cards when fresh data arrives', async () => {
+    state.next(ApiState.success(projects));
+    await fixture.whenStable();
+
     const root: HTMLElement = fixture.nativeElement;
     const selector = '.projects-home-grid > .projects-home-slot > .projects-home-motion > app-project-preview';
     const cards = Array.from(root.querySelectorAll(selector));
-    const focused = cards[2].querySelectorAll<HTMLAnchorElement>('a')[1];
+    const focused = cards[2].querySelector<HTMLAnchorElement>('.project-preview-title a')!;
     focused.focus();
     expect(document.activeElement).toBe(focused);
 
@@ -110,7 +114,7 @@ describe('ProjectsHomeSection', () => {
     const updated = Array.from(root.querySelectorAll(selector));
     expect(updated).toHaveSize(projects.length);
     updated.forEach((card, index) => expect(card).toBe(cards[index]));
-    expect(cards[2].querySelector('a')?.getAttribute('href')).toBe('/project/project-3-updated');
+    expect(focused.getAttribute('href')).toBe('/project/project-3-updated');
     expect(document.activeElement).toBe(focused);
   });
 });

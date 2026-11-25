@@ -1,43 +1,49 @@
-import { NgTemplateOutlet, ViewportScroller } from '@angular/common';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ViewportScroller } from '@angular/common';
 import { ComponentFixture, DeferBlockBehavior, DeferBlockState, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { of } from 'rxjs';
 
 import { HomePage } from './home-page';
-import { CertificationsSection } from '../certifications/certifications-section/certifications-section';
-import { HeroSection } from '../hero/hero-section/hero-section';
 import { ApiState } from '../../core/models/api.state';
 import { CertificationsService } from '../../core/services/certifications.service';
+import { ContactService } from '../../core/services/contact.service';
+import { EducationService } from '../../core/services/education.service';
+import { JobsService } from '../../core/services/jobs.service';
+import { ProjectsService } from '../../core/services/projects.service';
+import { RealizationsService } from '../../core/services/realizations.service';
+import { SocialLinksService } from '../../core/services/social.links.service';
 import { GRAIN_CHAPTER_ACCENTS } from '../../shared/grain-gradient/grain-gradient-palette';
-import { SectionNext } from '../../shared/section-next/section-next';
-import { StatusAnnouncer } from '../../shared/status-announcer/status-announcer';
-import { ChapterLoading } from './chapter-loading';
 
 describe('HomePage', () => {
-  let component: HomePage;
   let fixture: ComponentFixture<HomePage>;
+  let getSocialLinks: jasmine.Spy;
+
+  function createHome(): ComponentFixture<HomePage> {
+    const home = TestBed.createComponent(HomePage);
+    // Exercise the real section templates without starting optional motion.
+    home.componentInstance.onRouteDetach();
+    return home;
+  }
 
   beforeEach(async () => {
+    const emptySummary = { getHomeSummaryItems: () => of(ApiState.success([])) };
+    getSocialLinks = jasmine.createSpy('getAll').and.returnValue(of(ApiState.success([])));
     await TestBed.configureTestingModule({
       imports: [HomePage],
       deferBlockBehavior: DeferBlockBehavior.Manual,
       providers: [
         provideRouter([]),
-        { provide: CertificationsService, useValue: { getHomeSummaryItems: () => of(ApiState.success([])) } },
+        { provide: CertificationsService, useValue: emptySummary },
+        { provide: ContactService, useValue: jasmine.createSpyObj('ContactService', ['sendEmail']) },
+        { provide: EducationService, useValue: emptySummary },
+        { provide: JobsService, useValue: emptySummary },
+        { provide: ProjectsService, useValue: emptySummary },
+        { provide: RealizationsService, useValue: emptySummary },
+        { provide: SocialLinksService, useValue: { getAll: getSocialLinks } },
       ],
-    })
-    .overrideComponent(HomePage, {
-      set: {
-        imports: [NgTemplateOutlet, CertificationsSection, HeroSection, SectionNext, StatusAnnouncer, ChapterLoading],
-        schemas: [NO_ERRORS_SCHEMA],
-      },
-    })
-    .compileComponents();
+    }).compileComponents();
 
-    fixture = TestBed.createComponent(HomePage);
-    component = fixture.componentInstance;
-    fixture.autoDetectChanges();
+    fixture = createHome();
     await fixture.whenStable();
   });
 
@@ -94,10 +100,6 @@ describe('HomePage', () => {
     expect(chapter.querySelector('button').textContent).toContain('Reload page');
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   const chapterIds = ['home', 'about', 'work', 'projects', 'certifications', 'experience', 'education', 'contact'];
   for (const id of [...chapterIds, 'about-web', 'about-apps', 'about-ai']) {
     it(`lands on #${id} without waiting for its chapter to load`, async () => {
@@ -106,7 +108,7 @@ describe('HomePage', () => {
       fixture.destroy();
       try {
         history.replaceState(null, '', `#${id}`);
-        fixture = TestBed.createComponent(HomePage);
+        fixture = createHome();
         await fixture.whenStable();
 
         const anchor = chapterIds.includes(id) ? id : 'about';
@@ -133,8 +135,6 @@ describe('HomePage', () => {
     const root: HTMLElement = fixture.nativeElement;
     const next = root.querySelectorAll('app-section-next .section-action-chip.glass');
     expect(next.length).toBe(7);
-    // Archive chips live inside section components, which this test renders as
-    // unknown elements; SectionAction's own spec covers the archive variant.
     expect(root.querySelector('h1.home-glass, h2.home-glass')).toBeNull();
     expect(root.querySelector('.hero-portrait .home-glass')).toBeNull();
   });
@@ -167,22 +167,60 @@ describe('HomePage', () => {
     }
   });
 
-  it('keeps contact in the main landmark and the site footer outside it', async () => {
-    const blocks = await fixture.getDeferBlocks();
-    await blocks[blocks.length - 1].render(DeferBlockState.Complete);
-    await fixture.whenStable();
-
+  it('renders the real Contact with home inputs and keeps the site footer outside main', async () => {
     const root: HTMLElement = fixture.nativeElement;
     const main = root.querySelector('main')!;
     const closing = main.querySelector<HTMLElement>('#contact.home-closing')!;
+    const block = (await fixture.getDeferBlocks()).at(-1)!;
+    const status = closing.querySelector('[role="status"]')!;
+
+    expect(closing.querySelector('.home-chapter-placeholder')).not.toBeNull();
+    expect(closing.querySelector('app-contact-section')).toBeNull();
+    expect(getSocialLinks).not.toHaveBeenCalled();
+
+    await block.render(DeferBlockState.Loading);
+    await fixture.whenStable();
+    expect(status.textContent).toContain('Loading section…');
+    expect(closing.querySelector('app-contact-section')).toBeNull();
+    expect(getSocialLinks).not.toHaveBeenCalled();
+
+    await block.render(DeferBlockState.Complete);
+    await fixture.whenStable();
+
+    const contact = closing.querySelector('app-contact-section.home-contact.contact-blended')!;
+    const section = contact.querySelector('section.contact-section')!;
+    expect(root.querySelectorAll('#contact').length).toBe(1);
+    expect(root.querySelector('#contact')).toBe(closing);
+    expect(section.hasAttribute('id')).toBeFalse();
+    expect(section.getAttribute('aria-labelledby')).toBe('contact-heading');
+    expect(section.querySelector('#contact-heading')?.textContent)
+      .toContain('Send me a note. We’ll take it from there.');
+    expect(section.querySelector('.contact-copy > p')?.textContent).toContain('Share an idea');
+    expect(section.querySelector('.contact-form-card.glass form')).not.toBeNull();
+    expect(closing.querySelector('.home-chapter-loading')).toBeNull();
+    expect(status.textContent?.trim()).toBe('');
+    expect(getSocialLinks).toHaveBeenCalledTimes(1);
+
     const footer = root.querySelector<HTMLElement>('.home-page > app-footer')!;
     expect(root.querySelectorAll('main').length).toBe(1);
-    expect(closing.querySelector('app-contact-section.home-contact.contact-blended')).not.toBeNull();
-    expect(root.querySelectorAll('#contact').length).toBe(1);
     expect(main.querySelector('app-footer')).toBeNull();
     expect(root.querySelectorAll('app-footer').length).toBe(1);
     expect(getComputedStyle(footer).display).toBe('block');
     expect(getComputedStyle(footer).getPropertyValue('--footer-divider-width').trim()).toBe('0');
+  });
+
+  it('keeps the Contact anchor and recovery action when its deferred code fails', async () => {
+    const root: HTMLElement = fixture.nativeElement;
+    const closing = root.querySelector('#contact')!;
+    const block = (await fixture.getDeferBlocks()).at(-1)!;
+    await block.render(DeferBlockState.Error);
+    await fixture.whenStable();
+
+    expect(root.querySelector('#contact')).toBe(closing);
+    expect(closing.getAttribute('tabindex')).toBe('-1');
+    expect(closing.querySelector('[role="alert"] button')?.textContent).toContain('Reload page');
+    expect(closing.querySelector('app-contact-section')).toBeNull();
+    expect(getSocialLinks).not.toHaveBeenCalled();
   });
 
   it('preserves the portfolio chapter order', async () => {
@@ -273,23 +311,34 @@ describe('HomePage', () => {
       .toBe(chapters.length);
   });
 
-  it('links each chapter to the next one without changing the section order', async () => {
+  it('projects each next link into the real section footer and links to a unique chapter', async () => {
     for (const block of await fixture.getDeferBlocks()) {
       await block.render(DeferBlockState.Complete);
     }
     await fixture.whenStable();
 
     const root: HTMLElement = fixture.nativeElement;
-    const links = Array.from(root.querySelectorAll<HTMLAnchorElement>('app-section-next a'));
-    expect(links.map((link) => link.getAttribute('href'))).toEqual([
-      '#about', '#work', '#projects', '#certifications', '#experience', '#education', '#contact',
-    ]);
-    expect(links.map((link) => link.textContent?.trim())).toEqual([
-      'How I work', 'Client work', 'Projects', 'Certificates', 'Experience', 'Education', 'Let’s talk',
-    ]);
-    expect(links.every((link) => link.classList.contains('section-action-scroll-cue'))).toBeTrue();
+    const nextLinks = [
+      ['home', 'app-hero-section .hero-next', 'about', 'How I work'],
+      ['about', 'app-about-me-section .about-next', 'work', 'Client work'],
+      ['work', 'app-realizations-home-section app-section-footer.realizations-next', 'projects', 'Projects'],
+      ['projects', 'app-projects-home-section app-section-footer.projects-home-footer', 'certifications', 'Certificates'],
+      ['certifications', 'app-certifications-section app-section-footer.certifications-footer', 'experience', 'Experience'],
+      ['experience', 'app-job-timeline-section app-section-footer.jobs-bottom', 'education', 'Education'],
+      ['education', 'app-education-section app-section-footer.education-footer', 'contact', 'Let’s talk'],
+    ];
+    for (const [from, footer, to, label] of nextLinks) {
+      const links = root.querySelectorAll<HTMLAnchorElement>(`#${from} app-section-next a`);
+      expect(links.length).withContext(from).toBe(1);
+      const [link] = links;
+      expect(link?.matches(`#${from} ${footer} app-section-next a`)).withContext(from).toBeTrue();
+      expect(link?.getAttribute('href')).withContext(from).toBe(`#${to}`);
+      expect(link?.textContent?.trim()).withContext(from).toBe(label);
+      expect(link?.classList.contains('section-action-scroll-cue')).withContext(from).toBeTrue();
+      expect(root.querySelectorAll(`main > #${to}[data-grain-chapter]`).length).withContext(to).toBe(1);
+    }
     expect(root.querySelectorAll('app-section-next .aura.aura-glow').length).toBe(7);
     expect(root.querySelector('app-section-next svg')).toBeNull();
-    expect(root.querySelector('.home-closing app-section-next')).toBeNull();
+    expect(root.querySelector('#contact app-section-next')).toBeNull();
   });
 });
