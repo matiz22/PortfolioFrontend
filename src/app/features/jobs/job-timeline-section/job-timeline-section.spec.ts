@@ -97,11 +97,14 @@ describe('JobTimelineSection', () => {
     expect(Array.from(root.querySelectorAll('.jobs-card'), (card) => card.getAttribute('href')))
       .toEqual(['/job/frontend-developer', '/job/previous-role', '/job/earliest-role']);
     const link = entries[0].querySelector<HTMLAnchorElement>('.jobs-card')!;
+    const dates = link.querySelector<HTMLElement>('.jobs-dates')!;
     expect(link.getAttribute('aria-labelledby')).toBe('experience-role-1');
+    expect(link.getAttribute('aria-describedby')).toBe(dates.id);
     expect(root.querySelector('#experience-role-1')?.textContent).toBe(job.title);
-    expect(entries[0].querySelector('.jobs-present')?.textContent).toBe('to present');
-    expect(entries[0].querySelector('time')?.getAttribute('datetime')).toBe('2024-01');
-    expect(entries[1].querySelectorAll('time').length).toBe(2);
+    expect(dates.querySelector('.jobs-present')?.textContent).toBe('to present');
+    expect(dates.querySelector('time')?.getAttribute('datetime')).toBe('2024-01');
+    expect(entries[1].querySelectorAll('.jobs-card .jobs-dates time').length).toBe(2);
+    expect(root.querySelector('.jobs-point .jobs-dates')).toBeNull();
     expect(entries[1].querySelector('.jobs-present')).toBeNull();
     expect(entries[1].querySelector('.jobs-dates span')?.textContent).toBe('to');
     expect(root.querySelector('[aria-busy="false"]')).not.toBeNull();
@@ -124,7 +127,7 @@ describe('JobTimelineSection', () => {
   it('brings a partly visible keyboard-focused role into the native rail', async () => {
     state.next(ApiState.success([job, { ...job, id: 2, slug: 'second-role' }]));
     await fixture.whenStable();
-    const viewport = root.querySelector<HTMLElement>('.jobs-list')!;
+    const viewport = root.querySelector<HTMLElement>('.jobs-viewport')!;
     const role = root.querySelectorAll<HTMLElement>('.jobs-card')[1];
     Object.defineProperties(viewport, {
       clientWidth: { value: 320 },
@@ -142,6 +145,33 @@ describe('JobTimelineSection', () => {
     expect(scroll.calls.allArgs() as unknown[]).toEqual([[{ left: 268, behavior: 'instant' }]]);
   });
 
+  it('connects responsive arrow controls to the native scroll viewport', async () => {
+    state.next(ApiState.success([job, { ...job, id: 2, slug: 'second-role' }]));
+    await fixture.whenStable();
+    const viewport = root.querySelector<HTMLElement>('#home-experience-rail')!;
+    const controls = root.querySelector<HTMLElement>('app-home-rail-controls.responsive')!;
+    expect(viewport.querySelectorAll('[data-home-rail-item]')).toHaveSize(2);
+    expect(viewport.contains(controls)).toBeFalse();
+
+    viewport.style.cssText = 'width: 320px; overflow-x: auto;';
+    const track = viewport.querySelector<HTMLElement>('.jobs-track')!;
+    track.style.width = '640px';
+    await new Promise<void>((resolve) => {
+      const resize = new ResizeObserver(() => {
+        resize.disconnect();
+        resolve();
+      });
+      resize.observe(viewport);
+    });
+    await fixture.whenStable();
+
+    const next = controls.querySelector<HTMLButtonElement>('button[aria-label="Next card"]')!;
+    expect(next.getAttribute('aria-controls')).toBe(viewport.id);
+    const scroll = spyOn(viewport as { scrollTo(options: ScrollToOptions): void }, 'scrollTo');
+    next.click();
+    expect(scroll).toHaveBeenCalledOnceWith(jasmine.objectContaining({ left: jasmine.any(Number) }));
+  });
+
   it('handles empty collections and missing optional dates and tag groups', async () => {
     state.next(ApiState.success([{ ...job, technologies: [], skills: [], location: '',
       isCurrent: false, endDate: null }]));
@@ -149,6 +179,7 @@ describe('JobTimelineSection', () => {
     expect(root.querySelector('.jobs-tags')).toBeNull();
     expect(root.querySelector('.jobs-location')).toBeNull();
     expect(root.querySelector('.jobs-dates')?.textContent).not.toContain('null');
+    expect(root.querySelector('app-home-rail-controls')).toBeNull();
 
     state.next(ApiState.success([]));
     await fixture.whenStable();

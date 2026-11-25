@@ -5,6 +5,7 @@ import {
   Component,
   computed,
   inject,
+  viewChild,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
@@ -32,6 +33,7 @@ const TIMELINE_MOTION_QUERY = `(min-width: 48rem) and ${MOTION_ALLOWED_QUERY}`;
 })
 export class JobTimelineSection {
   private readonly jobsService = inject(JobsService);
+  private readonly railControls = viewChild(HomeRailControls);
 
   readonly jobs = toSignal(this.jobsService.getHomeSummaryItems().pipe(
     map((state) => state.status === 'success'
@@ -57,7 +59,10 @@ export class JobTimelineSection {
         const [{ animateJobsTimeline }] = await Promise.all([
           import('./jobs-timeline-animation'), root.ownerDocument.fonts.ready,
         ]);
-        return animateJobsTimeline;
+        // The timeline draws its own pinned progress. Notify the shared controls
+        // of mode changes so they remeasure native overflow after unpinning.
+        return (element) => animateJobsTimeline(element,
+          (pinned) => this.railControls()?.setPinnedProgress(pinned ? 0 : null));
       }, 'Experience animation could not be loaded.', TIMELINE_MOTION_QUERY));
     });
   }

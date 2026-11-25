@@ -21,19 +21,19 @@
         <span i18n="@@jobs.loading">Loading experience…</span>
       </div>
       }
-      <div class="jobs-viewport" [attr.aria-busy]="state.status === 'loading'">
+      <div #jobsRail id="home-experience-rail" class="jobs-viewport"
+        [attr.aria-busy]="state.status === 'loading'" (focusin)="revealFocusedRole($event)">
         @switch (state.status) {
         @case ('success') {
         @if (state.data.length > 0) {
         <div class="jobs-track" [style.--job-columns]="state.data.length - 1">
           <div class="jobs-rail" aria-hidden="true"><span class="jobs-rail-fill"></span></div>
-          <ol #jobsRail id="home-experience-rail" class="jobs-list" data-home-mobile-rail role="list" (focusin)="revealFocusedRole($event)">
+          <ol class="jobs-list" role="list">
             @for (job of state.data; track job.id) {
             <li appJobTimelineEntry [job]="job"
               [appHomeCopy]="{ heading: 'h3', details: '.jobs-company, .jobs-dates', duration: 0.34 }"></li>
             }
           </ol>
-          <app-home-rail-controls [viewport]="jobsRail" headingId="experience-heading" />
         </div>
         } @else {
         <p class="jobs-state" i18n="@@jobs.empty">No work experience available.</p>
@@ -44,6 +44,10 @@
         }
         }
       </div>
+      @if (state.status === 'success' && state.data.length > 1) {
+      <app-home-rail-controls class="jobs-rail-controls" [viewport]="jobsRail"
+        headingId="experience-heading" scope="responsive" />
+      }
     </div>
     <app-section-footer class="jobs-bottom" data-home-stage-footer>
       <ng-content select="[section-next]" />

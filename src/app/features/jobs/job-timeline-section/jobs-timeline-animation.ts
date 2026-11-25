@@ -11,9 +11,12 @@ const SCROLL_DISTANCE_MULTIPLIER = 1.85;
 const MIN_SCROLL_VIEWPORT_RATIO = 0.6;
 const INITIAL_HOLD_RATIO = 0.14;
 
-type TimelineLayout = 'vertical' | 'fit' | 'pinned';
+type TimelineLayout = 'vertical' | 'native' | 'pinned';
 
-export function animateJobsTimeline(root: HTMLElement): gsap.MatchMedia {
+export function animateJobsTimeline(
+  root: HTMLElement,
+  reportPinned: (pinned: boolean) => void = () => undefined,
+): gsap.MatchMedia {
   const motion = gsap.matchMedia();
   const view = root.ownerDocument.defaultView;
   const section = root.querySelector<HTMLElement>(':scope > .jobs-section');
@@ -23,6 +26,7 @@ export function animateJobsTimeline(root: HTMLElement): gsap.MatchMedia {
   const track = root.querySelector<HTMLElement>('.jobs-track');
   const rail = root.querySelector<HTMLElement>('.jobs-rail');
   const fill = root.querySelector<HTMLElement>('.jobs-rail-fill');
+  const controls = root.querySelector<HTMLElement>('.jobs-rail-controls');
   const entries = Array.from(root.querySelectorAll<HTMLElement>('.jobs-entry'));
 
   if (!view || !section || !shell || !stage || !viewport || !track || !rail || !fill || !entries.length) {
@@ -117,6 +121,7 @@ export function animateJobsTimeline(root: HTMLElement): gsap.MatchMedia {
       const onTravelFocus = (event: FocusEvent) => revealInPin(event.target);
 
       const clearTravel = () => {
+        const wasPinned = !!travel;
         const trigger = travel?.scrollTrigger;
         trigger?.kill();
         travel?.kill();
@@ -132,9 +137,10 @@ export function animateJobsTimeline(root: HTMLElement): gsap.MatchMedia {
         track.removeEventListener('focusin', onTravelFocus);
         gsap.set(track, { clearProps: 'transform' });
         gsap.set(fill, { clearProps: 'transform' });
-        stage.classList.remove('jobs-pinned', 'jobs-scrollable');
+        stage.classList.remove('jobs-pinned');
         section.classList.remove('jobs-section-pinned');
         clearMarkers();
+        if (wasPinned) reportPinned(false);
       };
 
       const createTravel = () => {
@@ -142,6 +148,7 @@ export function animateJobsTimeline(root: HTMLElement): gsap.MatchMedia {
           return;
         }
         // Pin the section and its bottom controls. Only the track moves within it.
+        viewport.scrollLeft = 0;
         section.classList.add('jobs-section-pinned');
         stage.classList.add('jobs-pinned');
         gsap.set(fill, { scaleX: 0 });
@@ -180,6 +187,7 @@ export function animateJobsTimeline(root: HTMLElement): gsap.MatchMedia {
         // Transformed off-screen links remain keyboard reachable. Seeking the
         // associated vertical scroll position brings their whole role into view.
         track.addEventListener('focusin', onTravelFocus);
+        reportPinned(true);
       };
 
       const clearMotion = () => {
@@ -234,18 +242,20 @@ export function animateJobsTimeline(root: HTMLElement): gsap.MatchMedia {
       };
 
       const measureLayout = (): TimelineLayout => {
-        if (!context.conditions?.['wide'] || entries.length < 2) {
-          stage.classList.remove('jobs-horizontal');
+        if (entries.length < 2) {
           return 'vertical';
+        }
+        if (!context.conditions?.['wide'] || overflow() <= 1 ||
+            controls?.contains(root.ownerDocument.activeElement)) {
+          return 'native';
         }
 
-        stage.classList.add('jobs-horizontal');
-        // The shell includes the top clearance and its separate navigation row.
-        if (shell.offsetHeight > view.innerHeight) {
-          stage.classList.remove('jobs-horizontal');
-          return 'vertical';
-        }
-        return overflow() > 0 ? 'pinned' : 'fit';
+        // Include the header clearance and next-chapter link, but not arrows
+        // that are only used by the native scroller.
+        stage.classList.add('jobs-pin-fit');
+        const fits = shell.offsetHeight <= view.innerHeight;
+        stage.classList.remove('jobs-pin-fit');
+        return fits ? 'pinned' : 'native';
       };
 
       const reconcile = (firstRender = false) => {
@@ -265,8 +275,6 @@ export function animateJobsTimeline(root: HTMLElement): gsap.MatchMedia {
           }
           layout = next;
           const horizontal = next !== 'vertical';
-          stage.classList.toggle('jobs-horizontal', horizontal);
-          stage.classList.toggle('jobs-scrollable', next === 'pinned');
           if (orientationChanged) {
             createIntro(horizontal, replayIntro);
             if (!horizontal) {
@@ -311,6 +319,7 @@ export function animateJobsTimeline(root: HTMLElement): gsap.MatchMedia {
           }
         };
         section.addEventListener('focusin', onIntroFocus);
+        controls?.addEventListener('focusout', requestReconcile);
 
         reconcile(true);
         if (view.ResizeObserver) {
@@ -323,7 +332,10 @@ export function animateJobsTimeline(root: HTMLElement): gsap.MatchMedia {
         // The height threshold can change without changing any observed box.
         view.addEventListener('resize', requestReconcile);
 
-        return () => section.removeEventListener('focusin', onIntroFocus);
+        return () => {
+          section.removeEventListener('focusin', onIntroFocus);
+          controls?.removeEventListener('focusout', requestReconcile);
+        };
       });
 
       // The lazy animation can arrive after the visitor has left Experience.
@@ -354,14 +366,14 @@ export function animateJobsTimeline(root: HTMLElement): gsap.MatchMedia {
         view.cancelAnimationFrame(refreshFrame);
         clearTravel();
         clearMotion();
-        stage.classList.remove('jobs-horizontal', 'jobs-scrollable', 'jobs-pinned');
+        stage.classList.remove('jobs-pin-fit');
         section.classList.remove('jobs-section-pinned');
       };
     }, root);
   } catch (error) {
     motion.revert();
     root.classList.remove('pin-spacer');
-    stage.classList.remove('jobs-horizontal', 'jobs-scrollable', 'jobs-pinned');
+    stage.classList.remove('jobs-pin-fit', 'jobs-pinned');
     section.classList.remove('jobs-section-pinned');
     throw error;
   }

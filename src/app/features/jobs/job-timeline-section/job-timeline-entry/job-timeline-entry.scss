@@ -1,3 +1,4 @@
+@use '../../../../../styles/home-mobile-rail' as mobile-rail;
 @use '../../../../../styles/portfolio-card' as portfolio-card;
 
 .jobs-entry {
@@ -31,12 +32,6 @@
   border-color: var(--color-primary);
   background: var(--color-primary);
   box-shadow: 0 0 0 5px color-mix(in srgb, var(--color-primary) 10%, transparent);
-}
-
-.jobs-dates {
-  color: rgb(255 255 255 / 45%);
-  font-size: 0.6875rem;
-  letter-spacing: 0.025em;
 }
 
 .jobs-card {
@@ -78,8 +73,21 @@
   color: rgb(255 255 255 / 85%);
 }
 
-.jobs-location {
+.jobs-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.75rem;
   margin-bottom: 1rem;
+}
+
+.jobs-dates {
+  color: rgb(255 255 255 / 65%);
+  font-size: 0.6875rem;
+  letter-spacing: 0.025em;
+}
+
+.jobs-location {
   color: rgb(255 255 255 / 75%);
 }
 
@@ -87,7 +95,7 @@
   margin-top: 0.5rem;
 }
 
-@mixin horizontal-entries {
+.jobs-viewport:has(.jobs-entry + .jobs-entry) {
   .jobs-entry {
     grid-row: 1 / -1;
     padding: 0;
@@ -96,7 +104,6 @@
   .jobs-point {
     grid-row: 2;
     margin: 0;
-    padding-left: 2rem;
 
     &::after {
       content: '';
@@ -111,13 +118,6 @@
 
   .jobs-dot {
     left: 0;
-  }
-
-  .jobs-dates {
-    position: absolute;
-    bottom: calc(50% + 0.625rem);
-    left: 2rem;
-    right: 0;
   }
 
   .jobs-card {
@@ -143,9 +143,11 @@
 
 @media (width < 48rem) {
   .jobs-viewport:has(.jobs-entry + .jobs-entry) {
-    @include horizontal-entries;
+    .jobs-entry {
+      @include mobile-rail.item;
+    }
 
-    // Each segment ends at the next date marker, including across the card gap.
+    // Each segment ends at the next marker, including across the card gap.
     .jobs-entry:not(:last-child) .jobs-point::before {
       position: absolute;
       top: 50%;
@@ -155,18 +157,24 @@
       background: rgb(255 255 255 / 15%);
       content: '';
     }
-
-    .jobs-dates {
-      color: rgb(255 255 255 / 65%);
-    }
   }
 }
 
-.jobs-horizontal {
-  @include horizontal-entries;
+@media (min-width: 48rem) {
+  .jobs-viewport:has(.jobs-entry + .jobs-entry) {
+    .jobs-entry .jobs-card.home-glass.glass.home-copy-panel {
+      margin-block: 0;
+      padding-block: 0.75rem;
+      transition: opacity 200ms;
 
-  .jobs-card {
-    transition: opacity 200ms;
+      h3 {
+        margin-block: 0.4rem 0.375rem;
+      }
+    }
+
+    .jobs-meta {
+      margin-bottom: 0.5rem;
+    }
   }
 }
 
