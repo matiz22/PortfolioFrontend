@@ -87,6 +87,29 @@ describe('jobs timeline animation', () => {
       .animation as gsap.core.Timeline;
   }
 
+  function nextFrame(): Promise<void> {
+    return new Promise((resolve) => requestAnimationFrame(() => resolve()));
+  }
+
+  function stubResizeObserver(): { observe: jasmine.Spy; disconnect: jasmine.Spy;
+    dispatch(): Promise<void> } {
+    let callback: ResizeObserverCallback | undefined;
+    const observe = jasmine.createSpy('observe');
+    const disconnect = jasmine.createSpy('disconnect');
+    spyOn(window, 'ResizeObserver').and.callFake(function (next: ResizeObserverCallback) {
+      callback = next;
+      return { observe, disconnect } as unknown as ResizeObserver;
+    });
+    return {
+      observe,
+      disconnect,
+      dispatch: async () => {
+        callback?.([], {} as ResizeObserver);
+        await nextFrame();
+      },
+    };
+  }
+
   it('reveals the horizontal rail and entries without animating the header or advancing scroll progress', () => {
     root.style.paddingTop = 'calc(100vh + 50px)';
     motion = animateJobsTimeline(root);
@@ -292,6 +315,113 @@ describe('jobs timeline animation', () => {
     expect(gsap.getTweensOf(root.querySelector('.jobs-entry'))[0].parent).toBe(entrance());
   });
 
+  it('observes width and height in both pinned and fitting states', async () => {
+    trackWidth = 700;
+    const resize = stubResizeObserver();
+    motion = animateJobsTimeline(root);
+
+    expect(resize.observe.calls.allArgs()).toEqual([[viewport], [track], [root.querySelector('.jobs-shell')!]]);
+
+    trackWidth = 2400;
+    await resize.dispatch();
+    expect(stage.classList.contains('jobs-pinned')).toBeTrue();
+    expect(resize.disconnect).not.toHaveBeenCalled();
+  });
+
+  it('adds pinning and recovers focus when a fitting timeline starts overflowing', async () => {
+    trackWidth = 700;
+    const resize = stubResizeObserver();
+    const focusTarget = root.querySelectorAll<HTMLElement>('.jobs-card')[3];
+    const entry = focusTarget.closest<HTMLElement>('.jobs-entry')!;
+    motion = animateJobsTimeline(root);
+    focusTarget.focus({ preventScroll: true });
+    spyOn(focusTarget, 'getBoundingClientRect')
+      .and.returnValue(new DOMRect(1000, 0, 500, 200));
+    spyOn(viewport, 'getBoundingClientRect').and.returnValue(new DOMRect(0, 0, 800, 300));
+    Object.defineProperty(entry, 'offsetLeft', { value: 1500 });
+    const scroll = spyOn(window, 'scrollTo');
+    expect(ScrollTrigger.getAll().some((trigger) => trigger.pin === section)).toBeFalse();
+
+    trackWidth = 2400;
+    await resize.dispatch();
+
+    expect(stage.classList.contains('jobs-horizontal')).toBeTrue();
+    expect(stage.classList.contains('jobs-pinned')).toBeTrue();
+    const pin = travel().scrollTrigger!;
+    expect(pin.pin).toBe(section);
+    expect(section.parentElement).toBe(root);
+    expect(document.activeElement).toBe(focusTarget);
+    const expectedProgress = 0.14 + (1380 / 1600) * 0.86;
+    expect(scroll.calls.allArgs() as unknown[]).toContain([{
+      top: pin.start + expectedProgress * (pin.end - pin.start),
+      behavior: 'instant',
+    }]);
+    expect(Number(gsap.getProperty(track, 'x'))).toBeCloseTo(-1380, 0);
+  });
+
+  it('removes the stale pin and track travel when the content begins fitting', async () => {
+    trackWidth = 2400;
+    const resize = stubResizeObserver();
+    motion = animateJobsTimeline(root);
+    const focused = root.querySelector<HTMLElement>('.jobs-card')!;
+    focused.focus({ preventScroll: true });
+    spyOn(focused, 'scrollIntoView');
+    expect(travel().scrollTrigger!.pin).toBe(section);
+    expect(root.classList).toContain('pin-spacer');
+
+    trackWidth = 700;
+    await resize.dispatch();
+
+    expect(stage.classList.contains('jobs-horizontal')).toBeTrue();
+    expect(stage.classList.contains('jobs-scrollable')).toBeFalse();
+    expect(stage.classList.contains('jobs-pinned')).toBeFalse();
+    expect(section.classList.contains('jobs-section-pinned')).toBeFalse();
+    expect(ScrollTrigger.getAll().some((trigger) => trigger.pin === section)).toBeFalse();
+    expect(root.classList).not.toContain('pin-spacer');
+    expect(root.style.paddingBottom).toBe('');
+    expect(document.activeElement).toBe(focused);
+    expect(focused.scrollIntoView).toHaveBeenCalled();
+    expect(Number(gsap.getProperty(track, 'x'))).toBe(0);
+    expect(root.querySelector('.jobs-entry-active, .jobs-entry-reached')).toBeNull();
+  });
+
+  it('rebuilds between vertical and pinned layouts when height eligibility changes', async () => {
+    shellHeight = 1001;
+    const resize = stubResizeObserver();
+    motion = animateJobsTimeline(root);
+    expect(stage.classList.contains('jobs-horizontal')).toBeFalse();
+    expect(ScrollTrigger.getAll().some((trigger) => trigger.pin === section)).toBeFalse();
+
+    shellHeight = 1000;
+    await resize.dispatch();
+    expect(stage.classList.contains('jobs-horizontal')).toBeTrue();
+    expect(stage.classList.contains('jobs-pinned')).toBeTrue();
+
+    shellHeight = 1001;
+    await resize.dispatch();
+    expect(stage.classList.contains('jobs-horizontal')).toBeFalse();
+    expect(stage.classList.contains('jobs-pinned')).toBeFalse();
+    expect(root.classList).not.toContain('pin-spacer');
+  });
+
+  it('reevaluates pin eligibility on viewport height changes without an observer notification', async () => {
+    stubResizeObserver();
+    Object.defineProperty(window, 'innerHeight', { configurable: true, value: 999 });
+    motion = animateJobsTimeline(root);
+    expect(stage.classList).not.toContain('jobs-horizontal');
+
+    Object.defineProperty(window, 'innerHeight', { configurable: true, value: 1001 });
+    window.dispatchEvent(new Event('resize'));
+    await nextFrame();
+    expect(stage.classList).toContain('jobs-pinned');
+
+    Object.defineProperty(window, 'innerHeight', { configurable: true, value: 999 });
+    window.dispatchEvent(new Event('resize'));
+    await nextFrame();
+    expect(stage.classList).not.toContain('jobs-horizontal');
+    expect(root.classList).not.toContain('pin-spacer');
+  });
+
   it('uses a vertical unpinned list on intermediate screens', () => {
     wide = false;
     motion = animateJobsTimeline(root);
@@ -388,7 +518,8 @@ describe('jobs timeline animation', () => {
     expect(stage.classList.contains('jobs-horizontal')).toBeFalse();
     expect(stage.classList.contains('jobs-pinned')).toBeFalse();
     expect(section.classList.contains('jobs-section-pinned')).toBeFalse();
-    expect(root.querySelector('.pin-spacer')).toBeNull();
+    expect(root.classList).not.toContain('pin-spacer');
+    expect(section.parentElement).toBe(root);
     expect(track.style.transform).toBe('');
     expect(root.querySelector('.jobs-entry-active')).toBeNull();
     expect(root.querySelector('.jobs-entry-reached')).toBeNull();

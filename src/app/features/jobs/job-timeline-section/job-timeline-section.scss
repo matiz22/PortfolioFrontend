@@ -2,6 +2,10 @@
 @use '../../../../styles/home-stage' as stage;
 @use '../../../../styles/portfolio-card' as portfolio-card;
 
+:host {
+  display: block;
+}
+
 .jobs-section {
   position: relative;
   background: var(--home-section-background, #050706);
@@ -301,7 +305,7 @@
   }
 }
 
-// The wide, pinned variant opts in only after GSAP has loaded.
+// The wide horizontal variant opts in only after GSAP has loaded.
 .jobs-horizontal {
   @include horizontal-entries;
   --job-width: clamp(32rem, 66vw, 54rem);
@@ -315,7 +319,9 @@
   }
 
   .jobs-viewport {
-    overflow: clip;
+    // Native overflow remains available until the travel timeline can pin.
+    overflow-x: auto;
+    overflow-y: clip;
     // Keep entry motion, marker glows, and focus outlines inside the clipped stage.
     padding: 1.25rem 1.5rem;
   }
@@ -342,14 +348,7 @@
   }
 
   .jobs-card {
-    opacity: 0.7;
     transition: opacity 200ms;
-  }
-
-  .jobs-entry-active .jobs-card,
-  .jobs-card:hover,
-  .jobs-card:focus-visible {
-    opacity: 1;
   }
 }
 
@@ -358,6 +357,21 @@
 }
 
 .jobs-pinned {
+  .jobs-viewport {
+    overflow: clip;
+  }
+
+  // Dimming only makes sense while the pinned timeline supplies an active role.
+  .jobs-card {
+    opacity: 0.7;
+  }
+
+  .jobs-entry-active .jobs-card,
+  .jobs-card:hover,
+  .jobs-card:focus-visible {
+    opacity: 1;
+  }
+
   .jobs-dot {
     border-color: rgb(255 255 255 / 35%);
     background: #050706;
