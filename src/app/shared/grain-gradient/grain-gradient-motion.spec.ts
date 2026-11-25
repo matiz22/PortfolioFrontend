@@ -1,11 +1,12 @@
-import type { ShaderMount } from '@paper-design/shaders';
+import type {ShaderMount} from '@paper-design/shaders';
 
-import { attachGrainGradientMotion } from './grain-gradient-motion';
+import {attachGrainGradientMotion} from './grain-gradient-motion';
 
 describe('grain gradient motion', () => {
   let root: HTMLElement;
   let shader: jasmine.SpyObj<Pick<ShaderMount, 'setSpeed' | 'setUniforms'>>;
   let reducedMotion: MediaQueryList;
+  let coarsePointer: MediaQueryList;
   let frames: Map<number, FrameRequestCallback>;
   let dispose: (() => void) | undefined;
   let visibility: jasmine.Spy;
@@ -39,8 +40,12 @@ describe('grain gradient motion', () => {
     document.body.appendChild(root);
     shader = jasmine.createSpyObj('shader', ['setSpeed', 'setUniforms']);
     reducedMotion = media('(prefers-reduced-motion: reduce)', false);
-    spyOn(window, 'matchMedia').and.callFake(query =>
-      query === reducedMotion.media ? reducedMotion : media(query, false));
+    coarsePointer = media('(pointer: coarse)', false);
+    spyOn(window, 'matchMedia').and.callFake(query => {
+      if (query === reducedMotion.media) return reducedMotion;
+      if (query === coarsePointer.media) return coarsePointer;
+      return media(query, false);
+    });
     visibility = spyOnProperty(document, 'hidden', 'get').and.returnValue(false);
     spyOn(window.performance, 'now').and.returnValue(0);
     frames = new Map();
@@ -100,6 +105,35 @@ describe('grain gradient motion', () => {
     expect(frames.size).toBe(0);
 
     expect(shader.setSpeed.calls.mostRecent().args[0]).toBe(0.65);
+  });
+
+  it('pauses the ambient loop through a burst of mobile scroll or viewport events', () => {
+    changeMedia(coarsePointer, true);
+    jasmine.clock().install();
+    try {
+      dispose = attachGrainGradientMotion(root, shader);
+      shader.setSpeed.calls.reset();
+
+      window.dispatchEvent(new Event('scroll'));
+      expect(shader.setSpeed).toHaveBeenCalledOnceWith(0);
+      jasmine.clock().tick(120);
+      (window.visualViewport ?? window).dispatchEvent(new Event(window.visualViewport ? 'resize' : 'scroll'));
+      jasmine.clock().tick(120);
+      expect(shader.setSpeed).toHaveBeenCalledTimes(1);
+      jasmine.clock().tick(40);
+      expect(shader.setSpeed.calls.mostRecent().args[0]).toBe(0.65);
+
+      window.dispatchEvent(new Event('scroll'));
+      dispose();
+      dispose = undefined;
+      shader.setSpeed.calls.reset();
+      jasmine.clock().tick(200);
+      expect(shader.setSpeed).not.toHaveBeenCalled();
+    } finally {
+      dispose?.();
+      dispose = undefined;
+      jasmine.clock().uninstall();
+    }
   });
 
   it('responds to a mouse even when the primary device does not report hover', () => {

@@ -1,7 +1,8 @@
-import type { ShaderMount } from '@paper-design/shaders';
+import type {ShaderMount} from '@paper-design/shaders';
 
 const AMBIENT_SPEED = 0.65;
 const POINTER_TRAVEL = 0.22;
+const SCROLL_IDLE_DELAY = 160;
 
 export function attachGrainGradientMotion(
   root: HTMLElement,
@@ -13,7 +14,9 @@ export function attachGrainGradientMotion(
   }
 
   const reducedMotion = view.matchMedia('(prefers-reduced-motion: reduce)');
+  const touch = view.matchMedia('(pointer: coarse)').matches;
   let frame: number | undefined;
+  let scrollIdle: number | undefined;
   let lastTime = 0;
   let x = 0;
   let y = 0;
@@ -75,9 +78,28 @@ export function attachGrainGradientMotion(
     }
   };
 
+  const updateSpeed = () => {
+    const paused = reducedMotion.matches || root.ownerDocument.hidden || scrollIdle !== undefined;
+    shader.setSpeed(paused ? 0 : AMBIENT_SPEED);
+  };
+
   const updateMotion = () => {
     reset();
-    shader.setSpeed(reducedMotion.matches || root.ownerDocument.hidden ? 0 : AMBIENT_SPEED);
+    updateSpeed();
+  };
+
+  // Paper still draws palette changes on demand while the ambient loop is
+  // paused. Leave the GPU free for native scrolling and toolbar transitions.
+  const pauseDuringScroll = () => {
+    const wasIdle = scrollIdle === undefined;
+    view.clearTimeout(scrollIdle);
+    scrollIdle = view.setTimeout(() => {
+      scrollIdle = undefined;
+      updateSpeed();
+    }, SCROLL_IDLE_DELAY);
+    if (wasIdle) {
+      updateSpeed();
+    }
   };
 
   // Use the actual pointer event, not the primary-device hover query: hybrid
@@ -87,6 +109,11 @@ export function attachGrainGradientMotion(
   root.addEventListener('pointerleave', onPointerLeave);
   root.addEventListener('pointercancel', onPointerLeave);
   view.addEventListener('blur', onPointerLeave);
+  const viewport = touch ? view.visualViewport : undefined;
+  if (touch) {
+    view.addEventListener('scroll', pauseDuringScroll, { passive: true });
+    viewport?.addEventListener('resize', pauseDuringScroll);
+  }
   root.ownerDocument.addEventListener('visibilitychange', updateMotion);
   reducedMotion.addEventListener('change', updateMotion);
   updateMotion();
@@ -98,6 +125,11 @@ export function attachGrainGradientMotion(
     root.removeEventListener('pointerleave', onPointerLeave);
     root.removeEventListener('pointercancel', onPointerLeave);
     view.removeEventListener('blur', onPointerLeave);
+    if (touch) {
+      view.removeEventListener('scroll', pauseDuringScroll);
+      viewport?.removeEventListener('resize', pauseDuringScroll);
+      view.clearTimeout(scrollIdle);
+    }
     root.ownerDocument.removeEventListener('visibilitychange', updateMotion);
     reducedMotion.removeEventListener('change', updateMotion);
   };

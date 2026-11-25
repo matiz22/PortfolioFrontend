@@ -28,6 +28,7 @@ export async function mountGrainGradient(
   interactionRoot: HTMLElement,
   currentPalette: () => GrainPalette = () => HERO_PALETTE,
   signal?: AbortSignal,
+  onContextLost?: () => void,
 ): Promise<GrainRenderer | undefined> {
   // Paper requires a fully loaded image before uploading its noise texture.
   const noise = getShaderNoiseTexture();
@@ -85,19 +86,23 @@ export async function mountGrainGradient(
   const stopMotion = attachGrainGradientMotion(interactionRoot, mount);
   surface.classList.add('is-ready');
   let disposed = false;
+  const handleContextLost = () => {
+    dispose();
+    onContextLost?.();
+  };
   const dispose = () => {
     if (disposed) {
       return;
     }
     disposed = true;
-    mount.canvasElement.removeEventListener('webglcontextlost', dispose);
+    mount.canvasElement.removeEventListener('webglcontextlost', handleContextLost);
     stopMotion();
     mount.dispose();
     surface.classList.remove('is-ready');
   };
 
-  // Retain the CSS fallback if the GPU context is lost rather than showing black.
-  mount.canvasElement.addEventListener('webglcontextlost', dispose);
+  // Paper cannot reuse a lost context. Reveal the fallback before remounting.
+  mount.canvasElement.addEventListener('webglcontextlost', handleContextLost);
   return {
     dispose,
     setPalette: (palette) => {

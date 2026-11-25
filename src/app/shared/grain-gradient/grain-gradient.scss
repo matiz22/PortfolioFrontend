@@ -8,14 +8,6 @@
   background: #000;
 }
 
-// Track mobile browser chrome with the fixed backdrop only. Page content
-// still uses stable small-viewport heights and does not resize with it.
-@media (pointer: coarse) {
-  :host {
-    block-size: 100dvh;
-  }
-}
-
 .grain-surface {
   position: absolute;
   inset: 0;
@@ -27,6 +19,21 @@
 
   &.is-ready {
     background: #000;
+  }
+}
+
+@media (pointer: coarse) {
+  // Clip to the changing visible viewport without reallocating the WebGL
+  // drawing buffer as the address bar moves. Keep the lower glow in view.
+  :host {
+    block-size: 100dvh;
+  }
+
+  @supports (height: 100lvh) {
+    .grain-surface {
+      inset-block-start: auto;
+      block-size: 100lvh;
+    }
   }
 }
 

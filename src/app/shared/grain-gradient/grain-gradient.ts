@@ -17,6 +17,8 @@ import {
 } from './grain-gradient-palette';
 import type {GrainRenderer} from './grain-gradient-renderer';
 
+const CONTEXT_RETRY_DELAY = 350;
+
 @Component({
   selector: 'app-grain-gradient',
   template: '<div #surface class="grain-surface"></div><div class="grain-gap"></div>',
@@ -46,11 +48,14 @@ export class GrainGradient {
     afterRenderEffect((onCleanup) => this.zone.runOutsideAngular(() => {
       const hasFixedPalette = this.chapter() !== undefined;
       const host = this.element.nativeElement;
+      const view = host.ownerDocument.defaultView;
       const surface = this.surface().nativeElement;
       const interactionRoot = host.parentElement!;
       let palette = this.palette();
       let renderer: GrainRenderer | undefined;
       let pending: AbortController | undefined;
+      let retry: number | undefined;
+      let retried = false;
 
       const stopPalette = hasFixedPalette
         ? undefined
@@ -62,7 +67,7 @@ export class GrainGradient {
         });
 
       const show = () => {
-        if (renderer || pending || !host.isConnected) {
+        if (renderer || pending || retry !== undefined || !host.isConnected) {
           return;
         }
 
@@ -73,7 +78,7 @@ export class GrainGradient {
             return;
           }
 
-          const mounted = await mountGrainGradient(surface, interactionRoot, () => palette, request.signal);
+          const mounted = await mountGrainGradient(surface, interactionRoot, () => palette, request.signal, recover);
           if (request.signal.aborted) {
             mounted?.dispose();
           } else {
@@ -90,7 +95,21 @@ export class GrainGradient {
         });
       };
 
+      const recover = () => {
+        renderer = undefined;
+        // Give the GPU a chance to recover once, not an endless remount loop.
+        if (view && !retried) {
+          retried = true;
+          retry = view.setTimeout(() => {
+            retry = undefined;
+            show();
+          }, CONTEXT_RETRY_DELAY);
+        }
+      };
+
       const hide = () => {
+        view?.clearTimeout(retry);
+        retry = undefined;
         pending?.abort();
         pending = undefined;
         renderer?.dispose();
@@ -99,7 +118,7 @@ export class GrainGradient {
 
       // The archive can detach without destroying its component. Observe the
       // fixed backdrop itself so scrolling within an active route keeps it live.
-      const ViewportObserver = hasFixedPalette ? host.ownerDocument.defaultView?.IntersectionObserver : undefined;
+      const ViewportObserver = hasFixedPalette ? view?.IntersectionObserver : undefined;
       const observer = ViewportObserver
         ? new ViewportObserver((entries) => {
           if (entries.at(-1)?.isIntersecting && host.isConnected) {
