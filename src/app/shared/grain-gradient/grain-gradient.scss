@@ -12,7 +12,7 @@
     // The toolbar animates before some browsers update their dynamic viewport.
     // Paint the largest viewport in advance so neither the clip nor the canvas
     // exposes a strip of the page background as more of the page is revealed.
-    min-block-size: 100lvh;
+    min-block-size: var(--grain-viewport-height, 100lvh);
   }
 }
 
@@ -56,7 +56,7 @@
       position: absolute;
       min-block-size: 0;
       overflow: visible;
-      --grain-toolbar-overscan: max(4rem, calc(100lvh - 100svh));
+      --grain-toolbar-overscan: max(4rem, var(--grain-toolbar-gap, calc(100lvh - 100svh)));
       animation: grain-follow-scroll 1ms linear both;
       animation-timeline: scroll(root block);
     }
@@ -65,7 +65,7 @@
     .grain-gap {
       inset-block: calc(-1 * var(--grain-toolbar-overscan)) auto;
       // Paint a stable buffer with room above and below the layout viewport.
-      block-size: calc(100lvh + 2 * var(--grain-toolbar-overscan));
+      block-size: calc(var(--grain-viewport-height, 100lvh) + 2 * var(--grain-toolbar-overscan));
     }
   }
 }

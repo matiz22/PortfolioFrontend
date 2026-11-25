@@ -1,4 +1,6 @@
 const LAYOUT_UNIT = '--layout-vh';
+const GRAIN_VIEWPORT_HEIGHT = '--grain-viewport-height';
+const GRAIN_TOOLBAR_GAP = '--grain-toolbar-gap';
 
 /** Firefox on iOS can change even svh when its toolbar moves (mozilla-mobile/firefox-ios#22607). */
 export function stabilizeFirefoxIosViewport(view: Window): () => void {
@@ -24,6 +26,14 @@ export function stabilizeFirefoxIosViewport(view: Window): () => void {
 
     width = nextWidth;
     root.style.setProperty(LAYOUT_UNIT, `${height / 100}px`);
+
+    // Firefox may report 100lvh as the current height too. Size the grain for
+    // the whole display so it already covers the area the toolbar can reveal.
+    const shortSide = Math.min(view.screen.width, view.screen.height);
+    const longSide = Math.max(view.screen.width, view.screen.height);
+    const screenHeight = nextWidth > (shortSide + longSide) / 2 ? shortSide : longSide;
+    root.style.setProperty(GRAIN_VIEWPORT_HEIGHT, `${Math.max(height, screenHeight)}px`);
+    root.style.setProperty(GRAIN_TOOLBAR_GAP, '0px');
   };
 
   measure();
@@ -31,5 +41,7 @@ export function stabilizeFirefoxIosViewport(view: Window): () => void {
   return () => {
     view.removeEventListener('resize', measure);
     root.style.removeProperty(LAYOUT_UNIT);
+    root.style.removeProperty(GRAIN_VIEWPORT_HEIGHT);
+    root.style.removeProperty(GRAIN_TOOLBAR_GAP);
   };
 }
