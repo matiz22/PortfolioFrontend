@@ -1,7 +1,6 @@
-import { TestBed } from '@angular/core/testing';
-import { FINE_POINTER_QUERY } from '../animations/motion-media';
-import { GrainGradient } from './grain-gradient';
-import { GRAIN_CHAPTER_PALETTES } from './grain-gradient-palette';
+import {TestBed} from '@angular/core/testing';
+import {GrainGradient} from './grain-gradient';
+import {GRAIN_CHAPTER_PALETTES} from './grain-gradient-palette';
 
 describe('GrainGradient with a fixed chapter', () => {
   it('renders the chapter colors as CSS without starting the scroll palette watcher', async () => {
@@ -30,17 +29,20 @@ describe('GrainGradient with a fixed chapter', () => {
 });
 
 describe('GrainGradient on touch-first devices', () => {
-  it('keeps chapter colors without requesting a GPU context even when the backdrop is visible', async () => {
+  it('tries Paper when the backdrop becomes visible and keeps chapter colors if WebGL is unavailable', async () => {
     const matchMedia = window.matchMedia.bind(window);
     spyOn(window, 'matchMedia').and.callFake((query) => {
       const media = matchMedia(query);
-      if (query === FINE_POINTER_QUERY) {
-        Object.defineProperty(media, 'matches', { value: false });
+      if (query.includes('pointer') || query.includes('hover')) {
+        Object.defineProperty(media, 'matches', { value: query === '(pointer: coarse)' });
       }
       return media;
     });
-    const contexts = spyOn(HTMLCanvasElement.prototype, 'getContext').and.callThrough();
-    let notify: (() => void) | undefined;
+    const contexts = spyOn(HTMLCanvasElement.prototype, 'getContext').and.returnValue(null);
+    const fallback = new Promise<void>((resolve) => {
+      spyOn(console, 'warn').and.callFake(() => resolve());
+    });
+    let notify!: () => void;
     const observer = jasmine.createSpyObj<IntersectionObserver>('IntersectionObserver', ['observe', 'disconnect']);
     spyOn(window, 'IntersectionObserver').and.callFake(function (callback) {
       notify = () => callback([{ isIntersecting: true } as IntersectionObserverEntry], observer);
@@ -50,12 +52,13 @@ describe('GrainGradient on touch-first devices', () => {
     fixture.componentRef.setInput('chapter', 'work');
     fixture.detectChanges();
     await fixture.whenStable();
-    notify!();
-    await fixture.whenStable();
+    expect(contexts).not.toHaveBeenCalled();
+    notify();
+    await fallback;
 
     const host: HTMLElement = fixture.nativeElement;
+    expect(contexts).toHaveBeenCalledWith('webgl2', jasmine.objectContaining({ powerPreference: 'low-power' }));
     expect(host.style.getPropertyValue('--grain-bottom')).toBe(GRAIN_CHAPTER_PALETTES.work[1].join(' '));
     expect(host.querySelector('canvas')).toBeNull();
-    expect(contexts).not.toHaveBeenCalled();
   });
 });

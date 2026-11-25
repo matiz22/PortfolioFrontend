@@ -9,14 +9,13 @@ import {
   NgZone,
   viewChild,
 } from '@angular/core';
-import { FINE_POINTER_QUERY } from '../animations/motion-media';
 import {
   GRAIN_CHAPTER_PALETTES,
-  HERO_PALETTE,
   type GrainChapter,
+  HERO_PALETTE,
   watchGrainGradientPalette,
 } from './grain-gradient-palette';
-import type { GrainRenderer } from './grain-gradient-renderer';
+import type {GrainRenderer} from './grain-gradient-renderer';
 
 @Component({
   selector: 'app-grain-gradient',
@@ -49,10 +48,6 @@ export class GrainGradient {
       const host = this.element.nativeElement;
       const surface = this.surface().nativeElement;
       const interactionRoot = host.parentElement!;
-      const view = host.ownerDocument.defaultView;
-      // Keep the CSS palette on touch-first devices, where browser chrome
-      // changes the visual viewport during scroll and can resize the GPU canvas.
-      const shaderMedia = view?.matchMedia(FINE_POINTER_QUERY);
       let palette = this.palette();
       let renderer: GrainRenderer | undefined;
       let pending: AbortController | undefined;
@@ -104,27 +99,23 @@ export class GrainGradient {
 
       // The archive can detach without destroying its component. Observe the
       // fixed backdrop itself so scrolling within an active route keeps it live.
-      const ViewportObserver = hasFixedPalette ? view?.IntersectionObserver : undefined;
-      let inViewport = !ViewportObserver;
-      const syncRenderer = () => {
-        if (shaderMedia?.matches && inViewport && host.isConnected) {
-          show();
-        } else {
-          hide();
-        }
-      };
+      const ViewportObserver = hasFixedPalette ? host.ownerDocument.defaultView?.IntersectionObserver : undefined;
       const observer = ViewportObserver
         ? new ViewportObserver((entries) => {
-          inViewport = entries.at(-1)?.isIntersecting === true;
-          syncRenderer();
+          if (entries.at(-1)?.isIntersecting && host.isConnected) {
+            show();
+          } else {
+            hide();
+          }
         })
         : undefined;
-      observer?.observe(host);
-      shaderMedia?.addEventListener('change', syncRenderer);
-      syncRenderer();
+      if (observer) {
+        observer.observe(host);
+      } else {
+        show();
+      }
 
       onCleanup(() => {
-        shaderMedia?.removeEventListener('change', syncRenderer);
         observer?.disconnect();
         hide();
         stopPalette?.();

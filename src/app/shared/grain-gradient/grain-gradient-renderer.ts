@@ -1,15 +1,18 @@
 import {
   getShaderColorFromString,
   getShaderNoiseTexture,
-  GrainGradientShapes,
   grainGradientFragmentShader,
+  GrainGradientShapes,
   type GrainGradientUniforms,
   ShaderFitOptions,
   ShaderMount,
 } from '@paper-design/shaders';
 
-import { attachGrainGradientMotion } from './grain-gradient-motion';
-import { HERO_PALETTE, type GrainPalette } from './grain-gradient-palette';
+import {attachGrainGradientMotion} from './grain-gradient-motion';
+import {type GrainPalette, HERO_PALETTE} from './grain-gradient-palette';
+
+const MAX_CANVAS_PIXELS = 1440 * 900;
+const TOUCH_MAX_CANVAS_PIXELS = 720 * 960;
 
 function shaderColors(palette: GrainPalette): GrainGradientUniforms['u_colors'] {
   return palette.map(([r, g, b]) => [r / 255, g / 255, b / 255, 1]);
@@ -57,11 +60,13 @@ export async function mountGrainGradient(
 
   let mount: ShaderMount;
   try {
+    const touch = surface.ownerDocument.defaultView?.matchMedia('(pointer: coarse)').matches;
     // One viewport-sized canvas, never a bitmap as tall as the entire homepage.
+    // Cap the drawing buffer on high-DPI phones without reducing CSS coverage.
     mount = new ShaderMount(
       surface, grainGradientFragmentShader, uniforms,
       { alpha: false, powerPreference: 'low-power' },
-      0, 0, 1, 1440 * 900,
+      0, 0, 1, touch ? TOUCH_MAX_CANVAS_PIXELS : MAX_CANVAS_PIXELS,
     );
   } catch (error) {
     // The constructor may append a canvas before rejecting unsupported WebGL.
