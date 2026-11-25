@@ -7,7 +7,6 @@ import {
   inject,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { injectLazyMotion } from '../../../shared/animations/lazy-motion';
 import { MOTION_ALLOWED_QUERY } from '../../../shared/animations/motion-media';
@@ -15,17 +14,18 @@ import { map } from 'rxjs';
 import { ApiState } from '../../../core/models/api.state';
 import { JobsService } from '../../../core/services/jobs.service';
 import { JobSummary } from '../../../core/models/summary/job';
-import { HomeMetadataPills } from '../../../shared/home-metadata-pills/home-metadata-pills';
 import { HomeRailControls } from '../../../shared/home-rail-controls/home-rail-controls';
+import { HomeStage } from '../../../shared/home-stage/home-stage';
 import { SectionAction } from '../../../shared/section-action/section-action';
 import { SectionFooter } from '../../../shared/section-footer/section-footer';
 import { StatusAnnouncer } from '../../../shared/status-announcer/status-announcer';
+import { JobTimelineEntry } from './job-timeline-entry/job-timeline-entry';
 
 const TIMELINE_MOTION_QUERY = `(min-width: 48rem) and ${MOTION_ALLOWED_QUERY}`;
 
 @Component({
   selector: 'app-job-timeline-section',
-  imports: [HomeCopy, DatePipe, RouterLink, SectionAction, SectionFooter, HomeMetadataPills, HomeRailControls, StatusAnnouncer],
+  imports: [HomeCopy, JobTimelineEntry, RouterLink, SectionAction, SectionFooter, HomeRailControls, HomeStage, StatusAnnouncer],
   templateUrl: './job-timeline-section.html',
   styleUrl: './job-timeline-section.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

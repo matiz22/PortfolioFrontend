@@ -90,7 +90,10 @@ describe('JobTimelineSection', () => {
     ]));
     await fixture.whenStable();
 
-    const entries = root.querySelectorAll('.jobs-entry');
+    const entries = root.querySelectorAll('.jobs-list > li.jobs-entry[data-home-rail-item]');
+    expect(entries.length).toBe(3);
+    expect(entries[0].classList).toContain('jobs-entry-current');
+    expect(entries[1].classList).not.toContain('jobs-entry-current');
     expect(Array.from(root.querySelectorAll('.jobs-card'), (card) => card.getAttribute('href')))
       .toEqual(['/job/frontend-developer', '/job/previous-role', '/job/earliest-role']);
     const link = entries[0].querySelector<HTMLAnchorElement>('.jobs-card')!;

@@ -1,6 +1,6 @@
 <section class="jobs-section section-noise" aria-labelledby="experience-heading">
-  <div class="jobs-shell">
-    <div class="jobs-stage">
+  <div appHomeStage class="jobs-shell">
+    <div class="jobs-stage" data-home-stage-content>
       <header class="jobs-header glass home-glass home-copy-panel" [appHomeCopy]="{ heading: 'h2', details: '.jobs-intro' }">
         <div class="jobs-copy">
           <h2 id="experience-heading" class="section-heading" i18n="@@jobs.heading">Work Experience</h2>
@@ -27,38 +27,10 @@
         @if (state.data.length > 0) {
         <div class="jobs-track" [style.--job-columns]="state.data.length - 1">
           <div class="jobs-rail" aria-hidden="true"><span class="jobs-rail-fill"></span></div>
-          <ol #jobsRail id="home-experience-rail" class="jobs-list" role="list" (focusin)="revealFocusedRole($event)">
+          <ol #jobsRail id="home-experience-rail" class="jobs-list" data-home-mobile-rail role="list" (focusin)="revealFocusedRole($event)">
             @for (job of state.data; track job.id) {
-            <li class="jobs-entry" [appHomeCopy]="{ heading: 'h3', details: '.jobs-company, .jobs-dates', duration: 0.34 }" data-home-rail-item [class.jobs-entry-current]="job.isCurrent">
-              <div class="jobs-point">
-                <span class="jobs-dot" aria-hidden="true"></span>
-                <div class="jobs-dates">
-                  <time [attr.datetime]="job.startDate | date:'yyyy-MM'">{{ job.startDate | date:'MMM yyyy' }}</time>
-                  @if (job.isCurrent) {
-                  <span class="jobs-present" i18n="@@jobs.present">to present</span>
-                  } @else if (job.endDate) {
-                  <span i18n="@@home.dates.to">to</span>
-                  <time [attr.datetime]="job.endDate | date:'yyyy-MM'">{{ job.endDate | date:'MMM yyyy' }}</time>
-                  }
-                </div>
-              </div>
-
-              <a class="jobs-card glass home-glass home-copy-panel" [routerLink]="['/job', job.slug]" [attr.aria-labelledby]="'experience-role-' + job.id">
-                <div class="jobs-company">{{ job.companyName }}</div>
-                <h3 [id]="'experience-role-' + job.id" [title]="job.title">{{ job.title }}</h3>
-                @if (job.location) {
-                <p class="jobs-location">{{ job.location }}</p>
-                }
-
-                @if (job.technologies.length > 0) {
-                <ul appHomeMetadataPills class="jobs-tags jobs-technologies" [items]="job.technologies"></ul>
-                }
-
-                @if (job.skills.length > 0) {
-                <ul appHomeMetadataPills class="jobs-tags jobs-skills" kind="skills" [items]="job.skills"></ul>
-                }
-              </a>
-            </li>
+            <li appJobTimelineEntry [job]="job"
+              [appHomeCopy]="{ heading: 'h3', details: '.jobs-company, .jobs-dates', duration: 0.34 }"></li>
             }
           </ol>
           <app-home-rail-controls [viewport]="jobsRail" headingId="experience-heading" />
@@ -73,7 +45,7 @@
         }
       </div>
     </div>
-    <app-section-footer class="jobs-bottom">
+    <app-section-footer class="jobs-bottom" data-home-stage-footer>
       <ng-content select="[section-next]" />
     </app-section-footer>
   </div>

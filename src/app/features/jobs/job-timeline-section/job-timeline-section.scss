@@ -1,7 +1,3 @@
-@use '../../../../styles/home-mobile-rail' as mobile-rail;
-@use '../../../../styles/home-stage' as stage;
-@use '../../../../styles/portfolio-card' as portfolio-card;
-
 :host {
   display: block;
 }
@@ -12,7 +8,6 @@
 }
 
 .jobs-shell {
-  @include stage.layout('.jobs-stage', '.jobs-bottom');
   position: relative;
   max-width: var(--home-showcase-width, 88rem);
   margin-inline: auto;
@@ -99,108 +94,6 @@
   list-style: none;
 }
 
-.jobs-entry {
-  position: relative;
-  display: grid;
-  grid-row: span 2;
-  grid-template-rows: subgrid;
-  min-width: 0;
-  padding-left: 2.5rem;
-}
-
-.jobs-point {
-  position: relative;
-  display: flex;
-  align-items: center;
-  min-height: 1rem;
-  margin-bottom: 1rem;
-}
-
-:where(.jobs-entry + .jobs-entry) .jobs-point {
-  margin-block-start: 3.5rem;
-}
-
-.jobs-dot {
-  position: absolute;
-  left: -2.5rem;
-  width: 1rem;
-  height: 1rem;
-  border: 1px solid rgb(255 255 255 / 35%);
-  border-radius: 50%;
-  background: #050706;
-  transition: border-color 200ms, background-color 200ms, box-shadow 200ms;
-}
-
-.jobs-entry-current .jobs-dot,
-.jobs-pinned .jobs-entry-reached .jobs-dot {
-  border-color: var(--color-primary);
-  background: var(--color-primary);
-  box-shadow: 0 0 0 5px color-mix(in srgb, var(--color-primary) 10%, transparent);
-}
-
-.jobs-dates {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.5rem;
-  color: rgb(255 255 255 / 45%);
-  font-size: 0.6875rem;
-  letter-spacing: 0.025em;
-}
-
-.jobs-present {
-  color: var(--color-primary);
-}
-
-.jobs-card {
-  @include portfolio-card.compact-pills;
-  display: block;
-  border-radius: var(--radius);
-  outline-offset: 0.5rem;
-  overflow: hidden;
-  text-decoration: none;
-
-  h3 {
-    @include portfolio-card.lines(2);
-    margin-block: 0.65rem 0.5rem;
-    color: var(--color-base-content);
-    font-family: var(--font-pixel);
-    font-size: clamp(2rem, 2.7vw, 2.5rem);
-    line-height: 1.08;
-    transition: color 200ms;
-
-    @media (max-width: 24rem) {
-      font-size: 1.625rem;
-    }
-  }
-
-  &:hover h3,
-  &:focus-visible h3 {
-    color: var(--color-primary);
-  }
-
-  &:focus-visible {
-    outline: 2px solid var(--color-primary);
-  }
-}
-
-.jobs-company {
-  @include portfolio-card.lines(1);
-  color: rgb(255 255 255 / 85%);
-  font-size: 0.75rem;
-}
-
-.jobs-location {
-  @include portfolio-card.lines(1);
-  margin-bottom: 1rem;
-  color: rgb(255 255 255 / 75%);
-  font-size: 0.75rem;
-}
-
-.jobs-tags {
-  margin-top: 0.5rem;
-}
-
 .jobs-state,
 .jobs-loading {
   display: flex;
@@ -212,102 +105,22 @@
   font-size: 0.8125rem;
 }
 
-@mixin horizontal-entries {
-  .jobs-entry {
-    display: grid;
-    grid-row: 1 / -1;
-    grid-template-rows: subgrid;
-    padding: 0;
-  }
-
-  .jobs-point {
-    grid-row: 2;
-    margin: 0;
-    padding-left: 2rem;
-
-    &::after {
-      content: '';
-      position: absolute;
-      bottom: calc(50% + 0.5rem);
-      left: 0.5rem;
-      height: 2rem;
-      width: 1px;
-      background: rgb(255 255 255 / 15%);
-    }
-  }
-
-  .jobs-dot {
-    left: 0;
-  }
-
-  .jobs-dates {
-    position: absolute;
-    bottom: calc(50% + 0.625rem);
-    left: 2rem;
-    right: 0;
-  }
-
-  .jobs-card {
-    grid-row: 1;
-    max-width: 25rem;
-    margin-bottom: 1rem;
-    padding-right: 0.5rem;
-  }
-
-  .jobs-entry:nth-child(even) {
-    .jobs-card {
-      grid-row: 3;
-      margin-top: 1rem;
-      margin-bottom: 0;
-    }
-
-    .jobs-point::after {
-      top: calc(50% + 0.5rem);
-      bottom: auto;
-    }
-  }
-}
-
 @media (width < 48rem) {
   .jobs-viewport:has(.jobs-entry + .jobs-entry) {
-    @include horizontal-entries;
-
     .jobs-list {
-      @include mobile-rail.viewport;
-      @include mobile-rail.columns;
       padding-block: 0.75rem 1rem;
       grid-template-rows: 1fr 3rem 1fr;
       row-gap: 0;
     }
 
-    .jobs-entry {
-      @include mobile-rail.item;
-    }
-
     .jobs-rail {
       display: none;
-    }
-
-    // Each segment ends at the next date marker, including across the card gap.
-    .jobs-entry:not(:last-child) .jobs-point::before {
-      position: absolute;
-      top: 50%;
-      left: 0.5rem;
-      width: calc(100% + var(--home-rail-gap));
-      height: 1px;
-      background: rgb(255 255 255 / 15%);
-      content: '';
-    }
-
-    .jobs-dates {
-      color: rgb(255 255 255 / 65%);
     }
   }
 }
 
 // The wide horizontal variant opts in only after GSAP has loaded.
 .jobs-horizontal {
-  @include horizontal-entries;
   --job-width: clamp(32rem, 66vw, 54rem);
 
   .jobs-header {
@@ -346,42 +159,12 @@
     height: 1px;
     transform-origin: left center;
   }
-
-  .jobs-card {
-    transition: opacity 200ms;
-  }
 }
 
 .jobs-section-pinned {
   overflow: clip;
 }
 
-.jobs-pinned {
-  .jobs-viewport {
-    overflow: clip;
-  }
-
-  // Dimming only makes sense while the pinned timeline supplies an active role.
-  .jobs-card {
-    opacity: 0.7;
-  }
-
-  .jobs-entry-active .jobs-card,
-  .jobs-card:hover,
-  .jobs-card:focus-visible {
-    opacity: 1;
-  }
-
-  .jobs-dot {
-    border-color: rgb(255 255 255 / 35%);
-    background: #050706;
-    box-shadow: none;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .jobs-card h3,
-  .jobs-dot {
-    transition: none;
-  }
+.jobs-pinned .jobs-viewport {
+  overflow: clip;
 }
