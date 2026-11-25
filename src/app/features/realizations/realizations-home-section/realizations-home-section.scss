@@ -1,6 +1,11 @@
 @use '../../../../styles/home-mobile-rail' as mobile-rail;
 @use '../../../../styles/home-stage' as stage;
 
+// Angular observes this host for viewport hydration.
+:host {
+  display: block;
+}
+
 .realizations-section {
   --realizations-inset: var(--home-showcase-inset, clamp(1.5rem, 4vw, 4rem));
   background: var(--home-section-background, #080b0a);

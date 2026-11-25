@@ -1,5 +1,5 @@
-<ng-template #sectionLoading>
-    <div appChapterLoading class="home-chapter-placeholder home-chapter-loading" aria-hidden="true">
+<ng-template #sectionSkeleton let-loading>
+    <div [appChapterLoading]="loading === true" class="home-chapter-placeholder home-chapter-loading" aria-hidden="true">
         <div class="home-chapter-skeleton">
             <div class="home-chapter-skeleton-copy">
                 <div class="skeleton home-chapter-skeleton-title"></div>
@@ -35,119 +35,120 @@
             </app-hero-section>
         </div>
 
-        <!-- Keep the anchor and chapter bounds outside the lazy content. -->
-        <div id="about" data-grain-chapter="about" tabindex="-1">
+        <!-- Give About's desktop layout time to settle before visitors scroll down. -->
+        <div #aboutChapter id="about" data-grain-chapter="about" tabindex="-1">
             <app-status-announcer [message]="chapterLoading().has('about') ? sectionLoadingMessage : ''" />
-            @defer (on idle; hydrate on idle) {
+            @defer (on viewport({ trigger: aboutChapter, rootMargin: '-1px 0px' }); prefetch on idle; hydrate on idle, viewport({ rootMargin: '-1px 0px' })) {
             <app-about-me-section>
                 <app-section-next section-next targetId="work">
                     <span i18n="@@home.next.work">Client work</span>
                 </app-section-next>
             </app-about-me-section>
             } @placeholder {
-            <ng-container [ngTemplateOutlet]="sectionLoading" />
+            <ng-container [ngTemplateOutlet]="sectionSkeleton" />
             } @loading {
-            <ng-container [ngTemplateOutlet]="sectionLoading" />
+            <ng-container [ngTemplateOutlet]="sectionSkeleton" [ngTemplateOutletContext]="{ $implicit: true }" />
             } @error {
             <ng-container [ngTemplateOutlet]="sectionError" />
             }
         </div>
 
-        <div id="work" data-grain-chapter="work" tabindex="-1" [style.--home-metadata-accent]="chapterAccents.work">
+        <!-- Ignore edge-only intersections for the rest of the chapters. -->
+        <div #workChapter id="work" data-grain-chapter="work" tabindex="-1" [style.--home-metadata-accent]="chapterAccents.work">
             <app-status-announcer [message]="chapterLoading().has('work') ? sectionLoadingMessage : ''" />
-            @defer (on idle; hydrate on idle) {
+            @defer (on viewport({ trigger: workChapter, rootMargin: '-1px 0px' }); prefetch on idle; hydrate on viewport({ rootMargin: '-1px 0px' })) {
             <app-realizations-home-section>
                 <app-section-next section-next targetId="projects">
                     <span i18n="@@home.next.projects">Projects</span>
                 </app-section-next>
             </app-realizations-home-section>
             } @placeholder {
-            <ng-container [ngTemplateOutlet]="sectionLoading" />
+            <ng-container [ngTemplateOutlet]="sectionSkeleton" />
             } @loading {
-            <ng-container [ngTemplateOutlet]="sectionLoading" />
+            <ng-container [ngTemplateOutlet]="sectionSkeleton" [ngTemplateOutletContext]="{ $implicit: true }" />
             } @error {
             <ng-container [ngTemplateOutlet]="sectionError" />
             }
         </div>
 
-        <div id="projects" data-grain-chapter="projects" tabindex="-1" [style.--home-metadata-accent]="chapterAccents.projects">
+        <div #projectsChapter id="projects" data-grain-chapter="projects" tabindex="-1" [style.--home-metadata-accent]="chapterAccents.projects">
             <app-status-announcer [message]="chapterLoading().has('projects') ? sectionLoadingMessage : ''" />
-            @defer (on idle; hydrate on idle) {
+            @defer (on viewport({ trigger: projectsChapter, rootMargin: '-1px 0px' }); prefetch on idle; hydrate on viewport({ rootMargin: '-1px 0px' })) {
             <app-projects-home-section>
                 <app-section-next section-next targetId="certifications">
                     <span i18n="@@home.next.certificates">Certificates</span>
                 </app-section-next>
             </app-projects-home-section>
             } @placeholder {
-            <ng-container [ngTemplateOutlet]="sectionLoading" />
+            <ng-container [ngTemplateOutlet]="sectionSkeleton" />
             } @loading {
-            <ng-container [ngTemplateOutlet]="sectionLoading" />
+            <ng-container [ngTemplateOutlet]="sectionSkeleton" [ngTemplateOutletContext]="{ $implicit: true }" />
             } @error {
             <ng-container [ngTemplateOutlet]="sectionError" />
             }
         </div>
 
-        <div id="certifications" data-grain-chapter="certifications" tabindex="-1"
+        <div #certificationsChapter id="certifications" data-grain-chapter="certifications" tabindex="-1"
             [style.--home-metadata-accent]="chapterAccents.certifications">
             <app-status-announcer [message]="chapterLoading().has('certifications') ? sectionLoadingMessage : ''" />
-            @defer (on idle; hydrate on idle) {
+            @defer (on viewport({ trigger: certificationsChapter, rootMargin: '-1px 0px' }); prefetch on idle; hydrate on viewport({ rootMargin: '-1px 0px' })) {
             <app-certifications-section>
                 <app-section-next section-next targetId="experience">
                     <span i18n="@@home.next.experience">Experience</span>
                 </app-section-next>
             </app-certifications-section>
             } @placeholder {
-            <ng-container [ngTemplateOutlet]="sectionLoading" />
+            <ng-container [ngTemplateOutlet]="sectionSkeleton" />
             } @loading {
-            <ng-container [ngTemplateOutlet]="sectionLoading" />
+            <ng-container [ngTemplateOutlet]="sectionSkeleton" [ngTemplateOutletContext]="{ $implicit: true }" />
             } @error {
             <ng-container [ngTemplateOutlet]="sectionError" />
             }
         </div>
 
-        <div id="experience" data-grain-chapter="experience" tabindex="-1" [style.--home-metadata-accent]="chapterAccents.experience">
+        <div #experienceChapter id="experience" data-grain-chapter="experience" tabindex="-1" [style.--home-metadata-accent]="chapterAccents.experience">
             <app-status-announcer [message]="chapterLoading().has('experience') ? sectionLoadingMessage : ''" />
-            @defer (on idle; hydrate on idle) {
+            @defer (on viewport({ trigger: experienceChapter, rootMargin: '-1px 0px' }); prefetch on idle; hydrate on viewport({ rootMargin: '-1px 0px' })) {
             <app-job-timeline-section>
                 <app-section-next section-next targetId="education">
                     <span i18n="@@home.next.education">Education</span>
                 </app-section-next>
             </app-job-timeline-section>
             } @placeholder {
-            <ng-container [ngTemplateOutlet]="sectionLoading" />
+            <ng-container [ngTemplateOutlet]="sectionSkeleton" />
             } @loading {
-            <ng-container [ngTemplateOutlet]="sectionLoading" />
+            <ng-container [ngTemplateOutlet]="sectionSkeleton" [ngTemplateOutletContext]="{ $implicit: true }" />
             } @error {
             <ng-container [ngTemplateOutlet]="sectionError" />
             }
         </div>
 
-        <div id="education" data-grain-chapter="education" tabindex="-1" [style.--home-metadata-accent]="chapterAccents.education">
+        <div #educationChapter id="education" data-grain-chapter="education" tabindex="-1" [style.--home-metadata-accent]="chapterAccents.education">
             <app-status-announcer [message]="chapterLoading().has('education') ? sectionLoadingMessage : ''" />
-            @defer (on idle; hydrate on idle) {
+            @defer (on viewport({ trigger: educationChapter, rootMargin: '-1px 0px' }); prefetch on idle; hydrate on viewport({ rootMargin: '-1px 0px' })) {
             <app-education-section>
                 <app-section-next section-next targetId="contact">
                     <span i18n="@@home.next.contact">Let’s talk</span>
                 </app-section-next>
             </app-education-section>
             } @placeholder {
-            <ng-container [ngTemplateOutlet]="sectionLoading" />
+            <ng-container [ngTemplateOutlet]="sectionSkeleton" />
             } @loading {
-            <ng-container [ngTemplateOutlet]="sectionLoading" />
+            <ng-container [ngTemplateOutlet]="sectionSkeleton" [ngTemplateOutletContext]="{ $implicit: true }" />
             } @error {
             <ng-container [ngTemplateOutlet]="sectionError" />
             }
         </div>
 
         <!-- Contact closes the main content; the site footer stays outside its landmark. -->
-        <div id="contact" class="home-closing" data-grain-chapter="contact" tabindex="-1">
+        <div #contactChapter id="contact" class="home-closing" data-grain-chapter="contact" tabindex="-1">
             <app-status-announcer [message]="chapterLoading().has('contact') ? sectionLoadingMessage : ''" />
-            @defer (on idle; hydrate on idle) {
+            @defer (on viewport({ trigger: contactChapter, rootMargin: '-1px 0px' }); prefetch on idle; hydrate on viewport({ rootMargin: '-1px 0px' })) {
             <app-contact-section class="home-contact contact-blended" [glass]="true" [sectionId]="null" [homeCopy]="true" />
             } @placeholder {
-            <ng-container [ngTemplateOutlet]="sectionLoading" />
+            <ng-container [ngTemplateOutlet]="sectionSkeleton" />
             } @loading {
-            <ng-container [ngTemplateOutlet]="sectionLoading" />
+            <ng-container [ngTemplateOutlet]="sectionSkeleton" [ngTemplateOutletContext]="{ $implicit: true }" />
             } @error {
             <ng-container [ngTemplateOutlet]="sectionError" />
             }

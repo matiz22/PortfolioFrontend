@@ -6,6 +6,7 @@ import {
   ElementRef,
   inject,
   Injectable,
+  input,
   signal,
 } from '@angular/core';
 
@@ -35,6 +36,7 @@ export class ChapterLoadingRegistry {
 
 @Directive({ selector: '[appChapterLoading]' })
 export class ChapterLoading {
+  readonly enabled = input(false, { alias: 'appChapterLoading' });
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly registry = inject(ChapterLoadingRegistry);
   private readonly destroyRef = inject(DestroyRef);
@@ -42,6 +44,7 @@ export class ChapterLoading {
   constructor() {
     let activeChapter: string | undefined;
     afterNextRender(() => {
+      if (!this.enabled()) return;
       activeChapter = this.host.nativeElement.parentElement?.id;
       if (activeChapter) {
         this.registry.activate(activeChapter);

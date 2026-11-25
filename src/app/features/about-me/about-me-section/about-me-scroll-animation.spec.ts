@@ -80,6 +80,19 @@ describe('About Me scroll animation', () => {
     return trigger().animation as gsap.core.Timeline;
   }
 
+  function stubIntersectionObserver() {
+    const observer = jasmine.createSpyObj<IntersectionObserver>('observer', ['observe', 'disconnect']);
+    let callback!: IntersectionObserverCallback;
+    spyOn(window, 'IntersectionObserver').and.callFake(function (next) {
+      callback = next;
+      return observer;
+    });
+    return {
+      observer,
+      intersect: () => callback([{ isIntersecting: true } as IntersectionObserverEntry], observer),
+    };
+  }
+
   it('pins the full stage at the viewport edge before advancing services', () => {
     motion = animateAboutMeScroll(root);
     expect(section.classList.contains('about-is-pinned')).toBeTrue();
@@ -88,6 +101,37 @@ describe('About Me scroll animation', () => {
     expect(trigger().vars.scrub).toBeTrue();
     expect(timeline().duration()).toBeCloseTo(3.48, 2);
     expect(trigger().end - trigger().start).toBeCloseTo(2036, 0);
+  });
+
+  it('waits to pin when idle hydration finishes after the visitor has passed About', () => {
+    const bounds = spyOn(root, 'getBoundingClientRect').and.returnValue({ bottom: 0 } as DOMRect);
+    const { observer, intersect } = stubIntersectionObserver();
+
+    motion = animateAboutMeScroll(root);
+    expect(section.classList.contains('about-is-pinned')).toBeFalse();
+    expect(observer.observe).toHaveBeenCalledOnceWith(root);
+
+    bounds.and.callThrough();
+    intersect();
+    expect(section.classList.contains('about-is-pinned')).toBeTrue();
+    expect(observer.disconnect).toHaveBeenCalledTimes(1);
+  });
+
+  it('does not replay a retained fragment when the deferred pin mounts on return', () => {
+    history.replaceState(history.state, '', '#service-2');
+    const bounds = spyOn(root, 'getBoundingClientRect').and.returnValue({ bottom: 0 } as DOMRect);
+    const { intersect } = stubIntersectionObserver();
+    motion = animateAboutMeScroll(root, false);
+    const scroll = spyOn(window, 'scrollTo').and.callThrough();
+
+    bounds.and.callThrough();
+    intersect();
+
+    expect(trigger().pin).toBe(stage);
+    expect(scroll.calls.allArgs() as unknown[]).not.toContain([
+      jasmine.objectContaining({ behavior: 'instant' }),
+    ]);
+    expect(document.activeElement).not.toBe(panels[2]);
   });
 
   it('keeps the first item visible on entry and after layout refreshes', () => {

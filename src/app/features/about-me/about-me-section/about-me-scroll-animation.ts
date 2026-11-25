@@ -38,8 +38,8 @@ export function animateAboutMeScroll(root: HTMLElement, resolveInitialFragment =
 
     // The fit lifecycle owns each activation. Keep its child context out of the
     // matchMedia context so nested tweens are not reverted twice on teardown.
-    let stopPin!: () => void;
-    context.ignore(() => {
+    let stopPin: (() => void) | undefined;
+    const startPin = () => context.ignore(() => {
       stopPin = watchPinFit({
       section, stage, pinnedClass: 'about-is-pinned', tolerance: 12,
       observe: [panelsContainer, ...panels, ...(header ? [header] : [])],
@@ -201,7 +201,32 @@ export function animateAboutMeScroll(root: HTMLElement, resolveInitialFragment =
       },
       });
     });
-    return stopPin;
+
+    // Idle hydration may finish after a deep link or a fast scroll has already
+    // taken the visitor past About. Don't insert pin space above them.
+    if (root.getBoundingClientRect().bottom <= 1 && view.IntersectionObserver) {
+      let waiting = true;
+      const observer = new view.IntersectionObserver((entries) => {
+        if (waiting && entries.some(entry => entry.isIntersecting)) {
+          waiting = false;
+          observer.disconnect();
+          initialRender = resolveInitialFragment;
+          startPin();
+          initialRender = false;
+        }
+      }, { rootMargin: '-1px 0px' });
+      observer.observe(root);
+      return () => {
+        if (waiting) {
+          waiting = false;
+          observer.disconnect();
+        }
+        stopPin?.();
+      };
+    }
+
+    startPin();
+    return () => stopPin?.();
   }, root);
   initialRender = false;
   if (resolveInitialFragment && !section.classList.contains('about-is-pinned')) {

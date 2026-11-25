@@ -100,6 +100,7 @@ console.log(`Open ${origin} in a browser with a viewport at least 80rem wide.`);
 const timer = setTimeout(() => reject(new Error('No hydration result received.')), 60_000);
 try {
   const contact = await promise;
+  console.log('About hydrated on idle; the remaining chapters waited for the viewport.');
   console.log('All five homepage summary sections retained their server-rendered cards without refetching.');
   console.log('Projects retained their server-rendered nodes and column geometry after hydration.');
   console.log(`Contact social links (separate API): ${contact}`);
@@ -132,6 +133,7 @@ function probe(entry, resultPath, api, socialPath, socialMode, socialLinks) {
 
   // Angular removes the original host's marker when claiming the DOM.
   function waitForHydration(host) {
+    if (!host.hasAttribute('ngh')) return Promise.resolve();
     return new Promise((resolve, reject) => {
       const observer = new MutationObserver(() => {
         if (!host.hasAttribute('ngh')) {
@@ -143,7 +145,8 @@ function probe(entry, resultPath, api, socialPath, socialMode, socialLinks) {
       observer.observe(host, { attributes: true, attributeFilter: ['ngh'] });
       const timeout = setTimeout(() => {
         observer.disconnect();
-        reject(new Error(`Angular did not hydrate the original ${host.localName} host.`));
+        const { top, bottom } = host.getBoundingClientRect();
+        reject(new Error(`Angular did not hydrate ${host.localName} (bounds ${top}–${bottom}, viewport ${innerHeight}).`));
       }, 15_000);
     });
   }
@@ -181,12 +184,13 @@ function probe(entry, resultPath, api, socialPath, socialMode, socialLinks) {
       capture('app-job-timeline-section', '.jobs-entry', 2),
       capture('app-education-section', '.education-card', 1),
     ];
+    const about = capture('app-about-me-section', 'h2', 1);
     const contact = capture('app-contact-section', 'input:not([type="hidden"]), textarea', 5);
     const email = contact.host.querySelector('a[href="mailto:contact@malich.dev"]');
     if (!email || contact.host.querySelector('app-social-links-row a, .social-links-state')) {
       throw new Error('Expected Contact SSR to render its form and email, without API-dependent links or a loading message.');
     }
-    const chapters = [...summaries, contact];
+    const chapters = [about, ...summaries, contact];
     const selector = 'app-projects-home-section .projects-home-grid > .projects-home-slot';
     const before = Array.from(document.querySelectorAll(selector));
     const snapshot = (slots) => slots.map(({ offsetLeft, offsetWidth }) => [offsetLeft, offsetWidth]);
@@ -226,8 +230,25 @@ function probe(entry, resultPath, api, socialPath, socialMode, socialLinks) {
       }
       return nativeFetch(input, init);
     };
-    const hydrated = Promise.all(chapters.map(({ host }) => waitForHydration(host)));
-    await Promise.all([import(new URL(entry, document.baseURI)), hydrated]);
+    const heroReady = waitForHydration(document.querySelector('app-hero-section[ngh]'));
+    const aboutReady = waitForHydration(about.host);
+    await Promise.all([import(new URL(entry, document.baseURI)), heroReady, aboutReady]);
+    await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+    for (const { host } of [...summaries, contact]) {
+      if (host.getBoundingClientRect().top > innerHeight && !host.hasAttribute('ngh')) {
+        throw new Error(`Idle hydrated off-screen ${host.localName}.`);
+      }
+    }
+    if (!contact.host.hasAttribute('ngh') || requested.includes(socialPath)) {
+      throw new Error('Contact initialized before reaching its viewport.');
+    }
+    // Start at the bottom so any lazily activated pin can add space without
+    // shifting the next test target (which is above it).
+    for (const { host } of chapters.toReversed()) {
+      const hydrated = waitForHydration(host);
+      host.closest('[data-grain-chapter]').scrollIntoView({ behavior: 'instant' });
+      await hydrated;
+    }
     const socialSelector = socialMode === 'success'
       ? 'app-social-links-row a[href="https://example.com"]'
       : 'app-social-links-row [role="alert"]';

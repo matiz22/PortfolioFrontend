@@ -74,6 +74,12 @@ html:active-view-transition {
   scroll-behavior: auto !important;
 }
 
+// Land directly on an unrendered chapter after client navigation. A smooth
+// scroll would initialize intermediate chapters and could shift the destination.
+html:has(app-home-page [data-grain-chapter]:target > .home-chapter-placeholder) {
+  scroll-behavior: auto;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     // ScrollTrigger can restore an inline smooth value after a layout refresh.

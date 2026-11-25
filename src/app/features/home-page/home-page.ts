@@ -20,6 +20,8 @@ import { RouteAttachment } from '../../core/models/route-attachment';
 import { StatusAnnouncer } from '../../shared/status-announcer/status-announcer';
 import { ChapterLoading, ChapterLoadingRegistry } from './chapter-loading';
 
+const ABOUT_SERVICE_FRAGMENTS = new Set(['about-web', 'about-apps', 'about-ai']);
+
 @Component({
   selector: 'app-home-page',
   imports: [NgTemplateOutlet, Footer, HeroSection, AboutMeSection, Header, ContactSection, EducationSection, CertificationsSection, RealizationsHomeSection, ProjectsHomeSection, JobTimelineSection, SectionNext, GrainGradient, StatusAnnouncer, ChapterLoading],
@@ -72,11 +74,14 @@ export class HomePage implements RouteAttachment {
     } catch {
       return;
     }
-    const target = this.document.getElementById(id);
+    // On client navigation the service panels don't exist until About renders
+    // in the viewport. Its own fragment handler then lands on the exact panel.
+    const target = this.document.getElementById(id) ??
+      (ABOUT_SERVICE_FRAGMENTS.has(id) ? root.querySelector('#about') : null);
     if (target && root.contains(target)) {
       // The first ScrollTrigger refresh can interrupt a smooth scroll already
       // in flight. Land on initial deep links before loading the motion code.
-      this.viewportScroller.scrollToAnchor(id, { behavior: 'instant' });
+      this.viewportScroller.scrollToAnchor(target.id, { behavior: 'instant' });
     }
   }
 

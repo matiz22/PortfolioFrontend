@@ -110,6 +110,19 @@ describe('jobs timeline animation', () => {
     };
   }
 
+  function stubIntersectionObserver() {
+    const observer = jasmine.createSpyObj<IntersectionObserver>('observer', ['observe', 'disconnect']);
+    let callback!: IntersectionObserverCallback;
+    spyOn(window, 'IntersectionObserver').and.callFake(function (next) {
+      callback = next;
+      return observer;
+    });
+    return {
+      observer,
+      intersect: (isIntersecting: boolean) => callback([{ isIntersecting } as IntersectionObserverEntry], observer),
+    };
+  }
+
   it('reveals the horizontal rail and entries without animating the header or advancing scroll progress', () => {
     root.style.paddingTop = 'calc(100vh + 50px)';
     motion = animateJobsTimeline(root);
@@ -187,6 +200,40 @@ describe('jobs timeline animation', () => {
     expect(Number(gsap.getProperty(track, 'x'))).toBe(0);
     expect(Number(gsap.getProperty(root.querySelector('.jobs-rail-fill'), 'scaleX'))).toBe(0);
     expect(root.querySelectorAll('.jobs-entry')[0].classList.contains('jobs-entry-active')).toBeTrue();
+  });
+
+  it('leaves Experience in static flow if its animation arrives after the visitor has passed it', () => {
+    const bounds = spyOn(root, 'getBoundingClientRect').and.returnValue(new DOMRect(0, -100, 100, 100));
+    const { observer, intersect } = stubIntersectionObserver();
+    motion = animateJobsTimeline(root);
+    intersect(false);
+    intersect(true); // A queued intersection must not mount the pin if the visitor has already moved on.
+
+    expect(observer.observe).toHaveBeenCalledOnceWith(root);
+    expect(stage.classList).not.toContain('jobs-horizontal');
+    expect(root.classList).not.toContain('pin-spacer');
+    expect(ScrollTrigger.getAll().some((trigger) => trigger.trigger === section)).toBeFalse();
+
+    bounds.and.returnValue(new DOMRect(0, 0, 800, 500));
+    intersect(true);
+
+    expect(observer.disconnect).toHaveBeenCalledTimes(1);
+    expect(travel().scrollTrigger!.pin).toBe(section);
+  });
+
+  it('does not mount a delayed pin after teardown', () => {
+    const bounds = spyOn(root, 'getBoundingClientRect').and.returnValue(new DOMRect(0, -100, 100, 100));
+    const { observer, intersect } = stubIntersectionObserver();
+    motion = animateJobsTimeline(root);
+    motion.revert();
+    motion = undefined;
+
+    bounds.and.callThrough();
+    intersect(true);
+
+    expect(observer.disconnect).toHaveBeenCalledTimes(1);
+    expect(stage.classList).not.toContain('jobs-horizontal');
+    expect(ScrollTrigger.getAll().some((trigger) => trigger.trigger === section)).toBeFalse();
   });
 
   for (const jobsFirst of [false, true]) {

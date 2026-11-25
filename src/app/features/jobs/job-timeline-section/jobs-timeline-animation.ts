@@ -46,6 +46,7 @@ export function animateJobsTimeline(root: HTMLElement): gsap.MatchMedia {
       let intro: gsap.core.Timeline | undefined;
       let reveals: gsap.core.Animation[] = [];
       let observer: ResizeObserver | undefined;
+      let entryObserver: IntersectionObserver | undefined;
       let refreshFrame = 0;
       let activeIndex = -1;
       let reachedIndex = -1;
@@ -302,7 +303,7 @@ export function animateJobsTimeline(root: HTMLElement): gsap.MatchMedia {
         }
       };
 
-      context.add(() => {
+      const start = () => context.add(() => {
         // A keyboard user can reach the links before the entrance completes.
         const onIntroFocus = (event: FocusEvent) => {
           if (event.target instanceof view.HTMLElement && event.target.matches(':focus-visible')) {
@@ -310,23 +311,44 @@ export function animateJobsTimeline(root: HTMLElement): gsap.MatchMedia {
           }
         };
         section.addEventListener('focusin', onIntroFocus);
+
+        reconcile(true);
+        if (view.ResizeObserver) {
+          observer = new view.ResizeObserver(requestReconcile);
+          // Width and height eligibility can change independently of media queries.
+          observer.observe(viewport);
+          observer.observe(track);
+          observer.observe(shell);
+        }
+        // The height threshold can change without changing any observed box.
+        view.addEventListener('resize', requestReconcile);
+
         return () => section.removeEventListener('focusin', onIntroFocus);
       });
 
-      reconcile(true);
-
-      if (view.ResizeObserver) {
-        observer = new view.ResizeObserver(requestReconcile);
-        // Width and height eligibility can change independently of media queries.
-        observer.observe(viewport);
-        observer.observe(track);
-        observer.observe(shell);
+      // The lazy animation can arrive after the visitor has left Experience.
+      // Keep its static height until they return rather than moving later chapters.
+      if (root.getBoundingClientRect().bottom <= 1 && view.IntersectionObserver) {
+        entryObserver = new view.IntersectionObserver((entries) => {
+          if (disposed || !entryObserver || !entries.some(entry => entry.isIntersecting) ||
+              root.getBoundingClientRect().bottom <= 1) {
+            return;
+          }
+          entryObserver.disconnect();
+          entryObserver = undefined;
+          start();
+        }, { rootMargin: '-1px 0px' });
+        entryObserver.observe(root);
+      } else {
+        start();
       }
-      // The height threshold can change without changing any observed box.
-      view.addEventListener('resize', requestReconcile);
 
       return () => {
         disposed = true;
+        if (entryObserver) {
+          entryObserver.disconnect();
+          return;
+        }
         observer?.disconnect();
         view.removeEventListener('resize', requestReconcile);
         view.cancelAnimationFrame(refreshFrame);

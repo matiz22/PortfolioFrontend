@@ -51,9 +51,10 @@ describe('HomePage', () => {
     await block.render(DeferBlockState.Placeholder);
     await fixture.whenStable();
     const placeholder = chapter.querySelector<HTMLElement>('.home-chapter-loading')!;
-    expect(root.querySelectorAll('[data-grain-chapter] > app-status-announcer [role="status"]').length).toBe(7);
+    const statuses = Array.from(root.querySelectorAll('[data-grain-chapter] > app-status-announcer [role="status"]'));
+    expect(statuses.length).toBe(7);
+    expect(statuses.map(region => region.textContent?.trim()).every(message => message === '')).toBeTrue();
     expect(status.getAttribute('aria-live')).toBe('polite');
-    expect(status.textContent).toContain('Loading section…');
     expect(placeholder.getAttribute('aria-hidden')).toBe('true');
     expect(placeholder.querySelectorAll('.home-chapter-skeleton .skeleton').length).toBe(4);
     expect(placeholder.querySelector('[role="status"]')).toBeNull();
@@ -65,6 +66,7 @@ describe('HomePage', () => {
     const loading = chapter.querySelector<HTMLElement>('.home-chapter-loading')!;
     expect(chapter.querySelector('[role="status"]')).toBe(status);
     expect(status.textContent).toContain('Loading section…');
+    expect(statuses.filter(region => region.textContent?.trim())).toEqual([status]);
     expect(loading).not.toBe(placeholder);
     expect(getComputedStyle(loading).minBlockSize).toBe(placeholderMinBlockSize);
 
@@ -80,6 +82,9 @@ describe('HomePage', () => {
     const [block] = await fixture.getDeferBlocks();
     const chapter = fixture.nativeElement.querySelector('#about');
     const status = chapter.querySelector('[role="status"]');
+    await block.render(DeferBlockState.Loading);
+    await fixture.whenStable();
+    expect(status.textContent).toContain('Loading section…');
     await block.render(DeferBlockState.Error);
     await fixture.whenStable();
     expect(chapter.tabIndex).toBe(-1);
@@ -93,21 +98,24 @@ describe('HomePage', () => {
     expect(component).toBeTruthy();
   });
 
-  it('lands on an initial homepage fragment without waiting for a smooth scroll', async () => {
-    const originalUrl = location.href;
-    const scroll = spyOn(TestBed.inject(ViewportScroller), 'scrollToAnchor');
-    fixture.destroy();
-    try {
-      history.replaceState(null, '', '#contact');
-      fixture = TestBed.createComponent(HomePage);
-      fixture.autoDetectChanges();
-      await fixture.whenStable();
+  const chapterIds = ['home', 'about', 'work', 'projects', 'certifications', 'experience', 'education', 'contact'];
+  for (const id of [...chapterIds, 'about-web', 'about-apps', 'about-ai']) {
+    it(`lands on #${id} without waiting for its chapter to load`, async () => {
+      const originalUrl = location.href;
+      const scroll = spyOn(TestBed.inject(ViewportScroller), 'scrollToAnchor');
+      fixture.destroy();
+      try {
+        history.replaceState(null, '', `#${id}`);
+        fixture = TestBed.createComponent(HomePage);
+        await fixture.whenStable();
 
-      expect(scroll).toHaveBeenCalledOnceWith('contact', { behavior: 'instant' });
-    } finally {
-      history.replaceState(null, '', originalUrl);
-    }
-  });
+        const anchor = chapterIds.includes(id) ? id : 'about';
+        expect(scroll).toHaveBeenCalledOnceWith(anchor, { behavior: 'instant' });
+      } finally {
+        history.replaceState(null, '', originalUrl);
+      }
+    });
+  }
 
   it('keeps one decorative background outside the main chapter order', () => {
     const root: HTMLElement = fixture.nativeElement;
@@ -203,9 +211,7 @@ describe('HomePage', () => {
   it('keeps a focusable anchor for each chapter before deferred content loads', () => {
     const root: HTMLElement = fixture.nativeElement;
     const chapters = Array.from(root.querySelectorAll<HTMLElement>('[data-grain-chapter]'));
-    expect(chapters.map((chapter) => chapter.id)).toEqual([
-      'home', 'about', 'work', 'projects', 'certifications', 'experience', 'education', 'contact',
-    ]);
+    expect(chapters.map((chapter) => chapter.id)).toEqual(chapterIds);
     expect(root.querySelector('app-about-me-section')).toBeNull();
     for (const chapter of chapters) {
       expect(chapter.getAttribute('tabindex')).toBe('-1');
