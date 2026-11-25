@@ -5,7 +5,8 @@
   display: block;
   overflow: hidden;
   pointer-events: none;
-  background: #000;
+  // Safari can extend a fixed element's solid color into its toolbar.
+  // Paint the backdrop on the surface, not on this positioning box.
 
   @media (any-pointer: coarse) {
     // The toolbar animates before some browsers update their dynamic viewport.
@@ -18,15 +19,11 @@
 .grain-surface {
   position: absolute;
   inset: 0;
-  // Available before hydration and when WebGL is unsupported or loses its context.
+  // Keep a painted layer under the canvas, including at exposed viewport edges.
   background:
     radial-gradient(ellipse at 100% 0%, rgb(var(--grain-top, 0 191 209) / 30%), transparent 42%),
     radial-gradient(ellipse at 0% 100%, rgb(var(--grain-bottom, 0 211 127) / 35%), transparent 42%),
     #000;
-
-  &.is-ready {
-    background: #000;
-  }
 }
 
 // Keep some texture on fixed-palette pages until the real shader is ready.
@@ -49,4 +46,33 @@
   inset: 0;
   background:
     radial-gradient(ellipse 70% 80% at 50% 50%, rgb(0 0 0 / 75%) 0%, rgb(0 0 0 / 45%) 45%, transparent 72%);
+}
+
+@media (any-pointer: coarse) {
+  @supports (-webkit-touch-callout: none) and (animation-timeline: scroll(root block)) {
+    :host {
+      // iOS Safari clips fixed layers at the browser toolbar. Instead, paint
+      // in the scrolling document and counter its scroll with a native timeline.
+      position: absolute;
+      min-block-size: 0;
+      overflow: visible;
+      --grain-toolbar-overscan: max(4rem, calc(100lvh - 100svh));
+      animation: grain-follow-scroll 1ms linear both;
+      animation-timeline: scroll(root block);
+    }
+
+    .grain-surface,
+    .grain-gap {
+      inset-block: calc(-1 * var(--grain-toolbar-overscan)) auto;
+      // Paint a stable buffer with room above and below the layout viewport.
+      block-size: calc(100lvh + 2 * var(--grain-toolbar-overscan));
+    }
+  }
+}
+
+@keyframes grain-follow-scroll {
+  // The wrapper spans the route, so its height minus the viewport is the scroll range.
+  to {
+    transform: translateY(max(0px, calc(100% - 100dvh)));
+  }
 }

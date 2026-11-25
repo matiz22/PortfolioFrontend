@@ -1,3 +1,4 @@
 footer {
   border-top-width: var(--footer-divider-width, 1px);
+  padding-block-end: calc(2rem + env(safe-area-max-inset-bottom, env(safe-area-inset-bottom, 0px)));
 }

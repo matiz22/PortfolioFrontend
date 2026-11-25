@@ -26,6 +26,22 @@ describe('GrainGradient with a fixed chapter', () => {
       GRAIN_CHAPTER_PALETTES.projects[1].join(' '),
     );
   });
+
+  it('keeps the palette painted behind the canvas without making the host solid', () => {
+    spyOn(IntersectionObserver.prototype, 'observe');
+    const fixture = TestBed.createComponent(GrainGradient);
+    fixture.componentRef.setInput('chapter', 'work');
+    fixture.detectChanges();
+
+    const host: HTMLElement = fixture.nativeElement;
+    const surface = host.querySelector<HTMLElement>('.grain-surface')!;
+    const fallback = getComputedStyle(surface).backgroundImage;
+    expect(fallback).toContain('radial-gradient');
+
+    surface.classList.add('is-ready');
+    expect(getComputedStyle(surface).backgroundImage).toBe(fallback);
+    expect(getComputedStyle(host).backgroundColor).toBe('rgba(0, 0, 0, 0)');
+  });
 });
 
 describe('GrainGradient on touch-first devices', () => {

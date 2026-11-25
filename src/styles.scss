@@ -72,6 +72,16 @@ html {
   scroll-behavior: smooth;
 }
 
+@media (any-pointer: coarse) {
+  @supports (-webkit-touch-callout: none) and (animation-timeline: scroll(root block)) {
+    // The grain follows the root scroll. Prevent its translated box from
+    // adding to the route's scroll height without creating a scroll container.
+    :has(> app-grain-gradient) {
+      overflow: clip;
+    }
+  }
+}
+
 html:active-view-transition {
   scroll-behavior: auto !important;
 }

@@ -117,7 +117,7 @@ export class GrainGradient {
       };
 
       // The archive can detach without destroying its component. Observe the
-      // fixed backdrop itself so scrolling within an active route keeps it live.
+      // backdrop itself so scrolling within an active route keeps it live.
       const ViewportObserver = hasFixedPalette ? view?.IntersectionObserver : undefined;
       const observer = ViewportObserver
         ? new ViewportObserver((entries) => {
