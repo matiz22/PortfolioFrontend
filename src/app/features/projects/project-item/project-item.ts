@@ -3,10 +3,12 @@ import { Project } from '../../../core/models/project';
 import { ProjectSummary } from '../../../core/models/summary/project';
 import { ImageUrlPipe } from '../../../shared/pipes/image-url-pipe';
 import { RouterLink } from '@angular/router';
+import { ArchiveCard } from '../../../shared/portfolio/archive-card';
 
 @Component({
   selector: 'app-project-item',
   imports: [
+    ArchiveCard,
     ImageUrlPipe,
     RouterLink
   ],

@@ -1,0 +1,17 @@
+@use '../../../styles/home-stage' as stage;
+@use '../../../styles/home-mobile-rail' as mobile-rail;
+
+[appHomeStage] {
+  @include stage.layout('[data-home-stage-content]', '[data-home-stage-footer]');
+}
+
+@media (width < 48rem) {
+  [data-home-mobile-rail]:has(> [data-home-rail-item] + [data-home-rail-item], > [data-home-rail-placeholder]) {
+    @include mobile-rail.viewport;
+    @include mobile-rail.columns;
+
+    > :is([data-home-rail-item], [data-home-rail-placeholder]) {
+      @include mobile-rail.item;
+    }
+  }
+}

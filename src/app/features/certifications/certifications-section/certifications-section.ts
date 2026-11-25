@@ -13,12 +13,13 @@ import { CertificationSummary } from '../../../core/models/summary/certification
 import { RouterLink } from '@angular/router';
 import { CertificationShowcaseCard } from './certification-showcase-card/certification-showcase-card';
 import { HomeRailControls } from '../../../shared/home-rail-controls/home-rail-controls';
+import { HomeStage } from '../../../shared/home-stage/home-stage';
 import { SectionAction } from '../../../shared/section-action/section-action';
 import { SectionFooter } from '../../../shared/section-footer/section-footer';
 
 @Component({
   selector: 'app-certifications-section',
-  imports: [HomeCopy, CertificationShowcaseCard, RouterLink, HomeRailControls, SectionAction, SectionFooter],
+  imports: [HomeCopy, CertificationShowcaseCard, RouterLink, HomeRailControls, HomeStage, SectionAction, SectionFooter],
   templateUrl: './certifications-section.html',
   styleUrl: './certifications-section.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

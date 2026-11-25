@@ -1,6 +1,6 @@
-<section class="certifications-section section-noise"
+<section appHomeStage class="certifications-section section-noise"
   aria-labelledby="certifications-heading">
-  <div class="certifications-shell">
+  <div class="certifications-shell" data-home-stage-content>
     <header class="certifications-header glass home-glass home-copy-panel" [appHomeCopy]="{ heading: 'h2', details: 'p', effect: 'seal', duration: 0.39 }">
       <h2 id="certifications-heading" class="section-heading" i18n="@@certifications.heading">
         Certifications</h2>
@@ -13,14 +13,14 @@
     </header>
 
     @let state = certifications();
-    <div #certificationsRail id="home-certifications-rail" class="certifications-wall" [attr.aria-busy]="state.status === 'loading'"
+    <div #certificationsRail id="home-certifications-rail" class="certifications-wall" data-home-mobile-rail [attr.aria-busy]="state.status === 'loading'"
       [attr.data-count]="state.status === 'success' ? state.data.length : null">
       @switch (state.status) {
       @case ('loading') {
       <span class="certifications-loading-label" role="status" i18n="@@certifications.loading">
         Loading certifications…</span>
       @for (placeholder of [0, 1, 2]; track placeholder) {
-      <div class="certifications-slot certifications-skeleton" aria-hidden="true">
+      <div class="certifications-slot certifications-skeleton" data-home-rail-placeholder aria-hidden="true">
         <div class="certifications-skeleton-art"></div>
         <div class="certifications-skeleton-caption"></div>
       </div>
@@ -45,7 +45,7 @@
     </div>
     <app-home-rail-controls [viewport]="certificationsRail" headingId="certifications-heading" />
   </div>
-  <app-section-footer class="certifications-footer">
+  <app-section-footer class="certifications-footer" data-home-stage-footer>
     <ng-content select="[section-next]" />
   </app-section-footer>
 </section>

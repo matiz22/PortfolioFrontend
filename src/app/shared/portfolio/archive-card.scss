@@ -1,13 +1,6 @@
 @use './theme';
 @use '../../../styles/portfolio-card' as portfolio-card;
 
-$compact-preview: false !default;
-
-:host {
-  display: grid;
-  min-width: 0;
-}
-
 .archive-card {
   position: relative;
   isolation: isolate;
@@ -138,13 +131,13 @@ $compact-preview: false !default;
   }
 }
 
-@if $compact-preview {
-  .archive-card {
-    gap: 0.5rem;
-    padding: clamp(0.875rem, 1.2vw, 1.25rem);
-    overflow: hidden;
-  }
+.archive-card-compact {
+  gap: 0.5rem;
+  padding: clamp(0.875rem, 1.2vw, 1.25rem);
+  overflow: hidden;
+}
 
+:where(.archive-card-compact) {
   .archive-card-title {
     @include portfolio-card.lines(2);
     font-size: clamp(1.5rem, 2.1vw, 2rem);

@@ -1,13 +1,14 @@
 import { HomeCopy } from '../../../shared/animations/home-copy';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { afterNextRenderMotion } from '../../../shared/animations/lazy-motion';
+import { HomeStage } from '../../../shared/home-stage/home-stage';
 import { WebDevelopmentPreview } from './web-development-preview/web-development-preview';
 import { AppsPreview } from './apps-preview/apps-preview';
 import { AiWorkflowPreview } from './ai-workflow-preview/ai-workflow-preview';
 
 @Component({
   selector: 'app-about-me-section',
-  imports: [HomeCopy, WebDevelopmentPreview, AppsPreview, AiWorkflowPreview],
+  imports: [HomeCopy, HomeStage, WebDevelopmentPreview, AppsPreview, AiWorkflowPreview],
   templateUrl: './about-me-section.html',
   styleUrl: './about-me-section.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

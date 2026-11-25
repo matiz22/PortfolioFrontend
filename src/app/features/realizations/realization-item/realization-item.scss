@@ -1,1 +1,4 @@
-@use '../../../shared/portfolio/archive-card';
+:host {
+  display: grid;
+  min-width: 0;
+}

@@ -1,6 +1,10 @@
 @use '../../../../styles/portfolio-card' as portfolio-card;
-@use '../../../shared/portfolio/archive-card' with ($compact-preview: true);
 @use '../certificate-cover';
+
+:host {
+  display: grid;
+  min-width: 0;
+}
 
 .certification-issuer {
   @include portfolio-card.lines(2);

@@ -1,12 +1,8 @@
-@use '../../../../styles/home-mobile-rail' as mobile-rail;
-@use '../../../../styles/home-stage' as stage;
-
 :host {
   display: block;
 }
 
 .projects-home-section {
-  @include stage.layout('.projects-home-content', '.projects-home-footer');
   padding-block: var(--home-stage-inset, clamp(4.5rem, 8vw, 7rem));
   background: var(--home-section-background, #000);
 }
@@ -91,14 +87,7 @@
 
 @media (width < 48rem) {
   .projects-home-grid:has(.projects-home-skeleton, .projects-home-slot + .projects-home-slot) {
-    @include mobile-rail.viewport;
-    @include mobile-rail.columns;
     padding-block: 0.5rem 1rem;
-
-    .projects-home-slot,
-    .projects-home-skeleton {
-      @include mobile-rail.item;
-    }
   }
 }
 

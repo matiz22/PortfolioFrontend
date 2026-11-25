@@ -17,6 +17,7 @@ import type { HomeCopyConfig } from '../../../shared/animations/home-copy-regist
 import { injectLazyMotion } from '../../../shared/animations/lazy-motion';
 import { HomeMetadataPills } from '../../../shared/home-metadata-pills/home-metadata-pills';
 import { HomeRailControls } from '../../../shared/home-rail-controls/home-rail-controls';
+import { HomeStage } from '../../../shared/home-stage/home-stage';
 import { ImageUrlPipe } from '../../../shared/pipes/image-url-pipe';
 import { SectionAction } from '../../../shared/section-action/section-action';
 import { SectionFooter } from '../../../shared/section-footer/section-footer';
@@ -31,7 +32,7 @@ const CARD_COPY = {
 
 @Component({
   selector: 'app-education-section',
-  imports: [HomeCopy, DatePipe, RouterLink, ImageUrlPipe, SectionAction, SectionFooter, HomeMetadataPills, HomeRailControls],
+  imports: [HomeCopy, DatePipe, RouterLink, ImageUrlPipe, SectionAction, SectionFooter, HomeMetadataPills, HomeRailControls, HomeStage],
   templateUrl: './education-section.html',
   styleUrl: './education-section.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

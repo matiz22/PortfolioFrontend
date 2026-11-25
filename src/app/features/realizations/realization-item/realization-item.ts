@@ -3,10 +3,12 @@ import { Realization } from '../../../core/models/realization';
 import { RealizationSummary } from '../../../core/models/summary/realization';
 import { ImageUrlPipe } from '../../../shared/pipes/image-url-pipe';
 import { RouterLink } from '@angular/router';
+import { ArchiveCard } from '../../../shared/portfolio/archive-card';
 
 @Component({
   selector: 'app-realization-item',
   imports: [
+    ArchiveCard,
     ImageUrlPipe,
     RouterLink
   ],

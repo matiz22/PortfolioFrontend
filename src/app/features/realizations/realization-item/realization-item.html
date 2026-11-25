@@ -1,4 +1,4 @@
-<a [routerLink]="['/realization', realization.slug]" class="archive-card">
+<a appArchiveCard [routerLink]="['/realization', realization.slug]" class="archive-card">
   <div class="archive-card-media">
     @if (realization.thumbnail) {
       <img [src]="realization.thumbnail | imageUrl" alt="" loading="lazy" decoding="async">

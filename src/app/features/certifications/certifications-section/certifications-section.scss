@@ -1,12 +1,8 @@
-@use '../../../../styles/home-mobile-rail' as mobile-rail;
-@use '../../../../styles/home-stage' as stage;
-
 :host {
   display: block;
 }
 
 .certifications-section {
-  @include stage.layout('.certifications-shell', '.certifications-footer');
   position: relative;
   overflow: clip;
   isolation: isolate;
@@ -118,14 +114,8 @@
 
 @media (width < 48rem) {
   .certifications-wall:has(> .certifications-slot + .certifications-slot) {
-    @include mobile-rail.viewport;
-    @include mobile-rail.columns;
     max-width: none;
     padding-block: 0.75rem 1rem;
-
-    .certifications-slot {
-      @include mobile-rail.item;
-    }
   }
 }
 

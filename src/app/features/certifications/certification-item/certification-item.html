@@ -1,4 +1,4 @@
-<a class="archive-card certificate-cover" [routerLink]="['/certification', certification.slug]">
+<a appArchiveCard class="archive-card archive-card-compact certificate-cover" [routerLink]="['/certification', certification.slug]">
   @if (certification.thumbnail && failedThumbnail() !== certification.thumbnail) {
     <img class="certificate-cover-image" [src]="certification.thumbnail | imageUrl" alt=""
       loading="lazy" decoding="async" (error)="failedThumbnail.set(certification.thumbnail)">

@@ -1,6 +1,10 @@
 @use '../../../../styles/portfolio-card' as portfolio-card;
-@use '../../../shared/portfolio/archive-card' with ($compact-preview: true);
 @use '../education-cover';
+
+:host {
+  display: grid;
+  min-width: 0;
+}
 
 .education-cover {
   justify-content: flex-end;

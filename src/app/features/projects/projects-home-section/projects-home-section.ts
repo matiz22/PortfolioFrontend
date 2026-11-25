@@ -14,13 +14,14 @@ import { ApiState } from '../../../core/models/api.state';
 import { ProjectSummary } from '../../../core/models/summary/project';
 import { ProjectPreview } from '../project-preview/project-preview';
 import { HomeRailControls } from '../../../shared/home-rail-controls/home-rail-controls';
+import { HomeStage } from '../../../shared/home-stage/home-stage';
 import { SectionAction } from '../../../shared/section-action/section-action';
 import { SectionFooter } from '../../../shared/section-footer/section-footer';
 import { StatusAnnouncer } from '../../../shared/status-announcer/status-announcer';
 
 @Component({
   selector: 'app-projects-home-section',
-  imports: [HomeCopy, RouterLink, ProjectPreview, HomeRailControls, SectionAction, SectionFooter, StatusAnnouncer],
+  imports: [HomeCopy, RouterLink, ProjectPreview, HomeRailControls, HomeStage, SectionAction, SectionFooter, StatusAnnouncer],
   templateUrl: './projects-home-section.html',
   styleUrl: './projects-home-section.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

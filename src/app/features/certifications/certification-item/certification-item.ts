@@ -4,11 +4,12 @@ import { RouterLink } from '@angular/router';
 import { Certification } from '../../../core/models/certification';
 import { CertificationSummary } from '../../../core/models/summary/certification';
 import { ImageUrlPipe } from '../../../shared/pipes/image-url-pipe';
+import { ArchiveCard } from '../../../shared/portfolio/archive-card';
 import { uniquePortfolioItems } from '../../../shared/portfolio/portfolio-metadata';
 
 @Component({
   selector: 'app-certification-item',
-  imports: [DatePipe, ImageUrlPipe, RouterLink],
+  imports: [ArchiveCard, DatePipe, ImageUrlPipe, RouterLink],
   templateUrl: './certification-item.html',
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './certification-item.scss',

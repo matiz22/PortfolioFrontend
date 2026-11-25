@@ -1,6 +1,6 @@
 <section class="about-section section-noise" aria-labelledby="about-heading">
-  <div class="about-shell relative z-10 mx-auto w-full max-w-7xl px-6">
-    <div class="about-stage">
+  <div appHomeStage class="about-shell relative z-10 mx-auto w-full max-w-7xl px-6">
+    <div class="about-stage" data-home-stage-content>
       <header class="about-header" [appHomeCopy]="{ heading: 'h2', effect: 'mask' }">
         <h2 id="about-heading" class="section-heading" i18n="@@about.heading">What I design and build</h2>
       </header>
@@ -76,7 +76,7 @@
         </article>
       </div>
     </div>
-    <div class="about-next">
+    <div class="about-next" data-home-stage-footer>
       <ng-content select="[section-next]" />
     </div>
   </div>

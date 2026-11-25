@@ -1,6 +1,6 @@
-<section class="projects-home-section relative"
+<section appHomeStage class="projects-home-section relative"
   aria-labelledby="projects-home-heading">
-  <div class="projects-home-content relative z-10">
+  <div class="projects-home-content relative z-10" data-home-stage-content>
     <div class="projects-home-header glass home-glass home-copy-panel" [appHomeCopy]="{ heading: 'h2', details: '.projects-home-description', effect: 'wipe', duration: 0.32 }">
       <div class="projects-home-intro">
         <h2 id="projects-home-heading" class="section-heading text-4xl md:text-5xl lg:text-6xl"
@@ -17,12 +17,12 @@
     <div class="projects-home-rail">
       @let projectItems = projects();
       <app-status-announcer [message]="statusMessage()" />
-      <div #projectsRail id="home-projects-rail" class="projects-home-grid" [attr.aria-busy]="projectItems.status === 'loading'">
+      <div #projectsRail id="home-projects-rail" class="projects-home-grid" data-home-mobile-rail [attr.aria-busy]="projectItems.status === 'loading'">
         @switch (projectItems.status) {
         @case ('loading') {
-        <div class="projects-home-skeleton" aria-hidden="true"></div>
-        <div class="projects-home-skeleton" aria-hidden="true"></div>
-        <div class="projects-home-skeleton projects-home-skeleton-extra" aria-hidden="true"></div>
+        <div class="projects-home-skeleton" data-home-rail-placeholder aria-hidden="true"></div>
+        <div class="projects-home-skeleton" data-home-rail-placeholder aria-hidden="true"></div>
+        <div class="projects-home-skeleton projects-home-skeleton-extra" data-home-rail-placeholder aria-hidden="true"></div>
         }
         @case ('success') {
         @if (projectItems.data.length > 0) {
@@ -46,7 +46,7 @@
       <app-home-rail-controls [viewport]="projectsRail" headingId="projects-home-heading" />
     </div>
   </div>
-  <app-section-footer class="projects-home-footer">
+  <app-section-footer class="projects-home-footer" data-home-stage-footer>
     <ng-content select="[section-next]" />
   </app-section-footer>
 </section>

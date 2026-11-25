@@ -1,4 +1,4 @@
-<a class="archive-card education-cover" [routerLink]="['/education', education.slug]">
+<a appArchiveCard class="archive-card archive-card-compact education-cover" [routerLink]="['/education', education.slug]">
   @if (education.thumbnail && failedThumbnail() !== education.thumbnail) {
     <img class="education-cover-image" [src]="education.thumbnail | imageUrl" alt=""
       loading="lazy" decoding="async" (error)="failedThumbnail.set(education.thumbnail)">

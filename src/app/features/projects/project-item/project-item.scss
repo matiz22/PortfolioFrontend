@@ -1,4 +1,7 @@
-@use '../../../shared/portfolio/archive-card' with ($compact-preview: true);
+:host {
+  display: grid;
+  min-width: 0;
+}
 
 .archive-card-media {
   flex-basis: clamp(7rem, 13vw, 10rem);

@@ -1,11 +1,11 @@
-<section class="education-section" aria-labelledby="education-heading">
-  <div class="education-shell">
-    <header class="education-header glass home-glass home-copy-panel" [appHomeCopy]="headerCopy">
+<section appHomeStage class="education-section" aria-labelledby="education-heading">
+  <div class="education-shell" data-home-stage-content>
+    <header class="education-header glass home-glass home-copy-panel flex flex-col items-start gap-3" [appHomeCopy]="headerCopy">
       <h2 id="education-heading" class="section-heading" i18n="@@education.heading">Education</h2>
       <p i18n="@@education.description">
         Where I studied and how I got into computer science and software engineering.
       </p>
-      <a appSectionAction variant="cta" routerLink="/education" class="education-viewall">
+      <a appSectionAction variant="cta" routerLink="/education" class="education-viewall relative z-[1]">
         <span i18n="@@education.viewall">View academic record</span>
       </a>
     </header>
@@ -14,24 +14,24 @@
     <div class="education-record" [attr.aria-busy]="state.status === 'loading'">
       @switch (state.status) {
       @case ('loading') {
-      <div class="education-loading">
-        <span class="education-loading-mark" aria-hidden="true">└──</span>
+      <div class="education-loading flex items-center gap-4">
+        <span class="text-primary" aria-hidden="true">└──</span>
         <p class="education-state" role="status" i18n="@@education.loading">Loading academic record…</p>
       </div>
       }
       @case ('success') {
-      <ol #educationRail id="home-education-rail" class="education-entries" role="list">
+      <ol #educationRail id="home-education-rail" class="education-entries" data-home-mobile-rail role="list">
         @for (item of entries(); track item.id) {
-        <li class="education-entry" data-home-rail-item>
-          <div class="education-motion">
+        <li class="education-entry grid" data-home-rail-item>
+          <div class="education-motion grid">
             <article class="education-card education-cover glass home-glass" [attr.aria-labelledby]="'education-title-' + item.id">
               @if (item.thumbnail && !failedThumbnails().has(item.thumbnail)) {
               <img class="education-cover-image" [src]="item.thumbnail | imageUrl" alt=""
                 loading="lazy" decoding="async" (error)="hideThumbnail(item.thumbnail)" />
               }
 
-              <div class="education-body">
-                <div class="education-main" [appHomeCopy]="cardCopy">
+              <div class="education-body flex justify-between gap-4">
+                <div class="education-main min-w-0 overflow-hidden" [appHomeCopy]="cardCopy">
                   <h3 class="education-degree" [id]="'education-title-' + item.id">{{ item.degree }}</h3>
                   @if (item.fieldOfStudy) {
                   <p class="education-subject">{{ item.fieldOfStudy }}</p>
@@ -47,11 +47,11 @@
                   }
                 </div>
 
-                <div class="education-aside">
-                  <p class="education-dates">
+                <div class="education-aside flex shrink-0 flex-col justify-end">
+                  <p class="education-dates flex flex-wrap justify-end gap-2">
                     <time [attr.datetime]="item.startDate | date:'yyyy-MM'">{{ item.startDate | date:'yyyy' }}</time>
                     @if (item.isCurrent) {
-                    <span class="education-current" i18n="@@education.present">to present</span>
+                    <span class="education-current text-primary" i18n="@@education.present">to present</span>
                     } @else if (item.endDate) {
                     <span i18n="@@home.dates.to">to</span>
                     <time [attr.datetime]="item.endDate | date:'yyyy-MM'">{{ item.endDate | date:'yyyy' }}</time>
@@ -60,7 +60,7 @@
                   @if (item.grade) {
                   <p class="education-grade"><span i18n="@@education.grade">Grade</span> · {{ item.grade }}</p>
                   }
-                  <a class="education-link education-detail-link home-text-action" [routerLink]="['/education', item.slug]"
+                  <a class="education-link education-detail-link home-text-action inline-flex items-center max-w-full" [routerLink]="['/education', item.slug]"
                     [attr.aria-labelledby]="'education-explore-' + item.id + ' education-title-' + item.id">
                     <span [id]="'education-explore-' + item.id" i18n="@@education.explore">Details</span>
                   </a>
@@ -83,7 +83,7 @@
       }
     </div>
   </div>
-  <app-section-footer class="education-footer">
+  <app-section-footer class="education-footer" data-home-stage-footer>
     <ng-content select="[section-next]" />
   </app-section-footer>
 </section>
