@@ -1,7 +1,7 @@
 import { ComponentFixture, DeferBlockBehavior, TestBed } from '@angular/core/testing';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { HomeMotionLifecycle } from '../../../shared/animations/home-motion-lifecycle';
-import { MOTION_ALLOWED_QUERY } from '../../../shared/animations/motion-media';
+import { FINE_POINTER_MOTION_QUERY, MOTION_ALLOWED_QUERY } from '../../../shared/animations/motion-media';
 import { HeroSection } from './hero-section';
 
 describe('HeroSection', () => {
@@ -24,6 +24,8 @@ describe('HeroSection', () => {
     let root: HTMLElement;
     let section: HTMLElement;
     let motionPreference: MediaQueryList;
+    let pointerMotionPreference: MediaQueryList;
+    let finePointer: boolean;
     let allowsMotion: boolean;
     let fontsReady: jasmine.Spy;
     let finishFonts: (fonts: FontFaceSet) => void;
@@ -36,6 +38,7 @@ describe('HeroSection', () => {
     function setMotionAllowed(allowed: boolean): void {
       allowsMotion = allowed;
       motionPreference.dispatchEvent(new Event('change'));
+      pointerMotionPreference.dispatchEvent(new Event('change'));
     }
 
     async function finishLoading(): Promise<void> {
@@ -47,19 +50,20 @@ describe('HeroSection', () => {
 
     beforeEach(async () => {
       allowsMotion = false;
+      finePointer = true;
       motionPreference = new EventTarget() as MediaQueryList;
+      pointerMotionPreference = new EventTarget() as MediaQueryList;
       Object.defineProperty(motionPreference, 'matches', { get: () => allowsMotion });
+      Object.defineProperty(pointerMotionPreference, 'matches', { get: () => finePointer && allowsMotion });
       const matchMedia = window.matchMedia.bind(window);
       spyOn(window, 'matchMedia').and.callFake(query => {
         if (query === MOTION_ALLOWED_QUERY) {
           return motionPreference;
         }
-        const media = matchMedia(query);
-        // The lifecycle under test is independent of which pointer the runner has.
-        if (query.includes(MOTION_ALLOWED_QUERY)) {
-          Object.defineProperty(media, 'matches', { value: false });
+        if (query === FINE_POINTER_MOTION_QUERY) {
+          return pointerMotionPreference;
         }
-        return media;
+        return matchMedia(query);
       });
       fontsReady = spyOnProperty(document.fonts, 'ready').and.returnValue(
         new Promise<FontFaceSet>(resolve => { finishFonts = resolve; }),
@@ -116,6 +120,17 @@ describe('HeroSection', () => {
       expect(disconnectResize).toHaveBeenCalledTimes(1);
       expect(disconnectIntro).toHaveBeenCalledTimes(1);
       expect(heading.innerHTML).toBe(original);
+    });
+
+    it('keeps the intro on touch without mounting the scroll-linked exit', async () => {
+      finePointer = false;
+      setMotionAllowed(true);
+      expect(fontsReady).toHaveBeenCalledTimes(1);
+      await finishLoading();
+
+      expect(root.querySelector('.hero-build-word')).not.toBeNull();
+      expect(triggers()).toHaveSize(0);
+      expect(observeResize).not.toHaveBeenCalled();
     });
 
     it('does not mount late work while detached, remounts once, and cleans up on destroy', async () => {

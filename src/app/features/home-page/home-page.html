@@ -35,10 +35,11 @@
             </app-hero-section>
         </div>
 
-        <!-- Give About's desktop layout time to settle before visitors scroll down. -->
+        <!-- On client navigation, start rendering chapters before they enter view.
+             SSR already has their layout, so keep the existing hydration timing. -->
         <div #aboutChapter id="about" data-grain-chapter="about" tabindex="-1">
             <app-status-announcer [message]="chapterLoading().has('about') ? sectionLoadingMessage : ''" />
-            @defer (on viewport({ trigger: aboutChapter, rootMargin: '-1px 0px' }); prefetch on idle; hydrate on idle, viewport({ rootMargin: '-1px 0px' })) {
+            @defer (on viewport({ trigger: aboutChapter, rootMargin: '0px 0px 320px' }); prefetch on idle; hydrate on idle, viewport({ rootMargin: '-1px 0px' })) {
             <app-about-me-section>
                 <app-section-next section-next targetId="work">
                     <span i18n="@@home.next.work">Client work</span>
@@ -53,10 +54,9 @@
             }
         </div>
 
-        <!-- Ignore edge-only intersections for the rest of the chapters. -->
         <div #workChapter id="work" data-grain-chapter="work" tabindex="-1" [style.--home-metadata-accent]="chapterAccents.work">
             <app-status-announcer [message]="chapterLoading().has('work') ? sectionLoadingMessage : ''" />
-            @defer (on viewport({ trigger: workChapter, rootMargin: '-1px 0px' }); prefetch on idle; hydrate on viewport({ rootMargin: '-1px 0px' })) {
+            @defer (on viewport({ trigger: workChapter, rootMargin: '0px 0px 320px' }); prefetch on idle; hydrate on viewport({ rootMargin: '-1px 0px' })) {
             <app-realizations-home-section>
                 <app-section-next section-next targetId="projects">
                     <span i18n="@@home.next.projects">Projects</span>
@@ -73,7 +73,7 @@
 
         <div #projectsChapter id="projects" data-grain-chapter="projects" tabindex="-1" [style.--home-metadata-accent]="chapterAccents.projects">
             <app-status-announcer [message]="chapterLoading().has('projects') ? sectionLoadingMessage : ''" />
-            @defer (on viewport({ trigger: projectsChapter, rootMargin: '-1px 0px' }); prefetch on idle; hydrate on viewport({ rootMargin: '-1px 0px' })) {
+            @defer (on viewport({ trigger: projectsChapter, rootMargin: '0px 0px 320px' }); prefetch on idle; hydrate on viewport({ rootMargin: '-1px 0px' })) {
             <app-projects-home-section>
                 <app-section-next section-next targetId="certifications">
                     <span i18n="@@home.next.certificates">Certificates</span>
@@ -91,7 +91,7 @@
         <div #certificationsChapter id="certifications" data-grain-chapter="certifications" tabindex="-1"
             [style.--home-metadata-accent]="chapterAccents.certifications">
             <app-status-announcer [message]="chapterLoading().has('certifications') ? sectionLoadingMessage : ''" />
-            @defer (on viewport({ trigger: certificationsChapter, rootMargin: '-1px 0px' }); prefetch on idle; hydrate on viewport({ rootMargin: '-1px 0px' })) {
+            @defer (on viewport({ trigger: certificationsChapter, rootMargin: '0px 0px 320px' }); prefetch on idle; hydrate on viewport({ rootMargin: '-1px 0px' })) {
             <app-certifications-section>
                 <app-section-next section-next targetId="experience">
                     <span i18n="@@home.next.experience">Experience</span>
@@ -108,7 +108,7 @@
 
         <div #experienceChapter id="experience" data-grain-chapter="experience" tabindex="-1" [style.--home-metadata-accent]="chapterAccents.experience">
             <app-status-announcer [message]="chapterLoading().has('experience') ? sectionLoadingMessage : ''" />
-            @defer (on viewport({ trigger: experienceChapter, rootMargin: '-1px 0px' }); prefetch on idle; hydrate on viewport({ rootMargin: '-1px 0px' })) {
+            @defer (on viewport({ trigger: experienceChapter, rootMargin: '0px 0px 320px' }); prefetch on idle; hydrate on viewport({ rootMargin: '-1px 0px' })) {
             <app-job-timeline-section>
                 <app-section-next section-next targetId="education">
                     <span i18n="@@home.next.education">Education</span>
@@ -125,7 +125,7 @@
 
         <div #educationChapter id="education" data-grain-chapter="education" tabindex="-1" [style.--home-metadata-accent]="chapterAccents.education">
             <app-status-announcer [message]="chapterLoading().has('education') ? sectionLoadingMessage : ''" />
-            @defer (on viewport({ trigger: educationChapter, rootMargin: '-1px 0px' }); prefetch on idle; hydrate on viewport({ rootMargin: '-1px 0px' })) {
+            @defer (on viewport({ trigger: educationChapter, rootMargin: '0px 0px 320px' }); prefetch on idle; hydrate on viewport({ rootMargin: '-1px 0px' })) {
             <app-education-section>
                 <app-section-next section-next targetId="contact">
                     <span i18n="@@home.next.contact">Let’s talk</span>
@@ -143,7 +143,7 @@
         <!-- Contact closes the main content; the site footer stays outside its landmark. -->
         <div #contactChapter id="contact" class="home-closing" data-grain-chapter="contact" tabindex="-1">
             <app-status-announcer [message]="chapterLoading().has('contact') ? sectionLoadingMessage : ''" />
-            @defer (on viewport({ trigger: contactChapter, rootMargin: '-1px 0px' }); prefetch on idle; hydrate on viewport({ rootMargin: '-1px 0px' })) {
+            @defer (on viewport({ trigger: contactChapter, rootMargin: '0px 0px 320px' }); prefetch on idle; hydrate on viewport({ rootMargin: '-1px 0px' })) {
             <app-contact-section class="home-contact contact-blended" [glass]="true" [sectionId]="null" [homeCopy]="true" />
             } @placeholder {
             <ng-container [ngTemplateOutlet]="sectionSkeleton" />

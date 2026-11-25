@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import { afterNextRenderMotion } from '../../../shared/animations/lazy-motion';
-import { MOTION_ALLOWED_QUERY } from '../../../shared/animations/motion-media';
+import { FINE_POINTER_MOTION_QUERY, MOTION_ALLOWED_QUERY } from '../../../shared/animations/motion-media';
 import { SectionAction } from '../../../shared/section-action/section-action';
 
 @Component({
@@ -16,12 +16,13 @@ import { SectionAction } from '../../../shared/section-action/section-action';
 })
 export class HeroSection {
   constructor() {
+    // On touch screens keep the hero at its natural size during native scrolling.
     afterNextRenderMotion(async (root) => {
       const [{ animateHeroScroll }] = await Promise.all([
         import('./hero-scroll-animation'), root.ownerDocument.fonts.ready,
       ]);
       return animateHeroScroll;
-    }, 'Hero scroll animation could not be loaded.', MOTION_ALLOWED_QUERY);
+    }, 'Hero scroll animation could not be loaded.', FINE_POINTER_MOTION_QUERY);
 
     // Keep SSR text readable while the optional animation and display font load.
     afterNextRenderMotion(async (root) => {

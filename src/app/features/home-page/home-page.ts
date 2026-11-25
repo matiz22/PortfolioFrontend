@@ -64,14 +64,14 @@ export class HomePage implements RouteAttachment {
   }
 
   private scrollToInitialFragment(root: HTMLElement): void {
-    const hash = this.document.defaultView?.location.hash;
-    if (!hash) {
+    const fragment = this.document.defaultView?.location.hash.slice(1);
+    if (!fragment) {
       return;
     }
 
     let id: string;
     try {
-      id = decodeURIComponent(hash.slice(1));
+      id = decodeURIComponent(fragment);
     } catch {
       return;
     }

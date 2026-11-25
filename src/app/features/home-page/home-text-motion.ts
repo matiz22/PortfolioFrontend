@@ -142,8 +142,10 @@ export function animateHomeText(root: HTMLElement, registry: HomeCopyRegistry): 
     const doc = root.ownerDocument;
     let disposed = false;
     const anchor = () => {
+      const fragment = view.location.hash.slice(1);
+      if (!fragment) return null;
       try {
-        return doc.getElementById(decodeURIComponent(view.location.hash.slice(1)));
+        return doc.getElementById(decodeURIComponent(fragment));
       } catch {
         return null;
       }

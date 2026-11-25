@@ -44,7 +44,9 @@
   }
 }
 
-@media (max-height: 44rem) {
+// Use width for compact touch layouts so address-bar changes cannot resize the panels.
+@media (max-width: 47.999rem) and (pointer: coarse),
+  (max-height: 44rem) and (hover: hover) and (pointer: fine) {
   :root .home-glass.glass.home-copy-panel {
     padding: 0.875rem;
   }

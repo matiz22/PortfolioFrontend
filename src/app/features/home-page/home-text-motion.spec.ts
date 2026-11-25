@@ -140,6 +140,24 @@ describe('homepage text motion', () => {
     expect(link.getAttribute('style')).toBeNull();
   });
 
+  it('does not look up an ID for absent, empty, or malformed fragments', () => {
+    const originalUrl = location.href;
+    const lookup = spyOn(document, 'getElementById').and.callThrough();
+    try {
+      history.replaceState(null, '', location.pathname + location.search);
+      motion = animateHomeText(root, registry);
+      element('a').focus();
+      intersect(element('.projects-home-header h2'), 0.5);
+      for (const fragment of ['#', '#%']) {
+        history.replaceState(null, '', fragment);
+        window.dispatchEvent(new HashChangeEvent('hashchange'));
+      }
+      expect(lookup).not.toHaveBeenCalled();
+    } finally {
+      history.replaceState(null, '', originalUrl);
+    }
+  });
+
   it('waits for a fragment destination to enter view and reveals it despite native anchor focus', () => {
     const originalUrl = location.href;
     try {
