@@ -3,7 +3,10 @@
   "version": 1,
   "newProjectRoot": "projects",
   "cli": {
-    "analytics": false
+    "analytics": false,
+    "schematicCollections": [
+      "angular-eslint"
+    ]
   },
   "projects": {
     "PortfolioFrontend": {
@@ -31,7 +34,12 @@
           "options": {
             "localize": true,
             "security": {
-              "allowedHosts": ["malich.dev", "localhost", "127.0.0.1", "[::1]"]
+              "allowedHosts": [
+                "malich.dev",
+                "localhost",
+                "127.0.0.1",
+                "[::1]"
+              ]
             },
             "browser": "src/main.ts",
             "polyfills": [
@@ -166,6 +174,15 @@
             "styles": [
               "src/styles.scss",
               "src/animations.scss"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
             ]
           }
         }
