@@ -13,6 +13,8 @@ describe('realizations optional visual motion', () => {
   let desktop: boolean;
   let canAnimate: boolean;
 
+  const nextFrame = () => new Promise<void>(resolve => requestAnimationFrame(() => resolve()));
+
   beforeEach(() => {
     wide = true;
     desktop = false;
@@ -55,7 +57,7 @@ describe('realizations optional visual motion', () => {
       scrollLeft: { value: 0, writable: true },
     });
     root.querySelectorAll('.realization-showcase').forEach((card, index) => {
-      Object.defineProperty(card, 'offsetLeft', { value: index * 300 });
+      Object.defineProperty(card, 'offsetLeft', { value: index * 300, configurable: true });
       Object.defineProperty(card, 'offsetWidth', { value: 240 });
     });
     scrollTo = spyOn(gallery, 'scrollTo');
@@ -89,16 +91,20 @@ describe('realizations optional visual motion', () => {
     expect(gsap.getTweensOf(root.querySelectorAll('.realization-showcase'))).toEqual([]);
   });
 
-  it('removes the right-edge fade near the last card and restores it scrolling back', () => {
+  it('removes the right-edge fade near the last card and restores it scrolling back', async () => {
     motion = animateRealizationsScroll(root, reportProgress);
     expect(edgeAlpha()).toBeCloseTo(0.28, 3);
     scroll(472.5);
+    await nextFrame();
     expect(edgeAlpha()).toBeCloseTo(0.64, 3);
     scroll(540);
+    await nextFrame();
     expect(edgeAlpha()).toBe(1);
     scroll(600); // Elastic overscroll must not darken the final card again.
+    await nextFrame();
     expect(edgeAlpha()).toBe(1);
     scroll(0);
+    await nextFrame();
     expect(edgeAlpha()).toBeCloseTo(0.28, 3);
   });
 
@@ -108,7 +114,7 @@ describe('realizations optional visual motion', () => {
     expect(edgeAlpha()).toBe(1);
   });
 
-  it('clears and restores the fade with the desktop scrub', () => {
+  it('clears and restores the fade with the desktop scrub', async () => {
     desktop = true;
     canAnimate = true;
     let top = 0;
@@ -120,16 +126,17 @@ describe('realizations optional visual motion', () => {
     expect(reportProgress).toHaveBeenCalledWith(0);
     expect(edgeAlpha()).toBeCloseTo(0.28, 3);
 
-    const finishScroll = () => {
+    const finishScroll = async () => {
       window.dispatchEvent(new Event('scroll'));
+      await nextFrame();
       gsap.getTweensOf(gallery).forEach((tween) => tween.progress(1));
     };
     top = -702; // 162px leading hold + 540px horizontal overflow.
-    finishScroll();
+    await finishScroll();
     expect(edgeAlpha()).toBe(1);
     expect(reportProgress).toHaveBeenCalledWith(1);
     top = 0;
-    finishScroll();
+    await finishScroll();
     expect(edgeAlpha()).toBeCloseTo(0.28, 3);
   });
 
@@ -196,10 +203,81 @@ describe('realizations optional visual motion', () => {
     expect(root.querySelector<HTMLElement>('.realizations-track')!.style.transform).toBe('');
   });
 
-  it('restores edge styles and removes visual listeners on cleanup', () => {
+  it('batches native scroll work, refreshing cached width only after geometry changes', async () => {
+    let width = 300;
+    const readWidth = jasmine.createSpy('clientWidth').and.callFake(() => width);
+    const observer = jasmine.createSpyObj<ResizeObserver>('observer', ['observe', 'disconnect']);
+    let notifyResize!: () => void;
+    spyOn(window, 'ResizeObserver').and.callFake(function (callback) {
+      notifyResize = () => callback([], observer);
+      return observer;
+    });
+    Object.defineProperty(gallery, 'clientWidth', { get: readWidth });
     motion = animateRealizationsScroll(root, reportProgress);
+    readWidth.calls.reset();
+
+    scroll(100);
+    scroll(270);
+    scroll(540);
+    expect(edgeAlpha()).toBeCloseTo(0.28, 3);
+    await nextFrame();
+    expect(edgeAlpha()).toBe(1);
+    expect(readWidth).not.toHaveBeenCalled();
+
+    width = 255;
+    notifyResize();
+    notifyResize();
+    await nextFrame();
+    expect(readWidth).toHaveBeenCalledTimes(1);
+    expect(edgeAlpha()).toBeLessThan(1);
+  });
+
+  it('batches pinned geometry and progress, and cancels a pending scroll update on cleanup', async () => {
+    desktop = true;
+    canAnimate = true;
+    let top = 0;
+    const wrap = root.querySelector<HTMLElement>('.realizations-stage-wrap')!;
+    Object.defineProperty(wrap.firstElementChild, 'offsetHeight', { value: window.innerHeight });
+    const readTop = spyOn(wrap, 'getBoundingClientRect').and.callFake(() => ({ top } as DOMRect));
+    const card = root.querySelector('.realization-showcase')!;
+    const readCardOffset = jasmine.createSpy('offsetLeft').and.returnValue(0);
+    Object.defineProperty(card, 'offsetLeft', { get: readCardOffset });
+    // Use explicit resize events to separate the initial observer delivery from the scroll burst.
+    spyOn(window, 'ResizeObserver').and.callFake(function () {
+      return jasmine.createSpyObj<ResizeObserver>('observer', ['observe', 'disconnect']);
+    });
+    motion = animateRealizationsScroll(root, reportProgress);
+    readTop.calls.reset();
+    readCardOffset.calls.reset();
+    reportProgress.calls.reset();
+
+    top = -300;
+    for (let i = 0; i < 5; i++) window.dispatchEvent(new Event('scroll'));
+    expect(reportProgress).not.toHaveBeenCalled();
+    await nextFrame();
+    expect(readTop).toHaveBeenCalledTimes(1);
+    expect(readCardOffset).not.toHaveBeenCalled();
+    expect(reportProgress).toHaveBeenCalledOnceWith(138 / 540);
+
+    window.dispatchEvent(new Event('resize'));
+    await nextFrame();
+    expect(readCardOffset).toHaveBeenCalledTimes(1);
+
+    readTop.calls.reset();
+    top = -650;
+    window.dispatchEvent(new Event('scroll'));
+    motion.revert();
+    await nextFrame();
+    expect(readTop).not.toHaveBeenCalled();
+    expect(reportProgress.calls.mostRecent().args).toEqual([null]);
+  });
+
+  it('restores edge styles and removes visual listeners on cleanup', async () => {
+    motion = animateRealizationsScroll(root, reportProgress);
+    scroll(540);
     motion.revert();
     next.click();
+    await nextFrame();
     expect(scrollTo).not.toHaveBeenCalled();
     expect(root.querySelector<HTMLElement>('.realizations-rail-fill')!.style.transform).toBe('');
     expect(gallery.style.getPropertyValue('--realizations-edge-alpha')).toBe('');
