@@ -186,7 +186,7 @@ html:active-view-transition {
 
 // Homepage anchors live outside their section components. Outline the heading once
 // it renders, and keep an inset focus outline on the anchor while content is deferred.
-.home-page [data-grain-chapter]:focus-visible {
+.home-page [data-grain-chapter]:not([data-grain-chapter='hero']):focus-visible {
   outline: 2px solid var(--color-base-content);
   outline-offset: -2px;
 
@@ -198,6 +198,11 @@ html:active-view-transition {
     outline: 2px solid var(--color-base-content);
     outline-offset: 0.375rem;
   }
+}
+
+// Keep the Hero anchor focusable without drawing a frame on landing at #home.
+.home-page #home:focus {
+  outline: none;
 }
 
 /* Subtle divider line */

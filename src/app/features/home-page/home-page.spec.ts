@@ -241,16 +241,18 @@ describe('HomePage', () => {
     certifications.blur();
   });
 
-  it('outlines the hero heading on keyboard focus instead of drawing a corner mark', () => {
+  it('keeps the hero free of an outline or accent bar when its anchor receives focus', () => {
     const root: HTMLElement = fixture.nativeElement;
     const hero = root.querySelector<HTMLElement>('#home')!;
     const heading = hero.querySelector('#hero-headline')!;
 
     expect(getComputedStyle(heading).outlineStyle).toBe('none');
+    expect(getComputedStyle(heading).boxShadow).toBe('none');
     hero.focus({ preventScroll: true });
-    expect(hero.matches(':focus-visible')).toBeTrue();
-    expect(getComputedStyle(hero, '::before').content).toBe('none');
-    expect(getComputedStyle(heading).outlineStyle).toBe('solid');
+    expect(document.activeElement).toBe(hero);
+    expect(getComputedStyle(hero).outlineStyle).toBe('none');
+    expect(getComputedStyle(heading).outlineStyle).toBe('none');
+    expect(getComputedStyle(heading).boxShadow).toBe('none');
     hero.blur();
   });
 
