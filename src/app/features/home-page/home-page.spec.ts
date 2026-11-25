@@ -185,7 +185,9 @@ describe('HomePage', () => {
     await fixture.whenStable();
 
     const root: HTMLElement = fixture.nativeElement;
-    const chapters = Array.from(root.querySelector('main')!.children, (chapter) => chapter.firstElementChild?.tagName);
+    const chapters = Array.from(root.querySelector('main')!.children, (chapter) =>
+      Array.from(chapter.children)
+        .find((child) => !child.matches('app-status-announcer'))?.tagName);
     expect(chapters).toEqual([
       'APP-HERO-SECTION',
       'APP-ABOUT-ME-SECTION',
