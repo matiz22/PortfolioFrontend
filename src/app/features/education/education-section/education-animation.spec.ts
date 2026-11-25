@@ -52,16 +52,20 @@ describe('education card animation', () => {
   });
 
   it('hides cards before travel and removes inline styles once revealed', () => {
+    root.style.marginTop = '200vh';
     revert = animateEducationCards(root);
     expect(wrapper(0).style.opacity).toBe('0');
+    expect(wrapper(0).style.willChange).toBe('');
     expect(Number(gsap.getProperty(wrapper(0), 'y'))).toBe(48);
     expect(Number(gsap.getProperty(wrapper(1), 'y'))).toBe(48);
 
     const trigger = ScrollTrigger.getAll().find((candidate) => candidate.trigger === wrapper(0))!;
     trigger.vars.onEnter?.(trigger);
+    expect(wrapper(0).style.willChange).toBe('transform, opacity');
     finishTweens(wrapper(0));
     expect(wrapper(0).style.opacity).toBe('');
     expect(wrapper(0).style.transform).toBe('');
+    expect(wrapper(0).style.willChange).toBe('');
     expect(wrapper(1).style.opacity).toBe('0');
   });
 
@@ -73,23 +77,50 @@ describe('education card animation', () => {
     expect(wrapper(0).style.opacity).toBe('');
 
     trigger.vars.onLeaveBack?.(trigger);
+    expect(wrapper(0).style.willChange).toBe('transform, opacity');
     finishTweens(wrapper(0));
     expect(wrapper(0).style.opacity).toBe('0');
     expect(Number(gsap.getProperty(wrapper(0), 'y'))).toBe(48);
+    expect(wrapper(0).style.willChange).toBe('');
   });
 
   it('tilts only the hovered card surface toward the cursor on precise pointers', () => {
     revert = animateEducationCards(root);
+    expect(surface(0).style.transform).toBe('');
+    expect(surface(0).style.willChange).toBe('');
     surface(0).dispatchEvent(new PointerEvent('pointerenter', { pointerType: 'mouse' }));
+    expect(surface(0).style.willChange).toBe('transform');
     finishTweens(surface(0));
     expect(Number(gsap.getProperty(surface(0), 'rotationX'))).not.toBe(0);
     expect(Number(gsap.getProperty(surface(0), 'rotationY'))).not.toBe(0);
     expect(Number(gsap.getProperty(surface(1), 'rotationY'))).toBe(0);
+    expect(surface(1).style.willChange).toBe('');
 
     surface(0).dispatchEvent(new PointerEvent('pointerleave', { pointerType: 'mouse' }));
+    expect(surface(0).style.willChange).toBe('transform');
     finishTweens(surface(0));
     expect(Number(gsap.getProperty(surface(0), 'rotationY'))).toBe(0);
     expect(Number(gsap.getProperty(surface(0), 'x'))).toBe(0);
+    expect(surface(0).style.transform).toBe('');
+    expect(surface(0).style.willChange).toBe('');
+  });
+
+  it('does not retain cleanup tweens after repeated hovers', () => {
+    const motion = gsap.matchMedia();
+    spyOn(gsap, 'matchMedia').and.returnValue(motion);
+    revert = animateEducationCards(root);
+    const [context] = motion.contexts;
+    const initialTweenCount = context['getTweens']().length;
+    const card = surface(0);
+
+    for (let i = 0; i < 3; i++) {
+      card.dispatchEvent(new PointerEvent('pointerenter', { pointerType: 'mouse' }));
+      finishTweens(card);
+      card.dispatchEvent(new PointerEvent('pointerleave', { pointerType: 'mouse' }));
+      finishTweens(card);
+    }
+
+    expect(context['getTweens']().length).toBe(initialTweenCount);
   });
 
   it('measures the card at pointer entry after its initial offscreen layout changes', () => {
@@ -126,11 +157,13 @@ describe('education card animation', () => {
 
   it('immediately reveals a keyboard-focused card and refuses to fade it out', () => {
     revert = animateEducationCards(root);
+    const trigger = ScrollTrigger.getAll().find((candidate) => candidate.trigger === wrapper(0))!;
+    trigger.vars.onEnter?.(trigger);
     root.querySelector<HTMLAnchorElement>('a')!.focus();
     expect(wrapper(0).style.opacity).toBe('');
     expect(wrapper(0).style.transform).toBe('');
+    expect(wrapper(0).style.willChange).toBe('');
 
-    const trigger = ScrollTrigger.getAll().find((candidate) => candidate.trigger === wrapper(0))!;
     trigger.vars.onLeaveBack?.(trigger);
     finishTweens(wrapper(0));
     expect(wrapper(0).style.opacity).toBe('');
@@ -163,14 +196,18 @@ describe('education card animation', () => {
 
   it('clears scroll listeners, tilt handlers, and inline styles on disposal', () => {
     revert = animateEducationCards(root);
+    const cancelFrame = spyOn(window, 'cancelAnimationFrame').and.callThrough();
     const link = root.querySelector<HTMLAnchorElement>('a')!;
     surface(0).dispatchEvent(new PointerEvent('pointerenter', { pointerType: 'mouse' }));
+    window.dispatchEvent(new Event('scroll'));
     revert();
     revert = undefined;
 
+    expect(cancelFrame).toHaveBeenCalled();
     expect(wrapper(0).style.opacity).toBe('');
     expect(wrapper(0).style.transform).toBe('');
     expect(Number(gsap.getProperty(surface(0), 'rotationY'))).toBe(0);
+    expect(surface(0).style.willChange).toBe('');
     expect(gsap.getTweensOf(surface(0))).toEqual([]);
     surface(0).dispatchEvent(new PointerEvent('pointerenter', { pointerType: 'mouse' }));
     expect(Number(gsap.getProperty(surface(0), 'rotationY'))).toBe(0);
@@ -186,6 +223,7 @@ describe('education card animation', () => {
     gsap.matchMediaRefresh();
 
     expect(surface(0).style.transform).toBe('');
+    expect(surface(0).style.willChange).toBe('');
     expect(gsap.getTweensOf(surface(0))).toEqual([]);
   });
 });

@@ -71,10 +71,6 @@
   min-inline-size: 0;
 }
 
-.education-motion {
-  will-change: transform, opacity;
-}
-
 .education-card {
   @include portfolio-card.compact-pills;
   position: relative;
@@ -86,7 +82,6 @@
   border-radius: var(--radius);
   background: #101010;
   overflow: clip;
-  will-change: transform;
   transform-style: preserve-3d;
   transition: border-color 200ms ease, background-color 200ms ease;
 

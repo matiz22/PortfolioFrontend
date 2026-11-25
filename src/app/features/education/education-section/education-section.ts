@@ -13,12 +13,21 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { ApiState } from '../../../core/models/api.state';
 import { EducationSummary } from '../../../core/models/summary/education';
 import { EducationService } from '../../../core/services/education.service';
+import type { HomeCopyConfig } from '../../../shared/animations/home-copy-registry';
 import { injectLazyMotion } from '../../../shared/animations/lazy-motion';
 import { HomeMetadataPills } from '../../../shared/home-metadata-pills/home-metadata-pills';
 import { HomeRailControls } from '../../../shared/home-rail-controls/home-rail-controls';
 import { ImageUrlPipe } from '../../../shared/pipes/image-url-pipe';
 import { SectionAction } from '../../../shared/section-action/section-action';
 import { SectionFooter } from '../../../shared/section-footer/section-footer';
+
+const HEADER_COPY = { heading: 'h2', details: 'p' } satisfies HomeCopyConfig;
+const CARD_COPY = {
+  heading: '.education-degree',
+  details: '.education-institution',
+  duration: 0.35,
+  focusScope: '.education-card',
+} satisfies HomeCopyConfig;
 
 @Component({
   selector: 'app-education-section',
@@ -30,6 +39,8 @@ import { SectionFooter } from '../../../shared/section-footer/section-footer';
 export class EducationSection {
   private readonly educationService = inject(EducationService);
 
+  protected readonly headerCopy = HEADER_COPY;
+  protected readonly cardCopy = CARD_COPY;
   protected readonly failedThumbnails = signal<ReadonlySet<string>>(new Set());
 
   readonly education = toSignal(this.educationService.getHomeSummaryItems(), {

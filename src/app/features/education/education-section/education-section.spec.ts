@@ -5,6 +5,7 @@ import { EducationSection } from './education-section';
 import { EducationService } from '../../../core/services/education.service';
 import { EducationSummary } from '../../../core/models/summary/education';
 import { ApiState } from '../../../core/models/api.state';
+import { HomeCopyRegistry } from '../../../shared/animations/home-copy-registry';
 
 describe('EducationSection', () => {
   let component: EducationSection;
@@ -47,6 +48,7 @@ describe('EducationSection', () => {
       providers: [
         provideRouter([]),
         { provide: EducationService, useValue: service },
+        HomeCopyRegistry,
       ],
     })
       .compileComponents();
@@ -77,6 +79,31 @@ describe('EducationSection', () => {
     expect(link?.classList).toContain('section-action-cta');
     expect(link?.getAttribute('href')).toBe('/education');
     expect(header.nextElementSibling?.classList).toContain('education-record');
+  });
+
+  it('shares the card copy configuration without replacing retained registrations', async () => {
+    const registry = TestBed.inject(HomeCopyRegistry);
+    const add = jasmine.createSpy('add');
+    const remove = jasmine.createSpy('remove');
+    const unsubscribe = registry.subscribe({ add, remove });
+    const secondDegree = { ...degree, id: 2, slug: 'masters' };
+    response.next(ApiState.success([degree, secondDegree]));
+    await fixture.whenStable();
+    expect(add).toHaveBeenCalledTimes(3);
+    const cardConfigs = add.calls.allArgs()
+      .map(([registration]) => registration.config)
+      .filter(config => config.focusScope === '.education-card');
+    expect(cardConfigs.length).toBe(2);
+    expect(cardConfigs[0]).toBe(cardConfigs[1]);
+    const root = fixture.nativeElement as HTMLElement;
+    expect(getComputedStyle(root.querySelector('.education-motion')!).willChange).toBe('auto');
+    expect(getComputedStyle(root.querySelector('.education-card')!).willChange).toBe('auto');
+
+    response.next(ApiState.success([{ ...degree, degree: 'Updated degree' }, secondDegree]));
+    await fixture.whenStable();
+    expect(add).toHaveBeenCalledTimes(3);
+    expect(remove).not.toHaveBeenCalled();
+    unsubscribe();
   });
 
   it('reserves space for the cards and announces loading', () => {

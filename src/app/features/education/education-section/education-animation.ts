@@ -20,8 +20,7 @@ export function animateEducationCards(root: HTMLElement): () => void {
       }
 
       const wrappers = Array.from(root.querySelectorAll<HTMLElement>('.education-motion'));
-      const surfaces = new Map<HTMLElement, HTMLElement>();
-      const revealed = new WeakSet<HTMLElement>();
+      const surfaces: HTMLElement[] = [];
       const triggers: ScrollTrigger[] = [];
 
       for (const wrapper of wrappers) {
@@ -29,11 +28,8 @@ export function animateEducationCards(root: HTMLElement): () => void {
         if (!surface) {
           continue;
         }
-        surfaces.set(wrapper, surface);
+        surfaces.push(surface);
 
-        if (revealed.has(wrapper)) {
-          continue;
-        }
         // Opacity keeps keyboard users able to reach links during any entrance.
         gsap.set(wrapper, { opacity: 0, y: 48 });
         const trigger = ScrollTrigger.create({
@@ -41,27 +37,28 @@ export function animateEducationCards(root: HTMLElement): () => void {
           start: 'top 92%',
           end: 'top 40%',
           onEnter: () => {
-            revealed.add(wrapper);
+            wrapper.style.willChange = 'transform, opacity';
             gsap.to(wrapper, {
               opacity: 1,
               y: 0,
               duration: 0.65,
               ease: 'power3.out',
               overwrite: true,
-              clearProps: 'transform,opacity',
+              clearProps: 'transform,opacity,willChange',
             });
           },
           onLeaveBack: () => {
             if (wrapper.contains(root.ownerDocument.activeElement)) {
               return;
             }
-            revealed.delete(wrapper);
+            wrapper.style.willChange = 'transform, opacity';
             gsap.to(wrapper, {
               opacity: 0,
               y: 48,
               duration: 0.4,
               ease: 'power2.in',
               overwrite: true,
+              clearProps: 'willChange',
             });
           },
         });
@@ -72,9 +69,8 @@ export function animateEducationCards(root: HTMLElement): () => void {
         const wrapper = wrappers.find((candidate) => candidate.contains(root.ownerDocument.activeElement));
         if (wrapper) {
           context.add(() => {
-            revealed.add(wrapper);
             gsap.killTweensOf(wrapper);
-            gsap.set(wrapper, { clearProps: 'transform,opacity' });
+            gsap.set(wrapper, { clearProps: 'transform,opacity,willChange' });
           });
         }
       };
@@ -83,20 +79,25 @@ export function animateEducationCards(root: HTMLElement): () => void {
       onFocus();
 
       if (context.conditions?.['hover']) {
-        for (const surface of surfaces.values()) {
+        for (const surface of surfaces) {
           let rect: DOMRect | undefined;
           let hovered = false;
           let pointer = { x: 0, y: 0 };
           let frame: number | undefined;
-          gsap.set(surface, {
-            transformPerspective: 650,
-            force3D: true,
-          });
 
           // Two quickTo tweens reuse a single tween per property, keeping
           // pointermove cheap no matter how often the cursor crosses a card.
           const tiltX = gsap.quickTo(surface, 'rotationX', { duration: 0.6, ease: 'power3' });
-          const tiltY = gsap.quickTo(surface, 'rotationY', { duration: 0.6, ease: 'power3' });
+          const tiltY = gsap.quickTo(surface, 'rotationY', {
+            duration: 0.6,
+            ease: 'power3',
+            onComplete: () => {
+              if (!hovered) {
+                // GSAP runs this callback inside the tween's context. Don't retain a set per hover.
+                context.ignore(() => gsap.set(surface, { clearProps: 'transform,willChange' }));
+              }
+            },
+          });
 
           const settle = () => {
             tiltX(0);
@@ -127,6 +128,8 @@ export function animateEducationCards(root: HTMLElement): () => void {
             }
             hovered = true;
             rect = undefined;
+            surface.style.willChange = 'transform';
+            gsap.set(surface, { transformPerspective: 650 });
             onMove(event);
           };
 
@@ -137,6 +140,7 @@ export function animateEducationCards(root: HTMLElement): () => void {
             }
           };
           const onLeave = () => {
+            if (!hovered) return;
             hovered = false;
             cancelFrame();
             settle();
@@ -167,13 +171,15 @@ export function animateEducationCards(root: HTMLElement): () => void {
             surface.removeEventListener('pointercancel', onLeave);
             view.removeEventListener('scroll', onBoundsChange, true);
             view.removeEventListener('resize', onBoundsChange);
-            // The context has already reverted both quickTo tweens and their styles.
+            // Pointer handlers set perspective outside the context.
+            gsap.set(surface, { clearProps: 'transform,willChange' });
           });
         }
       }
 
       return () => {
         triggers.forEach((trigger) => trigger.kill());
+        wrappers.forEach(wrapper => wrapper.style.removeProperty('will-change'));
         cleanups.forEach((cleanup) => cleanup());
         cleanups.length = 0;
         triggers.length = 0;
