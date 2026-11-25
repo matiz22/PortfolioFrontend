@@ -1,5 +1,7 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { createFrameTask } from '../../../shared/animations/frame-task';
+import { MOTION_ALLOWED_QUERY } from '../../../shared/animations/motion-media';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -43,7 +45,7 @@ export function animateHeroScroll(root: HTMLElement): gsap.MatchMedia {
     return motion;
   }
 
-  motion.add('(prefers-reduced-motion: no-preference)', () => {
+  motion.add(MOTION_ALLOWED_QUERY, () => {
     // Follow the actual container-query layout, not an approximate viewport breakpoint.
     const isWide = () => view.getComputedStyle(layout).gridTemplateAreas === '"copy portrait"';
 
@@ -96,12 +98,16 @@ export function animateHeroScroll(root: HTMLElement): gsap.MatchMedia {
     }
 
     // Refresh after deferred content or container changes, without adding scroll listeners.
-    const resizeObserver = new ResizeObserver(() => ScrollTrigger.refresh());
-    resizeObserver.observe(section);
-    resizeObserver.observe(layout);
+    const refresh = createFrameTask(view, () => ScrollTrigger.refresh());
+    const resizeObserver = view.ResizeObserver ? new view.ResizeObserver(refresh.request) : undefined;
+    resizeObserver?.observe(section);
+    resizeObserver?.observe(layout);
     ScrollTrigger.refresh();
 
-    return () => resizeObserver.disconnect();
+    return () => {
+      resizeObserver?.disconnect();
+      refresh.dispose();
+    };
   }, root);
 
   return motion;
