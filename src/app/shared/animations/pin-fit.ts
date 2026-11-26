@@ -56,7 +56,7 @@ export function watchPinFit({ section, stage, pinnedClass, observe, eligible, to
 
     // Measure the candidate pinned presentation; the class drives its layout.
     section.classList.add(pinnedClass);
-    // scrollHeight also catches translated text overflowing a GSAP pin's fixed height.
+    // scrollHeight also catches translated text overflowing a pinned stage's fixed height.
     const overflow = Math.max(stage.offsetHeight, stage.scrollHeight) - view.innerHeight;
     if (overflow > (instance ? tolerance : 0)) {
       // A resize can be measured against a half-updated layout. Release the pin

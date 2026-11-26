@@ -1,7 +1,7 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { createFrameTask } from '../../../shared/animations/frame-task';
 import { watchPinFit } from '../../../shared/animations/pin-fit';
-import { ABOUT_PIN_REFRESH_PRIORITY } from '../../../shared/animations/home-pin-refresh-priority';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -44,7 +44,9 @@ export function animateAboutMeScroll(root: HTMLElement, resolveInitialFragment =
       section, stage, pinnedClass: 'about-is-pinned', tolerance: 12,
       observe: [panelsContainer, ...panels, ...(header ? [header] : [])],
       mount: () => {
-        let trigger!: ScrollTrigger;
+        const originalHeight = section.style.height;
+        let distance = 0;
+        let refreshTravel: () => void = () => undefined;
         const animation = gsap.context(() => {
           gsap.set(panels, { autoAlpha: 0, y: 14 });
           gsap.set(panels[0], { autoAlpha: 1, y: 0 });
@@ -81,7 +83,9 @@ export function animateAboutMeScroll(root: HTMLElement, resolveInitialFragment =
 
           setActive(0);
 
-          const timeline = gsap.timeline({ defaults: { ease: 'none' } });
+          // Driven manually from scroll progress; paused so it never runs on
+          // its own ticker.
+          const timeline = gsap.timeline({ defaults: { ease: 'none' }, paused: true });
           panels.forEach((panel, i) => {
             const holdStart = i * SERVICE_STEP;
             timeline.addLabel(`service-${i}`, holdStart);
@@ -119,24 +123,39 @@ export function animateAboutMeScroll(root: HTMLElement, resolveInitialFragment =
             ));
           });
 
-          trigger = ScrollTrigger.create({
-            trigger: stage,
-            animation: timeline,
-            start: 'top top',
-            // Keep each service readable without requiring a full viewport of travel per hold.
-            end: () => `+=${Math.round(timeline.duration() * stage.offsetHeight * SCROLL_DISTANCE_SCALE)}`,
-            pin: true,
-            refreshPriority: ABOUT_PIN_REFRESH_PRIORITY,
-            scrub: true,
-            invalidateOnRefresh: true,
-          });
+          // Sticky travel: CSS holds the shell at the viewport top inside the
+          // stretched section while scroll position drives the timeline from a
+          // frame task, so no style is written while a scroll event is handled.
+          const apply = () => {
+            if (distance <= 0) {
+              return;
+            }
+            const progress = gsap.utils.clamp(
+              0, distance, -section.getBoundingClientRect().top,
+            ) / distance;
+            timeline.progress(progress);
+          };
+          const draw = createFrameTask(view, apply);
+          const onScroll = () => draw.request();
+          const fit = () => {
+            distance = Math.round(timeline.duration() * stage.offsetHeight * SCROLL_DISTANCE_SCALE);
+            section.style.height = `${stage.offsetHeight + distance}px`;
+          };
+          fit();
+          view.addEventListener('scroll', onScroll, { passive: true });
+          apply();
+          refreshTravel = () => {
+            fit();
+            draw.request();
+          };
 
           const scrollToPanel = (index: number, behavior: ScrollBehavior) => {
             // The panels share a grid cell while pinned; only the timeline distinguishes them.
             const time = timeline.labels[`service-${index}`] + READING_HOLD * 0.35;
             pendingFocus = index;
             view.scrollTo({
-              top: trigger.start + time / timeline.duration() * (trigger.end - trigger.start),
+              top: section.getBoundingClientRect().top + view.scrollY +
+                time / timeline.duration() * distance,
               behavior,
             });
             if (behavior === 'instant') {
@@ -184,10 +203,14 @@ export function animateAboutMeScroll(root: HTMLElement, resolveInitialFragment =
           }
 
           return () => {
+            refreshTravel = () => undefined;
             listeners.forEach((remove) => remove());
+            view.removeEventListener('scroll', onScroll);
+            draw.dispose();
             view.removeEventListener('hashchange', onFragment);
             view.document.removeEventListener('click', onFragmentClick);
             section.classList.remove('about-is-pinned');
+            section.style.height = originalHeight;
             panels.forEach((panel) => {
               panel.removeAttribute('inert');
               panel.removeAttribute('aria-hidden');
@@ -195,9 +218,9 @@ export function animateAboutMeScroll(root: HTMLElement, resolveInitialFragment =
             links.forEach((link) => link.removeAttribute('aria-current'));
           };
         }, root);
-        // Refresh only this section's trigger: a global refresh would revert and
-        // reapply every pin on the page, churning each spacer on every blip.
-        return { refresh: () => trigger.refresh(), revert: () => animation.revert() };
+        // Refit the sticky travel after upstream geometry drifts, without
+        // reverting the timeline or churning other sections' triggers.
+        return { refresh: () => refreshTravel(), revert: () => animation.revert() };
       },
       });
     });

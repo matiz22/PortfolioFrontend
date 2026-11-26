@@ -14,8 +14,11 @@ describe('About Me scroll animation', () => {
   let isDesktop: boolean;
   let isTall: boolean;
   let stageHeight: number;
+  let sectionTop: number;
   let originalHeight: PropertyDescriptor | undefined;
   let originalUrl: string;
+
+  const nextFrame = () => new Promise<void>(resolve => requestAnimationFrame(() => resolve()));
 
   beforeEach(() => {
     originalUrl = location.href;
@@ -23,6 +26,7 @@ describe('About Me scroll animation', () => {
     isDesktop = true;
     isTall = true;
     stageHeight = 900;
+    sectionTop = 100;
     originalHeight = Object.getOwnPropertyDescriptor(window, 'innerHeight');
     Object.defineProperty(window, 'innerHeight', { configurable: true, value: 920 });
     const matchMedia = window.matchMedia.bind(window);
@@ -60,6 +64,10 @@ describe('About Me scroll animation', () => {
     links = Array.from(root.querySelectorAll<HTMLAnchorElement>('.about-index-link'));
     fill = root.querySelector('.about-fill')!;
     Object.defineProperty(stage, 'offsetHeight', { get: () => stageHeight });
+    // Scroll position drives the timeline through the section's viewport offset.
+    spyOn(section, 'getBoundingClientRect').and.callFake(
+      () => ({ top: sectionTop } as DOMRect),
+    );
   });
 
   afterEach(() => {
@@ -72,12 +80,13 @@ describe('About Me scroll animation', () => {
     }
   });
 
-  function trigger(): ScrollTrigger {
-    return ScrollTrigger.getAll().find((candidate) => candidate.trigger === stage)!;
+  function timeline(): gsap.core.Timeline {
+    return gsap.getTweensOf(panels[0])[0].parent!;
   }
 
-  function timeline(): gsap.core.Timeline {
-    return trigger().animation as gsap.core.Timeline;
+  /** Travel distance the mount stretches the section by, in px. */
+  function travel(): number {
+    return parseFloat(section.style.height) - stageHeight;
   }
 
   function stubIntersectionObserver() {
@@ -96,11 +105,32 @@ describe('About Me scroll animation', () => {
   it('pins the full stage at the viewport edge before advancing services', () => {
     motion = animateAboutMeScroll(root);
     expect(section.classList.contains('about-is-pinned')).toBeTrue();
-    expect(trigger().pin).toBe(stage);
-    expect(trigger().vars.start).toBe('top top');
-    expect(trigger().vars.scrub).toBeTrue();
+    // The section grows by the sticky travel; scroll inside it drives the timeline.
+    expect(section.style.height).toBe('2936px');
     expect(timeline().duration()).toBeCloseTo(3.48, 2);
-    expect(trigger().end - trigger().start).toBeCloseTo(2036, 0);
+    expect(travel()).toBe(2036);
+  });
+
+  it('drives the service timeline from scroll position inside the sticky travel', async () => {
+    motion = animateAboutMeScroll(root);
+
+    sectionTop = -1018; // Half of the 2036px travel: inside the second service hold.
+    window.dispatchEvent(new Event('scroll'));
+    await nextFrame();
+    expect(Number(gsap.getProperty(panels[1], 'opacity'))).toBe(1);
+    expect(links[1].getAttribute('aria-current')).toBe('step');
+    expect(panels[0].inert).toBeTrue();
+
+    sectionTop = -2036;
+    window.dispatchEvent(new Event('scroll'));
+    await nextFrame();
+    expect(links[2].getAttribute('aria-current')).toBe('step');
+
+    sectionTop = 100;
+    window.dispatchEvent(new Event('scroll'));
+    await nextFrame();
+    expect(Number(gsap.getProperty(panels[0], 'opacity'))).toBe(1);
+    expect(links[0].getAttribute('aria-current')).toBe('step');
   });
 
   it('waits to pin when idle hydration finishes after the visitor has passed About', () => {
@@ -127,7 +157,7 @@ describe('About Me scroll animation', () => {
     bounds.and.callThrough();
     intersect();
 
-    expect(trigger().pin).toBe(stage);
+    expect(section.classList.contains('about-is-pinned')).toBeTrue();
     expect(scroll.calls.allArgs() as unknown[]).not.toContain([
       jasmine.objectContaining({ behavior: 'instant' }),
     ]);
@@ -229,8 +259,7 @@ describe('About Me scroll animation', () => {
     const event = new MouseEvent('click', { bubbles: true, cancelable: true, button: 0 });
     links[1].dispatchEvent(event);
     const time = timeline().labels['service-1'] + 0.35;
-    const top = trigger().start + time / timeline().duration() *
-      (trigger().end - trigger().start);
+    const top = sectionTop + window.scrollY + time / timeline().duration() * travel();
 
     expect(event.defaultPrevented).toBeTrue();
     expect(location.hash).toBe('#service-1');
@@ -268,7 +297,7 @@ describe('About Me scroll animation', () => {
       history.replaceState(history.state, '', '#service-2');
       motion = animateAboutMeScroll(root);
       const time = timeline().labels['service-2'] + 0.35;
-      const top = trigger().start + time / timeline().duration() * (trigger().end - trigger().start);
+      const top = sectionTop + window.scrollY + time / timeline().duration() * travel();
       expect(scroll.calls.mostRecent().args[0]).toEqual({ top, behavior: 'instant' });
     } finally {
       history.replaceState(history.state, '', href);
@@ -281,7 +310,7 @@ describe('About Me scroll animation', () => {
     try {
       history.replaceState(history.state, '', '#service-2');
       motion = animateAboutMeScroll(root, false);
-      expect(trigger().pin).toBe(stage);
+      expect(section.classList.contains('about-is-pinned')).toBeTrue();
       expect(scroll.calls.allArgs() as unknown[]).not.toContain([
         jasmine.objectContaining({ behavior: 'instant' }),
       ]);
@@ -302,7 +331,7 @@ describe('About Me scroll animation', () => {
       history.replaceState(history.state, '', '#service-2');
       window.dispatchEvent(new HashChangeEvent('hashchange'));
       const time = timeline().labels['service-2'] + 0.35;
-      const top = trigger().start + time / timeline().duration() * (trigger().end - trigger().start);
+      const top = sectionTop + window.scrollY + time / timeline().duration() * travel();
       expect(scroll).toHaveBeenCalledOnceWith({ top, behavior: 'instant' });
 
       const click = new MouseEvent('click', { bubbles: true, cancelable: true });
@@ -320,7 +349,7 @@ describe('About Me scroll animation', () => {
     isDesktop = false;
     motion = animateAboutMeScroll(root);
     expect(section.classList.contains('about-is-pinned')).toBeFalse();
-    expect(trigger()).toBeUndefined();
+    expect(section.style.height).toBe('');
     panels.forEach((panel) => {
       expect(panel.inert).toBeFalse();
       expect(panel.hasAttribute('aria-hidden')).toBeFalse();
@@ -332,15 +361,14 @@ describe('About Me scroll animation', () => {
     isTall = false;
     motion = animateAboutMeScroll(root);
     expect(section.classList.contains('about-is-pinned')).toBeFalse();
-    expect(trigger()).toBeUndefined();
-    expect(root.querySelector('.pin-spacer')).toBeNull();
+    expect(section.style.height).toBe('');
   });
 
   it('keeps services in document flow if the stage is taller than the viewport', () => {
     stageHeight = window.innerHeight + 1;
     motion = animateAboutMeScroll(root);
     expect(section.classList.contains('about-is-pinned')).toBeFalse();
-    expect(trigger()).toBeUndefined();
+    expect(section.style.height).toBe('');
     expect(panels.every((panel) => !panel.inert)).toBeTrue();
   });
 
@@ -368,14 +396,14 @@ describe('About Me scroll animation', () => {
     // The first overflowing check only schedules a confirmation pass.
     flush();
     expect(section.classList.contains('about-is-pinned')).toBeFalse();
-    expect(trigger()).toBeUndefined();
+    expect(section.style.height).toBe('');
     expect(panels.every((panel) => !panel.inert && !panel.hasAttribute('aria-hidden'))).toBeTrue();
 
     stageHeight = window.innerHeight - 20;
     resized([], {} as ResizeObserver);
     flush();
     expect(section.classList.contains('about-is-pinned')).toBeTrue();
-    expect(trigger().pin).toBe(stage);
+    expect(section.style.height).toBe(`${window.innerHeight - 20 + 2036}px`);
     expect(panels[0].inert).toBeFalse();
     expect(panels[1].inert).toBeTrue();
   });
@@ -384,7 +412,7 @@ describe('About Me scroll animation', () => {
     canAnimate = false;
     motion = animateAboutMeScroll(root);
     expect(section.classList.contains('about-is-pinned')).toBeFalse();
-    expect(trigger()).toBeUndefined();
+    expect(section.style.height).toBe('');
     panels.forEach((panel) => {
       expect(panel.inert).toBeFalse();
       expect(panel.hasAttribute('aria-hidden')).toBeFalse();
@@ -402,8 +430,7 @@ describe('About Me scroll animation', () => {
     motion = undefined;
 
     expect(section.classList.contains('about-is-pinned')).toBeFalse();
-    expect(root.querySelector('.pin-spacer')).toBeNull();
-    expect(trigger()).toBeUndefined();
+    expect(section.style.height).toBe('');
     expect(ScrollTrigger.getAll()).toContain(unrelated);
     panels.forEach((panel) => {
       expect(panel.inert).toBeFalse();

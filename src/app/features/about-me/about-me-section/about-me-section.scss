@@ -11,6 +11,14 @@
 }
 
 .about-section.about-is-pinned {
+  // The mount stretches the section to shell + travel; sticky holds the shell
+  // at the viewport top without position: fixed, so the pin never repositions
+  // content from JavaScript while a scroll event is being processed.
+  .about-shell {
+    position: sticky;
+    top: 0;
+  }
+
   .about-panel-copy > :is(h3, p) {
     translate: 0 var(--about-text-offset, 0px);
   }
