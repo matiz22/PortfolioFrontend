@@ -3,8 +3,8 @@ import { provideRouter, RouteReuseStrategy, withInMemoryScrolling, withViewTrans
 
 import { routes } from './app.routes';
 import { provideClientHydration, withEventReplay, withI18nSupport } from '@angular/platform-browser';
-import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { LocaleInterceptor } from './core/interceptors/locale.interceptor';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { localeInterceptor } from './core/interceptors/locale.interceptor';
 import { CustomRouteReuseStrategy } from './route.reuse.strategy';
 import { TitleStrategy } from '@angular/router';
 import { AppTitleStrategy } from './core/strategies/title.strategy';
@@ -42,8 +42,7 @@ export const appConfig: ApplicationConfig = {
     ),
     { provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy },
     provideClientHydration(withI18nSupport(), withEventReplay()),
-    provideHttpClient(withInterceptorsFromDi()),
-    { provide: HTTP_INTERCEPTORS, useClass: LocaleInterceptor, multi: true },
+    provideHttpClient(withInterceptors([localeInterceptor])),
     { provide: TitleStrategy, useClass: AppTitleStrategy },
   ]
 };
