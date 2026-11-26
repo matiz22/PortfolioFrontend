@@ -85,6 +85,11 @@ describe('jobs timeline animation', () => {
     return gsap.getTweensOf(track)[0].parent!;
   }
 
+  /** Scroll travel the sticky pin stretches the host by, in px. */
+  function travelDistance(): number {
+    return parseFloat(root.style.height) - section.offsetHeight;
+  }
+
   function entrance(): gsap.core.Timeline {
     return ScrollTrigger.getAll().find((trigger) => trigger.trigger === section && trigger.vars.once)!
       .animation as gsap.core.Timeline;
@@ -181,15 +186,12 @@ describe('jobs timeline animation', () => {
   it('pins the entire section and scrubs only the timeline contents in both directions', () => {
     motion = animateJobsTimeline(root);
     const timeline = travel();
-    const trigger = timeline.scrollTrigger!;
     ScrollTrigger.refresh();
 
     expect(stage.classList.contains('jobs-pinned')).toBeTrue();
     expect(section.classList.contains('jobs-section-pinned')).toBeTrue();
-    expect(trigger.pin).toBe(section);
-    expect(trigger.vars.start).toBe('top top');
-    expect(trigger.vars.scrub).toBeTrue();
-    expect(trigger.end - trigger.start).toBeCloseTo(3442, 0);
+    // The host grows by the sticky travel; scroll inside it drives the timeline.
+    expect(travelDistance()).toBe(3442);
     expect(timeline.getChildren()[0].vars['ease']).toBe('none');
 
     timeline.progress(1);
@@ -203,6 +205,39 @@ describe('jobs timeline animation', () => {
     expect(root.querySelectorAll('.jobs-entry')[0].classList.contains('jobs-entry-active')).toBeTrue();
   });
 
+  it('advances the pinned travel from scroll position inside the stretched host', async () => {
+    motion = animateJobsTimeline(root);
+    let rootTop = 0;
+    spyOn(root, 'getBoundingClientRect').and.callFake(
+      () => new DOMRect(0, rootTop, 800, 500),
+    );
+
+    window.dispatchEvent(new Event('scroll'));
+    await nextFrame();
+    expect(Number(gsap.getProperty(track, 'x'))).toBe(0);
+    expect(root.querySelectorAll('.jobs-entry')[0].classList.contains('jobs-entry-active')).toBeTrue();
+
+    // Past the leading hold: the track has moved half of its horizontal travel.
+    rootTop = -(0.14 + 0.5 * 0.86) * 3442;
+    window.dispatchEvent(new Event('scroll'));
+    await nextFrame();
+    expect(Number(gsap.getProperty(track, 'x'))).toBeCloseTo(-800, 0);
+    expect(Number(gsap.getProperty(root.querySelector('.jobs-rail-fill'), 'scaleX'))).toBeCloseTo(0.5, 2);
+    expect(root.querySelectorAll('.jobs-entry-reached')).toHaveSize(2);
+
+    rootTop = -3442;
+    window.dispatchEvent(new Event('scroll'));
+    await nextFrame();
+    expect(Number(gsap.getProperty(track, 'x'))).toBeCloseTo(-1600, 0);
+    expect(root.querySelectorAll('.jobs-entry-reached')).toHaveSize(4);
+
+    rootTop = 0;
+    window.dispatchEvent(new Event('scroll'));
+    await nextFrame();
+    expect(Number(gsap.getProperty(track, 'x'))).toBe(0);
+    expect(root.querySelectorAll('.jobs-entry-reached')).toHaveSize(1);
+  });
+
   it('leaves Experience in static flow if its animation arrives after the visitor has passed it', () => {
     const bounds = spyOn(root, 'getBoundingClientRect').and.returnValue(new DOMRect(0, -100, 100, 100));
     const { observer, intersect } = stubIntersectionObserver();
@@ -212,14 +247,15 @@ describe('jobs timeline animation', () => {
 
     expect(observer.observe).toHaveBeenCalledOnceWith(root);
     expect(stage.classList).not.toContain('jobs-pinned');
-    expect(root.classList).not.toContain('pin-spacer');
+    expect(root.style.height).toBe('');
     expect(ScrollTrigger.getAll().some((trigger) => trigger.trigger === section)).toBeFalse();
 
     bounds.and.returnValue(new DOMRect(0, 0, 800, 500));
     intersect(true);
 
     expect(observer.disconnect).toHaveBeenCalledTimes(1);
-    expect(travel().scrollTrigger!.pin).toBe(section);
+    expect(travel()).toBeDefined();
+    expect(stage.classList.contains('jobs-pinned')).toBeTrue();
   });
 
   it('does not mount a delayed pin after teardown', () => {
@@ -259,6 +295,9 @@ describe('jobs timeline animation', () => {
       const reveal = ScrollTrigger.create({ trigger: downstream, start: 'top top' });
       const scroll = window.scrollY;
       const unpinnedStart = downstream.getBoundingClientRect().top + scroll;
+      const naturalRootHeight = root.offsetHeight;
+      const aboutSection = about.querySelector<HTMLElement>('.about-section')!;
+      const naturalAboutHeight = aboutSection.offsetHeight;
       let aboutMotion: gsap.MatchMedia | undefined;
       try {
         if (jobsFirst) motion = animateJobsTimeline(root);
@@ -267,10 +306,12 @@ describe('jobs timeline animation', () => {
 
         ScrollTrigger.refresh();
 
-        const aboutPin = ScrollTrigger.getAll().find((trigger) => trigger.pin === about.querySelector('.about-shell'))!;
-        const jobsPin = travel().scrollTrigger!;
-        const spacing = (aboutPin.end - aboutPin.start) + (jobsPin.end - jobsPin.start);
-        expect(reveal.start).toBeCloseTo(unpinnedStart + spacing, 0);
+        // Sticky pins occupy real layout: each container grows by its travel.
+        const jobsTravel = parseFloat(root.style.height) - naturalRootHeight;
+        const aboutTravel = parseFloat(aboutSection.style.height) - naturalAboutHeight;
+        expect(jobsTravel).toBe(3442);
+        expect(aboutTravel).toBe(582);
+        expect(reveal.start).toBeCloseTo(unpinnedStart + jobsTravel + aboutTravel, 0);
         expect(reveal.start).toBeCloseTo(downstream.getBoundingClientRect().top + window.scrollY, 0);
       } finally {
         reveal.kill();
@@ -325,23 +366,21 @@ describe('jobs timeline animation', () => {
     expect(root.querySelectorAll('.jobs-entry-reached').length).toBe(1);
   });
 
-  it('recalculates travel when the rendered width changes', () => {
+  it('recalculates travel when the rendered width changes', async () => {
     motion = animateJobsTimeline(root);
     trackWidth = 2800;
-    ScrollTrigger.refresh();
+    window.dispatchEvent(new Event('resize'));
+    await nextFrame();
     travel().progress(1);
     expect(Number(gsap.getProperty(track, 'x'))).toBeCloseTo(-2000, 0);
-    const trigger = travel().scrollTrigger!;
-    expect(trigger.end - trigger.start).toBeCloseTo(4302, 0);
+    expect(travelDistance()).toBe(4302);
   });
 
   it('gives short timelines a minimum scroll range without adding horizontal travel', () => {
     trackWidth = 900;
     motion = animateJobsTimeline(root);
-    ScrollTrigger.refresh();
     const timeline = travel();
-    const trigger = timeline.scrollTrigger!;
-    expect(trigger.end - trigger.start).toBeCloseTo(698, 0);
+    expect(travelDistance()).toBe(698);
     timeline.progress(1);
     expect(Number(gsap.getProperty(track, 'x'))).toBeCloseTo(-100, 0);
   });
@@ -357,7 +396,7 @@ describe('jobs timeline animation', () => {
     trackWidth = 700;
     motion = animateJobsTimeline(root);
     expect(stage.classList.contains('jobs-pinned')).toBeFalse();
-    expect(ScrollTrigger.getAll().some((trigger) => trigger.pin === section)).toBeFalse();
+    expect(root.style.height).toBe('');
     expect(gsap.getTweensOf(root.querySelector('.jobs-entry'))[0].parent).toBe(entrance());
   });
 
@@ -386,19 +425,19 @@ describe('jobs timeline animation', () => {
     spyOn(viewport, 'getBoundingClientRect').and.returnValue(new DOMRect(0, 0, 800, 300));
     Object.defineProperty(entry, 'offsetLeft', { value: 1500 });
     const scroll = spyOn(window, 'scrollTo');
-    expect(ScrollTrigger.getAll().some((trigger) => trigger.pin === section)).toBeFalse();
+    spyOn(root, 'getBoundingClientRect').and.returnValue(new DOMRect(0, 0, 800, 500));
+    expect(root.style.height).toBe('');
 
     trackWidth = 2400;
     await resize.dispatch();
 
     expect(stage.classList.contains('jobs-pinned')).toBeTrue();
-    const pin = travel().scrollTrigger!;
-    expect(pin.pin).toBe(section);
+    expect(section.classList.contains('jobs-section-pinned')).toBeTrue();
     expect(section.parentElement).toBe(root);
     expect(document.activeElement).toBe(focusTarget);
     const expectedProgress = 0.14 + (1380 / 1600) * 0.86;
     expect(scroll.calls.allArgs() as unknown[]).toContain([{
-      top: pin.start + expectedProgress * (pin.end - pin.start),
+      top: root.getBoundingClientRect().top + window.scrollY + expectedProgress * 3442,
       behavior: 'instant',
     }]);
     expect(Number(gsap.getProperty(track, 'x'))).toBeCloseTo(-1380, 0);
@@ -411,17 +450,15 @@ describe('jobs timeline animation', () => {
     const focused = root.querySelector<HTMLElement>('.jobs-card')!;
     focused.focus({ preventScroll: true });
     spyOn(focused, 'scrollIntoView');
-    expect(travel().scrollTrigger!.pin).toBe(section);
-    expect(root.classList).toContain('pin-spacer');
+    expect(travel()).toBeDefined();
+    expect(root.style.height).not.toBe('');
 
     trackWidth = 700;
     await resize.dispatch();
 
     expect(stage.classList.contains('jobs-pinned')).toBeFalse();
     expect(section.classList.contains('jobs-section-pinned')).toBeFalse();
-    expect(ScrollTrigger.getAll().some((trigger) => trigger.pin === section)).toBeFalse();
-    expect(root.classList).not.toContain('pin-spacer');
-    expect(root.style.paddingBottom).toBe('');
+    expect(root.style.height).toBe('');
     expect(document.activeElement).toBe(focused);
     expect(focused.scrollIntoView).toHaveBeenCalled();
     expect(Number(gsap.getProperty(track, 'x'))).toBe(0);
@@ -435,7 +472,7 @@ describe('jobs timeline animation', () => {
     motion = animateJobsTimeline(root, report);
     const intro = entrance();
     expect(stage.classList).not.toContain('jobs-pinned');
-    expect(ScrollTrigger.getAll().some((trigger) => trigger.pin === section)).toBeFalse();
+    expect(root.style.height).toBe('');
 
     shellHeight = 1000;
     await resize.dispatch();
@@ -446,7 +483,7 @@ describe('jobs timeline animation', () => {
     await resize.dispatch();
     expect(stage.classList).not.toContain('jobs-pinned');
     expect(stage.classList).not.toContain('jobs-pin-fit');
-    expect(root.classList).not.toContain('pin-spacer');
+    expect(root.style.height).toBe('');
     expect(report.calls.allArgs()).toEqual([[true], [false]]);
   });
 
@@ -484,7 +521,7 @@ describe('jobs timeline animation', () => {
     window.dispatchEvent(new Event('resize'));
     await nextFrame();
     expect(stage.classList).not.toContain('jobs-pinned');
-    expect(root.classList).not.toContain('pin-spacer');
+    expect(root.style.height).toBe('');
   });
 
   it('keeps horizontal entries unpinned on intermediate screens', () => {
@@ -492,7 +529,7 @@ describe('jobs timeline animation', () => {
     motion = animateJobsTimeline(root);
     expect(stage.classList.contains('jobs-pinned')).toBeFalse();
     expect(entrance().getChildren().some(tween => tween.vars['stagger'] === 0.08)).toBeTrue();
-    expect(ScrollTrigger.getAll().some((trigger) => trigger.pin === section)).toBeFalse();
+    expect(root.style.height).toBe('');
   });
 
   it('leaves the mobile timeline to native scrolling without a pin, reveal or track transform', () => {
@@ -500,6 +537,7 @@ describe('jobs timeline animation', () => {
     mobile = true;
     motion = animateJobsTimeline(root);
     expect(stage.classList).not.toContain('jobs-pinned');
+    expect(root.style.height).toBe('');
     expect(ScrollTrigger.getAll().some((trigger) => root.contains(trigger.trigger!))).toBeFalse();
     expect(gsap.getTweensOf(root.querySelectorAll('.jobs-rail, .jobs-card, .jobs-track')).length)
       .toBe(0);
@@ -550,7 +588,7 @@ describe('jobs timeline animation', () => {
     });
     motion = animateJobsTimeline(root);
     expect(stage.classList).not.toContain('jobs-pinned');
-    expect(ScrollTrigger.getAll().some((trigger) => trigger.pin === section)).toBeFalse();
+    expect(root.style.height).toBe('');
   });
 
   it('brings an off-screen keyboard-focused role into view immediately', () => {
@@ -583,7 +621,7 @@ describe('jobs timeline animation', () => {
     expect(stage.classList).not.toContain('jobs-pin-fit');
     expect(stage.classList.contains('jobs-pinned')).toBeFalse();
     expect(section.classList.contains('jobs-section-pinned')).toBeFalse();
-    expect(root.classList).not.toContain('pin-spacer');
+    expect(root.style.height).toBe('');
     expect(section.parentElement).toBe(root);
     expect(track.style.transform).toBe('');
     expect(root.querySelector('.jobs-entry-active')).toBeNull();
@@ -595,7 +633,6 @@ describe('jobs timeline animation', () => {
       expect(target.style.transform).toBe('');
     }
     expect(ScrollTrigger.getAll()).toContain(unrelated);
-    expect(ScrollTrigger.getAll().some((trigger) => trigger.pin === section)).toBeFalse();
 
     const scroll = spyOn(window, 'scrollTo');
     root.querySelector('a')!.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));

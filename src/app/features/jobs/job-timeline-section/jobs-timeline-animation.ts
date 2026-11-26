@@ -1,6 +1,6 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { JOBS_PIN_REFRESH_PRIORITY } from '../../../shared/animations/home-pin-refresh-priority';
+import { createFrameTask } from '../../../shared/animations/frame-task';
 import { MOTION_ALLOWED_QUERY } from '../../../shared/animations/motion-media';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -45,8 +45,11 @@ export function animateJobsTimeline(
       }
 
       let layout: TimelineLayout | undefined;
-      let scroll: ScrollTrigger | undefined;
       let travel: gsap.core.Timeline | undefined;
+      let travelDistance = 0;
+      let draw: ReturnType<typeof createFrameTask> | undefined;
+      const onScroll = () => draw?.request();
+      const { height: hostHeight } = root.style;
       let intro: gsap.core.Timeline | undefined;
       let reveals: gsap.core.Animation[] = [];
       let observer: ResizeObserver | undefined;
@@ -55,12 +58,38 @@ export function animateJobsTimeline(
       let activeIndex = -1;
       let reachedIndex = -1;
       let disposed = false;
-      const { overflow: hostOverflow, flexBasis: hostFlexBasis } = root.style;
 
       const overflow = () => {
         const style = view.getComputedStyle(viewport);
         const inset = parseFloat(style.paddingLeft) + parseFloat(style.paddingRight);
         return Math.max(0, track.scrollWidth - viewport.clientWidth + inset);
+      };
+      // The section pins via CSS sticky inside the host, which the geometry
+      // below stretches by the scroll travel. Scroll drives the timeline from
+      // a frame task, so no style is written while a scroll event is handled.
+      const applyTravel = () => {
+        if (!travel || travelDistance <= 0) {
+          return;
+        }
+        const progress = gsap.utils.clamp(
+          0, travelDistance, -root.getBoundingClientRect().top,
+        ) / travelDistance;
+        travel.progress(progress);
+      };
+      const syncTravelGeometry = () => {
+        if (!travel) {
+          return;
+        }
+        travelDistance = Math.round(Math.max(
+          view.innerHeight * MIN_SCROLL_VIEWPORT_RATIO,
+          overflow() * SCROLL_DISTANCE_MULTIPLIER,
+        ) / (1 - INITIAL_HOLD_RATIO));
+        root.style.height = `${section.offsetHeight + travelDistance}px`;
+        // Re-evaluate the function-based travel target from a clean start,
+        // like a ScrollTrigger refresh would, then resync to live scroll.
+        travel.progress(0);
+        travel.invalidate();
+        applyTravel();
       };
       const clearMarkers = () => {
         activeIndex = -1;
@@ -89,7 +118,7 @@ export function animateJobsTimeline(
       };
 
       const revealInPin = (target: EventTarget | null) => {
-        if (!(target instanceof view.HTMLElement) || !scroll) {
+        if (!(target instanceof view.HTMLElement) || !travel) {
           return;
         }
         const entry = target.closest<HTMLElement>('.jobs-entry');
@@ -112,28 +141,23 @@ export function animateJobsTimeline(
         const progress = INITIAL_HOLD_RATIO +
           (position / distance) * (1 - INITIAL_HOLD_RATIO);
         view.scrollTo({
-          top: scroll.start + progress * (scroll.end - scroll.start),
+          top: root.getBoundingClientRect().top + view.scrollY + progress * travelDistance,
           behavior: 'instant',
         });
         ScrollTrigger.update();
-        travel?.progress(progress);
+        travel.progress(progress);
       };
       const onTravelFocus = (event: FocusEvent) => revealInPin(event.target);
 
       const clearTravel = () => {
         const wasPinned = !!travel;
-        const trigger = travel?.scrollTrigger;
-        trigger?.kill();
+        draw?.dispose();
+        draw = undefined;
+        view.removeEventListener('scroll', onScroll);
         travel?.kill();
-        if (travel) {
-          root.classList.remove('pin-spacer');
-          root.style.overflow = hostOverflow;
-          root.style.flexBasis = hostFlexBasis;
-          // Unlike a generated spacer, the host survives unpinning.
-          Reflect.deleteProperty(root, '_pinOffset');
-        }
-        scroll = undefined;
         travel = undefined;
+        travelDistance = 0;
+        root.style.height = hostHeight;
         track.removeEventListener('focusin', onTravelFocus);
         gsap.set(track, { clearProps: 'transform' });
         gsap.set(fill, { clearProps: 'transform' });
@@ -144,7 +168,7 @@ export function animateJobsTimeline(
       };
 
       const createTravel = () => {
-        if (scroll || overflow() <= 0) {
+        if (travel || overflow() <= 0) {
           return;
         }
         // Pin the section and its bottom controls. Only the track moves within it.
@@ -152,40 +176,24 @@ export function animateJobsTimeline(
         section.classList.add('jobs-section-pinned');
         stage.classList.add('jobs-pinned');
         gsap.set(fill, { scaleX: 0 });
+        // Driven manually from scroll progress; paused so it never runs on
+        // its own ticker.
         travel = gsap.timeline({
           defaults: { duration: 1 - INITIAL_HOLD_RATIO, ease: 'none' },
+          paused: true,
           onUpdate: function (this: gsap.core.Timeline) {
             highlight(this.progress());
-          },
-          scrollTrigger: {
-            trigger: section,
-            start: 'top top',
-            // Keep compact timelines deliberate too, without changing their
-            // actual horizontal travel or adding empty space after the last role.
-            end: () => `+=${Math.max(
-              view.innerHeight * MIN_SCROLL_VIEWPORT_RATIO,
-              overflow() * SCROLL_DISTANCE_MULTIPLIER,
-            ) / (1 - INITIAL_HOLD_RATIO)}`,
-            pin: true,
-            // The host is already the section's parent. A generated spacer would
-            // reparent the focused link on pin, refresh, and teardown.
-            pinSpacer: root,
-            refreshPriority: JOBS_PIN_REFRESH_PRIORITY,
-            // No catch-up lag: the last role is in place before the pin releases.
-            scrub: true,
-            anticipatePin: 1,
-            invalidateOnRefresh: true,
           },
         })
           // The stage first settles fully into view. Only then does the
           // remaining scroll range begin moving the first role out of view.
           .to(track, { x: () => -overflow() }, INITIAL_HOLD_RATIO)
           .to(fill, { scaleX: 1 }, INITIAL_HOLD_RATIO);
-
-        scroll = travel.scrollTrigger;
+        draw = createFrameTask(view, applyTravel);
+        view.addEventListener('scroll', onScroll, { passive: true });
+        syncTravelGeometry();
+        // progress 0 renders no update, so set the initial markers directly.
         highlight(travel.progress());
-        // Transformed off-screen links remain keyboard reachable. Seeking the
-        // associated vertical scroll position brings their whole role into view.
         track.addEventListener('focusin', onTravelFocus);
         reportPinned(true);
       };
@@ -288,6 +296,10 @@ export function animateJobsTimeline(
             gsap.set(fill, { clearProps: 'transform' });
             clearMarkers();
           }
+        } else if (next === 'pinned') {
+          // Same layout: recompute travel distance and targets from current
+          // geometry, like a ScrollTrigger refresh would.
+          syncTravelGeometry();
         }
         ScrollTrigger.refresh();
         if (changed) {
@@ -296,7 +308,7 @@ export function animateJobsTimeline(
             if (focused.matches(':focus-visible')) {
               intro?.progress(1);
             }
-            if (scroll) {
+            if (travel) {
               revealInPin(focused);
             } else if (!firstRender) {
               focused.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'instant' });
@@ -372,7 +384,6 @@ export function animateJobsTimeline(
     }, root);
   } catch (error) {
     motion.revert();
-    root.classList.remove('pin-spacer');
     stage.classList.remove('jobs-pin-fit', 'jobs-pinned');
     section.classList.remove('jobs-section-pinned');
     throw error;

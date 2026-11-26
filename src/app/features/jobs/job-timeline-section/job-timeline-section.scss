@@ -178,7 +178,12 @@
   }
 }
 
+// The mount stretches the host section to stage + travel; sticky holds the
+// section at the viewport top without position: fixed, so the pin never
+// repositions content from JavaScript while a scroll event is being processed.
 .jobs-section-pinned {
+  position: sticky;
+  top: 0;
   overflow: clip;
 }
 
