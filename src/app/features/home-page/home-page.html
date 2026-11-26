@@ -155,5 +155,9 @@
         </div>
     </main>
 
-    <app-footer />
+    <!-- The footer is the last element on the page and holds no LCP resources;
+         its code stays out of the initial bundle until the browser is idle. -->
+    @defer (on idle; hydrate on idle) {
+        <app-footer />
+    }
 </div>

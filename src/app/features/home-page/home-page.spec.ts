@@ -171,20 +171,21 @@ describe('HomePage', () => {
     const root: HTMLElement = fixture.nativeElement;
     const main = root.querySelector('main')!;
     const closing = main.querySelector<HTMLElement>('#contact.home-closing')!;
-    const block = (await fixture.getDeferBlocks()).at(-1)!;
+    // Contact is the last deferred chapter; the site footer is deferred after it.
+    const [contactBlock, footerBlock] = (await fixture.getDeferBlocks()).slice(-2);
     const status = closing.querySelector('[role="status"]')!;
 
     expect(closing.querySelector('.home-chapter-placeholder')).not.toBeNull();
     expect(closing.querySelector('app-contact-section')).toBeNull();
     expect(getSocialLinks).not.toHaveBeenCalled();
 
-    await block.render(DeferBlockState.Loading);
+    await contactBlock.render(DeferBlockState.Loading);
     await fixture.whenStable();
     expect(status.textContent).toContain('Loading section…');
     expect(closing.querySelector('app-contact-section')).toBeNull();
     expect(getSocialLinks).not.toHaveBeenCalled();
 
-    await block.render(DeferBlockState.Complete);
+    await contactBlock.render(DeferBlockState.Complete);
     await fixture.whenStable();
 
     const contact = closing.querySelector('app-contact-section.home-contact.contact-blended')!;
@@ -201,6 +202,10 @@ describe('HomePage', () => {
     expect(status.textContent?.trim()).toBe('');
     expect(getSocialLinks).toHaveBeenCalledTimes(1);
 
+    // The footer now lives in its own deferred block, rendered after Contact.
+    await footerBlock.render(DeferBlockState.Complete);
+    await fixture.whenStable();
+
     const footer = root.querySelector<HTMLElement>('.home-page > app-footer')!;
     expect(root.querySelectorAll('main').length).toBe(1);
     expect(main.querySelector('app-footer')).toBeNull();
@@ -212,7 +217,8 @@ describe('HomePage', () => {
   it('keeps the Contact anchor and recovery action when its deferred code fails', async () => {
     const root: HTMLElement = fixture.nativeElement;
     const closing = root.querySelector('#contact')!;
-    const block = (await fixture.getDeferBlocks()).at(-1)!;
+    // Contact is the last deferred chapter; the site footer is deferred after it.
+    const block = (await fixture.getDeferBlocks()).at(-2)!;
     await block.render(DeferBlockState.Error);
     await fixture.whenStable();
 
