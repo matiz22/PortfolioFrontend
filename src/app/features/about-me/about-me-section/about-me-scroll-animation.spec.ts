@@ -389,9 +389,14 @@ describe('About Me scroll animation', () => {
       flush = () => callback(0);
       return 1;
     });
+    // Report a real observed box: the fit filter ignores observer noise.
+    const notify = () => resized(
+      [{ target: stage, contentRect: { width: 320, height: stageHeight } } as unknown as ResizeObserverEntry],
+      {} as ResizeObserver,
+    );
     motion = animateAboutMeScroll(root);
     stageHeight = window.innerHeight + 20;
-    resized([], {} as ResizeObserver);
+    notify();
     flush();
     // The first overflowing check only schedules a confirmation pass.
     flush();
@@ -400,7 +405,7 @@ describe('About Me scroll animation', () => {
     expect(panels.every((panel) => !panel.inert && !panel.hasAttribute('aria-hidden'))).toBeTrue();
 
     stageHeight = window.innerHeight - 20;
-    resized([], {} as ResizeObserver);
+    notify();
     flush();
     expect(section.classList.contains('about-is-pinned')).toBeTrue();
     expect(section.style.height).toBe(`${window.innerHeight - 20 + 2036}px`);

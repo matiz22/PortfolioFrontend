@@ -88,7 +88,27 @@ export function watchPinFit({ section, stage, pinnedClass, observe, eligible, to
   const schedule = () => {
     if (!disposed && frame === undefined) frame = view.requestAnimationFrame(check);
   };
-  const resize = view.ResizeObserver ? new view.ResizeObserver(schedule) : undefined;
+  // ResizeObserver also fires for sub-pixel box jitter (fractional layout,
+  // mobile URL-bar transitions). Each notification would schedule a check
+  // whose measurement pass forces a reflow, so only drift beyond the same
+  // epsilon `drifted` applies reaches the scheduler.
+  const lastSizes = new Map<Element, { width: number; height: number }>();
+  const resize = view.ResizeObserver
+    ? new view.ResizeObserver((entries) => {
+      let significant = false;
+      for (const entry of entries) {
+        const { width, height } = entry.contentRect;
+        const previous = lastSizes.get(entry.target);
+        lastSizes.set(entry.target, { width, height });
+        if (!previous ||
+          Math.abs(width - previous.width) >= GEOMETRY_EPSILON ||
+          Math.abs(height - previous.height) >= GEOMETRY_EPSILON) {
+          significant = true;
+        }
+      }
+      if (significant) schedule();
+    })
+    : undefined;
   for (const element of new Set([stage, ...observe])) resize?.observe(element);
   view.addEventListener('resize', schedule);
   check();

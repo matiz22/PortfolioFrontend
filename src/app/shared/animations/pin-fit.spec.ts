@@ -39,7 +39,10 @@ describe('watchPinFit', () => {
     section.remove();
   });
 
-  const resize = () => resized([], {} as ResizeObserver);
+  const resize = (nextHeight = height) => resized(
+    [{ target: stage, contentRect: { width: 320, height: nextHeight } } as unknown as ResizeObserverEntry],
+    {} as ResizeObserver,
+  );
 
   function start(options?: { eligible?: () => boolean; tolerance?: number }): void {
     cleanup = watchPinFit({ section, stage, pinnedClass: 'pinned', observe: [], mount, ...options });
@@ -100,6 +103,24 @@ describe('watchPinFit', () => {
     expect(instance.refresh).toHaveBeenCalledTimes(1);
   });
 
+  it('skips resize notifications below the epsilon without scheduling a check', () => {
+    start();
+    resize();
+    flush();
+    expect(mount).toHaveBeenCalledTimes(1);
+    const raf = window.requestAnimationFrame as jasmine.Spy;
+    raf.calls.reset();
+    // Sub-pixel box jitter: no rAF, so no measurement pass and no forced reflow.
+    height -= 2;
+    resize();
+    expect(raf).not.toHaveBeenCalled();
+    height -= 8;
+    resize();
+    expect(raf).toHaveBeenCalled();
+    flush();
+    expect(instance.refresh).toHaveBeenCalledTimes(1);
+  });
+
   it('keeps an active pin across small overflows a fresh mount would refuse', () => {
     start({ tolerance: 12 });
     height = window.innerHeight + 8;
@@ -118,6 +139,7 @@ describe('watchPinFit', () => {
     window.dispatchEvent(new Event('resize'));
     flush();
     expect(mount).toHaveBeenCalledTimes(1);
+    height -= 8;
     resize();
     cleanup!();
     cleanup!();
