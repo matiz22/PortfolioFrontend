@@ -12,6 +12,8 @@ import { generateSitemapXml } from './sitemap-generator';
 const browserDistFolder = join(import.meta.dirname, '../browser');
 
 const app = express();
+// Don't advertise the stack in every response header.
+app.disable('x-powered-by');
 const angularApp = new AngularNodeAppEngine();
 
 /**
