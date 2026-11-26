@@ -21,6 +21,7 @@ import { HomeStage } from '../../../shared/home-stage/home-stage';
 import { ImageUrlPipe } from '../../../shared/pipes/image-url-pipe';
 import { SectionAction } from '../../../shared/section-action/section-action';
 import { SectionFooter } from '../../../shared/section-footer/section-footer';
+import { animateEducationCards } from './education-animation';
 
 const HEADER_COPY = { heading: 'h2', details: 'p' } satisfies HomeCopyConfig;
 const CARD_COPY = {
@@ -62,9 +63,7 @@ export class EducationSection {
 
       // Cards reveal only after data, hydration, and fonts are ready.
       onCleanup(mountMotion(async (root) => {
-        const [{ animateEducationCards }] = await Promise.all([
-          import('./education-animation'), root.ownerDocument.fonts.ready,
-        ]);
+        await root.ownerDocument.fonts.ready;
         return animateEducationCards;
       }, 'Education animation could not be loaded.'));
     });

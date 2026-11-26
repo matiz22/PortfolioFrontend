@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { afterNextRenderMotion } from '../../../../shared/animations/lazy-motion';
 import { StorefrontPreview } from './storefront-preview/storefront-preview';
 import { DashboardPreview } from './dashboard-preview/dashboard-preview';
+import { animateWebPreview } from './web-preview-animation';
 
 @Component({
   selector: 'app-web-development-preview',
@@ -12,7 +13,7 @@ import { DashboardPreview } from './dashboard-preview/dashboard-preview';
 })
 export class WebDevelopmentPreview {
   constructor() {
-    afterNextRenderMotion(async () => (await import('./web-preview-animation')).animateWebPreview,
+    afterNextRenderMotion(async () => animateWebPreview,
       'Web Development preview animation could not be loaded.');
   }
 }

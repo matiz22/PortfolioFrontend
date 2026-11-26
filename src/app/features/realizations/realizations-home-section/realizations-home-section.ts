@@ -18,6 +18,7 @@ import { HomeRailControls } from '../../../shared/home-rail-controls/home-rail-c
 import { SectionAction } from '../../../shared/section-action/section-action';
 import { SectionFooter } from '../../../shared/section-footer/section-footer';
 import { StatusAnnouncer } from '../../../shared/status-announcer/status-announcer';
+import { animateRealizationsScroll } from './realizations-scroll-animation';
 
 @Component({
   selector: 'app-realizations-home-section',
@@ -55,9 +56,7 @@ export class RealizationsHomeSection {
       }
 
       onCleanup(mountMotion(async (root) => {
-        const [{ animateRealizationsScroll }] = await Promise.all([
-          import('./realizations-scroll-animation'), root.ownerDocument.fonts.ready,
-        ]);
+        await root.ownerDocument.fonts.ready;
         return (element) => animateRealizationsScroll(element,
           progress => this.controls().setPinnedProgress(progress));
       }, 'Realizations scroll animation could not be loaded.'));

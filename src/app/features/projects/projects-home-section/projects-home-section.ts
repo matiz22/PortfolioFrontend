@@ -18,6 +18,7 @@ import { HomeStage } from '../../../shared/home-stage/home-stage';
 import { SectionAction } from '../../../shared/section-action/section-action';
 import { SectionFooter } from '../../../shared/section-footer/section-footer';
 import { StatusAnnouncer } from '../../../shared/status-announcer/status-announcer';
+import { animateProjects } from './projects-animation';
 
 @Component({
   selector: 'app-projects-home-section',
@@ -52,7 +53,7 @@ export class ProjectsHomeSection {
         return;
       }
 
-      onCleanup(mountMotion(async () => (await import('./projects-animation')).animateProjects,
+      onCleanup(mountMotion(async () => animateProjects,
         'Projects animation could not be loaded.'));
     });
   }

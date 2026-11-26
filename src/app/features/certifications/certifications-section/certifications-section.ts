@@ -16,6 +16,7 @@ import { HomeRailControls } from '../../../shared/home-rail-controls/home-rail-c
 import { HomeStage } from '../../../shared/home-stage/home-stage';
 import { SectionAction } from '../../../shared/section-action/section-action';
 import { SectionFooter } from '../../../shared/section-footer/section-footer';
+import { animateCertifications } from './certifications-animation';
 
 @Component({
   selector: 'app-certifications-section',
@@ -40,7 +41,7 @@ export class CertificationsSection {
         return;
       }
 
-      onCleanup(mountMotion(async () => (await import('./certifications-animation')).animateCertifications,
+      onCleanup(mountMotion(async () => animateCertifications,
         'Certifications animation could not be loaded.'));
     });
   }

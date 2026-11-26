@@ -5,6 +5,7 @@ import { HomeStage } from '../../../shared/home-stage/home-stage';
 import { WebDevelopmentPreview } from './web-development-preview/web-development-preview';
 import { AppsPreview } from './apps-preview/apps-preview';
 import { AiWorkflowPreview } from './ai-workflow-preview/ai-workflow-preview';
+import { animateAboutMeScroll } from './about-me-scroll-animation';
 
 @Component({
   selector: 'app-about-me-section',
@@ -16,10 +17,10 @@ import { AiWorkflowPreview } from './ai-workflow-preview/ai-workflow-preview';
 export class AboutMeSection {
   constructor() {
     // The server and the first client render always expose every service.
+    // The animation is a static import so it arrives with the section chunk
+    // instead of chaining a second fetch after the section renders.
     afterNextRenderMotion(async (root) => {
-      const [{ animateAboutMeScroll }] = await Promise.all([
-        import('./about-me-scroll-animation'), root.ownerDocument.fonts.ready,
-      ]);
+      await root.ownerDocument.fonts.ready;
       return animateAboutMeScroll;
     }, 'About Me scroll animation could not be loaded.');
   }

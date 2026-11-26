@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
 import { afterNextRenderMotion } from '../../../../shared/animations/lazy-motion';
+import { animateAppsPreview } from './apps-preview-animation';
 
 @Component({
   selector: 'app-apps-preview',
@@ -18,7 +19,7 @@ import { afterNextRenderMotion } from '../../../../shared/animations/lazy-motion
 })
 export class AppsPreview {
   constructor() {
-    afterNextRenderMotion(async () => (await import('./apps-preview-animation')).animateAppsPreview,
+    afterNextRenderMotion(async () => animateAppsPreview,
       'Apps preview animation could not be loaded.');
   }
 }

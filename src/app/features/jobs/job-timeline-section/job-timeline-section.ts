@@ -21,6 +21,7 @@ import { SectionAction } from '../../../shared/section-action/section-action';
 import { SectionFooter } from '../../../shared/section-footer/section-footer';
 import { StatusAnnouncer } from '../../../shared/status-announcer/status-announcer';
 import { JobTimelineEntry } from './job-timeline-entry/job-timeline-entry';
+import { animateJobsTimeline } from './jobs-timeline-animation';
 
 const TIMELINE_MOTION_QUERY = `(min-width: 48rem) and ${MOTION_ALLOWED_QUERY}`;
 
@@ -56,9 +57,7 @@ export class JobTimelineSection {
       }
 
       onCleanup(mountMotion(async (root) => {
-        const [{ animateJobsTimeline }] = await Promise.all([
-          import('./jobs-timeline-animation'), root.ownerDocument.fonts.ready,
-        ]);
+        await root.ownerDocument.fonts.ready;
         // The timeline draws its own pinned progress. Notify the shared controls
         // of mode changes so they remeasure native overflow after unpinning.
         return (element) => animateJobsTimeline(element,
