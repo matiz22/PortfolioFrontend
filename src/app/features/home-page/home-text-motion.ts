@@ -138,7 +138,6 @@ export function animateHomeText(root: HTMLElement, registry: HomeCopyRegistry): 
 
   motion.add(MOTION_ALLOWED_QUERY, () => {
     const reveals = new Map<HTMLElement, CopyReveal>();
-    const headings = new Map<Element, CopyReveal>();
     const doc = root.ownerDocument;
     let disposed = false;
     const anchor = () => {
@@ -172,15 +171,19 @@ export function animateHomeText(root: HTMLElement, registry: HomeCopyRegistry): 
       }
     };
 
-    // Watch the heading rather than the surrounding card: it can start its exit
-    // near the navigation bar even while the rest of the card is still visible.
-    // This also follows sticky intros and the clipped horizontal track natively.
+    // Watch the copy group rather than the heading: the entrance wipes the
+    // heading from inset(100%), which engines report as zero intersection even
+    // while the text is on screen. Watching the heading made every animated
+    // entrance reverse itself in a loop and could leave copy invisible. The
+    // group is never styled by the transition, so its readings stay
+    // trustworthy, and it still follows sticky intros and the clipped
+    // horizontal track natively.
     const observer = new view.IntersectionObserver((entries) => {
       if (disposed) {
         return;
       }
       for (const entry of entries) {
-        const reveal = headings.get(entry.target);
+        const reveal = reveals.get(entry.target as HTMLElement);
         if (!reveal) {
           continue;
         }
@@ -207,9 +210,8 @@ export function animateHomeText(root: HTMLElement, registry: HomeCopyRegistry): 
     const remove = ({ element: group }: HomeCopyRegistration) => {
       const reveal = reveals.get(group);
       if (!reveal) return;
-      observer.unobserve(reveal.heading);
+      observer.unobserve(group);
       reveal.dispose();
-      headings.delete(reveal.heading);
       reveals.delete(group);
     };
     const add = (registration: HomeCopyRegistration) => {
@@ -220,9 +222,8 @@ export function animateHomeText(root: HTMLElement, registry: HomeCopyRegistry): 
       if (!heading) return;
       const reveal = new CopyReveal(group, heading, config);
       reveals.set(group, reveal);
-      headings.set(heading, reveal);
       requestAnchorEntrance(reveal, anchor());
-      observer.observe(heading);
+      observer.observe(group);
     };
     const onAnchor = () => {
       const target = anchor();

@@ -77,13 +77,14 @@ describe('homepage text motion', () => {
 
   it('wipes in on entry, reverses faster on exit, and replays in either direction', () => {
     motion = animateHomeText(root, registry);
+    const group = element('.projects-home-header');
     const title = element('.projects-home-header h2');
-    expect(observe).toHaveBeenCalledWith(title);
+    expect(observe).toHaveBeenCalledWith(group);
     expect(title.style.opacity).toBe('');
 
-    intersect(title, 0);
+    intersect(group, 0);
     expect(title.style.opacity).toBe('0');
-    intersect(title, 0.5);
+    intersect(group, 0.5);
     const entrance = animation(title);
     expect(entrance.reversed()).toBeFalse();
     entrance.pause(0.08);
@@ -92,45 +93,70 @@ describe('homepage text motion', () => {
     expect(title.style.clipPath).toBe('');
     expect(title.style.opacity).toBe('');
 
-    intersect(title, 0.35, -100);
+    intersect(group, 0.35, -100);
     expect(title.style.opacity).toBe('');
-    intersect(title, 0.18, -100);
+    intersect(group, 0.18, -100);
     const exit = animation(title);
     expect(exit.reversed()).toBeTrue();
     expect(Math.abs(exit.timeScale())).toBeGreaterThan(1);
     exit.pause().progress(0);
     expect(title.style.opacity).toBe('0');
 
-    intersect(title, 0.5, -20);
+    intersect(group, 0.5, -20);
     expect(animation(title)).not.toBe(entrance);
     animation(title).progress(1);
-    intersect(title, 0.03, 800);
+    intersect(group, 0.03, 800);
     expect(animation(title).reversed()).toBeTrue();
+  });
+
+  it('watches the copy group so the heading wipe cannot zero its own intersection', () => {
+    motion = animateHomeText(root, registry);
+    const group = element('.projects-home-header');
+    const title = element('.projects-home-header h2');
+    // The entrance clips the heading from inset(100%); engines report that as
+    // zero intersection for the heading itself, so it must never be observed.
+    expect(observe).not.toHaveBeenCalledWith(title);
+
+    intersect(group, 0);
+    intersect(group, 0.5);
+    const entrance = animation(title);
+    entrance.pause(0.1);
+    expect(title.style.clipPath).not.toBe('');
+    // A clipped-heading reading must not reverse the running entrance.
+    intersect(title, 0);
+    expect(entrance.reversed()).toBeFalse();
+    // The unclipped group still reads as visible while the wipe runs.
+    intersect(group, 0.85);
+    expect(entrance.reversed()).toBeFalse();
+    entrance.progress(1);
+    expect(title.style.clipPath).toBe('');
   });
 
   it('changes direction mid-transition without creating a second tween stack', () => {
     motion = animateHomeText(root, registry);
+    const group = element('.projects-home-header');
     const title = element('.projects-home-header h2');
-    intersect(title, 0);
-    intersect(title, 0.6);
+    intersect(group, 0);
+    intersect(group, 0.6);
     const reveal = animation(title);
     reveal.pause(0.12);
 
-    intersect(title, 0.04);
+    intersect(group, 0.04);
     expect(animation(title)).toBe(reveal);
     expect(reveal.reversed()).toBeTrue();
-    intersect(title, 0.6);
+    intersect(group, 0.6);
     expect(animation(title)).toBe(reveal);
     expect(reveal.reversed()).toBeFalse();
   });
 
   it('does not hide already-visible content on hydration or links when focus enters', () => {
     motion = animateHomeText(root, registry);
+    const group = element('.projects-home-header');
     const title = element('.projects-home-header h2');
     const link = element('a');
-    intersect(title, 0.8);
+    intersect(group, 0.8);
     expect(gsap.getTweensOf(title)).toEqual([]);
-    intersect(title, 0);
+    intersect(group, 0);
     animation(title).pause().progress(0);
     expect(title.style.opacity).toBe('0');
     expect(link.getAttribute('style')).toBeNull();
@@ -147,7 +173,7 @@ describe('homepage text motion', () => {
       history.replaceState(null, '', location.pathname + location.search);
       motion = animateHomeText(root, registry);
       element('a').focus();
-      intersect(element('.projects-home-header h2'), 0.5);
+      intersect(element('.projects-home-header'), 0.5);
       for (const fragment of ['#', '#%']) {
         history.replaceState(null, '', fragment);
         window.dispatchEvent(new HashChangeEvent('hashchange'));
@@ -163,12 +189,13 @@ describe('homepage text motion', () => {
     try {
       history.replaceState(null, '', '#text-motion-projects');
       motion = animateHomeText(root, registry);
+      const group = element('.projects-home-header');
       const title = element('.projects-home-header h2');
-      intersect(title, 0);
+      intersect(group, 0);
       expect(title.style.opacity).toBe('0');
       expect(gsap.getTweensOf(title).some((tween) => tween.duration() > 0)).toBeFalse();
       element('#text-motion-projects').focus();
-      intersect(title, 0.8);
+      intersect(group, 0.8);
       const entrance = animation(title);
       expect(entrance.reversed()).toBeFalse();
       entrance.progress(1);
@@ -181,13 +208,14 @@ describe('homepage text motion', () => {
   it('animates a directly linked heading on the first visible observation', () => {
     const originalUrl = location.href;
     try {
+      const group = element('.projects-home-header');
       const title = element('.projects-home-header h2');
       title.id = 'text-motion-projects-heading';
       title.tabIndex = -1;
       history.replaceState(null, '', '#text-motion-projects-heading');
       motion = animateHomeText(root, registry);
       title.focus();
-      intersect(title, 0.8);
+      intersect(group, 0.8);
       expect(animation(title).reversed()).toBeFalse();
     } finally {
       history.replaceState(null, '', originalUrl);
@@ -198,8 +226,9 @@ describe('homepage text motion', () => {
     const originalUrl = location.href;
     try {
       motion = animateHomeText(root, registry);
+      const group = element('.projects-home-header');
       const title = element('.projects-home-header h2');
-      intersect(title, 0.8);
+      intersect(group, 0.8);
       expect(gsap.getTweensOf(title)).toEqual([]);
 
       history.replaceState(null, '', '#text-motion-projects');
@@ -229,8 +258,8 @@ describe('homepage text motion', () => {
       registry.register(intro, { heading: 'h2', effect: 'wipe', duration: 0.32 });
       await new Promise<void>((resolve) => setTimeout(resolve, 0));
 
-      expect(observe).toHaveBeenCalledWith(title);
-      intersect(title, 0.8);
+      expect(observe).toHaveBeenCalledWith(intro);
+      intersect(intro, 0.8);
       expect(animation(title).reversed()).toBeFalse();
     } finally {
       history.replaceState(null, '', originalUrl);
@@ -240,10 +269,11 @@ describe('homepage text motion', () => {
   it('reveals native contact lines in two beats without touching the form or replacing nodes', () => {
     spyOnProperty(document.scrollingElement!, 'scrollHeight').and.returnValue(window.scrollY + window.innerHeight);
     motion = animateHomeText(root, registry);
+    const group = element('.contact-copy');
     const title = element('.contact-copy h2');
     const lineBreak = title.querySelector('br');
-    intersect(title, 0);
-    intersect(title, 0.5);
+    intersect(group, 0);
+    intersect(group, 0.5);
     const entrance = animation(title);
     expect(entrance.getTweensOf(title).length).toBe(2);
     entrance.progress(1);
@@ -251,19 +281,20 @@ describe('homepage text motion', () => {
     expect(title.style.clipPath).toBe('');
     expect(element('input').getAttribute('style')).toBeNull();
 
-    intersect(title, 0.08, -100);
+    intersect(group, 0.08, -100);
     expect(title.style.opacity).toBe('');
-    intersect(title, 0.5);
-    intersect(title, 0.08, 800);
+    intersect(group, 0.5);
+    intersect(group, 0.08, 800);
     expect(animation(title).reversed()).toBeTrue();
   });
 
   it('keeps the first contact line revealed when the second beat starts', () => {
     element('.contact-copy').style.height = '240px';
     motion = animateHomeText(root, registry);
+    const group = element('.contact-copy');
     const title = element('.contact-copy h2');
-    intersect(title, 0);
-    intersect(title, 0.5);
+    intersect(group, 0);
+    intersect(group, 0.5);
     const entrance = animation(title);
     const secondBeat = entrance.getTweensOf(title)[1];
     const bottomInset = () => {
@@ -291,18 +322,19 @@ describe('homepage text motion', () => {
       </div>
     `;
     root.appendChild(card);
-    const unregister = registry.register(card.querySelector<HTMLElement>('.education-main')!, {
+    const group = card.querySelector<HTMLElement>('.education-main')!;
+    const unregister = registry.register(group, {
       heading: '.education-degree', details: '.education-institution', duration: 0.35, focusScope: '.education-card',
     });
     await new Promise<void>((resolve) => setTimeout(resolve, 0));
     const title = element('.education-degree');
-    expect(observe).toHaveBeenCalledWith(title);
-    intersect(title, 0);
+    expect(observe).toHaveBeenCalledWith(group);
+    intersect(group, 0);
     expect(title.style.opacity).toBe('0');
     unregister();
     card.remove();
     await new Promise<void>((resolve) => setTimeout(resolve, 0));
-    expect(unobserve).toHaveBeenCalledWith(title);
+    expect(unobserve).toHaveBeenCalledWith(group);
     expect(title.style.opacity).toBe('');
     motion.revert();
     expect(disconnect).toHaveBeenCalled();
@@ -310,16 +342,17 @@ describe('homepage text motion', () => {
 
   it('resumes retained registrations without duplicated observers after route reattachment', () => {
     motion = animateHomeText(root, registry);
+    const group = element('.projects-home-header');
     const title = element('.projects-home-header h2');
-    intersect(title, 0);
+    intersect(group, 0);
     expect(title.style.opacity).toBe('0');
     motion.revert();
     expect(title.style.opacity).toBe('');
     observe.calls.reset();
     motion = animateHomeText(root, registry);
-    expect(observe.calls.allArgs().filter(([node]) => node === title).length).toBe(1);
+    expect(observe.calls.allArgs().filter(([node]) => node === group).length).toBe(1);
     unregisterProjects();
-    expect(unobserve).toHaveBeenCalledWith(title);
+    expect(unobserve).toHaveBeenCalledWith(group);
   });
 
   it('does not observe or modify text when reduced motion is on', () => {
