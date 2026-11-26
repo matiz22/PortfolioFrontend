@@ -143,6 +143,67 @@ describe('hero text animation', () => {
     }
   }
 
+  for (const mainText of ['I build what’s missing.', 'Tworzę to, czego brakuje.']) {
+    it(`keeps wrapped line spacing identical during and after the intro: ${mainText}`, () => {
+      const main = root.querySelector<HTMLElement>('.hero-headline-main')!;
+      main.textContent = mainText;
+      main.style.cssText = `
+        display: block; width: 300px; font: 40px/.96 Arial, sans-serif;
+        letter-spacing: -.035em; text-align: center; text-wrap: balance;
+      `;
+
+      // Distinct glyph-line tops of the plain copy, before anything is split.
+      const toLineTops = (tops: number[]): number[] => {
+        const lines: number[] = [];
+        for (const top of [...tops].sort((a, b) => a - b)) {
+          if (!lines.length || top - lines[lines.length - 1] > 1) {
+            lines.push(top);
+          }
+        }
+        return lines;
+      };
+      const range = document.createRange();
+      const plain = toLineTops(
+        Array.from((main.textContent ?? '').matchAll(/\S+/g), (word) => {
+          range.setStart(main.firstChild!, word.index);
+          range.setEnd(main.firstChild!, word.index + word[0].length);
+          return range.getBoundingClientRect().top;
+        }),
+      );
+      expect(plain.length).toBe(2);
+      const plainPitch = plain[1] - plain[0];
+
+      motion = animateHeroText(root);
+      const intro = timeline();
+      // Park the reveal right before it completes: every word sits at rest
+      // inside its mask while the split is still live.
+      intro.pause(intro.duration() - 0.01);
+      const during = toLineTops(
+        Array.from(main.querySelectorAll('.hero-build-word'), (word) => {
+          range.selectNodeContents(word);
+          return range.getBoundingClientRect().top;
+        }),
+      );
+      expect(during.length).toBe(2);
+      // Masks aligned to the baseline used to add the font's descent to every
+      // wrapped line, so the copy snapped tighter once the reveal reverted.
+      expect(Math.abs(during[1] - during[0] - plainPitch)).toBeLessThan(0.6);
+      expect(Math.abs(during[0] - plain[0])).toBeLessThan(0.6);
+
+      timeline().progress(1);
+      expect(main.innerHTML).toBe(mainText);
+      expect(
+        toLineTops(
+          Array.from((main.textContent ?? '').matchAll(/\S+/g), (word) => {
+            range.setStart(main.firstChild!, word.index);
+            range.setEnd(main.firstChild!, word.index + word[0].length);
+            return range.getBoundingClientRect().top;
+          }),
+        ),
+      ).toEqual(plain);
+    });
+  }
+
   it('leaves the original DOM untouched when reduced motion is preferred', () => {
     reducedMotion = true;
     const original = root.innerHTML;

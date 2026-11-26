@@ -73,7 +73,10 @@ export function animateHeroText(root: HTMLElement): gsap.MatchMedia {
           display: 'inline-block',
         });
         gsap.set(main.masks, {
-          verticalAlign: 'baseline',
+          // 'top' keeps the mask's line-box contribution engine-independent: an
+          // inline-block with overflow:clip uses its bottom margin edge as the
+          // baseline, which inflates every wrapped line on Safari until revert.
+          verticalAlign: 'top',
           padding: '0.14em 0.04em',
           margin: '-0.14em -0.04em',
         });
