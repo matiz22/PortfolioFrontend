@@ -1,6 +1,5 @@
 const LAYOUT_UNIT = '--layout-vh';
 const GRAIN_VIEWPORT_HEIGHT = '--grain-viewport-height';
-const GRAIN_TOOLBAR_GAP = '--grain-toolbar-gap';
 
 /** Firefox on iOS can change even svh when its toolbar moves (mozilla-mobile/firefox-ios#22607). */
 export function stabilizeFirefoxIosViewport(view: Window): () => void {
@@ -10,6 +9,7 @@ export function stabilizeFirefoxIosViewport(view: Window): () => void {
 
   const doc = view.document;
   const root = doc.documentElement;
+  root.setAttribute('data-firefox-ios', '');
   let width = 0;
   const measure = () => {
     // The toolbar and keyboard can change height but not the unzoomed layout
@@ -33,7 +33,6 @@ export function stabilizeFirefoxIosViewport(view: Window): () => void {
     const longSide = Math.max(view.screen.width, view.screen.height);
     const screenHeight = nextWidth > (shortSide + longSide) / 2 ? shortSide : longSide;
     root.style.setProperty(GRAIN_VIEWPORT_HEIGHT, `${Math.max(height, screenHeight)}px`);
-    root.style.setProperty(GRAIN_TOOLBAR_GAP, '0px');
   };
 
   measure();
@@ -42,6 +41,6 @@ export function stabilizeFirefoxIosViewport(view: Window): () => void {
     view.removeEventListener('resize', measure);
     root.style.removeProperty(LAYOUT_UNIT);
     root.style.removeProperty(GRAIN_VIEWPORT_HEIGHT);
-    root.style.removeProperty(GRAIN_TOOLBAR_GAP);
+    root.removeAttribute('data-firefox-ios');
   };
 }

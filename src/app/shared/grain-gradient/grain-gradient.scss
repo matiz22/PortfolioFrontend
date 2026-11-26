@@ -12,8 +12,16 @@
     // The toolbar animates before some browsers update their dynamic viewport.
     // Paint the largest viewport in advance so neither the clip nor the canvas
     // exposes a strip of the page background as more of the page is revealed.
-    min-block-size: var(--grain-viewport-height, 100lvh);
+    min-block-size: 100lvh;
   }
+}
+
+:host-context(html[data-firefox-ios]) {
+  // Firefox moves the viewport as its toolbar opens. Anchor to the start
+  // edge only, so the fixed-size canvas never follows its changing bottom.
+  inset-block-end: auto;
+  block-size: var(--grain-viewport-height, 100lvh);
+  min-block-size: 0;
 }
 
 .grain-surface {
@@ -50,22 +58,22 @@
 
 @media (any-pointer: coarse) {
   @supports (-webkit-touch-callout: none) and (animation-timeline: scroll(root block)) {
-    :host {
+    :host-context(html:not([data-firefox-ios])) {
       // iOS Safari clips fixed layers at the browser toolbar. Instead, paint
       // in the scrolling document and counter its scroll with a native timeline.
       position: absolute;
       min-block-size: 0;
       overflow: visible;
-      --grain-toolbar-overscan: max(4rem, var(--grain-toolbar-gap, calc(100lvh - 100svh)));
+      --grain-toolbar-overscan: max(4rem, calc(100lvh - 100svh));
       animation: grain-follow-scroll 1ms linear both;
       animation-timeline: scroll(root block);
-    }
 
-    .grain-surface,
-    .grain-gap {
-      inset-block: calc(-1 * var(--grain-toolbar-overscan)) auto;
-      // Paint a stable buffer with room above and below the layout viewport.
-      block-size: calc(var(--grain-viewport-height, 100lvh) + 2 * var(--grain-toolbar-overscan));
+      .grain-surface,
+      .grain-gap {
+        inset-block: calc(-1 * var(--grain-toolbar-overscan)) auto;
+        // Paint a stable buffer with room above and below the layout viewport.
+        block-size: calc(100lvh + 2 * var(--grain-toolbar-overscan));
+      }
     }
   }
 }

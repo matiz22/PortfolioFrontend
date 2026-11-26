@@ -76,7 +76,7 @@ html {
   @supports (-webkit-touch-callout: none) and (animation-timeline: scroll(root block)) {
     // The grain follows the root scroll. Prevent its translated box from
     // adding to the route's scroll height without creating a scroll container.
-    :has(> app-grain-gradient) {
+    html:not([data-firefox-ios]) :has(> app-grain-gradient) {
       overflow: clip;
     }
   }

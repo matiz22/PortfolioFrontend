@@ -45,6 +45,30 @@ describe('GrainGradient with a fixed chapter', () => {
 });
 
 describe('GrainGradient on touch-first devices', () => {
+  it('pins Firefox iOS grain to the top with a fixed paint height and no scroll animation', () => {
+    spyOn(IntersectionObserver.prototype, 'observe');
+    const root = document.documentElement;
+    root.setAttribute('data-firefox-ios', '');
+    try {
+      const fixture = TestBed.createComponent(GrainGradient);
+      fixture.componentRef.setInput('chapter', 'work');
+      fixture.detectChanges();
+
+      const host: HTMLElement = fixture.nativeElement;
+      host.style.setProperty('--grain-viewport-height', '844px');
+      const style = getComputedStyle(host);
+      expect(style.position).toBe('fixed');
+      expect(style.animationName).toBe('none');
+
+      const surface = host.querySelector<HTMLElement>('.grain-surface')!;
+      const bounds = surface.getBoundingClientRect();
+      expect(bounds.top).toBe(0);
+      expect(bounds.height).toBe(844);
+    } finally {
+      root.removeAttribute('data-firefox-ios');
+    }
+  });
+
   it('tries Paper when the backdrop becomes visible and keeps chapter colors if WebGL is unavailable', async () => {
     const matchMedia = window.matchMedia.bind(window);
     spyOn(window, 'matchMedia').and.callFake((query) => {

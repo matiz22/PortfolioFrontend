@@ -4,7 +4,6 @@ describe('Firefox iOS layout viewport', () => {
   const root = document.documentElement;
   const layoutUnit = '--layout-vh';
   const grainHeight = '--grain-viewport-height';
-  const grainGap = '--grain-toolbar-gap';
   let stop: (() => void) | undefined;
 
   afterEach(() => {
@@ -22,13 +21,13 @@ describe('Firefox iOS layout viewport', () => {
     stop = stabilizeFirefoxIosViewport(window);
     expect(root.style.getPropertyValue(layoutUnit)).toBe('6.5px');
     expect(root.style.getPropertyValue(grainHeight)).toBe('844px');
-    expect(root.style.getPropertyValue(grainGap)).toBe('0px');
+    expect(root.hasAttribute('data-firefox-ios')).toBeTrue();
 
     size.and.returnValue(new DOMRect(0, 0, 0, 750));
     window.dispatchEvent(new Event('resize'));
     expect(root.style.getPropertyValue(layoutUnit)).toBe('6.5px');
     expect(root.style.getPropertyValue(grainHeight)).toBe('844px');
-    expect(root.style.getPropertyValue(grainGap)).toBe('0px');
+    expect(root.hasAttribute('data-firefox-ios')).toBeTrue();
     expect(size).toHaveBeenCalledTimes(1);
 
     width.and.returnValue(740);
@@ -43,7 +42,7 @@ describe('Firefox iOS layout viewport', () => {
     window.dispatchEvent(new Event('resize'));
     expect(root.style.getPropertyValue(layoutUnit)).toBe('');
     expect(root.style.getPropertyValue(grainHeight)).toBe('');
-    expect(root.style.getPropertyValue(grainGap)).toBe('');
+    expect(root.hasAttribute('data-firefox-ios')).toBeFalse();
   });
 
   it('lets other browsers use their native viewport units', () => {
@@ -51,6 +50,6 @@ describe('Firefox iOS layout viewport', () => {
     stop = stabilizeFirefoxIosViewport(window);
     expect(root.style.getPropertyValue(layoutUnit)).toBe('');
     expect(root.style.getPropertyValue(grainHeight)).toBe('');
-    expect(root.style.getPropertyValue(grainGap)).toBe('');
+    expect(root.hasAttribute('data-firefox-ios')).toBeFalse();
   });
 });
