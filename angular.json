@@ -53,6 +53,8 @@
               }
             ],
             "styles": [
+              "node_modules/@fontsource-variable/geist/index.css",
+              "node_modules/@fontsource/geist-pixel/index.css",
               "src/styles.scss",
               "src/animations.scss",
               {
@@ -92,7 +94,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumError": "500kB"
+                  "maximumWarning": "500kB",
+                  "maximumError": "512kB"
                 },
                 {
                   "type": "anyComponentStyle",
