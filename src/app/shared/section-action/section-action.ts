@@ -39,7 +39,9 @@ export class SectionAction {
       onCleanup(mountMotion(async () => {
         const { animateSectionAction } = await import('./section-action-magnet');
         return (root) => animateSectionAction(root, strength);
-      }, 'Section button interaction could not be loaded.', FINE_POINTER_MOTION_QUERY));
+        // Eager sections (hero) render before the page has loaded; keep the
+        // magnet download out of the critical load window.
+      }, 'Section button interaction could not be loaded.', FINE_POINTER_MOTION_QUERY, true));
     });
   }
 }

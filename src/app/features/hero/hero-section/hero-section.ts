@@ -17,12 +17,14 @@ import { SectionAction } from '../../../shared/section-action/section-action';
 export class HeroSection {
   constructor() {
     // On touch screens keep the hero at its natural size during native scrolling.
+    // Both downloads wait for the page to settle so they never compete with the
+    // LCP resources during the initial load.
     afterNextRenderMotion(async (root) => {
       const [{ animateHeroScroll }] = await Promise.all([
         import('./hero-scroll-animation'), root.ownerDocument.fonts.ready,
       ]);
       return animateHeroScroll;
-    }, 'Hero scroll animation could not be loaded.', FINE_POINTER_MOTION_QUERY);
+    }, 'Hero scroll animation could not be loaded.', FINE_POINTER_MOTION_QUERY, true);
 
     // Keep SSR text readable while the optional animation and display font load.
     afterNextRenderMotion(async (root) => {
@@ -30,6 +32,6 @@ export class HeroSection {
         import('./hero-text-animation'), root.ownerDocument.fonts.ready,
       ]);
       return animateHeroText;
-    }, 'Hero text animation could not be loaded.', MOTION_ALLOWED_QUERY);
+    }, 'Hero text animation could not be loaded.', MOTION_ALLOWED_QUERY, true);
   }
 }

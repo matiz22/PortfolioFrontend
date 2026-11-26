@@ -48,7 +48,9 @@ export class HomePage implements RouteAttachment {
         import('./home-text-motion'), this.document.fonts.ready,
       ]);
       return (root) => animateHomeText(root, this.copyRegistry);
-    }, 'Home text animation could not be loaded.', MOTION_ALLOWED_QUERY);
+      // Defer the download until the page has loaded so it never competes
+      // with the hero's LCP resources during the initial load.
+    }, 'Home text animation could not be loaded.', MOTION_ALLOWED_QUERY, true);
   }
 
   onRouteAttach(): void {
