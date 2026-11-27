@@ -1,27 +1,16 @@
 :host {
   position: fixed;
   inset: 0;
+  // Anchor to the start and paint one stable screen. Mobile browser chrome
+  // can change the bottom viewport edge without resizing this backdrop.
+  inset-block-end: auto;
+  block-size: var(--grain-viewport-height, 100lvh);
   z-index: -1;
   display: block;
   overflow: hidden;
   pointer-events: none;
   // Safari can extend a fixed element's solid color into its toolbar.
   // Paint the backdrop on the surface, not on this positioning box.
-
-  @media (any-pointer: coarse) {
-    // The toolbar animates before some browsers update their dynamic viewport.
-    // Paint the largest viewport in advance so neither the clip nor the canvas
-    // exposes a strip of the page background as more of the page is revealed.
-    min-block-size: 100lvh;
-  }
-}
-
-:host-context(html[data-firefox-ios]) {
-  // Firefox moves the viewport as its toolbar opens. Anchor to the start
-  // edge only, so the fixed-size canvas never follows its changing bottom.
-  inset-block-end: auto;
-  block-size: var(--grain-viewport-height, 100lvh);
-  min-block-size: 0;
 }
 
 .grain-surface {
@@ -57,30 +46,17 @@
 }
 
 @media (any-pointer: coarse) {
-  @supports (-webkit-touch-callout: none) and (animation-timeline: scroll(root block)) {
-    :host-context(html:not([data-firefox-ios])) {
-      // iOS Safari clips fixed layers at the browser toolbar. Instead, paint
-      // in the scrolling document and counter its scroll with a native timeline.
-      position: absolute;
-      min-block-size: 0;
-      overflow: visible;
-      --grain-toolbar-overscan: max(4rem, calc(100lvh - 100svh));
-      animation: grain-follow-scroll 1ms linear both;
-      animation-timeline: scroll(root block);
-
-      .grain-surface,
-      .grain-gap {
-        inset-block: calc(-1 * var(--grain-toolbar-overscan)) auto;
-        // Paint a stable buffer with room above and below the layout viewport.
-        block-size: calc(100lvh + 2 * var(--grain-toolbar-overscan));
-      }
-    }
+  :host {
+    // Let the painted children extend beyond the fixed positioning box so
+    // Safari can sample the backdrop instead of showing a black toolbar strip.
+    overflow: visible;
   }
-}
 
-@keyframes grain-follow-scroll {
-  // The wrapper spans the route, so its height minus the viewport is the scroll range.
-  to {
-    transform: translateY(max(0px, calc(100% - 100dvh)));
+  .grain-surface,
+  .grain-gap {
+    inset-block: -4rem auto;
+    // Paint above and below the viewport with a buffer that cannot resize
+    // when either browser's toolbar moves.
+    block-size: calc(var(--grain-viewport-height, 100lvh) + 8rem);
   }
 }

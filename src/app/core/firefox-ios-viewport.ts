@@ -9,7 +9,6 @@ export function stabilizeFirefoxIosViewport(view: Window): () => void {
 
   const doc = view.document;
   const root = doc.documentElement;
-  root.setAttribute('data-firefox-ios', '');
   let width = 0;
   const measure = () => {
     // The toolbar and keyboard can change height but not the unzoomed layout
@@ -41,6 +40,5 @@ export function stabilizeFirefoxIosViewport(view: Window): () => void {
     view.removeEventListener('resize', measure);
     root.style.removeProperty(LAYOUT_UNIT);
     root.style.removeProperty(GRAIN_VIEWPORT_HEIGHT);
-    root.removeAttribute('data-firefox-ios');
   };
 }
