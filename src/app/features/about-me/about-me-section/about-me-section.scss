@@ -180,6 +180,22 @@
   display: none;
 }
 
+@media (width < 64rem) {
+  .about-service-copy {
+    position: relative;
+  }
+
+  // Stretch the existing native button over the card, including its summary
+  // and padding, without adding another click handler or keyboard stop.
+  .about-service-trigger::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: var(--radius);
+  }
+}
+
 @media (min-width: 64rem) {
   .about-header h2 {
     max-width: none;

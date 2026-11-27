@@ -169,6 +169,17 @@ describe('AboutMeSection', () => {
     expect(button('ai').getAttribute('aria-expanded')).toBe('false');
   });
 
+  it('keeps one native trigger per card with its summary as the accessible description', () => {
+    for (const service of ['web', 'apps', 'ai']) {
+      const card = row(service);
+      const trigger = button(service);
+      expect(card.querySelectorAll('button').length).toBe(1);
+      expect(trigger.type).toBe('button');
+      expect(trigger.getAttribute('aria-describedby')).toBe(card.querySelector('p')!.id);
+      expect(trigger.getAttribute('aria-controls')).toBe(`about-${service}-preview`);
+    }
+  });
+
   it('clears a selected preview on Escape and when crossing the layout breakpoint', () => {
     pointer(row('web'), 'pointerenter');
     button('web').dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));

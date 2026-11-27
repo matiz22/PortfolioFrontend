@@ -9,7 +9,7 @@
         <article class="about-service about-web" id="about-web" [class.is-active]="activeService() === 'web'">
           <div class="about-service-copy glass home-glass" (pointerenter)="preview('web', $event)">
             <h3>
-              <button type="button" class="about-service-trigger" aria-controls="about-web-preview"
+              <button type="button" class="about-service-trigger" aria-controls="about-web-preview" aria-describedby="about-web-summary"
                 [attr.aria-expanded]="activeService() === 'web'"
                 (focus)="focusPreview('web', $event)" (blur)="blurPreview()" (click)="togglePreview('web', $event)"
                 (keydown.escape)="clearPreview()">
@@ -17,7 +17,7 @@
                 <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" /></svg>
               </button>
             </h3>
-            <p i18n="@@about.card.web.summary">From company websites and online stores to custom web apps, built around what your business needs to do.</p>
+            <p id="about-web-summary" i18n="@@about.card.web.summary">From company websites and online stores to custom web apps, built around what your business needs to do.</p>
           </div>
           <div class="about-panel" id="about-web-preview"
             [class.is-visible]="activeService() === 'web'" [attr.aria-hidden]="activeService() !== 'web'"
@@ -39,7 +39,7 @@
         <article class="about-service about-apps" id="about-apps" [class.is-active]="activeService() === 'apps'">
           <div class="about-service-copy glass home-glass" (pointerenter)="preview('apps', $event)">
             <h3>
-              <button type="button" class="about-service-trigger" aria-controls="about-apps-preview"
+              <button type="button" class="about-service-trigger" aria-controls="about-apps-preview" aria-describedby="about-apps-summary"
                 [attr.aria-expanded]="activeService() === 'apps'"
                 (focus)="focusPreview('apps', $event)" (blur)="blurPreview()" (click)="togglePreview('apps', $event)"
                 (keydown.escape)="clearPreview()">
@@ -47,7 +47,7 @@
                 <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" /></svg>
               </button>
             </h3>
-            <p i18n="@@about.card.apps.summary">Fast, responsive apps that feel at home on your device and make the most of its built-in capabilities.</p>
+            <p id="about-apps-summary" i18n="@@about.card.apps.summary">Fast, responsive apps that feel at home on your device and make the most of its built-in capabilities.</p>
           </div>
           <div class="about-panel" id="about-apps-preview"
             [class.is-visible]="activeService() === 'apps'" [attr.aria-hidden]="activeService() !== 'apps'"
@@ -68,7 +68,7 @@
         <article class="about-service about-ai" id="about-ai" [class.is-active]="activeService() === 'ai'">
           <div class="about-service-copy glass home-glass" (pointerenter)="preview('ai', $event)">
             <h3>
-              <button type="button" class="about-service-trigger" aria-controls="about-ai-preview"
+              <button type="button" class="about-service-trigger" aria-controls="about-ai-preview" aria-describedby="about-ai-summary"
                 [attr.aria-expanded]="activeService() === 'ai'"
                 (focus)="focusPreview('ai', $event)" (blur)="blurPreview()" (click)="togglePreview('ai', $event)"
                 (keydown.escape)="clearPreview()">
@@ -76,7 +76,7 @@
                 <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" /></svg>
               </button>
             </h3>
-            <p i18n="@@about.card.ai.summary">Assistants and connected workflows that turn incoming requests into completed tasks, with you in control.</p>
+            <p id="about-ai-summary" i18n="@@about.card.ai.summary">Assistants and connected workflows that turn incoming requests into completed tasks, with you in control.</p>
           </div>
           <div class="about-panel" id="about-ai-preview"
             [class.is-visible]="activeService() === 'ai'" [attr.aria-hidden]="activeService() !== 'ai'"
