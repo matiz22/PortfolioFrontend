@@ -33,7 +33,7 @@ export class CursorSpotlight implements AfterViewInit, OnDestroy {
     // Create a stacking context so overlay z-index:-1 stays above background but below content
     this.renderer.setStyle(host, 'isolation', 'isolate');
 
-    // Create overlay with BIGGER dots — same grid, larger radius
+    // Create overlay with BIGGER dots: same grid, larger radius
     this.overlay = this.renderer.createElement('div');
     this.renderer.setStyle(this.overlay, 'position', 'absolute');
     this.renderer.setStyle(this.overlay, 'inset', '0');
@@ -48,7 +48,7 @@ export class CursorSpotlight implements AfterViewInit, OnDestroy {
       'radial-gradient(oklch(79% 0.209 151.711 / 0.9) 2.5px, transparent 2.5px)'
     );
     this.renderer.setStyle(this.overlay, 'backgroundSize', '24px 24px');
-    // Mask: radial fade from cursor position — hides the big dots except near the pointer
+    // Mask: radial fade from cursor position hides the big dots except near the pointer
     this.renderer.setStyle(this.overlay, '-webkit-mask-image', 'radial-gradient(300px circle at 0px 0px, black, transparent 70%)');
     this.renderer.setStyle(this.overlay, 'mask-image', 'radial-gradient(300px circle at 0px 0px, black, transparent 70%)');
     this.renderer.appendChild(host, this.overlay);

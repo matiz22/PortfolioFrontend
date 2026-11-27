@@ -48,7 +48,7 @@ I do not sell or rent personal data. I will not share your personal data with th
 
 ## 6. Cookies and Tracking
 
-At the time this policy was created, the Site does not use analytics, advertising, or tracking cookies. If I add services such as Google Analytics or other tracking tools in the future, I will update this policy and — where required by applicable law — obtain any necessary consent.
+At the time this policy was created, the Site does not use analytics, advertising, or tracking cookies. If I add services such as Google Analytics or other tracking tools in the future, I will update this policy and, where required by applicable law, obtain any necessary consent.
 
 ---
 

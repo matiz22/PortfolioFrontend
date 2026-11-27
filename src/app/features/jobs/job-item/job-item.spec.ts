@@ -30,7 +30,21 @@ describe('JobItem', () => {
     expect(root.querySelector('time')?.getAttribute('datetime')).toBe('2024-01-01');
     expect(root.querySelector('time')?.textContent).toBe('Jan 2024');
     expect(root.querySelector('app-portfolio-period')?.textContent).toContain('Present');
+    expect(Array.from(root.querySelector('app-portfolio-period')!.children)
+      .map((element) => element.textContent?.trim()).join(' '))
+      .toBe('Jan 2024 to Present');
     expect(root.querySelector('.archive-card-media')).toBeNull();
+  });
+
+  it('separates completed date ranges with words', () => {
+    fixture.componentRef.setInput('job', {
+      ...job, isCurrent: false, endDate: new Date('2025-01-01'),
+    });
+    fixture.detectChanges();
+    const root: HTMLElement = fixture.nativeElement;
+    expect(Array.from(root.querySelector('app-portfolio-period')!.children)
+      .map((element) => element.textContent?.trim()).join(' '))
+      .toBe('Jan 2024 to Jan 2025');
   });
 
   it('omits the date range and location when an older entry has neither', () => {

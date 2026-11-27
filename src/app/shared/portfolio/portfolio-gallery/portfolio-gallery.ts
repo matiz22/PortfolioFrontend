@@ -38,7 +38,7 @@ export class PortfolioGallery {
   }
 
   protected screenshotAlt(index: number): string {
-    return $localize`:@@portfolioGallery.imageAlt:${this.title()}:title: — screenshot ${index + 1}:number:`;
+    return $localize`:@@portfolioGallery.imageAlt:${this.title()}:title:, screenshot ${index + 1}:number:`;
   }
 
   protected moveTo(index: number): void {

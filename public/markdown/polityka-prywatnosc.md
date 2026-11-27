@@ -51,7 +51,7 @@ Nie sprzedaję ani nie wynajmuję danych osobowych. Nie będę udostępniać Two
 ## 6. Pliki cookie i śledzenie
 
 W momencie tworzenia tej polityki Strona nie wykorzystuje plików cookie do analityki, reklam itp.  
-Jeśli w przyszłości dodam usługi takie jak Google Analytics, zaktualizuję tę politykę i — gdy wymaga tego obowiązujące prawo — uzyskam niezbędną zgodę.
+Jeśli w przyszłości dodam usługi takie jak Google Analytics, zaktualizuję tę politykę i uzyskam niezbędną zgodę, gdy wymaga tego obowiązujące prawo.
 
 ---
 

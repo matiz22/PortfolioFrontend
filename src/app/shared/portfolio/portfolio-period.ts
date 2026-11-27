@@ -14,7 +14,7 @@ interface PeriodDates {
     @let dates = period();
     <time [attr.datetime]="dates.startDate | date:'yyyy-MM-dd':'UTC'">{{ dates.startDate | date:format():'UTC' }}</time>
     @if (dates.isCurrent || dates.endDate) {
-      <span aria-hidden="true">—</span>
+      <span i18n="@@home.dates.to">to</span>
       @if (dates.isCurrent) {
         <span i18n="@@portfolio.present">Present</span>
       } @else {

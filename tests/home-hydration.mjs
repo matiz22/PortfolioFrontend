@@ -172,7 +172,7 @@ function probe(entry, resultPath, api, socialPath, socialMode, socialLinks) {
       const timeout = setTimeout(() => {
         observer.disconnect();
         const { top, bottom } = host.getBoundingClientRect();
-        reject(new Error(`Angular did not hydrate ${host.localName} (bounds ${top}–${bottom}, viewport ${innerHeight}).`));
+        reject(new Error(`Angular did not hydrate ${host.localName} (bounds ${top} to ${bottom}, viewport ${innerHeight}).`));
       }, 15_000);
     });
   }

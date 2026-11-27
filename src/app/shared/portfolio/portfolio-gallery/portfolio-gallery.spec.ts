@@ -19,7 +19,7 @@ describe('PortfolioGallery', () => {
     fixture.componentRef.setInput('screenshots', pictures.slice(0, 1));
     fixture.detectChanges();
 
-    expect(host.querySelector('img')?.alt).toBe('Example project — screenshot 1');
+    expect(host.querySelector('img')?.alt).toBe('Example project, screenshot 1');
     expect(host.querySelector('.gallery-track')).toBeNull();
     expect(host.querySelector('.gallery-controls')).toBeNull();
   });
