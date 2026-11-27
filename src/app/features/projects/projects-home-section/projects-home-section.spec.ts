@@ -1,10 +1,10 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
-import { ApiState } from '../../../core/models/api.state';
-import { ProjectSummary } from '../../../core/models/summary/project';
-import { ProjectsService } from '../../../core/services/projects.service';
-import { ProjectsHomeSection } from './projects-home-section';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {provideRouter} from '@angular/router';
+import {BehaviorSubject} from 'rxjs';
+import {ApiState} from '../../../core/models/api.state';
+import {ProjectSummary} from '../../../core/models/summary/project';
+import {ProjectsService} from '../../../core/services/projects.service';
+import {ProjectsHomeSection} from './projects-home-section';
 
 describe('ProjectsHomeSection', () => {
   let fixture: ComponentFixture<ProjectsHomeSection>;
@@ -35,6 +35,15 @@ describe('ProjectsHomeSection', () => {
   });
 
   afterEach(() => state.complete());
+
+  it('excludes animated copy from scroll anchoring while keeping the rail eligible', () => {
+    const root: HTMLElement = fixture.nativeElement;
+    const header = root.querySelector<HTMLElement>('.projects-home-header')!;
+    const grid = root.querySelector<HTMLElement>('.projects-home-grid')!;
+
+    expect(getComputedStyle(header).getPropertyValue('overflow-anchor')).toBe('none');
+    expect(getComputedStyle(grid).getPropertyValue('overflow-anchor')).toBe('auto');
+  });
 
   it('announces loading outside the busy grid and keeps skeletons decorative', () => {
     const root: HTMLElement = fixture.nativeElement;

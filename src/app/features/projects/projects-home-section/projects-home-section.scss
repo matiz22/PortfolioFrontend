@@ -29,6 +29,9 @@
 .projects-home-header {
   justify-self: start;
   width: min(100%, 48rem);
+  // Animated copy must not become the browser's scroll anchor: its exit
+  // transform can otherwise jump a native touch scroll to a later chapter.
+  overflow-anchor: none;
 }
 
 .projects-home-description {
