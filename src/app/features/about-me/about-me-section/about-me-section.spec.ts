@@ -48,10 +48,41 @@ describe('AboutMeSection', () => {
     expect(root.querySelectorAll('.about-service-copy.glass.home-glass').length).toBe(3);
     expect(root.querySelectorAll('.about-panel-copy.glass.home-glass').length).toBe(3);
     expect(root.querySelector('.about-header.home-glass')).toBeNull();
-    expect(getComputedStyle(row('web')).backdropFilter).toContain('blur(');
+    const filter = getComputedStyle(row('web')).backdropFilter;
+    if (CSS.supports('-moz-appearance', 'none')) {
+      expect(filter).toBe('none');
+    } else {
+      expect(filter).toContain('blur(');
+    }
     expect(root.querySelector('#about-web-preview .about-panel-copy')?.textContent).toContain('Need a company website');
     expect(root.querySelector('#about-apps-preview .about-panel-copy')?.textContent).toContain('efficient use of system resources');
     expect(root.querySelector('#about-ai-preview .about-panel-copy')?.textContent).toContain('wait for approval before acting');
+  });
+
+  it('limits the Firefox fallback to text panels and preserves their glass styling', () => {
+    const fallback = Array.from(document.styleSheets)
+      .flatMap((sheet) => Array.from(sheet.cssRules))
+      .find((rule): rule is CSSSupportsRule => rule instanceof CSSSupportsRule
+        && rule.conditionText.includes('-moz-appearance')
+        && rule.cssText.includes('about-service-copy'));
+    expect(fallback).toBeDefined();
+    if (!fallback) return;
+
+    // Exercise this engine-specific branch even when Karma runs in Chromium.
+    const style = document.createElement('style');
+    style.textContent = Array.from(fallback.cssRules, (rule) => rule.cssText).join('\n');
+    document.head.append(style);
+    try {
+      for (const panel of root.querySelectorAll('.about-service-copy, .about-panel-copy')) {
+        const styles = getComputedStyle(panel);
+        expect(styles.backdropFilter).toBe('none');
+        expect(styles.backgroundImage).toContain('linear-gradient');
+        expect(styles.boxShadow).not.toBe('none');
+      }
+      expect(getComputedStyle(root.querySelector('.about-ai-visual')!).backdropFilter).toContain('blur(');
+    } finally {
+      style.remove();
+    }
   });
 
   it('selects each existing preview on hover and keeps the other previews asleep', () => {
