@@ -10,16 +10,22 @@ describe('AbilitiesOverview', () => {
     fixture.detectChanges();
   });
 
-  it('preserves the real phone proportions across different preview container shapes', () => {
+  it('preserves the real phone proportions and corner geometry from mobile to desktop sizes', () => {
     const root: HTMLElement = fixture.nativeElement;
     const phone = root.querySelector<HTMLElement>('.overview-phone')!;
 
-    for (const [width, height] of [[630, 464], [500, 368], [560, 422]]) {
+    for (const [width, height] of [[272, 256], [327, 256], [342, 256], [382, 256], [630, 464], [500, 368], [560, 422]]) {
       root.style.width = `${width}px`;
       root.style.height = `${height}px`;
       const styles = getComputedStyle(phone);
 
       expect(parseFloat(styles.width) / parseFloat(styles.height)).toBeCloseTo(462 / 978, 3);
+      expect(parseFloat(styles.borderTopLeftRadius) / parseFloat(styles.width)).toBeCloseTo(65 / 462, 3);
+      const screen = getComputedStyle(phone.querySelector('.phone-screen')!);
+      const inset = parseFloat(styles.paddingTop) + parseFloat(styles.borderTopWidth);
+      // Borders snap to physical pixels; calc() retains their fractional size.
+      expect(Math.abs(parseFloat(screen.borderTopLeftRadius) - (parseFloat(styles.borderTopLeftRadius) - inset)))
+        .toBeLessThan(1);
       expect(phone.offsetTop + phone.offsetHeight).toBeLessThanOrEqual(height);
     }
   });

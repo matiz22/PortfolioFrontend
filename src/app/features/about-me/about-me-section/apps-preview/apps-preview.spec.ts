@@ -86,6 +86,24 @@ describe('AppsPreview', () => {
     }
   });
 
+  it('scales the phone body, corners, and screen together on mobile and desktop', () => {
+    const phone = root.querySelector<HTMLElement>('.mockup-phone')!;
+    const screen = phone.querySelector<HTMLElement>('.mockup-phone-display')!;
+
+    for (const [width, height] of [[272, 256], [327, 256], [342, 256], [382, 256], [630, 320]]) {
+      root.style.width = `${width}px`;
+      root.style.height = `${height}px`;
+      const styles = getComputedStyle(phone);
+
+      expect(parseFloat(styles.width) / parseFloat(styles.height)).toBeCloseTo(462 / 978, 3);
+      expect(parseFloat(styles.borderTopLeftRadius) / parseFloat(styles.width)).toBeCloseTo(65 / 462, 3);
+      const inset = parseFloat(styles.paddingTop) + parseFloat(styles.borderTopWidth);
+      // Borders snap to physical pixels; calc() retains their fractional size.
+      expect(Math.abs(parseFloat(getComputedStyle(screen).borderTopLeftRadius)
+        - (parseFloat(styles.borderTopLeftRadius) - inset))).toBeLessThan(1);
+    }
+  });
+
   it('sweeps the Face ID line to the bottom before verifying and removing the locks', () => {
     const timeline = startAnimation();
     const scan = step('face-scan')[0];
