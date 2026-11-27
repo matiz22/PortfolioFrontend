@@ -10,26 +10,8 @@
   padding-block: var(--home-stage-inset, 1rem);
 }
 
-.about-section.about-is-pinned {
-  // The mount stretches the section to shell + travel; sticky holds the shell
-  // at the viewport top without position: fixed, so the pin never repositions
-  // content from JavaScript while a scroll event is being processed.
-  .about-shell {
-    position: sticky;
-    top: 0;
-  }
-
-  .about-panel-copy > :is(h3, p) {
-    translate: 0 var(--about-text-offset, 0px);
-  }
-}
-
-.about-sidebar {
-  margin-bottom: 2.75rem;
-}
-
 .about-header {
-  padding-bottom: 2.75rem;
+  padding-bottom: clamp(2rem, 4vw, 3.5rem);
   text-align: center;
 
   h2 {
@@ -41,32 +23,13 @@
   }
 }
 
-.about-panel-copy p {
-  font-size: 0.875rem;
-  line-height: 1.9;
-  color: color-mix(in srgb, var(--color-base-content) 88%, transparent);
-  text-wrap: pretty;
-}
-
-.about-next:empty {
-  display: none;
-}
-
-// Progressive enhancement: nothing is hidden until ScrollTrigger is ready.
-.about-index {
-  display: none;
-}
-
-.about-panels {
+.about-explorer {
   display: grid;
-  gap: 3rem;
+  gap: 1rem;
 }
 
-.about-panel {
+.about-service {
   --service-accent: var(--color-primary);
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  row-gap: 1.5rem;
   min-width: 0;
   scroll-margin-top: 7rem;
 }
@@ -79,190 +42,221 @@
   --service-accent: var(--color-accent);
 }
 
+.about-service-copy {
+  padding: clamp(1.125rem, 1.6vw, 1.5rem);
+  border-radius: var(--radius);
+
+  p {
+    max-width: 49ch;
+    margin-top: 0.75rem;
+    font-size: 0.875rem;
+    line-height: 1.8;
+    color: color-mix(in srgb, var(--color-base-content) 76%, transparent);
+    text-wrap: pretty;
+  }
+}
+
+.about-service-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: color-mix(in srgb, var(--color-base-content) 88%, transparent);
+  font-family: var(--font-pixel);
+  font-size: clamp(1.375rem, 2.2vw, 1.75rem);
+  line-height: 1.16;
+  letter-spacing: -0.025em;
+  text-align: left;
+  text-wrap: balance;
+  cursor: pointer;
+  transition: color 200ms ease;
+
+  svg {
+    flex: 0 0 1.25rem;
+    width: 1.25rem;
+    height: 1.25rem;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    opacity: 0.4;
+    rotate: 90deg;
+    transition: translate 200ms ease, rotate 200ms ease, opacity 200ms ease;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--service-accent);
+    outline-offset: 8px;
+    border-radius: 2px;
+  }
+}
+
+.is-active .about-service-trigger {
+  color: var(--service-accent);
+
+  svg {
+    opacity: 1;
+    rotate: -90deg;
+  }
+}
+
+.about-panel {
+  display: none;
+  min-width: 0;
+}
+
 .about-visual {
+  display: block;
   position: relative;
   isolation: isolate;
-  height: clamp(11rem, 30vw, 15rem);
-  overflow: hidden;
+  min-width: 0;
+  height: clamp(16rem, 55vw, 23rem);
   color: var(--service-accent);
 }
 
-.about-web-visual,
-.about-apps-visual,
-.about-ai-visual {
-  height: clamp(15rem, 40 * var(--layout-vh, 1svh), 20rem);
-  overflow: visible;
-}
-
-// Only the AI scene sits on glass: the mockups are already self-contained cards.
-// No padding: the workflow measures its own container to place every element.
-.about-ai-visual.home-glass {
-  border-radius: var(--radius);
-  overflow: hidden;
-
-  .ai-workflow {
-    position: relative;
-    z-index: 1;
-  }
-}
-
-.about-apps-visual,
-.about-ai-visual {
-  width: 100%;
-}
-
-.about-apps-visual {
-  --apps-preview-align: end;
+.about-panel.is-visible {
+  display: grid;
+  gap: 1rem;
+  margin-block: 1.5rem;
 }
 
 .about-panel-copy {
-  h3 {
-    margin-bottom: 0.75rem;
-    font-family: var(--font-pixel);
-    font-size: clamp(2rem, 3vw, 2.5rem);
-    line-height: 1.12;
-    letter-spacing: -0.02em;
-    text-wrap: balance;
+  overflow: hidden;
+
+  p {
+    font-size: 0.875rem;
+    line-height: 1.8;
+    color: color-mix(in srgb, var(--color-base-content) 88%, transparent);
+    text-wrap: pretty;
   }
 }
 
-@media (min-width: 48rem) {
-  .about-panel {
-    grid-template-columns: 1fr 1fr;
-    align-items: center;
-    column-gap: 2.5rem;
-  }
-
-  .about-section:not(.about-is-pinned) .about-apps-visual {
-    --apps-preview-align: center;
-  }
+.is-visible .about-panel-copy p {
+  animation: about-detail-reveal 420ms ease-out 70ms both;
 }
 
-.about-is-pinned {
-  .about-stage {
+.is-active .about-service-copy.glass.home-glass {
+  border-color: color-mix(in srgb, var(--service-accent) 45%, transparent);
+}
+
+.about-ai-visual.home-glass {
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.about-apps-visual {
+  --apps-preview-align: center;
+}
+
+.about-next:empty {
+  display: none;
+}
+
+@media (min-width: 64rem) {
+  .about-header h2 {
+    max-width: none;
+    font-size: clamp(3rem, 4.8vw, 4.25rem);
+  }
+
+  .about-explorer {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    grid-template-rows: repeat(3, auto);
+    column-gap: clamp(3rem, 6vw, 6rem);
+  }
+
+  .about-service {
+    display: contents;
+  }
+
+  .about-service-copy {
+    grid-column: 1;
+    align-content: center;
+    transition: border-color 200ms ease;
+  }
+
+  .about-web .about-service-copy { grid-row: 1; }
+  .about-apps .about-service-copy { grid-row: 2; }
+  .about-ai .about-service-copy { grid-row: 3; }
+
+  .about-service-trigger svg {
+    rotate: -35deg;
+  }
+
+  .is-active {
+    .about-service-trigger svg {
+      rotate: 0deg;
+      translate: 4px 0;
+    }
+  }
+
+  .about-panel,
+  .about-panel.is-visible,
+  .about-overview {
     display: grid;
-    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
-    grid-template-rows: auto auto;
-    grid-template-areas:
-      "header header"
-      "sidebar panels";
-    align-items: center;
-    column-gap: clamp(2.5rem, 5vw, 5rem);
-    row-gap: clamp(1.25rem, 2.5vw, 2rem);
-  }
-
-  .about-sidebar {
-    grid-area: sidebar;
-    margin-bottom: 0;
-  }
-
-  .about-header {
-    grid-area: header;
-    padding-bottom: 0;
-
-    h2 {
-      max-width: none;
-      font-size: clamp(3rem, 4.8vw, 4.25rem);
-    }
-  }
-
-  .about-index {
-    position: relative;
-    display: block;
-    padding: 1rem 1.25rem;
-
-    ol {
-      margin: 0;
-      padding: 0;
-      list-style: none;
-    }
-
-    li + li {
-      border-top: 1px solid rgb(255 255 255 / 7%);
-    }
-  }
-
-  .about-index.home-glass {
-    border-radius: var(--radius);
-  }
-
-  .about-index-inner {
-    position: relative;
-    padding-left: 1.25rem;
-  }
-
-  .about-track {
-    position: absolute;
-    inset: 0 auto 0 0;
-    width: 2px;
-    background: rgb(255 255 255 / 10%);
-  }
-
-  .about-fill {
-    display: block;
+    grid-area: 1 / 2 / 4 / 3;
+    align-self: center;
     width: 100%;
-    height: 100%;
-    background: var(--color-primary);
-    transform-origin: left top;
+    gap: 1.25rem;
+    margin: 0;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(10px) scale(0.985);
+    transition: opacity 260ms ease, transform 320ms ease, visibility 260ms;
+
+    &.is-visible {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transform: none;
+    }
   }
 
-  .about-index-link {
+  .about-overview {
     display: block;
-    padding-block: 1.1rem;
-    color: color-mix(in srgb, var(--color-base-content) 70%, transparent);
-    text-decoration: none;
-    transition: color 200ms ease;
-
-    &[aria-current="step"],
-    &:hover,
-    &:focus-visible {
-      color: var(--color-primary);
-    }
-
-    &:focus-visible {
-      outline: 2px solid var(--color-primary);
-      outline-offset: 6px;
-      border-radius: var(--radius);
-    }
+    height: clamp(23rem, 33vw, 29rem);
   }
 
-  .about-index-title {
-    font-family: var(--font-pixel);
-    font-size: clamp(1.25rem, 2.1vw, 1.875rem);
-    line-height: 1.12;
-    letter-spacing: -0.02em;
+  .about-panel .about-visual {
+    height: clamp(15rem, 25vw, 20rem);
   }
 
-  .about-panels {
-    grid-area: panels;
-    align-items: center;
-    gap: 0;
-  }
-
-  .about-panel {
-    // All panels size the same grid cell; even the longest translation fits.
-    grid-area: 1 / 1;
-    grid-template-columns: minmax(0, 1fr);
-    align-items: stretch;
-  }
-
-  .about-web-visual,
-  .about-apps-visual,
-  .about-ai-visual {
-    // Leave space for the heading, service copy, and separate navigation row.
-    height: clamp(12rem, 100 * var(--layout-vh, 1svh) - 38rem, 24rem);
+  .about-overview-hint {
+    position: absolute;
+    bottom: -1.25rem;
+    inset-inline: 0;
+    color: color-mix(in srgb, var(--color-base-content) 50%, transparent);
+    font-size: 0.75rem;
+    text-align: center;
   }
 }
 
-// Keep the added next-section link on screen throughout shorter desktop pins.
-@media (min-width: 64rem) and (max-height: 56rem) {
-  .about-is-pinned {
-    .about-stage {
-      row-gap: 1rem;
-    }
-
-    .about-panel {
-      row-gap: 1rem;
-    }
+@keyframes about-detail-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+    clip-path: inset(0 0 100% 0);
   }
+  to {
+    opacity: 1;
+    transform: none;
+    clip-path: inset(-0.16em);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-service-copy,
+  .about-service-trigger,
+  .about-service-trigger svg,
+  .about-panel,
+  .about-panel.is-visible,
+  .about-overview,
+  .about-overview.is-visible {
+    transition: none;
+    transform: none;
+  }
+
+  .is-visible .about-panel-copy p { animation: none; }
 }

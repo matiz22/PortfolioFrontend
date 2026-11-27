@@ -5,75 +5,101 @@
         <h2 id="about-heading" class="section-heading" i18n="@@about.heading">What I design and build</h2>
       </header>
 
-      <div class="about-sidebar">
-        <nav class="about-index glass home-glass" aria-labelledby="about-heading">
-          <div class="about-index-inner">
-            <div class="about-track" aria-hidden="true"><span class="about-fill"></span></div>
-            <ol>
-              <li>
-                <a class="about-index-link" href="#about-web" aria-controls="about-web">
-                  <span class="about-index-title" i18n="@@about.card.web.title">Websites &amp; Web Apps</span>
-                </a>
-              </li>
-              <li>
-                <a class="about-index-link" href="#about-apps" aria-controls="about-apps">
-                  <span class="about-index-title" i18n="@@about.card.apps.title">Native Mobile &amp; Desktop Apps</span>
-                </a>
-              </li>
-              <li>
-                <a class="about-index-link" href="#about-ai" aria-controls="about-ai">
-                  <span class="about-index-title" i18n="@@about.card.ai.title">AI Integration &amp; Automation</span>
-                </a>
-              </li>
-            </ol>
+      <div class="about-explorer" (pointerenter)="cancelReset()" (pointerleave)="scheduleReset($event)">
+        <article class="about-service about-web" id="about-web" [class.is-active]="activeService() === 'web'">
+          <div class="about-service-copy glass home-glass" (pointerenter)="preview('web', $event)">
+            <h3>
+              <button type="button" class="about-service-trigger" aria-controls="about-web-preview"
+                [attr.aria-expanded]="activeService() === 'web'"
+                (focus)="focusPreview('web', $event)" (blur)="blurPreview()" (click)="togglePreview('web', $event)"
+                (keydown.escape)="clearPreview()">
+                <span i18n="@@about.card.web.title">Websites &amp; Web Apps</span>
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" /></svg>
+              </button>
+            </h3>
+            <p i18n="@@about.card.web.summary">From company websites and online stores to custom web apps, built around what your business needs to do.</p>
           </div>
-        </nav>
-      </div>
-
-      <div class="about-panels">
-        <article class="about-panel about-web" id="about-web" tabindex="-1" aria-labelledby="about-web-title">
-          <div class="about-visual about-web-visual" aria-hidden="true">
-            <app-web-development-preview />
-          </div>
-          <div class="about-panel-copy glass home-glass home-copy-panel" [appHomeCopy]="{ heading: 'h3', details: 'p', effect: 'mask', duration: 0.36 }">
-            <h3 id="about-web-title" i18n="@@about.card.web.title">Websites &amp; Web Apps</h3>
-            <p i18n="@@about.card.web.description">
-              Need a company website, an online store, or a blog? I’ll build and launch it around what you need it to
-              do: bring in enquiries, sell products, or let you publish on your own. If an off-the-shelf tool doesn’t
-              fit, I’ll build a custom web app, from a customer portal to an internal tool that connects to the systems
-              your team already uses.
-            </p>
+          <div class="about-panel" id="about-web-preview"
+            [class.is-visible]="activeService() === 'web'" [attr.aria-hidden]="activeService() !== 'web'"
+            [inert]="activeService() !== 'web'">
+            <div class="about-visual about-web-visual" aria-hidden="true">
+              <app-web-development-preview />
+            </div>
+            <div class="about-panel-copy glass home-glass home-copy-panel">
+              <p i18n="@@about.card.web.description">
+                Need a company website, an online store, or a blog? I’ll build and launch it around what you need it to
+                do: bring in enquiries, sell products, or let you publish on your own. If an off-the-shelf tool doesn’t
+                fit, I’ll build a custom web app, from a customer portal to an internal tool that connects to the systems
+                your team already uses.
+              </p>
+            </div>
           </div>
         </article>
 
-        <article class="about-panel about-apps" id="about-apps" tabindex="-1" aria-labelledby="about-apps-title">
-          <div class="about-visual about-apps-visual" aria-hidden="true">
-            <app-apps-preview />
+        <article class="about-service about-apps" id="about-apps" [class.is-active]="activeService() === 'apps'">
+          <div class="about-service-copy glass home-glass" (pointerenter)="preview('apps', $event)">
+            <h3>
+              <button type="button" class="about-service-trigger" aria-controls="about-apps-preview"
+                [attr.aria-expanded]="activeService() === 'apps'"
+                (focus)="focusPreview('apps', $event)" (blur)="blurPreview()" (click)="togglePreview('apps', $event)"
+                (keydown.escape)="clearPreview()">
+                <span i18n="@@about.card.apps.title">Native Mobile &amp; Desktop Apps</span>
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" /></svg>
+              </button>
+            </h3>
+            <p i18n="@@about.card.apps.summary">Fast, responsive apps that feel at home on your device and make the most of its built-in capabilities.</p>
           </div>
-          <div class="about-panel-copy glass home-glass home-copy-panel" [appHomeCopy]="{ heading: 'h3', details: 'p', effect: 'mask', duration: 0.36 }">
-            <h3 id="about-apps-title" i18n="@@about.card.apps.title">Native Mobile &amp; Desktop Apps</h3>
-            <p i18n="@@about.card.apps.description">
-              I’ll build a native app for the platform your users work on. I’ll focus on fast startup, a responsive
-              interface, and efficient use of system resources. I’ll use built-in platform features and hardware
-              capabilities where they make the app faster or easier to use.
-            </p>
+          <div class="about-panel" id="about-apps-preview"
+            [class.is-visible]="activeService() === 'apps'" [attr.aria-hidden]="activeService() !== 'apps'"
+            [inert]="activeService() !== 'apps'">
+            <div class="about-visual about-apps-visual" aria-hidden="true">
+              <app-apps-preview />
+            </div>
+            <div class="about-panel-copy glass home-glass home-copy-panel">
+              <p i18n="@@about.card.apps.description">
+                I’ll build a native app for the platform your users work on. I’ll focus on fast startup, a responsive
+                interface, and efficient use of system resources. I’ll use built-in platform features and hardware
+                capabilities where they make the app faster or easier to use.
+              </p>
+            </div>
           </div>
         </article>
 
-        <article class="about-panel about-ai" id="about-ai" tabindex="-1" aria-labelledby="about-ai-title">
-          <div class="about-visual about-ai-visual glass home-glass" aria-hidden="true">
-            <app-ai-workflow-preview />
+        <article class="about-service about-ai" id="about-ai" [class.is-active]="activeService() === 'ai'">
+          <div class="about-service-copy glass home-glass" (pointerenter)="preview('ai', $event)">
+            <h3>
+              <button type="button" class="about-service-trigger" aria-controls="about-ai-preview"
+                [attr.aria-expanded]="activeService() === 'ai'"
+                (focus)="focusPreview('ai', $event)" (blur)="blurPreview()" (click)="togglePreview('ai', $event)"
+                (keydown.escape)="clearPreview()">
+                <span i18n="@@about.card.ai.title">AI Integration &amp; Automation</span>
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" /></svg>
+              </button>
+            </h3>
+            <p i18n="@@about.card.ai.summary">Assistants and connected workflows that turn incoming requests into completed tasks, with you in control.</p>
           </div>
-          <div class="about-panel-copy glass home-glass home-copy-panel" [appHomeCopy]="{ heading: 'h3', details: 'p', effect: 'mask', duration: 0.36 }">
-            <h3 id="about-ai-title" i18n="@@about.card.ai.title">AI Integration &amp; Automation</h3>
-            <p i18n="@@about.card.ai.description">
-              Give AI a task, not just a question. I’ll automate the parts of your workflow where your team still
-              copies data, routes requests, or chases the next step. An assistant can read an incoming message, check
-              the CRM, create a task, and notify the right person. When a decision is needed, it can get everything
-              ready for review and wait for approval before acting.
-            </p>
+          <div class="about-panel" id="about-ai-preview"
+            [class.is-visible]="activeService() === 'ai'" [attr.aria-hidden]="activeService() !== 'ai'"
+            [inert]="activeService() !== 'ai'">
+            <div class="about-visual about-ai-visual glass home-glass" aria-hidden="true">
+              <app-ai-workflow-preview />
+            </div>
+            <div class="about-panel-copy glass home-glass home-copy-panel">
+              <p i18n="@@about.card.ai.description">
+                Give AI a task, not just a question. I’ll automate the parts of your workflow where your team still
+                copies data, routes requests, or chases the next step. An assistant can read an incoming message, check
+                the CRM, create a task, and notify the right person. When a decision is needed, it can get everything
+                ready for review and wait for approval before acting.
+              </p>
+            </div>
           </div>
         </article>
+
+        <div class="about-overview about-visual" [class.is-visible]="activeService() === null"
+          [attr.aria-hidden]="activeService() !== null" [inert]="activeService() !== null">
+          <app-abilities-overview aria-hidden="true" />
+          <p class="about-overview-hint" i18n="@@about.preview.hint">Explore a service to see it in action</p>
+        </div>
       </div>
     </div>
     <div class="about-next" data-home-stage-footer>

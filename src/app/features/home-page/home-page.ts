@@ -77,8 +77,8 @@ export class HomePage implements RouteAttachment {
     } catch {
       return;
     }
-    // On client navigation the service panels don't exist until About renders
-    // in the viewport. Its own fragment handler then lands on the exact panel.
+    // On client navigation the service rows don't exist until About renders
+    // in the viewport. Its own fragment handler then selects the exact preview.
     const target = this.document.getElementById(id) ??
       (ABOUT_SERVICE_FRAGMENTS.has(id) ? root.querySelector('#about') : null);
     if (target && root.contains(target)) {

@@ -1,6 +1,5 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { animateAboutMeScroll } from '../../about-me/about-me-section/about-me-scroll-animation';
 import { animateJobsTimeline } from './jobs-timeline-animation';
 
 describe('jobs timeline animation', () => {
@@ -273,57 +272,45 @@ describe('jobs timeline animation', () => {
     expect(ScrollTrigger.getAll().some((trigger) => trigger.trigger === section)).toBeFalse();
   });
 
-  for (const jobsFirst of [false, true]) {
-    it(`includes both pins in downstream geometry when ${jobsFirst ? 'Jobs' : 'About'} mounts first`, () => {
-      const about = document.createElement('div');
-      about.innerHTML = `
-        <section class="about-section">
-          <div class="about-shell" style="height: 400px">
-            <span class="about-fill"></span>
-            <a class="about-index-link" href="#one">One</a>
-            <a class="about-index-link" href="#two">Two</a>
-            <div class="about-panels">
-              <article class="about-panel" id="one"></article>
-              <article class="about-panel" id="two"></article>
-            </div>
-          </div>
-        </section>`;
-      const downstream = document.createElement('div');
-      downstream.style.height = '200vh';
-      root.before(about);
-      root.after(downstream);
-      const reveal = ScrollTrigger.create({ trigger: downstream, start: 'top top' });
-      const scroll = window.scrollY;
-      const unpinnedStart = downstream.getBoundingClientRect().top + scroll;
-      const naturalRootHeight = root.offsetHeight;
-      const aboutSection = about.querySelector<HTMLElement>('.about-section')!;
-      const naturalAboutHeight = aboutSection.offsetHeight;
-      let aboutMotion: gsap.MatchMedia | undefined;
-      try {
-        if (jobsFirst) motion = animateJobsTimeline(root);
-        aboutMotion = animateAboutMeScroll(about, false);
-        if (!jobsFirst) motion = animateJobsTimeline(root);
+  it('preserves the static About section when measuring downstream pin geometry', () => {
+    const about = document.createElement('div');
+    about.innerHTML = `
+      <section class="about-section">
+        <div class="about-shell" style="height: 400px">
+          <div class="about-explorer">Services and previews</div>
+        </div>
+      </section>`;
+    const downstream = document.createElement('div');
+    downstream.style.height = '200vh';
+    root.before(about);
+    root.after(downstream);
+    const reveal = ScrollTrigger.create({ trigger: downstream, start: 'top top' });
+    const scroll = window.scrollY;
+    const unpinnedStart = downstream.getBoundingClientRect().top + scroll;
+    const naturalRootHeight = root.offsetHeight;
+    const aboutSection = about.querySelector<HTMLElement>('.about-section')!;
+    const naturalAboutHeight = aboutSection.offsetHeight;
+    try {
+      motion = animateJobsTimeline(root);
 
-        ScrollTrigger.refresh();
+      ScrollTrigger.refresh();
 
-        // Sticky pins occupy real layout: each container grows by its travel.
-        const jobsTravel = parseFloat(root.style.height) - naturalRootHeight;
-        const aboutTravel = parseFloat(aboutSection.style.height) - naturalAboutHeight;
-        expect(jobsTravel).toBe(3442);
-        expect(aboutTravel).toBe(582);
-        expect(reveal.start).toBeCloseTo(unpinnedStart + jobsTravel + aboutTravel, 0);
-        expect(reveal.start).toBeCloseTo(downstream.getBoundingClientRect().top + window.scrollY, 0);
-      } finally {
-        reveal.kill();
-        motion?.revert();
-        motion = undefined;
-        aboutMotion?.revert();
-        about.remove();
-        downstream.remove();
-        window.scrollTo({ top: scroll, behavior: 'instant' });
-      }
-    });
-  }
+      // Only Experience adds scroll travel; About remains in normal flow.
+      const jobsTravel = parseFloat(root.style.height) - naturalRootHeight;
+      expect(jobsTravel).toBe(3442);
+      expect(aboutSection.offsetHeight).toBe(naturalAboutHeight);
+      expect(aboutSection.style.height).toBe('');
+      expect(reveal.start).toBeCloseTo(unpinnedStart + jobsTravel, 0);
+      expect(reveal.start).toBeCloseTo(downstream.getBoundingClientRect().top + window.scrollY, 0);
+    } finally {
+      reveal.kill();
+      motion?.revert();
+      motion = undefined;
+      about.remove();
+      downstream.remove();
+      window.scrollTo({ top: scroll, behavior: 'instant' });
+    }
+  });
 
   it('holds the first role in place before beginning horizontal travel', () => {
     motion = animateJobsTimeline(root);

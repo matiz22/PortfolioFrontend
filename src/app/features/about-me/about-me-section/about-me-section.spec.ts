@@ -1,55 +1,168 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-
-import {AboutMeSection} from './about-me-section';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { AboutMeSection } from './about-me-section';
 
 describe('AboutMeSection', () => {
-  let component: AboutMeSection;
   let fixture: ComponentFixture<AboutMeSection>;
+  let root: HTMLElement;
+  let desktop: boolean;
+  let media: MediaQueryList;
+
+  const pointer = (target: Element, type: string, pointerType = 'mouse') =>
+    target.dispatchEvent(new PointerEvent(type, { pointerType }));
+  const row = (service: string) => root.querySelector<HTMLElement>(`#about-${service} .about-service-copy`)!;
+  const button = (service: string) => row(service).querySelector<HTMLButtonElement>('button')!;
+  const visiblePreview = () => root.querySelector('.about-panel.is-visible');
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [AboutMeSection]
-    })
-      .compileComponents();
+    desktop = true;
+    media = new EventTarget() as MediaQueryList;
+    Object.defineProperty(media, 'matches', { get: () => desktop });
+    const matchMedia = window.matchMedia.bind(window);
+    spyOn(window, 'matchMedia').and.callFake((query) =>
+      query === '(min-width: 64rem)' ? media : matchMedia(query));
 
+    await TestBed.configureTestingModule({ imports: [AboutMeSection] }).compileComponents();
     fixture = TestBed.createComponent(AboutMeSection);
-    component = fixture.componentInstance;
+    root = fixture.nativeElement;
+    fixture.detectChanges();
+    await fixture.whenStable();
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('starts with the original combined idle scene and three readable service rows, without rotation or a pin', () => {
+    expect(fixture.componentInstance).toBeTruthy();
+    expect(root.querySelector('.about-overview.is-visible app-abilities-overview')).not.toBeNull();
+    expect(root.querySelector('.overview-browser')).not.toBeNull();
+    expect(root.querySelector('.overview-phone')).not.toBeNull();
+    expect(root.querySelector('.overview-workflow')).not.toBeNull();
+    expect(root.querySelector('.overview-label')).toBeNull();
+    expect(visiblePreview()).toBeNull();
+    expect(Array.from(root.querySelectorAll('.about-service'), (item) => item.id))
+      .toEqual(['about-web', 'about-apps', 'about-ai']);
+    expect(root.querySelectorAll('.about-service-copy p').length).toBe(3);
+    expect(root.querySelector('.about-index, .about-track, .about-is-pinned, .orbit-scene, .about-preview-controls')).toBeNull();
+    expect(root.querySelector<HTMLElement>('.about-section')!.style.height).toBe('');
   });
 
-  it('does not draw a divider beneath the services heading in the unpinned layout', () => {
-    const root: HTMLElement = fixture.nativeElement;
-    expect(getComputedStyle(root.querySelector('.about-header')!).borderBottomWidth).toBe('0px');
+  it('puts the service summaries and original full descriptions on glass without frosting the heading', () => {
+    expect(root.querySelectorAll('.about-service-copy.glass.home-glass').length).toBe(3);
+    expect(root.querySelectorAll('.about-panel-copy.glass.home-glass').length).toBe(3);
+    expect(root.querySelector('.about-header.home-glass')).toBeNull();
+    expect(getComputedStyle(row('web')).backdropFilter).toContain('blur(');
+    expect(root.querySelector('#about-web-preview .about-panel-copy')?.textContent).toContain('Need a company website');
+    expect(root.querySelector('#about-apps-preview .about-panel-copy')?.textContent).toContain('efficient use of system resources');
+    expect(root.querySelector('#about-ai-preview .about-panel-copy')?.textContent).toContain('wait for approval before acting');
   });
 
-  it('presents web, apps, and AI in the same order in the service index and panels', () => {
-    const root: HTMLElement = fixture.nativeElement;
-    expect(root.querySelector('.about-index-number')).toBeNull();
-    expect(root.querySelectorAll('.about-index-title').length).toBe(3);
-    const links = Array.from(root.querySelectorAll('.about-index-link'));
-    const order = ['about-web', 'about-apps', 'about-ai'];
-    expect(links.map((link) => link.getAttribute('aria-controls'))).toEqual(order);
-    expect(Array.from(root.querySelectorAll('.about-panel'), (panel) => panel.id)).toEqual(order);
-    expect(root.querySelector('#about-ai app-ai-workflow-preview')).not.toBeNull();
-    expect(root.querySelector('app-web-development-preview .input')?.textContent).toBe('https://your.company');
+  it('selects each existing preview on hover and keeps the other previews asleep', () => {
+    for (const service of ['web', 'apps', 'ai']) {
+      pointer(row(service), 'pointerenter');
+      fixture.detectChanges();
+      expect(visiblePreview()?.id).toBe(`about-${service}-preview`);
+      expect(visiblePreview()?.querySelector('.about-panel-copy p')).not.toBeNull();
+      expect(button(service).getAttribute('aria-expanded')).toBe('true');
+      expect(root.querySelector('.about-overview')!.getAttribute('aria-hidden')).toBe('true');
+      for (const panel of root.querySelectorAll<HTMLElement>('.about-panel')) {
+        const selected = panel.id === `about-${service}-preview`;
+        expect(panel.inert).toBe(!selected);
+        expect(panel.getAttribute('aria-hidden')).toBe(String(!selected));
+      }
+    }
   });
 
-  it('frosts service navigation and the AI scene without frosting service headings', () => {
-    const root: HTMLElement = fixture.nativeElement;
-    const index = root.querySelector<HTMLElement>('.about-index')!;
-    expect(index.classList).toContain('glass');
-    expect(index.classList).toContain('home-glass');
-    // One shared panel with the scroll line; the rows stay plain.
-    expect(root.querySelectorAll('.about-index-link.home-glass').length).toBe(0);
-    expect(index.querySelector('.about-track')).not.toBeNull();
-    expect(root.querySelectorAll('.about-index-link').length).toBe(3);
-    expect(root.querySelector('.about-ai-visual')?.classList).toContain('home-glass');
-    expect(root.querySelector('.about-web-visual')?.classList).not.toContain('home-glass');
-    expect(root.querySelector('.about-header')?.classList.contains('home-glass')).toBeFalse();
-    expect(getComputedStyle(root.querySelector('.about-ai-visual')!).backdropFilter).toContain('blur(');
+  it('retains the preview across the interaction area, then returns to the combined scene after leaving', async () => {
+    const explorer = root.querySelector('.about-explorer')!;
+    pointer(row('web'), 'pointerenter');
+    fixture.detectChanges();
+    pointer(root.querySelector('#about-web-preview')!, 'pointerenter');
+    expect(visiblePreview()?.id).toBe('about-web-preview');
+    pointer(explorer, 'pointerleave');
+    fixture.detectChanges();
+    expect(visiblePreview()?.id).toBe('about-web-preview');
+    await new Promise((resolve) => setTimeout(resolve, 280));
+    fixture.detectChanges();
+    expect(visiblePreview()).toBeNull();
+    expect(root.querySelector('.about-overview.is-visible')).not.toBeNull();
+  });
+
+  it('cancels the idle reset when the pointer re-enters', async () => {
+    const explorer = root.querySelector('.about-explorer')!;
+    pointer(row('apps'), 'pointerenter');
+    pointer(explorer, 'pointerleave');
+    pointer(explorer, 'pointerenter');
+    await new Promise((resolve) => setTimeout(resolve, 280));
+    fixture.detectChanges();
+    expect(visiblePreview()?.id).toBe('about-apps-preview');
+  });
+
+  it('previews on keyboard focus and restores idle on blur, including after Enter', () => {
+    const trigger = button('ai');
+    spyOn(trigger, 'matches').and.returnValue(true);
+    trigger.dispatchEvent(new FocusEvent('focus'));
+    fixture.detectChanges();
+    expect(visiblePreview()?.id).toBe('about-ai-preview');
+    expect(button('ai').getAttribute('aria-expanded')).toBe('true');
+    trigger.click();
+    trigger.dispatchEvent(new FocusEvent('blur'));
+    fixture.detectChanges();
+    expect(visiblePreview()).toBeNull();
+    expect(button('ai').getAttribute('aria-expanded')).toBe('false');
+    expect(root.querySelector('.about-overview.is-visible')).not.toBeNull();
+  });
+
+  it('does not let mouse focus prevent returning to idle', () => {
+    const trigger = button('web');
+    spyOn(trigger, 'matches').and.returnValue(false);
+    trigger.dispatchEvent(new FocusEvent('focus'));
+    fixture.detectChanges();
+    expect(visiblePreview()).toBeNull();
+  });
+
+  it('expands one inline preview at a time on touch layouts and supports closing it', () => {
+    desktop = false;
+    media.dispatchEvent(new Event('change'));
+    fixture.detectChanges();
+    pointer(row('web'), 'pointerenter', 'touch');
+    fixture.detectChanges();
+    expect(visiblePreview()).toBeNull();
+    for (const service of ['web', 'apps', 'ai']) {
+      button(service).click();
+      fixture.detectChanges();
+      expect(visiblePreview()?.id).toBe(`about-${service}-preview`);
+      expect(button(service).getAttribute('aria-expanded')).toBe('true');
+      expect(root.querySelectorAll('[aria-expanded="true"]').length).toBe(1);
+    }
+    button('ai').click();
+    fixture.detectChanges();
+    expect(visiblePreview()).toBeNull();
+    expect(button('ai').getAttribute('aria-expanded')).toBe('false');
+  });
+
+  it('clears a selected preview on Escape and when crossing the layout breakpoint', () => {
+    pointer(row('web'), 'pointerenter');
+    button('web').dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+    fixture.detectChanges();
+    expect(visiblePreview()).toBeNull();
+    pointer(row('apps'), 'pointerenter');
+    desktop = false;
+    media.dispatchEvent(new Event('change'));
+    fixture.detectChanges();
+    expect(visiblePreview()).toBeNull();
+  });
+
+  it('selects a service fragment without adding scroll travel', () => {
+    const originalUrl = location.href;
+    const scroll = spyOn(Element.prototype, 'scrollIntoView');
+    try {
+      history.replaceState(null, '', '#about-ai');
+      window.dispatchEvent(new HashChangeEvent('hashchange'));
+      fixture.detectChanges();
+      expect(visiblePreview()?.id).toBe('about-ai-preview');
+      expect(scroll).toHaveBeenCalledWith({ behavior: 'instant', block: 'center' });
+      expect(document.activeElement).toBe(button('ai'));
+      expect(root.querySelector<HTMLElement>('.about-section')!.style.height).toBe('');
+    } finally {
+      history.replaceState(null, '', originalUrl);
+    }
   });
 });
