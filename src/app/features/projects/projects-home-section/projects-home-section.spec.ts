@@ -83,6 +83,54 @@ describe('ProjectsHomeSection', () => {
     expect(root.querySelector('.projects-home-skeleton, .project-preview')).toBeNull();
   });
 
+  it('keeps mobile photos and cards equal-sized despite different content and missing thumbnails', async () => {
+    state.next(ApiState.success([
+      {
+        ...projects[0],
+        title: 'A longer project title that wraps onto several lines on mobile',
+        shortDesc: 'A detailed project description with extra context. '.repeat(8),
+        thumbnail: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="960" height="660"/%3E',
+        technologies: Array.from({ length: 12 }, (_, id) => ({ id, name: `Technology ${id}` })),
+      },
+      { ...projects[1], shortDesc: '', thumbnail: null },
+      { ...projects[2], title: 'Short title', thumbnail: null },
+    ]));
+    await fixture.whenStable();
+
+    // A real narrow viewport exercises the CSS media query without resizing Karma.
+    const viewport = document.createElement('iframe');
+    viewport.style.height = '900px';
+    document.body.append(viewport);
+    try {
+      const mobileDocument = viewport.contentDocument!;
+      for (const style of document.head.querySelectorAll('style, link[rel="stylesheet"]')) {
+        mobileDocument.head.append(style.cloneNode(true));
+      }
+      const root: HTMLElement = fixture.nativeElement;
+      mobileDocument.body.append(root);
+      const cards = Array.from(root.querySelectorAll<HTMLElement>('.project-preview'));
+      const visuals = Array.from(root.querySelectorAll<HTMLElement>('.project-preview-visual'));
+      expect(cards.length).toBe(3);
+      expect(root.querySelectorAll('.project-preview-fallback').length).toBe(2);
+
+      for (const width of [320, 390, 767]) {
+        viewport.style.width = `${width}px`;
+        const heights = cards.map(card => card.getBoundingClientRect().height);
+        const photoHeights = visuals.map(visual => visual.getBoundingClientRect().height);
+        expect(heights[0]).withContext(`${width}px card height`).toBeGreaterThan(0);
+        for (let index = 0; index < cards.length; index++) {
+          expect(heights[index]).withContext(`${width}px card ${index}`).toBeCloseTo(heights[0], 1);
+          expect(photoHeights[index]).withContext(`${width}px photo ${index}`).toBeCloseTo(photoHeights[0], 1);
+          const description = cards[index].querySelector<HTMLElement>('.project-preview-description')!;
+          expect(description.scrollHeight).withContext(`${width}px description ${index}`)
+            .toBeLessThanOrEqual(description.clientHeight);
+        }
+      }
+    } finally {
+      viewport.remove();
+    }
+  });
+
   it('announces API errors without exposing backend details', async () => {
     const root: HTMLElement = fixture.nativeElement;
     const status = root.querySelector('[role="status"]')!;

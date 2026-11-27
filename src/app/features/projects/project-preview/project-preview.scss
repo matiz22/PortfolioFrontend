@@ -218,6 +218,22 @@
   }
 }
 
+@media (width < 48rem) {
+  .project-preview:not(.project-preview-horizontal, .project-preview-interactive) {
+    // Extra height belongs to the copy, not to photos on shorter-content cards.
+    grid-template-rows: auto auto 1fr;
+
+    .project-preview-visual {
+      aspect-ratio: 16 / 11;
+      min-block-size: 0;
+    }
+
+    .project-preview-drawer {
+      display: grid;
+    }
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .project-preview,
   .project-preview-title-link {
